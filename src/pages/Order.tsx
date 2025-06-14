@@ -9,6 +9,7 @@ import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import OrderForm from "@/components/order/OrderForm";
+import { ArrowLeft } from "lucide-react";
 
 const seoText = `
 Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
@@ -45,16 +46,20 @@ export default function Order() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-background py-8">
+        <main className="min-h-screen bg-gradient-to-br from-background to-muted/20 py-8">
           <div className="container mx-auto px-4">
-            <div className="mb-6 text-center">
+            <div className="mb-6 flex items-center gap-4">
               <Button 
                 variant="outline" 
                 onClick={() => setShowServiceCatalog(true)}
-                className="mb-4"
+                className="flex items-center gap-2"
               >
-                ← Вернуться к каталогу услуг
+                <ArrowLeft className="w-4 h-4" />
+                Каталог услуг
               </Button>
+              <div className="text-sm text-muted-foreground">
+                Или выберите услугу из каталога
+              </div>
             </div>
             <OrderForm />
           </div>
@@ -67,72 +72,124 @@ export default function Order() {
   return (
     <>
       <Header />
-      <main className="w-full max-w-4xl mx-auto py-4 px-2 sm:px-4 md:py-6">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold mb-4">Оформление заказа</h1>
-          <Button 
-            onClick={() => setShowServiceCatalog(false)}
-            className="mb-6"
-          >
-            Перейти к форме заказа
-          </Button>
-        </div>
+      <main className="min-h-screen bg-gradient-to-br from-background to-muted/20 py-8">
+        <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              Каталог услуг копирайтинга
+            </h1>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Выберите подходящую услугу из нашего каталога или перейдите к быстрому оформлению заказа
+            </p>
+            <Button 
+              onClick={() => setShowServiceCatalog(false)}
+              size="lg"
+              className="shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              Быстрый заказ
+            </Button>
+          </div>
 
-        {/* Фильтры: мобильный флекс-вертикальный, на md+ — горизонтальный */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-6 items-stretch sm:items-end">
-          <select
-            value={category}
-            onChange={e => setCategory(e.target.value)}
-            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
-          >
-            {FILTERS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
-          </select>
-          <select
-            value={format}
-            onChange={e => setFormat(e.target.value)}
-            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
-          >
-            {FORMATS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
-          </select>
-          <select
-            value={lang}
-            onChange={e => setLang(e.target.value)}
-            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[100px] w-full sm:w-auto"
-          >
-            {LANGS.map(l => <option value={l.value} key={l.value}>{l.label}</option>)}
-          </select>
-          <select
-            value={topic}
-            onChange={e => setTopic(e.target.value)}
-            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
-          >
-            {TOPICS.map(t => <option value={t.value} key={t.value}>{t.label}</option>)}
-          </select>
-        </div>
-
-        {/* Карточки: по 1 колонке на мобиле, по 2 на sm+, равные ширины, обрезка содержимого */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          {filtered.map(service => (
-            <Card key={service.slug} className="p-4 flex flex-col gap-3 h-full min-w-0">
-              <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2">
-                <span className="font-bold text-base">{service.name}</span>
-                <Button asChild variant="ghost" size="sm" className="px-2 py-1">
-                  <Link to={`/service/${service.slug}`}>Подробнее</Link>
-                </Button>
+          {/* Фильтры */}
+          <Card className="p-6 mb-8 shadow-lg border-0">
+            <h3 className="text-lg font-semibold mb-4">Фильтры поиска</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Категория</label>
+                <select
+                  value={category}
+                  onChange={e => setCategory(e.target.value)}
+                  className="w-full rounded-lg border border-input px-3 py-2 text-sm bg-background"
+                >
+                  {FILTERS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
+                </select>
               </div>
-              <p className="text-muted-foreground text-xs line-clamp-3">{service.desc}</p>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Формат</label>
+                <select
+                  value={format}
+                  onChange={e => setFormat(e.target.value)}
+                  className="w-full rounded-lg border border-input px-3 py-2 text-sm bg-background"
+                >
+                  {FORMATS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Язык</label>
+                <select
+                  value={lang}
+                  onChange={e => setLang(e.target.value)}
+                  className="w-full rounded-lg border border-input px-3 py-2 text-sm bg-background"
+                >
+                  {LANGS.map(l => <option value={l.value} key={l.value}>{l.label}</option>)}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Тематика</label>
+                <select
+                  value={topic}
+                  onChange={e => setTopic(e.target.value)}
+                  className="w-full rounded-lg border border-input px-3 py-2 text-sm bg-background"
+                >
+                  {TOPICS.map(t => <option value={t.value} key={t.value}>{t.label}</option>)}
+                </select>
+              </div>
+            </div>
+            
+            <div className="mt-4 text-sm text-muted-foreground">
+              Найдено услуг: <span className="font-medium">{filtered.length}</span>
+            </div>
+          </Card>
+
+          {/* Карточки услуг */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {filtered.map(service => (
+              <Card key={service.slug} className="p-6 hover:shadow-xl transition-all duration-200 border-0 bg-gradient-to-br from-card to-card/80">
+                <div className="flex flex-col h-full">
+                  <h3 className="text-lg font-bold mb-3 text-foreground">{service.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-4 flex-grow line-clamp-3">{service.desc}</p>
+                  
+                  <div className="flex flex-col gap-2">
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={`/service/${service.slug}`}>Подробнее</Link>
+                    </Button>
+                    <Button 
+                      onClick={() => setShowServiceCatalog(false)}
+                      size="sm" 
+                      className="w-full"
+                    >
+                      Заказать
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-12">
+              <div className="text-muted-foreground mb-4">
+                По выбранным фильтрам услуги не найдены
+              </div>
               <Button 
-                onClick={() => setShowServiceCatalog(false)}
-                variant="default" 
-                size="sm" 
-                className="mt-auto w-full sm:w-auto"
+                variant="outline"
+                onClick={() => {
+                  setCategory("all");
+                  setFormat("all");
+                  setLang("all");
+                  setTopic("all");
+                }}
               >
-                Выбрать
+                Сбросить фильтры
               </Button>
-            </Card>
-          ))}
+            </div>
+          )}
+          
+          <SeoTextExpandable text={seoText} />
         </div>
-        <SeoTextExpandable text={seoText} />
       </main>
       <Footer />
     </>

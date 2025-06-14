@@ -2,19 +2,18 @@
 import { useState, useRef, useEffect } from "react";
 import { SERVICES, getDefaultAdditional, SERVICE_QUESTIONS } from "@/data/orderQuestions";
 import { toast } from "@/hooks/use-toast";
-import { getValidationErrors } from "@/utils/formValidation";
+import { createValidationRules, getFormCompletionPercentage, isFormValid as checkFormValidity } from "@/utils/enhancedFormValidation";
 
 export function useOrderForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    service: SERVICES[0],
+    service: "",
     details: "",
-    additional: getDefaultAdditional(SERVICES[0])
+    additional: getDefaultAdditional("")
   });
   const [loading, setLoading] = useState(false);
   const [serviceFilter, setServiceFilter] = useState("");
-  const [errors, setErrors] = useState<string[]>([]);
   
   const filteredServices = SERVICES.filter(s =>
     s.toLowerCase().includes(serviceFilter.toLowerCase())
@@ -28,11 +27,18 @@ export function useOrderForm() {
     }
   }, []);
 
-  // Валидация формы в реальном времени
-  useEffect(() => {
-    const validationErrors = getValidationErrors(form);
-    setErrors(validationErrors);
-  }, [form]);
+  // Создаем правила валидации
+  const validationRules = createValidationRules(form);
+  const formProgress = getFormCompletionPercentage(validationRules);
+  const isFormValid = checkFormValidity(validationRules);
+
+  // Вычисляем текущий шаг
+  const getCurrentStep = () => {
+    if (!form.name.trim() || !form.email.trim()) return 0;
+    if (!form.service) return 1;
+    if (!form.details.trim()) return 2;
+    return 3;
+  };
 
   const handleServiceSelect = (service: string) => {
     setForm(f => ({
@@ -61,11 +67,11 @@ export function useOrderForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const validationErrors = getValidationErrors(form);
-    if (validationErrors.length > 0) {
+    if (!isFormValid) {
+      const errors = validationRules.filter(rule => !rule.isValid);
       toast({
         title: "Ошибки в форме",
-        description: validationErrors.join(", "),
+        description: `Исправьте ${errors.length} ошибок перед отправкой`,
         variant: "destructive"
       });
       return;
@@ -74,24 +80,26 @@ export function useOrderForm() {
     setLoading(true);
     console.log("Submitting order:", form);
 
+    // Имитация отправки
     setTimeout(() => {
       toast({
         title: "Заказ отправлен!",
         description: "Мы получили ваш запрос и свяжемся с вами в течение 1 рабочего дня.",
       });
+      
+      // Сброс формы
       setForm({
         name: "",
         email: "",
-        service: SERVICES[0],
+        service: "",
         details: "",
-        additional: getDefaultAdditional(SERVICES[0])
+        additional: getDefaultAdditional("")
       });
       setLoading(false);
-    }, 1300);
+    }, 1500);
   };
 
   const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
-  const isFormValid = errors.length === 0;
 
   return {
     form,
@@ -106,7 +114,9 @@ export function useOrderForm() {
     handleSubmit,
     currentQuestions,
     nameInputRef,
-    errors,
+    validationRules,
+    formProgress,
     isFormValid,
+    currentStep: getCurrentStep(),
   };
 }
