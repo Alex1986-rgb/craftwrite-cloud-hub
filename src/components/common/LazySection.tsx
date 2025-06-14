@@ -5,9 +5,17 @@ interface LazySectionProps {
   children: ReactNode;
   fallback?: ReactNode;
   rootMargin?: string;
+  threshold?: number;
+  className?: string;
 }
 
-const LazySection = ({ children, fallback = null, rootMargin = '50px' }: LazySectionProps) => {
+const LazySection = ({ 
+  children, 
+  fallback = null, 
+  rootMargin = '100px',
+  threshold = 0.1,
+  className = ""
+}: LazySectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -18,27 +26,35 @@ const LazySection = ({ children, fallback = null, rootMargin = '50px' }: LazySec
         if (entry.isIntersecting && !hasLoaded) {
           setIsVisible(true);
           setHasLoaded(true);
+          // Disconnect observer after loading for performance
+          observer.disconnect();
         }
       },
       {
         rootMargin,
-        threshold: 0.1,
+        threshold,
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
+      observer.disconnect();
     };
-  }, [rootMargin, hasLoaded]);
+  }, [rootMargin, threshold, hasLoaded]);
 
   return (
-    <div ref={ref}>
+    <div 
+      ref={ref} 
+      className={`${className} ${isVisible ? 'animate-fade-in' : ''}`}
+      style={{ willChange: isVisible ? 'auto' : 'transform' }}
+    >
       {isVisible ? children : fallback}
     </div>
   );
