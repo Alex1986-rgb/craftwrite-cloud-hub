@@ -1,6 +1,5 @@
+
 import { useState } from "react";
-import { blogPosts } from "@/data/blogPosts";
-import { missingArticles } from "@/data/articles";
 import { expandedBlogPosts } from "@/data/blog";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
@@ -11,23 +10,20 @@ import BlogFeaturedPosts from "@/components/blog/BlogFeaturedPosts";
 import BlogEmptyState from "@/components/blog/BlogEmptyState";
 import BlogCTA from "@/components/blog/BlogCTA";
 
-// Combine all posts
-const allPosts = [...blogPosts, ...missingArticles, ...expandedBlogPosts];
-
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Get unique categories with counts
-  const uniqueCategories = ["all", ...new Set(allPosts.map(post => post.category))];
+  const uniqueCategories = ["all", ...new Set(expandedBlogPosts.map(post => post.category))];
   const categories = uniqueCategories.map(cat => ({
     name: cat,
-    count: cat === "all" ? allPosts.length : allPosts.filter(post => post.category === cat).length,
+    count: cat === "all" ? expandedBlogPosts.length : expandedBlogPosts.filter(post => post.category === cat).length,
     color: "blue"
   }));
 
   // Filter posts
-  const filteredPosts = allPosts.filter(post => {
+  const filteredPosts = expandedBlogPosts.filter(post => {
     const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
@@ -35,7 +31,7 @@ export default function Blog() {
   });
 
   // Get featured posts (first 3 from all posts)
-  const featuredPosts = allPosts.slice(0, 3);
+  const featuredPosts = expandedBlogPosts.slice(0, 3);
 
   return (
     <>

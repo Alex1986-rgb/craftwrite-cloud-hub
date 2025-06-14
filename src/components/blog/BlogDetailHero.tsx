@@ -7,11 +7,7 @@ interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
+  author: string;
   date: string;
   readTime: string;
   image: string;
@@ -38,7 +34,7 @@ export default function BlogDetailHero({ post }: BlogDetailHeroProps) {
           <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4" />
-              <span>{post.author.name}</span>
+              <span>{post.author}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />

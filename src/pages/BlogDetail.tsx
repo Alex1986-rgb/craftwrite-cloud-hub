@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/common/Header";
@@ -7,17 +8,12 @@ import BlogDetailContent from "@/components/blog/BlogDetailContent";
 import BlogDetailAuthor from "@/components/blog/BlogDetailAuthor";
 import BlogDetailRelated from "@/components/blog/BlogDetailRelated";
 import BlogDetailCTA from "@/components/blog/BlogDetailCTA";
-import { blogPosts } from "@/data/blogPosts";
-import { missingArticles } from "@/data/articles";
 import { expandedBlogPosts } from "@/data/blog";
-
-// Объединяем все статьи
-const allPosts = [...blogPosts, ...missingArticles];
 
 export default function BlogDetail() {
   const { id } = useParams();
   const postId = id ? parseInt(id, 10) : null;
-  const post = postId ? allPosts.find(p => p.id === postId) : null;
+  const post = postId ? expandedBlogPosts.find(p => p.id === postId) : null;
 
   if (!post) {
     return (
@@ -37,7 +33,9 @@ export default function BlogDetail() {
     );
   }
 
-  const relatedPosts = post.relatedPosts.map(id => allPosts.find(p => p.id === id)).filter(Boolean);
+  const relatedPosts = post.relatedPosts
+    .map(id => expandedBlogPosts.find(p => p.id === id))
+    .filter(Boolean);
 
   return (
     <>

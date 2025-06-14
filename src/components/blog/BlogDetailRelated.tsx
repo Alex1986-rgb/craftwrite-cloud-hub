@@ -10,11 +10,7 @@ interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
+  author: string;
   date: string;
   readTime: string;
   image: string;
