@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Bot, FileText, Mail, MessageSquare, Users } from "lucide-react";
 import TabNavigation from "./ai-generator/TabNavigation";
+import ApiKeySetup from "./ai-generator/ApiKeySetup";
+import GenerationProgress from "./ai-generator/GenerationProgress";
+import { useTextGeneration } from "@/hooks/useTextGeneration";
 
 interface GenerationHistoryItem {
   id: string;
@@ -18,8 +21,17 @@ interface GenerationHistoryItem {
 }
 
 export default function AITextGenerator() {
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedText, setGeneratedText] = useState("");
+  const {
+    isGenerating,
+    generatedText,
+    error,
+    generateText,
+    setGeneratedText,
+    clearError,
+    hasApiKey,
+    setApiKey
+  } = useTextGeneration();
+
   const [generationHistory, setGenerationHistory] = useState<GenerationHistoryItem[]>([]);
   const [formData, setFormData] = useState({
     prompt: "",
@@ -62,30 +74,12 @@ export default function AITextGenerator() {
   ];
 
   const handleGenerate = async () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setGeneratedText(`Это профессиональный AI-текст типа "${contentTypes.find(t => t.value === formData.textType)?.label || 'текст'}" на основе промпта: "${formData.prompt}".
+    await generateText(formData);
+  };
 
-Параметры генерации:
-- Длина: ${formData.length[0]} символов
-- Тон: ${toneOptions.find(t => t.value === formData.tone)?.label || 'не указан'}
-- Аудитория: ${audienceOptions.find(a => a.value === formData.audience)?.label || 'не указана'}
-- Ключевые слова: ${formData.keywords || 'не указаны'}
-
-Данный текст создан с учетом всех SEO-требований и оптимизирован для максимальной конверсии. Уникальность составляет 95%, что превышает требуемый минимум в 85%.
-
-Ключевые особенности текста:
-- Оптимизация под целевые ключевые слова
-- Естественная интеграция призывов к действию
-- Соответствие требованиям поисковых систем
-- Высокая читабельность и вовлеченность
-- Адаптация под целевую аудиторию
-
-${formData.includeCTA ? 'Призыв к действию: Закажите профессиональный копирайтинг прямо сейчас!' : ''}
-
-Текст готов к использованию и может быть экспортирован в любом из доступных форматов.`);
-      setIsGenerating(false);
-    }, 3000);
+  const handleRetryGeneration = () => {
+    clearError();
+    handleGenerate();
   };
 
   const handleSaveResult = (title: string) => {
@@ -166,28 +160,44 @@ ${formData.includeCTA ? 'Призыв к действию: Закажите пр
         </div>
         <Badge className="bg-purple-100 text-purple-800">
           <Bot className="w-4 h-4 mr-2" />
-          GPT-4 Turbo
+          GPT-4
         </Badge>
       </div>
 
-      <TabNavigation
-        formData={formData}
-        setFormData={setFormData}
-        generatedText={generatedText}
-        setGeneratedText={setGeneratedText}
-        isGenerating={isGenerating}
-        onGenerate={handleGenerate}
-        onApplyTemplate={handleApplyTemplate}
-        onApplyPreset={handleApplyPreset}
-        onSavePreset={handleSavePreset}
-        onSelectPrompt={handleSelectPrompt}
-        selectedContentType={selectedContentType}
-        generationHistory={generationHistory}
-        onSaveResult={handleSaveResult}
-        onSelectHistoryResult={handleSelectHistoryResult}
-        onSaveHistoryResult={handleSaveHistoryResult}
-        onDeleteHistoryResult={handleDeleteHistoryResult}
+      {/* API Key Setup */}
+      <ApiKeySetup 
+        onApiKeySet={setApiKey}
+        hasApiKey={hasApiKey}
       />
+
+      {/* Generation Progress */}
+      <GenerationProgress
+        isGenerating={isGenerating}
+        error={error}
+        onRetry={handleRetryGeneration}
+      />
+
+      {/* Main Interface - only show if API key is set */}
+      {hasApiKey && (
+        <TabNavigation
+          formData={formData}
+          setFormData={setFormData}
+          generatedText={generatedText}
+          setGeneratedText={setGeneratedText}
+          isGenerating={isGenerating}
+          onGenerate={handleGenerate}
+          onApplyTemplate={handleApplyTemplate}
+          onApplyPreset={handleApplyPreset}
+          onSavePreset={handleSavePreset}
+          onSelectPrompt={handleSelectPrompt}
+          selectedContentType={selectedContentType}
+          generationHistory={generationHistory}
+          onSaveResult={handleSaveResult}
+          onSelectHistoryResult={handleSelectHistoryResult}
+          onSaveHistoryResult={handleSaveHistoryResult}
+          onDeleteHistoryResult={handleDeleteHistoryResult}
+        />
+      )}
     </div>
   );
 }
