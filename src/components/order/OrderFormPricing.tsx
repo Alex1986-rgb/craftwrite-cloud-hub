@@ -1,36 +1,32 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, Clock, Star, Shield } from "lucide-react";
+import { Calculator, Clock, Star, Shield, TrendingUp, CheckCircle } from "lucide-react";
+import { Service } from "@/data/services";
 
 interface OrderFormPricingProps {
   service: string;
   deadline: string;
   estimatedPrice: number;
+  deliveryTime?: string;
+  serviceDetails?: Service;
 }
 
 export default function OrderFormPricing({ 
   service, 
   deadline, 
-  estimatedPrice 
+  estimatedPrice,
+  deliveryTime,
+  serviceDetails
 }: OrderFormPricingProps) {
-  const getServicePrice = (serviceName: string) => {
-    const prices: Record<string, number> = {
-      "SEO-статья": 3000,
-      "Лендинг": 8000,
-      "Описание товара": 1500,
-      "Пост в соцсети": 800,
-      "Email-рассылка": 2500,
-      "Презентация": 5000,
-      "Веб-контент": 4000,
-      "Техническая документация": 6000,
-    };
-    return prices[serviceName] || 5000;
+  const getBasePrice = () => {
+    if (!serviceDetails) return 5000;
+    return serviceDetails.price.min;
   };
 
-  const basePrice = service ? getServicePrice(service) : 0;
+  const basePrice = getBasePrice();
   const deadlineMultiplier = deadline === "urgent" ? 1.5 : deadline === "express" ? 2 : 1;
-  const finalPrice = Math.round(basePrice * deadlineMultiplier);
+  const deadlineSurcharge = Math.round(basePrice * (deadlineMultiplier - 1));
 
   return (
     <Card className="p-6 bg-gradient-to-br from-white to-slate-50 border-2 border-primary/20 shadow-xl">
@@ -45,30 +41,81 @@ export default function OrderFormPricing({
 
       {service ? (
         <div className="space-y-4">
-          <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-            <span className="text-sm text-slate-600">Базовая стоимость:</span>
-            <span className="font-semibold">{basePrice.toLocaleString()} ₽</span>
-          </div>
-
-          {deadlineMultiplier > 1 && (
-            <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
-              <span className="text-sm text-orange-600 flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Срочность ({deadline}):
-              </span>
-              <span className="font-semibold text-orange-600">×{deadlineMultiplier}</span>
+          {/* Service info */}
+          {serviceDetails && (
+            <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+              <div className="flex justify-between items-start mb-2">
+                <h4 className="font-semibold text-blue-800">{serviceDetails.name}</h4>
+                <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                  {serviceDetails.category}
+                </Badge>
+              </div>
+              <p className="text-sm text-blue-700">{serviceDetails.desc}</p>
             </div>
           )}
+
+          {/* Price breakdown */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+              <span className="text-sm text-slate-600">Базовая стоимость:</span>
+              <span className="font-semibold">{basePrice.toLocaleString()} ₽</span>
+            </div>
+
+            {deadlineMultiplier > 1 && (
+              <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                <span className="text-sm text-orange-600 flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Доплата за срочность:
+                </span>
+                <span className="font-semibold text-orange-600">+{deadlineSurcharge.toLocaleString()} ₽</span>
+              </div>
+            )}
+
+            {/* Delivery time */}
+            {deliveryTime && (
+              <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                <span className="text-sm text-green-600 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" />
+                  Срок выполнения:
+                </span>
+                <span className="font-semibold text-green-600">{deliveryTime}</span>
+              </div>
+            )}
+          </div>
 
           <div className="border-t pt-4">
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold">Итого:</span>
               <div className="text-right">
-                <div className="text-2xl font-bold text-primary">{finalPrice.toLocaleString()} ₽</div>
-                <div className="text-xs text-slate-500">от {Math.round(finalPrice * 0.8).toLocaleString()} ₽</div>
+                <div className="text-2xl font-bold text-primary">{estimatedPrice.toLocaleString()} ₽</div>
+                {serviceDetails && (
+                  <div className="text-xs text-slate-500">
+                    от {serviceDetails.price.min.toLocaleString()} до {serviceDetails.price.max.toLocaleString()} ₽
+                  </div>
+                )}
               </div>
             </div>
           </div>
+
+          {/* Features included */}
+          {serviceDetails && serviceDetails.features.length > 0 && (
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="text-sm text-green-700">
+                <div className="font-semibold mb-2 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  В стоимость включено:
+                </div>
+                <ul className="space-y-1 text-xs">
+                  {serviceDetails.features.slice(0, 4).map((feature, index) => (
+                    <li key={index}>• {feature}</li>
+                  ))}
+                  {serviceDetails.features.length > 4 && (
+                    <li className="text-green-600 font-medium">• и еще {serviceDetails.features.length - 4} услуг</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-2 mt-4">
             <Badge variant="secondary" className="justify-center py-2">
@@ -89,18 +136,6 @@ export default function OrderFormPricing({
           <p className="text-slate-500">Выберите услугу для расчета стоимости</p>
         </div>
       )}
-
-      <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-        <div className="text-sm text-green-700">
-          <div className="font-semibold mb-2">✅ В стоимость включено:</div>
-          <ul className="space-y-1 text-xs">
-            <li>• Уникальный контент</li>
-            <li>• 2 правки бесплатно</li>
-            <li>• Проверка на плагиат</li>
-            <li>• Техническая поддержка</li>
-          </ul>
-        </div>
-      </div>
     </Card>
   );
 }

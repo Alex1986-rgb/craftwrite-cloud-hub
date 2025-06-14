@@ -1,8 +1,10 @@
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useOrderFormState } from "@/hooks/useOrderFormState";
 import { useState } from "react";
+import { SERVICES } from "@/data/services";
 
 import OrderFormHeader from "./OrderFormHeader";
 import OrderFormSteps from "./OrderFormSteps";
@@ -27,90 +29,18 @@ export default function OrderForm() {
     setCurrentStep,
     handleSubmit,
     isFormValid,
-    calculateEstimatedPrice
+    calculateEstimatedPrice,
+    getEstimatedDeliveryTime,
+    getSelectedService
   } = useOrderFormState();
 
   const [showValidationSuccess, setShowValidationSuccess] = useState(false);
   const estimatedPrice = calculateEstimatedPrice();
+  const deliveryTime = getEstimatedDeliveryTime();
+  const selectedService = getSelectedService();
 
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <OrderFormContact
-            form={form}
-            handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
-            nameInputRef={nameInputRef}
-            formProgress={0}
-          />
-        );
-      
-      case 2:
-        return (
-          <OrderFormService
-            filteredServices={[
-              "SEO-статья",
-              "Лендинг", 
-              "Описание товара",
-              "Пост в соцсети",
-              "Email-рассылка",
-              "Презентация",
-              "Веб-контент",
-              "Техническая документация"
-            ]}
-            selectedService={form.service}
-            onServiceSelect={(service) => updateForm({ service })}
-          />
-        );
-      
-      case 3:
-        return (
-          <OrderFormDetails
-            details={form.details}
-            handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
-          />
-        );
-      
-      case 4:
-        return (
-          <div className="space-y-8">
-            <OrderFormDeadline
-              selectedDeadline={form.deadline}
-              onDeadlineChange={(deadline) => updateForm({ deadline })}
-            />
-            
-            <OrderFormAdvanced
-              additionalServices={form.additionalServices}
-              onAdditionalServicesChange={(additionalServices) => updateForm({ additionalServices })}
-              targetAudience={form.targetAudience}
-              onTargetAudienceChange={(targetAudience) => updateForm({ targetAudience })}
-              seoKeywords={form.seoKeywords}
-              onSeoKeywordsChange={(seoKeywords) => updateForm({ seoKeywords })}
-              preferredStyle={form.preferredStyle}
-              onPreferredStyleChange={(preferredStyle) => updateForm({ preferredStyle })}
-              additionalRequirements={form.additionalRequirements}
-              onAdditionalRequirementsChange={(additionalRequirements) => updateForm({ additionalRequirements })}
-            />
-          </div>
-        );
-      
-      case 5:
-        return (
-          <OrderFormSummary
-            service={form.service}
-            deadline={form.deadline}
-            estimatedPrice={estimatedPrice}
-            clientName={form.name}
-            clientEmail={form.email}
-            details={form.details}
-            onEdit={() => setCurrentStep(1)}
-          />
-        );
-      
-      default:
-        return null;
-    }
-  };
+  // Get all service names for the selector
+  const availableServices = SERVICES.map(service => service.name);
 
   const canGoNext = () => {
     switch (currentStep) {
@@ -141,7 +71,10 @@ export default function OrderForm() {
       <OrderFormSteps currentStep={currentStep} completedSteps={completedSteps} />
 
       {form.service && currentStep > 2 && (
-        <OrderSelectedService serviceName={form.service} />
+        <OrderSelectedService 
+          serviceName={form.service}
+          serviceDetails={selectedService}
+        />
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
@@ -160,16 +93,7 @@ export default function OrderForm() {
               
               {currentStep === 2 && (
                 <OrderFormService
-                  filteredServices={[
-                    "SEO-статья",
-                    "Лендинг", 
-                    "Описание товара",
-                    "Пост в соцсети",
-                    "Email-рассылка",
-                    "Презентация",
-                    "Веб-контент",
-                    "Техническая документация"
-                  ]}
+                  filteredServices={availableServices}
                   selectedService={form.service}
                   onServiceSelect={(service) => updateForm({ service })}
                 />
@@ -209,9 +133,11 @@ export default function OrderForm() {
                   service={form.service}
                   deadline={form.deadline}
                   estimatedPrice={estimatedPrice}
+                  deliveryTime={deliveryTime}
                   clientName={form.name}
                   clientEmail={form.email}
                   details={form.details}
+                  serviceDetails={selectedService}
                   onEdit={() => setCurrentStep(1)}
                 />
               )}
@@ -259,6 +185,8 @@ export default function OrderForm() {
               service={form.service}
               deadline={form.deadline}
               estimatedPrice={estimatedPrice}
+              deliveryTime={deliveryTime}
+              serviceDetails={selectedService}
             />
             
             <Card className="p-6 bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200/50">
@@ -276,6 +204,16 @@ export default function OrderForm() {
                   <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
                   <span>Приложите примеры, если есть</span>
                 </div>
+                {selectedService && (
+                  <div className="mt-4 p-3 bg-white/60 rounded-lg">
+                    <div className="text-xs font-semibold text-blue-800 mb-1">Для этой услуги важно:</div>
+                    <div className="text-xs text-blue-600">
+                      {selectedService.recs.slice(0, 2).map((rec, index) => (
+                        <div key={index} className="mb-1">• {rec}</div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </Card>
           </div>

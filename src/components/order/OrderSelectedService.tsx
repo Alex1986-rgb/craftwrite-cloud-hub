@@ -1,102 +1,116 @@
 
-import { CheckCircle, Edit3, Star, Clock, Award } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, DollarSign, Target, Lightbulb } from "lucide-react";
+import { Service } from "@/data/services";
 
 interface OrderSelectedServiceProps {
   serviceName: string;
+  serviceDetails?: Service;
 }
 
-const serviceDetails: Record<string, {
-  description: string;
-  features: string[];
-  duration: string;
-  rating: number;
-}> = {
-  "SEO-статья": {
-    description: "Профессиональная SEO-оптимизированная статья для вашего сайта",
-    features: ["Ключевые слова", "Мета-теги", "Внутренняя перелинковка"],
-    duration: "3-5 дней",
-    rating: 4.9
-  },
-  "Лендинг": {
-    description: "Продающая страница с высокой конверсией",
-    features: ["УТП", "CTA", "Социальные доказательства"],
-    duration: "5-7 дней",
-    rating: 4.8
-  },
-  "Описание товара": {
-    description: "Убедительное описание для интернет-магазина",
-    features: ["Характеристики", "Преимущества", "SEO-текст"],
-    duration: "1-2 дня",
-    rating: 4.9
+export default function OrderSelectedService({ serviceName, serviceDetails }: OrderSelectedServiceProps) {
+  if (!serviceDetails) {
+    return (
+      <Card className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+          </div>
+          <div>
+            <h3 className="font-bold text-green-800">Выбрана услуга</h3>
+            <p className="text-sm text-green-600">{serviceName}</p>
+          </div>
+        </div>
+      </Card>
+    );
   }
-};
-
-export default function OrderSelectedService({ serviceName }: OrderSelectedServiceProps) {
-  const details = serviceDetails[serviceName] || {
-    description: "Профессиональный контент высокого качества",
-    features: ["Уникальность", "Качество", "Сроки"],
-    duration: "3-5 дней",
-    rating: 4.8
-  };
 
   return (
-    <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 border-2 border-green-200/60 rounded-xl p-6 md:p-8 animate-fade-in shadow-lg">
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-        <div className="flex items-start gap-4 flex-1">
-          <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
-            <CheckCircle className="w-7 h-7 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="text-sm font-medium text-green-700">Выбранная услуга:</div>
-              <Badge variant="secondary" className="bg-green-100 text-green-700">
-                <Star className="w-3 h-3 mr-1" />
-                {details.rating}
-              </Badge>
+    <Card className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/50 shadow-lg">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Main service info */}
+        <div className="flex-1">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
-            <div className="text-xl md:text-2xl font-bold text-green-800 mb-2">{serviceName}</div>
-            <p className="text-green-700 mb-3">{details.description}</p>
-            
-            <div className="flex flex-wrap gap-2 mb-3">
-              {details.features.map((feature, index) => (
-                <Badge key={index} variant="outline" className="border-green-300 text-green-700">
-                  {feature}
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-3 mb-2">
+                <h3 className="text-xl font-bold text-green-800">{serviceDetails.name}</h3>
+                <Badge variant="secondary" className="bg-green-100 text-green-700">
+                  {serviceDetails.category}
                 </Badge>
-              ))}
-            </div>
-            
-            <div className="flex items-center gap-4 text-sm text-green-600">
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span>{details.duration}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <Award className="w-4 h-4" />
-                <span>Гарантия качества</span>
-              </div>
+              <p className="text-green-700 mb-3">{serviceDetails.desc}</p>
+              <p className="text-sm text-green-600">{serviceDetails.detail}</p>
             </div>
           </div>
         </div>
-        
-        <Button variant="outline" size="sm" className="border-green-300 text-green-700 hover:bg-green-100 px-6 py-3">
-          <Edit3 className="w-4 h-4 mr-2" />
-          Изменить
-        </Button>
-      </div>
-      
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="text-sm text-green-600 bg-green-100/50 rounded-lg p-4">
-          <div className="font-semibold mb-2">💡 Совет по заполнению:</div>
-          <p>Чем подробнее вы опишете задачу, тем точнее будет результат. Укажите целевую аудиторию, стиль и ключевые моменты.</p>
+
+        {/* Service metrics */}
+        <div className="lg:w-80">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+            {/* Price range */}
+            <div className="flex items-center gap-3 p-3 bg-white/60 rounded-lg">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <DollarSign className="w-4 h-4 text-blue-600" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-700">Стоимость</div>
+                <div className="text-xs text-slate-600">
+                  {serviceDetails.price.min.toLocaleString()}-{serviceDetails.price.max.toLocaleString()} {serviceDetails.price.currency}
+                </div>
+              </div>
+            </div>
+
+            {/* Delivery time */}
+            <div className="flex items-center gap-3 p-3 bg-white/60 rounded-lg">
+              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                <Clock className="w-4 h-4 text-orange-600" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-700">Срок</div>
+                <div className="text-xs text-slate-600">
+                  {serviceDetails.deliveryTime.min === serviceDetails.deliveryTime.max 
+                    ? `${serviceDetails.deliveryTime.min} ${serviceDetails.deliveryTime.unit}`
+                    : `${serviceDetails.deliveryTime.min}-${serviceDetails.deliveryTime.max} ${serviceDetails.deliveryTime.unit}`
+                  }
+                </div>
+              </div>
+            </div>
+
+            {/* Features count */}
+            <div className="flex items-center gap-3 p-3 bg-white/60 rounded-lg">
+              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                <Target className="w-4 h-4 text-purple-600" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-700">Включено</div>
+                <div className="text-xs text-slate-600">{serviceDetails.features.length} услуг</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Key recommendations */}
+          {serviceDetails.recs.length > 0 && (
+            <div className="mt-4 p-3 bg-white/60 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Lightbulb className="w-4 h-4 text-amber-600" />
+                <span className="text-sm font-semibold text-slate-700">Ключевые рекомендации</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-1">
+                {serviceDetails.recs.slice(0, 3).map((rec, index) => (
+                  <li key={index}>• {rec}</li>
+                ))}
+                {serviceDetails.recs.length > 3 && (
+                  <li className="text-slate-500 font-medium">• еще {serviceDetails.recs.length - 3} рекомендаций</li>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
-        
-        <div className="text-sm text-blue-600 bg-blue-100/50 rounded-lg p-4">
-          <div className="font-semibold mb-2">🎯 Что мы учтем:</div>
-          <p>Ваши бизнес-цели, особенности аудитории, фирменный стиль и требования к SEO-оптимизации.</p>
-        </div>
       </div>
-    </div>
+    </Card>
   );
 }

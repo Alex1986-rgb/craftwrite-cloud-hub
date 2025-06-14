@@ -1,6 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+import { SERVICES } from "@/data/services";
 
 export interface OrderFormState {
   // Basic info
@@ -145,19 +146,15 @@ export function useOrderFormState() {
     );
   };
 
-  const calculateEstimatedPrice = () => {
-    const servicePrices: Record<string, number> = {
-      "SEO-статья": 3000,
-      "Лендинг": 8000,
-      "Описание товара": 1500,
-      "Пост в соцсети": 800,
-      "Email-рассылка": 2500,
-      "Презентация": 5000,
-      "Веб-контент": 4000,
-      "Техническая документация": 6000,
-    };
+  const getSelectedService = () => {
+    return SERVICES.find(service => service.name === form.service);
+  };
 
-    const basePrice = servicePrices[form.service] || 5000;
+  const calculateEstimatedPrice = () => {
+    const selectedService = getSelectedService();
+    if (!selectedService) return 5000;
+
+    const basePrice = selectedService.price.min;
     
     // Deadline multiplier
     let deadlineMultiplier = 1;
@@ -176,7 +173,29 @@ export function useOrderFormState() {
       return total + (costs[serviceId] || 0);
     }, 0);
 
-    return Math.round(basePrice * deadlineMultiplier) + additionalServicesCost;
+    const finalPrice = Math.round(basePrice * deadlineMultiplier) + additionalServicesCost;
+    
+    // Ensure minimum price
+    return Math.max(finalPrice, selectedService.price.min);
+  };
+
+  const getEstimatedDeliveryTime = () => {
+    const selectedService = getSelectedService();
+    if (!selectedService) return "3-5 дней";
+
+    let { min, max, unit } = selectedService.deliveryTime;
+    
+    // Adjust for deadline
+    if (form.deadline === "urgent") {
+      min = Math.max(1, Math.ceil(min / 2));
+      max = Math.max(2, Math.ceil(max / 2));
+    } else if (form.deadline === "express") {
+      min = 1;
+      max = 1;
+      unit = "день";
+    }
+
+    return min === max ? `${min} ${unit}` : `${min}-${max} ${unit}`;
   };
 
   return {
@@ -189,6 +208,8 @@ export function useOrderFormState() {
     setCurrentStep,
     handleSubmit,
     isFormValid,
-    calculateEstimatedPrice
+    calculateEstimatedPrice,
+    getEstimatedDeliveryTime,
+    getSelectedService
   };
 }
