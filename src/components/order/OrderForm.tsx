@@ -1,106 +1,188 @@
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { useOrderForm } from "@/hooks/useOrderForm";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useOrderFormState } from "@/hooks/useOrderFormState";
+
 import OrderFormHeader from "./OrderFormHeader";
-import OrderProgressIndicator from "./OrderProgressIndicator";
+import OrderFormSteps from "./OrderFormSteps";
 import OrderSelectedService from "./OrderSelectedService";
-import OrderFormValidation from "./OrderFormValidation";
 import OrderFormContact from "./OrderFormContact";
 import OrderFormService from "./OrderFormService";
-import OrderFormAdditional from "./OrderFormAdditional";
 import OrderFormDetails from "./OrderFormDetails";
-import OrderFormActions from "./OrderFormActions";
-import OrderFormPricing from "./OrderFormPricing";
 import OrderFormDeadline from "./OrderFormDeadline";
+import OrderFormAdvanced from "./OrderFormAdvanced";
+import OrderFormSummary from "./OrderFormSummary";
+import OrderFormPricing from "./OrderFormPricing";
+import OrderFormActions from "./OrderFormActions";
 
 export default function OrderForm() {
   const {
     form,
-    loading,
-    handleServiceSelect,
-    handleAdditionalChange,
-    handleChange,
-    handleSubmit,
-    currentQuestions,
-    nameInputRef,
-    validationRules,
-    formProgress,
-    isFormValid,
     currentStep,
-    filteredServices,
-  } = useOrderForm();
+    completedSteps,
+    loading,
+    nameInputRef,
+    updateForm,
+    setCurrentStep,
+    handleSubmit,
+    isFormValid,
+    calculateEstimatedPrice
+  } = useOrderFormState();
 
-  const [showValidationSuccess, setShowValidationSuccess] = useState(false);
-  const [estimatedPrice, setEstimatedPrice] = useState(0);
-  const [selectedDeadline, setSelectedDeadline] = useState("standard");
+  const estimatedPrice = calculateEstimatedPrice();
 
-  const handleDeadlineChange = (deadline: string) => {
-    setSelectedDeadline(deadline);
-    // Calculate price based on deadline
-    const basePrice = 5000;
-    let multiplier = 1;
-    if (deadline === "urgent") multiplier = 1.5;
-    if (deadline === "express") multiplier = 2;
-    setEstimatedPrice(basePrice * multiplier);
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <OrderFormContact
+            form={form}
+            handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+            nameInputRef={nameInputRef}
+            formProgress={0}
+          />
+        );
+      
+      case 2:
+        return (
+          <OrderFormService
+            filteredServices={[
+              "SEO-статья",
+              "Лендинг", 
+              "Описание товара",
+              "Пост в соцсети",
+              "Email-рассылка",
+              "Презентация",
+              "Веб-контент",
+              "Техническая документация"
+            ]}
+            selectedService={form.service}
+            onServiceSelect={(service) => updateForm({ service })}
+          />
+        );
+      
+      case 3:
+        return (
+          <OrderFormDetails
+            details={form.details}
+            handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+          />
+        );
+      
+      case 4:
+        return (
+          <div className="space-y-8">
+            <OrderFormDeadline
+              selectedDeadline={form.deadline}
+              onDeadlineChange={(deadline) => updateForm({ deadline })}
+            />
+            
+            <OrderFormAdvanced
+              additionalServices={form.additionalServices}
+              onAdditionalServicesChange={(additionalServices) => updateForm({ additionalServices })}
+              targetAudience={form.targetAudience}
+              onTargetAudienceChange={(targetAudience) => updateForm({ targetAudience })}
+              seoKeywords={form.seoKeywords}
+              onSeoKeywordsChange={(seoKeywords) => updateForm({ seoKeywords })}
+              preferredStyle={form.preferredStyle}
+              onPreferredStyleChange={(preferredStyle) => updateForm({ preferredStyle })}
+              additionalRequirements={form.additionalRequirements}
+              onAdditionalRequirementsChange={(additionalRequirements) => updateForm({ additionalRequirements })}
+            />
+          </div>
+        );
+      
+      case 5:
+        return (
+          <OrderFormSummary
+            service={form.service}
+            deadline={form.deadline}
+            estimatedPrice={estimatedPrice}
+            clientName={form.name}
+            clientEmail={form.email}
+            details={form.details}
+            onEdit={() => setCurrentStep(1)}
+          />
+        );
+      
+      default:
+        return null;
+    }
+  };
+
+  const canGoNext = () => {
+    switch (currentStep) {
+      case 1: return form.name.trim() && form.email.trim();
+      case 2: return form.service;
+      case 3: return form.details.trim();
+      case 4: return true;
+      default: return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (canGoNext() && currentStep < 5) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6 md:space-y-8">
+    <div className="max-w-6xl mx-auto p-4 space-y-6 md:space-y-8">
       <OrderFormHeader />
       
-      <OrderProgressIndicator currentStep={currentStep} />
+      <OrderFormSteps currentStep={currentStep} completedSteps={completedSteps} />
 
-      {form.service && (
+      {form.service && currentStep > 2 && (
         <OrderSelectedService serviceName={form.service} />
       )}
 
-      <OrderFormValidation 
-        validations={validationRules} 
-        showSuccess={showValidationSuccess}
-      />
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="lg:col-span-3">
           <Card className="p-6 md:p-8 shadow-2xl border-0 bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-sm">
-            <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-              <OrderFormContact
-                form={form}
-                handleChange={handleChange}
-                nameInputRef={nameInputRef}
-                formProgress={formProgress}
-              />
+            <div className="min-h-[400px]">
+              {renderStepContent()}
+            </div>
+            
+            {/* Navigation */}
+            <div className="flex justify-between mt-8 pt-6 border-t border-slate-200">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handlePrevious}
+                disabled={currentStep === 1}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Назад
+              </Button>
 
-              <OrderFormService
-                filteredServices={filteredServices}
-                selectedService={form.service}
-                onServiceSelect={handleServiceSelect}
-              />
-
-              <OrderFormAdditional
-                currentQuestions={currentQuestions}
-                answers={form.additional}
-                onChange={handleAdditionalChange}
-              />
-
-              <OrderFormDetails
-                details={form.details}
-                handleChange={handleChange}
-              />
-
-              <OrderFormDeadline
-                selectedDeadline={selectedDeadline}
-                onDeadlineChange={handleDeadlineChange}
-              />
-
-              <OrderFormActions
-                loading={loading}
-                isFormValid={isFormValid}
-                showValidationSuccess={showValidationSuccess}
-                setShowValidationSuccess={setShowValidationSuccess}
-                handleSubmit={handleSubmit}
-              />
-            </form>
+              {currentStep < 5 ? (
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={!canGoNext()}
+                  className="flex items-center gap-2"
+                >
+                  Далее
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              ) : (
+                <OrderFormActions
+                  loading={loading}
+                  isFormValid={isFormValid}
+                  showValidationSuccess={false}
+                  setShowValidationSuccess={() => {}}
+                  handleSubmit={handleSubmit}
+                />
+              )}
+            </div>
           </Card>
         </div>
 
@@ -108,7 +190,7 @@ export default function OrderForm() {
           <div className="sticky top-8 space-y-6">
             <OrderFormPricing
               service={form.service}
-              deadline={selectedDeadline}
+              deadline={form.deadline}
               estimatedPrice={estimatedPrice}
             />
             
