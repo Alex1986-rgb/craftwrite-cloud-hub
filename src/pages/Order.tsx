@@ -37,14 +37,14 @@ const Order = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-white/85 to-background py-10 px-2 md:px-4">
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent via-background to-muted py-14 px-2 md:px-4 font-inter transition-all">
         <Seo
           title="Оформить заказ — CopyPro Cloud"
           description="Заполните форму заказа на тексты: копирайтинг для бизнеса, сайтов, маркетинга. Свяжемся быстро, работаем профессионально!"
         />
         <form
           onSubmit={handleSubmit}
-          className="relative bg-card max-w-xl w-full space-y-4 p-8 rounded-2xl shadow-2xl border border-muted/20 animate-scale-in"
+          className="relative bg-card max-w-2xl w-full space-y-8 p-10 rounded-3xl shadow-xl border border-muted/30 animate-scale-in transition-all"
           autoComplete="off"
           aria-label="Форма заказа текста"
         >
@@ -65,28 +65,29 @@ const Order = () => {
               autoFocus
               ref={nameInputRef}
               aria-label="Ваше имя"
+              className="h-12 text-lg placeholder:font-normal"
             />
             <Input
               type="email"
               name="email"
-              placeholder="Ваш email"
+              placeholder="Ваш e-mail"
               required
               value={form.email}
-              className="mt-2"
+              className="mt-4 h-12 text-lg placeholder:font-normal"
               onChange={handleChange}
-              aria-label="Ваш email"
+              aria-label="Ваш e-mail"
             />
             <OrderEmailHint />
           </div>
           <div>
             <Input
               placeholder="Найти услугу…"
-              className="mb-2"
+              className="mb-2 h-11"
               value={serviceFilter}
               onChange={e => setServiceFilter(e.target.value)}
               aria-label="Найти услугу"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               {filteredServices.map((s) => (
                 <OrderServiceCard
                   key={s}
@@ -98,7 +99,7 @@ const Order = () => {
             </div>
           </div>
           {currentQuestions.length > 0 && (
-            <div className="pb-2 pt-1 border-t border-dashed border-muted animate-fade-in">
+            <div className="pb-3 pt-2 border-t border-dashed border-muted animate-fade-in">
               <span className="text-xs font-semibold text-muted-foreground mb-2 inline-block animate-fade-in">
                 {form.service}: уточните детали
               </span>
@@ -112,11 +113,11 @@ const Order = () => {
           <Textarea
             name="details"
             placeholder="Комментарий, пожелания или ссылка на ТЗ"
-            rows={3}
+            rows={4}
             required
             value={form.details}
             onChange={handleChange}
-            className="mt-2"
+            className="mt-4 text-base"
             aria-label="Комментарий или задание"
           />
           <span className="text-xs text-muted-foreground ml-1">
@@ -125,21 +126,21 @@ const Order = () => {
           <Button
             type="submit"
             size="lg"
-            className={`w-full mt-4 shadow-lg text-lg transition-all duration-200 
-                        ${loading ? "bg-green-400 animate-pulse cursor-not-allowed" : "hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary"}`}
+            className={`w-full mt-7 shadow-xl rounded-xl text-xl font-bold tracking-tight py-4 transition-all duration-200
+                        ${loading ? "bg-green-400 animate-pulse cursor-not-allowed" : "hover:scale-105 hover:shadow-2xl focus-visible:ring-2 focus-visible:ring-primary"}`}
             disabled={loading}
             aria-busy={loading}
             aria-label="Отправить заказ"
           >
             {loading ? (
               <>
-                <svg className="animate-spin mr-2" width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="animate-spin mr-2" width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="12" r="10" stroke="#fff" strokeWidth="4" opacity="0.1" />
                   <path d="M12 2a10 10 0 1 0 10 10" stroke="#fff" strokeWidth="4" />
                 </svg>
                 Отправка...
               </>
-            ) : "Отправить заказ"}
+            ) : "Оформить заказ"}
           </Button>
           <OrderConsent />
         </form>
