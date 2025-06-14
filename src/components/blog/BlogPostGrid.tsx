@@ -17,11 +17,7 @@ interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
+  author: string;
   date: string;
   readTime: string;
   image: string;
@@ -82,7 +78,7 @@ export default function BlogPostGrid({ posts }: BlogPostGridProps) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <User className="w-3 h-3" />
-                    {post.author.name}
+                    {post.author}
                   </div>
                   <Button asChild variant="outline" size="sm" className="group">
                     <Link to={`/blog/${post.id}`} className="flex items-center gap-2">
