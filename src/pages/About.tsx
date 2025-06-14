@@ -12,19 +12,21 @@ const About = () => {
           title="О нас — CopyPro Cloud"
           description="CopyPro Cloud — команда профессиональных копирайтеров и редакторов. Работаем с 2017 года, сотни успешных текстовых проектов для бизнеса и СМИ."
         />
-        <section className="max-w-2xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl font-bold mb-5">О CopyPro Cloud</h1>
-          <p className="text-lg text-muted-foreground mb-7">
-            CopyPro Cloud — современная SaaS-платформа для заказа текстов любого формата. Наша команда состоит из опытных копирайтеров, редакторов и экспертов по SEO. 
+        <section className="max-w-2xl mx-auto w-full bg-muted/60 rounded-3xl shadow-2xl px-6 md:px-12 py-12 animate-fade-in mt-4 mb-4">
+          <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-6 text-center text-primary drop-shadow-lg">О CopyPro Cloud</h1>
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 text-center font-inter">
+            CopyPro Cloud — современная SaaS-платформа для заказа текстов любого формата.
+            <br className="hidden md:inline" />
+            Наша команда состоит из опытных копирайтеров, редакторов и экспертов по SEO.
           </p>
-          <div className="space-y-3">
-            <p>
+          <div className="space-y-6 text-base md:text-lg text-foreground">
+            <p className="bg-background/60 p-4 rounded-xl shadow-sm">
               Мы работаем с 2017 года, накопив богатый опыт в создании текстов для бизнеса, IT, СМИ, маркетинга и интернет-магазинов.
             </p>
-            <p>
+            <p className="bg-background/60 p-4 rounded-xl shadow-sm">
               Наша миссия — помогать компаниям и предпринимателям эффективно решать задачи с помощью грамотного и качественного текста. Мы ценим скорость, надежность и индивидуальный подход к каждому заказу.
             </p>
-            <p>
+            <p className="bg-background/60 p-4 rounded-xl shadow-sm">
               CopyPro Cloud — это сервис, которому доверяют сотни клиентов. <br />
               Всегда рады новым проектам!
             </p>
