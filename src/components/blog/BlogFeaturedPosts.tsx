@@ -18,11 +18,7 @@ interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
+  author: string;
   date: string;
   readTime: string;
   image: string;
@@ -100,7 +96,7 @@ export default function BlogFeaturedPosts({ posts }: BlogFeaturedPostsProps) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <User className="w-4 h-4" />
-                    <span className="font-medium">{post.author.name}</span>
+                    <span className="font-medium">{post.author}</span>
                   </div>
                   <Button asChild size="lg" className="group/btn">
                     <Link to={`/blog/${post.id}`} className="flex items-center gap-2">
