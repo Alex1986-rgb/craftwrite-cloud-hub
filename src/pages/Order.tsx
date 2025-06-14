@@ -11,7 +11,7 @@ import OrderFilters from "@/components/order/OrderFilters";
 import OrderServiceGrid from "@/components/order/OrderServiceGrid";
 import OrderEmptyState from "@/components/order/OrderEmptyState";
 import OrderBackground from "@/components/order/OrderBackground";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles, Zap, Star } from "lucide-react";
 
 const seoText = `
 Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
@@ -60,33 +60,73 @@ export default function Order() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/20 relative overflow-hidden">
+        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-purple-50/30 relative overflow-hidden">
           {/* Улучшенные фоновые декорации */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/10 via-purple-400/8 to-pink-400/6 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-emerald-400/10 via-blue-400/8 to-purple-400/6 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/15 via-purple-400/12 to-pink-400/8 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-80 md:h-80 bg-gradient-to-r from-emerald-400/15 via-blue-400/12 to-purple-400/8 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-64 md:h-64 bg-gradient-to-r from-yellow-400/10 via-orange-400/8 to-red-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
             
             {/* Плавающие элементы для десктопа */}
-            <div className="hidden md:block absolute top-20 right-20 w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce opacity-30" style={{ animationDelay: '0.5s' }}></div>
-            <div className="hidden md:block absolute bottom-40 left-20 w-6 h-6 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full animate-bounce opacity-25" style={{ animationDelay: '1.5s' }}></div>
-            <div className="hidden lg:block absolute top-1/2 right-1/3 w-3 h-3 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-bounce opacity-20" style={{ animationDelay: '2s' }}></div>
+            <div className="hidden md:block absolute top-20 right-20 w-6 h-6 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce opacity-40" style={{ animationDelay: '0.5s' }}></div>
+            <div className="hidden md:block absolute bottom-40 left-20 w-8 h-8 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full animate-bounce opacity-35" style={{ animationDelay: '1.5s' }}></div>
+            <div className="hidden lg:block absolute top-1/2 right-1/3 w-4 h-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-bounce opacity-30" style={{ animationDelay: '2s' }}></div>
+            <div className="hidden lg:block absolute top-1/4 left-1/2 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full animate-bounce opacity-25" style={{ animationDelay: '2.5s' }}></div>
           </div>
 
-          <div className="container mx-auto px-4 py-6 md:py-12 relative z-10">
-            <div className="mb-6 md:mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 animate-fade-in">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowServiceCatalog(true)}
-                className="flex items-center gap-2 hover:scale-105 transition-all duration-300 shadow-lg border-2 border-blue-200/50 hover:border-blue-400/60 bg-white/80 backdrop-blur-sm hover:bg-white/95 text-sm md:text-base px-4 py-2 md:px-6 md:py-3"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Вернуться к каталогу
-              </Button>
-              <div className="text-xs md:text-sm text-slate-600 bg-white/70 backdrop-blur-sm px-4 py-2 md:px-6 md:py-3 rounded-full border border-slate-200/50 shadow-sm">
-                Или выберите готовое решение из каталога услуг
+          <div className="container mx-auto px-4 py-8 md:py-16 relative z-10">
+            <div className="mb-8 md:mb-12 flex flex-col gap-4 animate-fade-in">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowServiceCatalog(true)}
+                  className="group flex items-center gap-3 hover:scale-105 transition-all duration-300 shadow-lg border-2 border-blue-200/60 hover:border-blue-400/70 bg-white/90 backdrop-blur-sm hover:bg-white/95 text-sm md:text-base px-6 py-3 md:px-8 md:py-4 rounded-xl"
+                >
+                  <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+                  <span className="font-semibold">Вернуться к каталогу</span>
+                </Button>
+                
+                <div className="flex items-center gap-3 text-sm md:text-base text-slate-700 bg-gradient-to-r from-white/80 to-blue-50/80 backdrop-blur-sm px-6 py-3 md:px-8 md:py-4 rounded-xl border border-slate-200/60 shadow-sm">
+                  <Sparkles className="w-5 h-5 text-blue-500" />
+                  <span>Или выберите готовое решение из каталога услуг</span>
+                </div>
+              </div>
+              
+              {/* Дополнительная информация */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200/50">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-green-800">Быстрое оформление</div>
+                    <div className="text-sm text-green-600">Заказ за 3 минуты</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200/50">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Star className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-blue-800">Высокое качество</div>
+                    <div className="text-sm text-blue-600">10 000+ довольных клиентов</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200/50">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-purple-800">Гарантия качества</div>
+                    <div className="text-sm text-purple-600">14 дней на правки</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            
+            <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <OrderForm />
             </div>
           </div>
@@ -99,35 +139,49 @@ export default function Order() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/20 relative overflow-hidden">
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-purple-50/30 relative overflow-hidden">
         <OrderBackground />
 
         <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-16 relative z-10">
-          <OrderPageHero onQuickOrder={handleQuickOrder} />
+          <div className="animate-fade-in mb-12">
+            <OrderPageHero onQuickOrder={handleQuickOrder} />
+          </div>
 
-          <OrderFilters
-            category={category}
-            format={format}
-            lang={lang}
-            topic={topic}
-            filteredCount={filtered.length}
-            onCategoryChange={setCategory}
-            onFormatChange={setFormat}
-            onLangChange={setLang}
-            onTopicChange={setTopic}
-          />
-
-          {filtered.length > 0 ? (
-            <OrderServiceGrid
-              services={filtered}
-              onOrderNow={handleQuickOrder}
+          <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <OrderFilters
+              category={category}
+              format={format}
+              lang={lang}
+              topic={topic}
+              filteredCount={filtered.length}
+              onCategoryChange={setCategory}
+              onFormatChange={setFormat}
+              onLangChange={setLang}
+              onTopicChange={setTopic}
             />
-          ) : (
-            <OrderEmptyState onResetFilters={handleResetFilters} />
-          )}
+          </div>
+
+          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            {filtered.length > 0 ? (
+              <OrderServiceGrid
+                services={filtered}
+                onOrderNow={handleQuickOrder}
+              />
+            ) : (
+              <OrderEmptyState onResetFilters={handleResetFilters} />
+            )}
+          </div>
           
-          <div className="animate-fade-in px-4 mt-16" style={{ animationDelay: '1s' }}>
-            <SeoTextExpandable text={seoText} />
+          <div className="animate-fade-in px-4 mt-20" style={{ animationDelay: '0.6s' }}>
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-4">
+                  О нашем сервисе
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              </div>
+              <SeoTextExpandable text={seoText} />
+            </div>
           </div>
         </div>
       </main>
