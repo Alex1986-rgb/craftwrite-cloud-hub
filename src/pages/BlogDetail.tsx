@@ -16,7 +16,7 @@ import {
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { blogPosts } from "@/data/blogPosts";
-import { missingArticles } from "@/data/missingArticles";
+import { missingArticles } from "@/data/articles";
 
 // Объединяем все статьи
 const allPosts = [...blogPosts, ...missingArticles];
