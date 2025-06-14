@@ -16,11 +16,15 @@ import {
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { blogPosts } from "@/data/blogPosts";
+import { missingArticles } from "@/data/missingArticles";
+
+// Объединяем все статьи
+const allPosts = [...blogPosts, ...missingArticles];
 
 export default function BlogDetail() {
   const { id } = useParams();
   const postId = id ? parseInt(id, 10) : null;
-  const post = postId ? blogPosts.find(p => p.id === postId) : null;
+  const post = postId ? allPosts.find(p => p.id === postId) : null;
 
   if (!post) {
     return (
@@ -40,7 +44,7 @@ export default function BlogDetail() {
     );
   }
 
-  const relatedPosts = post.relatedPosts.map(id => blogPosts.find(p => p.id === id)).filter(Boolean);
+  const relatedPosts = post.relatedPosts.map(id => allPosts.find(p => p.id === id)).filter(Boolean);
 
   return (
     <>
