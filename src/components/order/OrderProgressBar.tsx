@@ -30,7 +30,7 @@ export default function OrderProgressBar({ progress }: OrderProgressBarProps) {
       </div>
       <div className="w-full h-3 bg-muted rounded-full overflow-hidden border border-muted/30 shadow">
         <div
-          className={`h-3 transition-all duration-300 ease-in-out rounded-full ${getBarColor(progress)}`}
+          className={`h-3 transition-[width] duration-500 ease-in-out rounded-full ${getBarColor(progress)}`}
           style={{ width: `${progress}%` }}
         />
       </div>

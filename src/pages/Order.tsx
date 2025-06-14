@@ -1,10 +1,10 @@
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import Seo from "@/components/Seo";
 import OrderServiceCard from "@/components/order/OrderServiceCard";
 import OrderQuestionGroup from "@/components/order/OrderQuestionGroup";
@@ -83,6 +83,15 @@ const Order = () => {
   const filteredServices = SERVICES.filter(s =>
     s.toLowerCase().includes(serviceFilter.toLowerCase())
   );
+
+  // ref для автофокуса на поле "Имя"
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, []);
 
   // Обработка смены услуги (карточка)
   const handleServiceSelect = (service: string) => {
@@ -172,9 +181,13 @@ const Order = () => {
           {/* Новый прогресс-бар */}
           <OrderProgressBar progress={calcProgress()} />
           <OrderFormHeader />
-          {/* Бейдж выбранной услуги */}
+          {/* Бейдж выбранной услуги с иконкой */}
           <div className="mx-auto flex flex-col items-center -mt-3 mb-3 animate-fade-in">
-            <span className="rounded-full border border-muted bg-muted/30 text-foreground px-3 py-1 text-sm font-semibold shadow hover:scale-105 transition-transform duration-200 animate-scale-in">
+            <span className="rounded-full border border-muted bg-muted/30 text-foreground px-3 py-1 text-sm font-semibold shadow flex items-center gap-1 hover:scale-105 transition-transform duration-200 animate-scale-in">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline-block mr-1 text-yellow-500">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                <path d="M15 8l-5.5 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               {form.service}
             </span>
           </div>
@@ -185,6 +198,8 @@ const Order = () => {
               required
               value={form.name}
               onChange={handleChange}
+              autoFocus
+              ref={nameInputRef}
             />
             <Input
               type="email"
@@ -195,6 +210,7 @@ const Order = () => {
               className="mt-2"
               onChange={handleChange}
             />
+            <span className="text-xs text-muted-foreground ml-1">На этот email придёт подтверждение заказа</span>
           </div>
           <div>
             <Input
@@ -236,6 +252,9 @@ const Order = () => {
             onChange={handleChange}
             className="mt-2"
           />
+          <span className="text-xs text-muted-foreground ml-1">
+            Здесь можно добавить детали, пожелания или ссылку на готовое ТЗ.
+          </span>
           <Button
             type="submit"
             size="lg"
