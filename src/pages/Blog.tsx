@@ -63,7 +63,8 @@ const regularPosts = [
     author: "Елена Козлова",
     date: "10 мар 2024",
     readTime: "6 мин",
-    image: "/placeholder.svg"
+    image: "/placeholder.svg",
+    featured: false
   },
   {
     id: 4,
@@ -73,7 +74,8 @@ const regularPosts = [
     author: "Дмитрий Волков",
     date: "8 мар 2024",
     readTime: "10 мин",
-    image: "/placeholder.svg"
+    image: "/placeholder.svg",
+    featured: false
   },
   {
     id: 5,
@@ -83,7 +85,8 @@ const regularPosts = [
     author: "Анна Петрова",
     date: "5 мар 2024",
     readTime: "7 мин",
-    image: "/placeholder.svg"
+    image: "/placeholder.svg",
+    featured: false
   },
   {
     id: 6,
@@ -93,7 +96,8 @@ const regularPosts = [
     author: "Елена Козлова",
     date: "3 мар 2024",
     readTime: "5 мин",
-    image: "/placeholder.svg"
+    image: "/placeholder.svg",
+    featured: false
   }
 ];
 
