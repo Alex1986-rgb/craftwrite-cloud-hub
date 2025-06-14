@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import OrderForm from "@/components/order/OrderForm";
 
 const seoText = `
 Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
@@ -24,6 +25,7 @@ const seoText = `
 `;
 
 export default function Order() {
+  const [showServiceCatalog, setShowServiceCatalog] = useState(true);
   const [category, setCategory] = useState("all");
   const [format, setFormat] = useState("all");
   const [lang, setLang] = useState("all");
@@ -39,11 +41,43 @@ export default function Order() {
     );
   });
 
+  if (!showServiceCatalog) {
+    return (
+      <>
+        <Header />
+        <main className="min-h-screen bg-background py-8">
+          <div className="container mx-auto px-4">
+            <div className="mb-6 text-center">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowServiceCatalog(true)}
+                className="mb-4"
+              >
+                ← Вернуться к каталогу услуг
+              </Button>
+            </div>
+            <OrderForm />
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
       <main className="w-full max-w-4xl mx-auto py-4 px-2 sm:px-4 md:py-6">
-        <h1 className="text-2xl font-bold mb-4 text-center">Оформление заказа</h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold mb-4">Оформление заказа</h1>
+          <Button 
+            onClick={() => setShowServiceCatalog(false)}
+            className="mb-6"
+          >
+            Перейти к форме заказа
+          </Button>
+        </div>
+
         {/* Фильтры: мобильный флекс-вертикальный, на md+ — горизонтальный */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-6 items-stretch sm:items-end">
           <select
@@ -75,6 +109,7 @@ export default function Order() {
             {TOPICS.map(t => <option value={t.value} key={t.value}>{t.label}</option>)}
           </select>
         </div>
+
         {/* Карточки: по 1 колонке на мобиле, по 2 на sm+, равные ширины, обрезка содержимого */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           {filtered.map(service => (
@@ -86,8 +121,13 @@ export default function Order() {
                 </Button>
               </div>
               <p className="text-muted-foreground text-xs line-clamp-3">{service.desc}</p>
-              <Button asChild variant="default" size="sm" className="mt-auto w-full sm:w-auto">
-                <Link to={`/order?type=${service.slug}`}>Выбрать</Link>
+              <Button 
+                onClick={() => setShowServiceCatalog(false)}
+                variant="default" 
+                size="sm" 
+                className="mt-auto w-full sm:w-auto"
+              >
+                Выбрать
               </Button>
             </Card>
           ))}

@@ -2,8 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import { SERVICES, getDefaultAdditional, SERVICE_QUESTIONS } from "@/data/orderQuestions";
 import { toast } from "@/hooks/use-toast";
+import { getValidationErrors } from "@/utils/formValidation";
 
-// Полная структура формы заказа
 export function useOrderForm() {
   const [form, setForm] = useState({
     name: "",
@@ -14,11 +14,12 @@ export function useOrderForm() {
   });
   const [loading, setLoading] = useState(false);
   const [serviceFilter, setServiceFilter] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
+  
   const filteredServices = SERVICES.filter(s =>
     s.toLowerCase().includes(serviceFilter.toLowerCase())
   );
 
-  // ref для автофокуса на поле "Имя"
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -27,7 +28,12 @@ export function useOrderForm() {
     }
   }, []);
 
-  // Обработка смены услуги (карточка)
+  // Валидация формы в реальном времени
+  useEffect(() => {
+    const validationErrors = getValidationErrors(form);
+    setErrors(validationErrors);
+  }, [form]);
+
   const handleServiceSelect = (service: string) => {
     setForm(f => ({
       ...f,
@@ -36,7 +42,6 @@ export function useOrderForm() {
     }));
   };
 
-  // Обработка ввода уточняющих ответов
   const handleAdditionalChange = (label: string, value: string) => {
     setForm(f => ({
       ...f,
@@ -47,17 +52,27 @@ export function useOrderForm() {
     }));
   };
 
-  // Обработка текстовых полей
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  // Сабмит с имитацией отправки
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const validationErrors = getValidationErrors(form);
+    if (validationErrors.length > 0) {
+      toast({
+        title: "Ошибки в форме",
+        description: validationErrors.join(", "),
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
+    console.log("Submitting order:", form);
 
     setTimeout(() => {
       toast({
@@ -75,8 +90,8 @@ export function useOrderForm() {
     }, 1300);
   };
 
-  // Дополнительные вопросы для выбранной услуги
   const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
+  const isFormValid = errors.length === 0;
 
   return {
     form,
@@ -91,6 +106,7 @@ export function useOrderForm() {
     handleSubmit,
     currentQuestions,
     nameInputRef,
+    errors,
+    isFormValid,
   };
 }
-
