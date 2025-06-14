@@ -184,4 +184,22 @@ export const portfolioDetails = {
   }
 };
 
-export type PortfolioProject = typeof portfolioDetails[1];
+export type PortfolioProject = {
+  title: string;
+  category: string;
+  client: string;
+  duration: string;
+  date: string;
+  description: string;
+  challenge: string;
+  solution: string;
+  results: string[];
+  metrics: Record<string, string>; // Make metrics flexible to accept any key-value pairs
+  technologies: string[];
+  tags: string[];
+  testimonial: {
+    text: string;
+    author: string;
+    position: string;
+  };
+};
