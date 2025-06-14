@@ -21,7 +21,6 @@ export function useOrderForm() {
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Фокус на имени при загрузке для улучшения доступности
   useEffect(() => {
     if (nameInputRef.current) {
       nameInputRef.current.focus();
@@ -33,7 +32,7 @@ export function useOrderForm() {
   const formProgress = getFormCompletionPercentage(validationRules);
   const isFormValid = checkFormValidity(validationRules);
 
-  // Вычисляем текущий шаг для отслеживания прогресса
+  // Вычисляем текущий шаг
   const getCurrentStep = () => {
     if (!form.name.trim() || !form.email.trim()) return 0;
     if (!form.service) return 1;
@@ -47,13 +46,6 @@ export function useOrderForm() {
       service,
       additional: getDefaultAdditional(service)
     }));
-    
-    // Announce service selection for screen readers
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      const announcement = new SpeechSynthesisUtterance(`Выбрана услуга: ${service}`);
-      announcement.volume = 0; // Silent announcement for accessibility
-      window.speechSynthesis.speak(announcement);
-    }
   };
 
   const handleAdditionalChange = (label: string, value: string) => {
@@ -82,41 +74,18 @@ export function useOrderForm() {
         description: `Исправьте ${errors.length} ошибок перед отправкой`,
         variant: "destructive"
       });
-      
-      // Focus on first invalid field for accessibility
-      const firstErrorField = document.querySelector('[aria-invalid="true"]') as HTMLElement;
-      if (firstErrorField) {
-        firstErrorField.focus();
-      }
-      
       return;
     }
 
     setLoading(true);
-    console.log("Submitting order with accessibility features:", {
-      ...form,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent
-    });
+    console.log("Submitting order:", form);
 
-    // Имитация отправки с улучшенным UX
+    // Имитация отправки
     setTimeout(() => {
       toast({
-        title: "Заказ успешно отправлен!",
+        title: "Заказ отправлен!",
         description: "Мы получили ваш запрос и свяжемся с вами в течение 1 рабочего дня.",
       });
-      
-      // Announce success for screen readers
-      const successMsg = document.createElement('div');
-      successMsg.setAttribute('aria-live', 'assertive');
-      successMsg.setAttribute('aria-atomic', 'true');
-      successMsg.className = 'sr-only';
-      successMsg.textContent = 'Заказ успешно отправлен! Мы свяжемся с вами в течение рабочего дня.';
-      document.body.appendChild(successMsg);
-      
-      setTimeout(() => {
-        document.body.removeChild(successMsg);
-      }, 3000);
       
       // Сброс формы
       setForm({
@@ -126,12 +95,6 @@ export function useOrderForm() {
         details: "",
         additional: getDefaultAdditional("")
       });
-      
-      // Return focus to name input
-      if (nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-      
       setLoading(false);
     }, 1500);
   };

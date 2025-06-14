@@ -1,241 +1,121 @@
-import { useState, useEffect } from "react";
-import Seo from "@/components/Seo";
-import { getHomeSeoData } from "@/components/home/HomeSEO";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+
 import HeroSection from "@/components/landing/HeroSection";
-import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
-import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
+import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
-import TrustSection from "@/components/landing/TrustSection";
 import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
 import TeamSection from "@/components/landing/TeamSection";
-import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
+import TrustSection from "@/components/landing/TrustSection";
 import ContactSection from "@/components/landing/ContactSection";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import ModernPricingSection from "@/components/landing/ModernPricingSection";
+import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
+import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
+import SocialProofSection from "@/components/landing/SocialProofSection";
 import NewsletterSection from "@/components/landing/NewsletterSection";
+import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 
+const seoText = `
+CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
+
+Наши ключевые преимущества и достижения:
+- Команда из 50+ дипломированных SEO-копирайтеров с профильным образованием и опытом 5+ лет
+- Гарантия 100% уникальности по Text.ru, Advego, eTXT с официальными отчетами
+- Экспресс-доставка от 24 часов с сохранением премиального качества
+- Глубокая SEO-оптимизация с анализом ТОП-10 конкурентов и семантическим ядром 500+ ключей
+- Круглосуточная техподдержка и бесплатные правки в течение 30 дней
+- Более 5000 успешно реализованных проектов с ростом конверсии клиентов на 40-180%
+
+Полная экосистема контент-маркетинга CopyPro Cloud:
+
+SEO-контент и органическое продвижение:
+- Экспертные SEO-статьи 2000-8000 знаков с LSI-оптимизацией
+- Кластерные страницы под высокочастотные запросы
+- Контент-планы на 6-12 месяцев с календарем публикаций
+- Техническое SEO-копирайтинг (Title, Description, H1-H6)
+
+Коммерческий контент и продажи:
+- Высококонверсионные лендинги с A/B тестированием
+- Продающие email-воронки и автоматизированные последовательности  
+- Скрипты для отделов продаж и колл-центров
+- Коммерческие предложения с конверсией до 15%
+
+Контент для цифровых каналов:
+- Стратегии контент-маркетинга для соцсетей (ВК, Telegram, YouTube)
+- Персонализированные email-рассылки с сегментацией аудитории
+- Контент для мессенджер-маркетинга (WhatsApp, Telegram-боты)
+- UGC-контент и инфлюенсер-коллаборации
+
+E-commerce и маркетплейсы:
+- Детальные описания товаров для Wildberries, Ozon, Яндекс.Маркет
+- SEO-категории для интернет-магазинов
+- Карточки товаров с высоким CTR и конверсией
+- A+ контент для Amazon и международных площадок
+
+Корпоративный и B2B контент:
+- Технические тексты и регламенты
+- Корпоративные блоги и thought leadership статьи  
+- Белые книги (white papers) и кейс-стади
+- Презентации для инвесторов и партнеров
+
+Специализированный контент:
+- Медицинские тексты (при участии врачей-консультантов)
+- Юридический контент (проверка практикующими юристами)
+- Финансовые материалы (соответствие требованиям ЦБ РФ)
+- IT и технологический контент
+
+География работы: Россия, СНГ, Европа, США
+Отраслевая экспертиза: IT, e-commerce, финансы, медицина, образование, недвижимость, производство, услуги
+
+Технологический стек и инструменты:
+- Семантические анализаторы: Serpstat, Ahrefs, SEMrush
+- Проверка уникальности: Text.ru, Advego, eTXT  
+- CRM интеграции: AmoCRM, Битрикс24, HubSpot
+- Аналитика: Google Analytics, Яндекс.Метрика, Hotjar
+
+Результаты наших клиентов (медианные показатели):
+- Рост органического трафика на 120-300% за 6 месяцев
+- Увеличение конверсии лендингов на 40-180%
+- Повышение времени на сайте на 60-120%
+- Снижение показателя отказов на 25-45%
+- ROI контент-маркетинга 300-800%
+
+Закажите профессиональный копирайтинг на CopyPro Cloud уже сегодня и получите результат мирового уровня с гарантией качества!
+`;
+
 export default function Index() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const seoData = getHomeSeoData();
-
-  useEffect(() => {
-    setIsLoaded(true);
-    
-    // Performance monitoring
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'largest-contentful-paint') {
-            console.log('Home Page LCP:', entry.startTime);
-          }
-        }
-      });
-      observer.observe({entryTypes: ['largest-contentful-paint']});
-    }
-  }, []);
-
   return (
     <>
-      <Seo {...seoData} />
-      
-      <div className="min-h-screen bg-white" itemScope itemType="https://schema.org/WebPage">
-        {/* Skip to content link for accessibility */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-md z-50"
-          tabIndex={1}
-        >
-          Перейти к основному содержанию
-        </a>
+      <Header />
+      <main className="relative overflow-hidden">
+        <HeroSection />
+        <SocialProofSection />
+        <InteractiveGuaranteesSection />
+        <BenefitsSection />
+        <ExpertiseShowcaseSection />
+        <ServicesCatalogSection />
+        <ModernPricingSection />
+        <ProcessSection />
+        <CaseStudiesSection />
+        <InnovativePortfolioSection />
+        <ProfessionalStatsSection />
+        <TestimonialsSection />
+        <TeamSection />
+        <TrustSection />
+        <FaqSection />
+        <NewsletterSection />
+        <ContactSection />
         
-        <Header />
-        
-        <main 
-          id="main-content"
-          role="main" 
-          aria-label="Главная страница CopyPro Cloud"
-          className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          itemProp="mainEntity"
-          itemScope
-          itemType="https://schema.org/Organization"
-        >
-          {/* Hero Section */}
-          <section 
-            aria-labelledby="hero-heading"
-            role="banner"
-            className="relative"
-          >
-            <HeroSection />
-          </section>
-
-          {/* Services Section */}
-          <section 
-            aria-labelledby="services-heading"
-            role="region"
-            className="py-16 md:py-24"
-            itemScope
-            itemType="https://schema.org/ItemList"
-          >
-            <ServicesCatalogSection />
-          </section>
-
-          {/* Expertise Section */}
-          <section 
-            aria-labelledby="expertise-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <ExpertiseShowcaseSection />
-          </section>
-
-          {/* Benefits Section */}
-          <section 
-            aria-labelledby="benefits-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <BenefitsSection />
-          </section>
-
-          {/* Process Section */}
-          <section 
-            aria-labelledby="process-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <ProcessSection />
-          </section>
-
-          {/* Stats Section */}
-          <section 
-            aria-labelledby="stats-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <ProfessionalStatsSection />
-          </section>
-
-          {/* Case Studies Section */}
-          <section 
-            aria-labelledby="case-studies-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <CaseStudiesSection />
-          </section>
-
-          {/* Portfolio Section */}
-          <section 
-            aria-labelledby="portfolio-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <InnovativePortfolioSection />
-          </section>
-
-          {/* Testimonials Section */}
-          <section 
-            aria-labelledby="testimonials-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <TestimonialsSection />
-          </section>
-
-          {/* Social Proof Section */}
-          <section 
-            aria-labelledby="social-proof-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <SocialProofSection />
-          </section>
-
-          {/* Pricing Section */}
-          <section 
-            aria-labelledby="pricing-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <ModernPricingSection />
-          </section>
-
-          {/* Team Section */}
-          <section 
-            aria-labelledby="team-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <TeamSection />
-          </section>
-
-          {/* Trust Section */}
-          <section 
-            aria-labelledby="trust-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <TrustSection />
-          </section>
-
-          {/* Guarantees Section */}
-          <section 
-            aria-labelledby="guarantees-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <InteractiveGuaranteesSection />
-          </section>
-
-          {/* FAQ Section */}
-          <section 
-            aria-labelledby="faq-heading"
-            role="region"
-            className="py-16 md:py-24"
-            itemScope
-            itemType="https://schema.org/FAQPage"
-          >
-            <FaqSection />
-          </section>
-
-          {/* Contact Section */}
-          <section 
-            aria-labelledby="contact-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <ContactSection />
-          </section>
-
-          {/* Newsletter Section */}
-          <section 
-            aria-labelledby="newsletter-heading"
-            role="region"
-            className="py-16 md:py-24"
-          >
-            <NewsletterSection />
-          </section>
-        </main>
-
-        <Footer />
-        
-        {/* Breadcrumb navigation for SEO */}
-        <nav aria-label="Навигация по сайту" className="sr-only">
-          <ol itemScope itemType="https://schema.org/BreadcrumbList">
-            <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-              <span itemProp="name">Главная</span>
-              <meta itemProp="position" content="1" />
-            </li>
-          </ol>
-        </nav>
-      </div>
+        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+          <SeoTextExpandable text={seoText} />
+        </div>
+      </main>
+      <Footer />
     </>
   );
 }

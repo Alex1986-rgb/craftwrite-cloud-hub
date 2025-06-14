@@ -6,6 +6,7 @@ import { Tag } from "lucide-react";
 interface Category {
   name: string;
   count: number;
+  color: string;
 }
 
 interface BlogCategoriesProps {

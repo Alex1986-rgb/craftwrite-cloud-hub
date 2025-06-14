@@ -1,7 +1,13 @@
 
-import { Award, Target, Briefcase, TrendingUp } from "lucide-react";
+import { Search, Award, Target, Briefcase, TrendingUp } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
-export default function PortfolioHero() {
+interface PortfolioHeroProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}
+
+export default function PortfolioHero({ searchQuery, onSearchChange }: PortfolioHeroProps) {
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-emerald-600/10"></div>
@@ -21,6 +27,17 @@ export default function PortfolioHero() {
           <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
             Изучите наши кейсы и результаты. Более 500 успешных проектов для компаний разного масштаба
           </p>
+          
+          <div className="max-w-lg mx-auto relative mb-8">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <Input
+              type="text"
+              placeholder="Поиск проектов..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-12 pr-4 py-4 text-lg border-2 border-slate-200 focus:border-primary rounded-full shadow-lg"
+            />
+          </div>
           
           <div className="flex flex-wrap justify-center gap-6">
             <div className="flex items-center gap-2 bg-white/80 px-6 py-3 rounded-full shadow-lg border border-slate-200/50">

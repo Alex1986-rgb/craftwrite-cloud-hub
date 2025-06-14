@@ -1,524 +1,435 @@
 
 export const contentStrategyBusinessArticle = {
   id: 34,
-  title: "Как разработать контент-стратегию для малого бизнеса с нуля: пошаговый план",
-  excerpt: "Полное руководство по созданию эффективной контент-стратегии для малого бизнеса. От анализа аудитории до измерения ROI.",
-  category: "Стратегия",
-  author: "Алексей Кузнецов",
-  date: "28 апреля 2024", 
+  title: "Контент-стратегия для бизнеса: как построить систему, которая продает 24/7",
+  excerpt: "Пошаговый план создания контент-стратегии, которая превращает читателей в покупателей. Методы планирования, производства и распространения контента.",
+  category: "Контент-стратегия",
+  author: "Игорь Смирнов",
+  date: "1 мая 2024",
   readTime: "20 мин",
-  image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
   featured: false,
-  tags: ["контент-стратегия", "малый бизнес", "планирование", "ROI"],
-  relatedPosts: [29, 30, 31],
+  tags: ["контент-стратегия", "маркетинг", "воронка продаж", "планирование", "ROI"],
+  relatedPosts: [31, 32, 33],
   content: `
-    <h2>Почему малому бизнесу нужна контент-стратегия</h2>
-    <p>Малый бизнес часто думает, что контент-стратегия — это роскошь для крупных компаний. На самом деле, именно небольшие компании получают максимальную выгоду от правильно выстроенной контент-стратегии.</p>
+    <h2>Что такое контент-стратегия и почему она критически важна</h2>
+    <p>Контент-стратегия — это долгосрочный план создания, публикации и управления контентом, направленный на достижение конкретных бизнес-целей. Это не просто календарь постов, а комплексная система, которая работает на привлечение, удержание и монетизацию аудитории.</p>
 
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px; margin: 25px 0;">
-      <h3 style="color: white; margin-top: 0;">📊 Статистика для малого бизнеса</h3>
+      <h3 style="color: white; margin-top: 0;">📊 Влияние контент-маркетинга на бизнес</h3>
       <ul style="margin: 0;">
-        <li><strong>70%</strong> малых предприятий не имеют контент-стратегии</li>
-        <li><strong>434%</strong> больше индексируемых страниц у компаний с блогом</li>
-        <li><strong>126%</strong> больше лидов генерируют B2B компании с блогом</li>
-        <li><strong>97%</strong> больше входящих ссылок получают активные блоггеры</li>
-        <li><strong>13x</strong> больше ROI у компаний с контент-маркетингом</li>
+        <li><strong>3x больше лидов</strong> генерирует контент-маркетинг vs. традиционная реклама</li>
+        <li><strong>62% меньше</strong> стоимость привлечения клиента</li>
+        <li><strong>6x выше</strong> конверсия у компаний с контент-стратегией</li>
+        <li><strong>13x больше</strong> ROI показывает контент-маркетинг</li>
+        <li><strong>80%</strong> решений о покупке принимается на основе контента</li>
       </ul>
     </div>
 
-    <h2>Этап 1: Исследование и анализ</h2>
+    <h2>Основы построения контент-стратегии</h2>
 
-    <h3>Аудит текущего состояния</h3>
-    <p>Прежде чем планировать будущее, необходимо честно оценить настоящее.</p>
-
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-      <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Область аудита</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Что проверять</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Инструменты</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Критерии оценки</th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Существующий контент</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Количество, качество, темы</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Google Analytics, SEMrush</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Трафик, время на странице</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">SEO позиции</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Ключевые запросы</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Ahrefs, Serpstat</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Позиции в ТОП-10</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Социальные сети</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Активность, вовлеченность</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Native analytics</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Engagement rate >3%</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Конкуренты</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Контент-стратегии</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">BuzzSumo, SimilarWeb</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Популярность контента</td>
-      </tr>
-    </table>
-
-    <h3>Определение целевой аудитории</h3>
-    <p>Малый бизнес часто думает, что его продукт нужен всем. Это главная ошибка в контент-маркетинге.</p>
-
-    <blockquote style="background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; font-style: italic;">
-      "Если ты говоришь со всеми, ты не говоришь ни с кем." — Сет Годин, маркетинг-гуру
-    </blockquote>
-
-    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>🎯 Создание buyer persona для малого бизнеса:</h4>
-      <ol>
-        <li><strong>Демографические данные:</strong> возраст, пол, доход, образование</li>
-        <li><strong>Географические данные:</strong> местоположение, часовой пояс</li>
-        <li><strong>Психографические данные:</strong> интересы, ценности, образ жизни</li>
-        <li><strong>Поведенческие данные:</strong> покупательские привычки, лояльность к брендам</li>
-        <li><strong>Болевые точки:</strong> основные проблемы и вызовы</li>
-        <li><strong>Цели и мотивации:</strong> чего хочет достичь</li>
-        <li><strong>Информационное поведение:</strong> где ищет информацию</li>
-      </ol>
-    </div>
-
-    <h2>Этап 2: Постановка целей и KPI</h2>
-
-    <h3>SMART цели для контент-стратегии</h3>
-    <p>Цели должны быть конкретными, измеримыми, достижимыми, релевантными и ограниченными во времени.</p>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
-      <div style="background: #e3f2fd; padding: 20px; border-radius: 12px;">
-        <h4>📈 Цели роста</h4>
-        <ul>
-          <li>Увеличить органический трафик на 150% за 12 месяцев</li>
-          <li>Генерировать 50 новых лидов в месяц</li>
-          <li>Повысить конверсию сайта до 3%</li>
-        </ul>
-      </div>
-      <div style="background: #e8f5e8; padding: 20px; border-radius: 12px;">
-        <h4>🎯 Цели узнаваемости</h4>
-        <ul>
-          <li>Попасть в ТОП-3 по 20 ключевым запросам</li>
-          <li>Увеличить упоминания бренда на 200%</li>
-          <li>Построить аудиторию в 10,000 подписчиков</li>
-        </ul>
-      </div>
-      <div style="background: #fff3e0; padding: 20px; border-radius: 12px;">
-        <h4>💰 Цели продаж</h4>
-        <ul>
-          <li>Увеличить выручку на 30% через контент</li>
-          <li>Снизить стоимость привлечения клиента на 40%</li>
-          <li>Повысить LTV клиентов на 25%</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3>Ключевые метрики для отслеживания</h3>
-
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-      <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Категория</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Метрика</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Хорошие показатели</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Инструмент</th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Трафик</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Органические посетители</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Рост 10%+ в месяц</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Google Analytics</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Вовлеченность</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Время на странице</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">2+ минуты</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Google Analytics</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Конверсии</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Заявки с контента</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">2-5%</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">CRM система</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">SEO</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Позиции в ТОП-10</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">30+ запросов</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">SEMrush, Ahrefs</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Социальные сети</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Engagement rate</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">3-6%</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Native analytics</td>
-      </tr>
-    </table>
-
-    <h2>Этап 3: Выбор каналов и форматов</h2>
-
-    <h3>Канальная стратегия для малого бизнеса</h3>
-    <p>Малому бизнесу важно сосредоточиться на 2-3 каналах и делать их хорошо, чем распыляться на все сразу.</p>
-
-    <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>⚡ Приоритизация каналов:</h4>
-      <ul>
-        <li><strong>Высокий приоритет:</strong> Сайт/блог + один основной соцканал</li>
-        <li><strong>Средний приоритет:</strong> Email-маркетинг + YouTube/подкасты</li>
-        <li><strong>Низкий приоритет:</strong> Дополнительные соцсети</li>
-      </ul>
-    </div>
-
-    <h3>Матрица контент-форматов</h3>
-
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-      <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Формат</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Сложность создания</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">ROI</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Рекомендация</th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Статьи в блоге</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Низкая</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Высокий</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">✅ Начинать с этого</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Посты в соцсетях</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Низкая</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Средний</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">✅ Параллельно с блогом</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Инфографика</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Средняя</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Высокий</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">⚠️ После освоения основ</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Видео</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Высокая</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Очень высокий</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">🎯 Долгосрочная цель</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Подкасты</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Высокая</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Высокий</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">🎯 Для экспертов</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Email-рассылки</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Низкая</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Очень высокий</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">✅ Обязательно</td>
-      </tr>
-    </table>
-
-    <h2>Этап 4: Планирование контента</h2>
-
-    <h3>Контент-календарь</h3>
-    <p>Планирование — ключ к последовательности. 60% успешных компаний имеют задокументированную контент-стратегию.</p>
-
-    <blockquote style="background: #e8f5e8; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; font-style: italic;">
-      "Контент-календарь для бизнеса — это как карта для путешественника. Без неё легко заблудиться." — Джо Пулицци, основатель Content Marketing Institute
-    </blockquote>
-
+    <h3>Этап 1: Аудит текущего состояния</h3>
     <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>📅 Структура контент-календаря:</h4>
-      <ol>
-        <li><strong>Дата публикации</strong> — когда выйдет контент</li>
-        <li><strong>Тема и заголовок</strong> — о чем будет материал</li>
-        <li><strong>Формат</strong> — статья, видео, пост</li>
-        <li><strong>Канал распространения</strong> — где публиковать</li>
-        <li><strong>Целевая аудитория</strong> — для кого контент</li>
-        <li><strong>Цель</strong> — awareness, consideration, conversion</li>
-        <li><strong>CTA</strong> — какое действие ожидаем</li>
-        <li><strong>Ответственный</strong> — кто создает контент</li>
-        <li><strong>Статус</strong> — идея, в работе, готов, опубликован</li>
-      </ol>
-    </div>
-
-    <h3>Правило 80/20 в контенте</h3>
-    <p>80% контента должно приносить пользу аудитории, 20% — продвигать ваши продукты.</p>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
-      <div style="background: #e3f2fd; padding: 20px; border-radius: 12px;">
-        <h4>📚 80% — Полезный контент</h4>
-        <ul style="font-size: 14px; margin: 0;">
-          <li>Образовательные статьи</li>
-          <li>Как-то руководства</li>
-          <li>Отраслевые новости</li>
-          <li>Экспертные мнения</li>
-          <li>Ответы на вопросы</li>
-        </ul>
-      </div>
-      <div style="background: #fff3e0; padding: 20px; border-radius: 12px;">
-        <h4>💼 20% — Продающий контент</h4>
-        <ul style="font-size: 14px; margin: 0;">
-          <li>Презентации продуктов</li>
-          <li>Кейсы клиентов</li>
-          <li>Отзывы и рекомендации</li>
-          <li>Специальные предложения</li>
-          <li>Демонстрации</li>
-        </ul>
-      </div>
-    </div>
-
-    <h2>Этап 5: Создание контента</h2>
-
-    <h3>Процесс создания контента</h3>
-    <p>Стандартизированный процесс экономит время и обеспечивает качество.</p>
-
-    <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>🔄 6-этапный процесс создания:</h4>
-      <ol>
-        <li><strong>Исследование</strong> — изучение темы, конкурентов, аудитории</li>
-        <li><strong>Планирование</strong> — структура, ключевые точки, CTA</li>
-        <li><strong>Создание</strong> — написание/съемка/дизайн</li>
-        <li><strong>Редактирование</strong> — проверка качества, фактов, стиля</li>
-        <li><strong>Оптимизация</strong> — SEO, соцсети, форматирование</li>
-        <li><strong>Публикация</strong> — размещение, продвижение, мониторинг</li>
-      </ol>
-    </div>
-
-    <h3>SEO-оптимизация контента</h3>
-    <p>75% пользователей не переходят на вторую страницу поисковой выдачи.</p>
-
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-      <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Элемент</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Рекомендация</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Пример</th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Title</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">50-60 символов, ключ в начале</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">"Контент-стратегия для малого бизнеса"</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Description</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">150-160 символов, CTA</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">"Узнайте, как создать контент-стратегию..."</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">H1</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Один на страницу, с ключом</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">"Контент-стратегия для малого бизнеса"</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">H2-H6</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Логическая структура</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">"Этап 1: Исследование аудитории"</td>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Ключевые слова</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">2-4% плотность</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Естественное вхождение в текст</td>
-      </tr>
-    </table>
-
-    <h2>Этап 6: Распространение и продвижение</h2>
-
-    <h3>Органическое продвижение</h3>
-    <p>80% успеха контента зависит от продвижения, а не от создания.</p>
-
-    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>🚀 Тактики органического продвижения:</h4>
+      <h4>🔍 Что анализируем:</h4>
       <ul>
-        <li><strong>Социальные сети:</strong> адаптация под каждую платформу</li>
-        <li><strong>Email-рассылки:</strong> уведомления подписчикам</li>
-        <li><strong>Коммьюнити:</strong> релевантные группы и форумы</li>
-        <li><strong>Влиятели:</strong> сотрудничество с микро-инфлюенсерами</li>
-        <li><strong>Cross-promotion:</strong> партнерство с другими брендами</li>
-        <li><strong>Репосты:</strong> переупаковка контента для разных каналов</li>
+        <li><strong>Существующий контент:</strong> качество, количество, эффективность</li>
+        <li><strong>Конкурентов:</strong> их контент-стратегии и результаты</li>
+        <li><strong>Аудиторию:</strong> предпочтения, поведение, потребности</li>
+        <li><strong>Ресурсы:</strong> бюджет, команда, время</li>
+        <li><strong>Каналы:</strong> эффективность различных платформ</li>
       </ul>
     </div>
 
-    <h3>Платное продвижение</h3>
-    <p>Когда и как использовать рекламный бюджет для продвижения контента.</p>
+    <h3>Этап 2: Определение целей и KPI</h3>
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+      <tr style="background: #f8f9fa;">
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Бизнес-цель</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Контент-цель</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">KPI</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 12px;">Увеличить продажи</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Генерация лидов</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Конверсия, CPA, LTV</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 12px;">Повысить узнаваемость</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Брендинг</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Reach, Brand Awareness, Share of Voice</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 12px;">Удержать клиентов</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Лояльность</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">NPS, Retention Rate, Engagement</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 12px;">Стать экспертом</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Thought Leadership</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Mentions, Backlinks, Speaking</td>
+      </tr>
+    </table>
 
+    <h2>Создание customer journey map</h2>
+
+    <h3>Этапы путешествия покупателя</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>🔍 Awareness</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Привлечь внимание</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">SEO-статьи, соцсети, реклама</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>💭 Interest</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Заинтересовать</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Полезный контент, вебинары</p>
+      </div>
+      <div style="background: #fff3e0; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>🤔 Consideration</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Показать экспертность</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Кейсы, сравнения, демо</p>
+      </div>
+      <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>💰 Purchase</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Конвертировать</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Продающие страницы, отзывы</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>❤️ Loyalty</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Удержать</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Email, поддержка, апсейл</p>
+      </div>
+      <div style="background: #fff3cd; padding: 15px; border-radius: 8px; text-align: center;">
+        <h4>📢 Advocacy</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Цель:</strong> Получить рекомендации</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Программы лояльности, UGC</p>
+      </div>
+    </div>
+
+    <h3>Контент для каждого этапа воронки</h3>
+    <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h4>📋 Топ-контент по этапам:</h4>
+      <ul>
+        <li><strong>ToFu (Awareness):</strong> Блог-посты, инфографики, видео-гайды, подкасты</li>
+        <li><strong>MoFu (Consideration):</strong> Вебинары, электронные книги, чек-листы, кейсы</li>
+        <li><strong>BoFu (Decision):</strong> Демо-версии, пробные периоды, консультации, отзывы</li>
+        <li><strong>Retention:</strong> Обучающие курсы, новости продукта, exclusive контент</li>
+      </ul>
+    </div>
+
+    <h2>Контент-планирование и календарь</h2>
+
+    <h3>Структура контент-календаря</h3>
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h4>📅 Обязательные поля календаря:</h4>
+      <ol>
+        <li><strong>Дата публикации</strong> - точное время выхода</li>
+        <li><strong>Канал</strong> - платформа размещения</li>
+        <li><strong>Тип контента</strong> - статья, видео, пост, email</li>
+        <li><strong>Тема/заголовок</strong> - основная идея</li>
+        <li><strong>Целевая аудитория</strong> - для кого контент</li>
+        <li><strong>Этап воронки</strong> - ToFu, MoFu, BoFu</li>
+        <li><strong>Ответственный</strong> - кто создает контент</li>
+        <li><strong>CTA</strong> - желаемое действие</li>
+        <li><strong>Ключевые слова</strong> - для SEO</li>
+        <li><strong>Статус</strong> - в процессе, готов, опубликован</li>
+      </ol>
+    </div>
+
+    <h3>Оптимальная частота публикаций</h3>
     <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
       <tr style="background: #f8f9fa;">
         <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Канал</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Средний CPC</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Лучше для</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Минимальный бюджет</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">B2B</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">B2C</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Рекомендации</th>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Facebook/Instagram</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">15-50₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">B2C, визуальный контент</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">1000₽/день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Блог</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">2-3 раза в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">3-5 раз в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Качество > количества</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Google Ads</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">20-100₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Поисковый трафик</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">1500₽/день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Email</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">1 раз в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">2-3 раза в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Тестируйте частоту</td>
       </tr>
       <tr>
         <td style="border: 1px solid #ddd; padding: 12px;">LinkedIn</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">100-300₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">B2B контент</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">2000₽/день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">1 раз в день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">3-5 раз в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Фокус на качество</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">YouTube</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">5-30₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">Видеоконтент</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">500₽/день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Instagram</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">3-5 раз в неделю</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">1-2 раза в день</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Stories ежедневно</td>
       </tr>
     </table>
 
-    <h2>Этап 7: Анализ и оптимизация</h2>
+    <h2>Создание контент-хаба</h2>
 
-    <h3>Регулярная отчетность</h3>
-    <p>Что измерять и как часто, чтобы принимать обоснованные решения.</p>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-      <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
-        <h4>📊 Еженедельно</h4>
-        <ul style="font-size: 12px; text-align: left; margin: 0;">
-          <li>Трафик на сайт</li>
-          <li>Социальные метрики</li>
-          <li>Email показатели</li>
-        </ul>
-      </div>
-      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
-        <h4>📈 Ежемесячно</h4>
-        <ul style="font-size: 12px; text-align: left; margin: 0;">
-          <li>SEO позиции</li>
-          <li>Конверсии</li>
-          <li>ROI кампаний</li>
-        </ul>
-      </div>
-      <div style="background: #fff3e0; padding: 15px; border-radius: 8px; text-align: center;">
-        <h4>🎯 Ежеквартально</h4>
-        <ul style="font-size: 12px; text-align: left; margin: 0;">
-          <li>Общий ROI</li>
-          <li>Достижение целей</li>
-          <li>Корректировка стратегии</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3>Оптимизация на основе данных</h3>
-    <blockquote style="background: #f8f9fa; border-left: 4px solid #6f42c1; padding: 20px; margin: 20px 0; font-style: italic;">
-      "Без данных вы просто еще один человек с мнением." — У. Эдвардс Деминг
-    </blockquote>
-
-    <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>🔧 Типичные проблемы и решения:</h4>
-      <ul>
-        <li><strong>Низкий трафик:</strong> Улучшить SEO, создать больше контента</li>
-        <li><strong>Высокий bounce rate:</strong> Улучшить качество, скорость загрузки</li>
-        <li><strong>Низкие конверсии:</strong> Пересмотреть CTA, landing pages</li>
-        <li><strong>Слабый engagement:</strong> Изменить тон, формат, тематику</li>
+    <h3>Модель hub-and-spoke</h3>
+    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h4>🎯 Принцип работы:</h4>
+      <ol>
+        <li><strong>Hub (ядро):</strong> Основной контент на вашем сайте/блоге</li>
+        <li><strong>Spoke (спицы):</strong> Адаптированный контент для разных платформ</li>
+        <li><strong>Linkback:</strong> Все спицы ведут обратно к хабу</li>
+      </ol>
+      
+      <h4>Пример:</h4>
+      <p><strong>Hub:</strong> Подробная статья "Гайд по email-маркетингу" (3000 слов)<br>
+      <strong>Spokes:</strong></p>
+      <ul style="margin: 10px 0 0 20px;">
+        <li>LinkedIn: Пост с ключевыми инсайтами</li>
+        <li>Instagram: Карусель с главными советами</li>
+        <li>YouTube: Видео-обзор основных моментов</li>
+        <li>Email: Анонс статьи с выжимкой</li>
+        <li>Twitter: Thread с основными тезисами</li>
       </ul>
     </div>
 
-    <h2>Бюджет и ресурсы</h2>
+    <h3>Преимущества hub-and-spoke модели</h3>
+    <ul>
+      <li><strong>Экономия ресурсов:</strong> один контент → множество форматов</li>
+      <li><strong>SEO-эффект:</strong> больше ссылок на основной контент</li>
+      <li><strong>Максимальный охват:</strong> разные аудитории на разных платформах</li>
+      <li><strong>Последовательность:</strong> единое сообщение во всех каналах</li>
+    </ul>
 
-    <h3>Стоимость контент-маркетинга для малого бизнеса</h3>
-    <p>Реалистичные бюджеты и распределение ресурсов для максимальной эффективности.</p>
+    <h2>Типы контента и их эффективность</h2>
 
+    <h3>Образовательный контент</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+        <h4>📚 How-to гайды</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Высокая</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Решают конкретные проблемы, высокий SEO-потенциал</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px;">
+        <h4>📊 Исследования</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Очень высокая</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Много обратных ссылок, цитирования</p>
+      </div>
+      <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+        <h4>🎓 Курсы и тренинги</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Высокая</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Высокое вовлечение, лид-магниты</p>
+      </div>
+    </div>
+
+    <h3>Развлекательный контент</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div style="background: #f3e5f5; padding: 15px; border-radius: 8px;">
+        <h4>😂 Мемы и юмор</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Средняя</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Высокая виральность, слабая конверсия</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px;">
+        <h4>🎬 Видео-контент</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Очень высокая</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Высокое вовлечение, лучшая конверсия</p>
+      </div>
+      <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+        <h4>🎮 Интерактив</h4>
+        <p style="font-size: 12px; margin: 5px 0;"><strong>Эффективность:</strong> Высокая</p>
+        <p style="font-size: 11px; margin: 0; color: #666;">Опросы, квизы, конкурсы</p>
+      </div>
+    </div>
+
+    <h2>Измерение ROI контент-маркетинга</h2>
+
+    <h3>Модель атрибуции</h3>
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h4>📈 Методы измерения:</h4>
+      <ul>
+        <li><strong>First-touch:</strong> весь результат приписывается первому касанию</li>
+        <li><strong>Last-touch:</strong> результат приписывается последнему касанию</li>
+        <li><strong>Multi-touch:</strong> результат распределяется между всеми касаниями</li>
+        <li><strong>Time-decay:</strong> больше веса у касаний ближе к конверсии</li>
+      </ul>
+    </div>
+
+    <h3>Формула расчета ROI контента</h3>
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+      <h4>💰 ROI = (Доход от контента - Затраты на контент) / Затраты на контент × 100%</h4>
+      
+      <h4 style="margin-top: 20px;">Компоненты затрат:</h4>
+      <ul style="text-align: left; margin: 15px 0;">
+        <li>Зарплата контент-команды</li>
+        <li>Инструменты и программы</li>
+        <li>Реклама и продвижение</li>
+        <li>Сторонние подрядчики</li>
+      </ul>
+    </div>
+
+    <h3>Ключевые метрики контент-стратегии</h3>
     <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
       <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Размер бизнеса</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Месячный бюджет</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Распределение</th>
-        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Результат</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Уровень</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Метрики</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Инструменты</th>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Микро (1-10 сотр.)</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">20,000-50,000₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">70% создание, 30% продвижение</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">2-4 статьи, соцсети</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Consumption</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Views, Reads, Downloads</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Google Analytics, Social Media</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Малый (11-50 сотр.)</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">50,000-150,000₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">60% создание, 40% продвижение</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">4-8 статей, видео, email</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Sharing</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Shares, Comments, Mentions</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">BuzzSumo, Mention, Hootsuite</td>
       </tr>
       <tr>
-        <td style="border: 1px solid #ddd; padding: 12px;">Средний (51-250 сотр.)</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">150,000-500,000₽</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">50% создание, 50% продвижение</td>
-        <td style="border: 1px solid #ddd; padding: 12px;">8-15 статей, мультиформат</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Lead Generation</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Leads, MQLs, Conversion Rate</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">CRM, Marketing Automation</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 12px;">Sales</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">SQLs, Revenue, LTV</td>
+        <td style="border: 1px solid #ddd; padding: 12px;">Salesforce, HubSpot</td>
       </tr>
     </table>
 
-    <h2>Инструменты для малого бизнеса</h2>
+    <h2>Оптимизация контент-процессов</h2>
 
-    <h3>Бесплатные инструменты</h3>
-    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>💚 Начальный набор (0₽/мес):</h4>
-      <ul>
-        <li><strong>Google Analytics</strong> — веб-аналитика</li>
-        <li><strong>Google Search Console</strong> — SEO мониторинг</li>
-        <li><strong>Canva Free</strong> — дизайн графики</li>
-        <li><strong>Buffer Free</strong> — планирование постов</li>
-        <li><strong>Google Keyword Planner</strong> — исследование ключевых слов</li>
-        <li><strong>WordPress</strong> — блог платформа</li>
-      </ul>
+    <h3>Создание контент-конвейера</h3>
+    <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h4>⚙️ Этапы производства контента:</h4>
+      <ol>
+        <li><strong>Идеация (1 день):</strong> Brainstorming, исследование трендов</li>
+        <li><strong>Планирование (1 день):</strong> Структура, ключевые слова, CTA</li>
+        <li><strong>Создание (3-5 дней):</strong> Написание, дизайн, видео</li>
+        <li><strong>Редактура (1 день):</strong> Проверка, правки, оптимизация</li>
+        <li><strong>Аппрув (1 день):</strong> Согласование с руководством</li>
+        <li><strong>Публикация (1 день):</strong> Размещение, анонсы</li>
+        <li><strong>Промо (3-7 дней):</strong> Продвижение в каналах</li>
+        <li><strong>Анализ (1 день):</strong> Сбор метрик, выводы</li>
+      </ol>
     </div>
 
-    <h3>Платные инструменты</h3>
-    <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0;">
-      <h4>⚡ Продвинутый набор (~15,000₽/мес):</h4>
-      <ul>
-        <li><strong>SEMrush или Ahrefs</strong> — SEO исследования ($100/мес)</li>
-        <li><strong>Hootsuite или Buffer Pro</strong> — SMM автоматизация ($30/мес)</li>
-        <li><strong>Mailchimp или ConvertKit</strong> — email маркетинг ($30/мес)</li>
-        <li><strong>Canva Pro</strong> — профессиональный дизайн ($15/мес)</li>
-        <li><strong>Grammarly</strong> — проверка текстов ($12/мес)</li>
-      </ul>
-    </div>
+    <h3>Инструменты для автоматизации</h3>
+    <ul>
+      <li><strong>Планирование:</strong> Trello, Asana, Monday.com</li>
+      <li><strong>Создание:</strong> Canva, Figma, Loom</li>
+      <li><strong>Публикация:</strong> Buffer, Hootsuite, Later</li>
+      <li><strong>Аналитика:</strong> Google Analytics, SEMrush, Ahrefs</li>
+    </ul>
 
-    <h2>Заключение и план действий</h2>
+    <h2>Масштабирование контент-стратегии</h2>
 
-    <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 25px; border-radius: 12px; margin: 25px 0;">
-      <h3 style="color: white; margin-top: 0;">🎯 Чек-лист запуска контент-стратегии</h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-        <div>
-          <h4 style="color: white;">Неделя 1-2:</h4>
-          <ul style="font-size: 14px; margin: 0;">
-            <li>✅ Аудит текущего контента</li>
-            <li>✅ Исследование аудитории</li>
-            <li>✅ Анализ конкурентов</li>
-            <li>✅ Постановка SMART целей</li>
-          </ul>
-        </div>
-        <div>
-          <h4 style="color: white;">Неделя 3-4:</h4>
-          <ul style="font-size: 14px; margin: 0;">
-            <li>✅ Выбор каналов и форматов</li>
-            <li>✅ Создание контент-календаря</li>
-            <li>✅ Настройка инструментов</li>
-            <li>✅ Подготовка первого контента</li>
-          </ul>
-        </div>
-        <div>
-          <h4 style="color: white;">Месяц 2-3:</h4>
-          <ul style="font-size: 14px; margin: 0;">
-            <li>✅ Регулярная публикация</li>
-            <li>✅ Тестирование форматов</li>
-            <li>✅ Сбор обратной связи</li>
-            <li>✅ Первые оптимизации</li>
-          </ul>
-        </div>
+    <h3>Построение контент-команды</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+        <h4>👨‍💼 Контент-менеджер</h4>
+        <p style="font-size: 12px; margin: 0;">Стратегия, планирование, координация</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px;">
+        <h4>✍️ Копирайтеры</h4>
+        <p style="font-size: 12px; margin: 0;">Создание текстового контента</p>
+      </div>
+      <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+        <h4>🎨 Дизайнеры</h4>
+        <p style="font-size: 12px; margin: 0;">Визуальный контент, инфографики</p>
+      </div>
+      <div style="background: #f3e5f5; padding: 15px; border-radius: 8px;">
+        <h4>🎬 Видеографы</h4>
+        <p style="font-size: 12px; margin: 0;">Видео-контент, анимация</p>
+      </div>
+      <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+        <h4>📊 Аналитики</h4>
+        <p style="font-size: 12px; margin: 0;">Измерение эффективности</p>
+      </div>
+      <div style="background: #e8f5e8; padding: 15px; border-radius: 8px;">
+        <h4>🚀 SMM-специалисты</h4>
+        <p style="font-size: 12px; margin: 0;">Продвижение в соцсетях</p>
       </div>
     </div>
 
-    <p><strong>Помните:</strong> контент-стратегия — это марафон, а не спринт. Результаты приходят через 3-6 месяцев постоянной работы. Главное — начать и не останавливаться.</p>
+    <h3>Системы управления контентом</h3>
+    <ul>
+      <li><strong>Editorial календари:</strong> планирование и координация</li>
+      <li><strong>Workflow автоматизация:</strong> процессы согласования</li>
+      <li><strong>Asset библиотеки:</strong> централизованное хранение</li>
+      <li><strong>Бренд-гайды:</strong> единство стиля и тона</li>
+    </ul>
 
-    <blockquote style="background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; font-style: italic; text-align: center; font-size: 18px;">
-      "Лучший способ продать что-то — не продавать что-то. Заработайте осведомленность, уважение и доверие тех, кто может купить у вас." — Рэнд Фишкин, основатель Moz
-    </blockquote>
+    <h2>Тренды контент-маркетинга 2024</h2>
+
+    <h3>1. AI и автоматизация</h3>
+    <ul>
+      <li><strong>AI-копирайтинг:</strong> ChatGPT, Claude, Jasper для черновиков</li>
+      <li><strong>Персонализация:</strong> динамический контент на основе данных</li>
+      <li><strong>Predictive analytics:</strong> прогнозирование вирусности</li>
+      <li><strong>Voice generation:</strong> AI озвучка для подкастов и видео</li>
+    </ul>
+
+    <h3>2. Интерактивный контент</h3>
+    <ul>
+      <li><strong>Квизы и опросы:</strong> высокое вовлечение</li>
+      <li><strong>AR/VR контент:</strong> иммерсивный опыт</li>
+      <li><strong>Калькуляторы:</strong> практическая польза</li>
+      <li><strong>Шоппинг в контенте:</strong> прямые покупки</li>
+    </ul>
+
+    <h3>3. Аудио-контент</h3>
+    <ul>
+      <li><strong>Подкасты:</strong> растущая популярность</li>
+      <li><strong>Аудио-статьи:</strong> адаптация для мультитаскинга</li>
+      <li><strong>Social audio:</strong> Clubhouse, Twitter Spaces</li>
+      <li><strong>Voice search optimization:</strong> оптимизация под голосовой поиск</li>
+    </ul>
+
+    <h2>Кейс: контент-стратегия SaaS компании</h2>
+
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3>🎯 Задача</h3>
+      <p>Увеличить количество trial-регистраций B2B SaaS платформы с 500 до 2000 в месяц</p>
+
+      <h3>📋 Стратегия</h3>
+      <ul>
+        <li><strong>Аудитория:</strong> CMO и маркетологи среднего бизнеса</li>
+        <li><strong>Каналы:</strong> Блог, LinkedIn, Email, Вебинары</li>
+        <li><strong>Контент-типы:</strong> Исследования, кейсы, гайды, демо</li>
+        <li><strong>Бюджет:</strong> $50,000 в год</li>
+      </ul>
+
+      <h3>📊 Результаты за 12 месяцев</h3>
+      <ul>
+        <li><strong>Trial регистрации:</strong> 2,400 (+380%)</li>
+        <li><strong>Органический трафик:</strong> +450%</li>
+        <li><strong>Позиции в поиске:</strong> 85% ключей в ТОП-10</li>
+        <li><strong>Email подписчики:</strong> 45,000 (+2,250%)</li>
+        <li><strong>ROI контент-маркетинга:</strong> 420%</li>
+      </ul>
+
+      <h3>🔑 Ключевые факторы успеха</h3>
+      <ul>
+        <li>Фокус на решении реальных проблем аудитории</li>
+        <li>Качественные исследования рынка</li>
+        <li>Системный подход к созданию и продвижению</li>
+        <li>Постоянная оптимизация на основе данных</li>
+      </ul>
+    </div>
+
+    <h2>Заключение</h2>
+    <p>Успешная контент-стратегия — это не разовая акция, а долгосрочная система, которая требует постоянного развития и оптимизации. Ключевые элементы:</p>
+
+    <ul>
+      <li><strong>Глубокое понимание аудитории</strong> и ее потребностей</li>
+      <li><strong>Четкие цели и KPI</strong> для измерения успеха</li>
+      <li><strong>Системный подход</strong> к созданию и распространению</li>
+      <li><strong>Постоянная оптимизация</strong> на основе данных</li>
+    </ul>
+
+    <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 25px; border-radius: 12px; margin: 25px 0; text-align: center;">
+      <h3 style="color: white; margin-top: 0;">🚀 Готовы запустить контент-машину?</h3>
+      <p style="margin-bottom: 15px;">Наши клиенты увеличивают органический трафик в 3-5 раз за 6 месяцев</p>
+      <p style="margin: 0; font-weight: bold;">Создадим работающую контент-стратегию для вашего бизнеса</p>
+    </div>
   `
 };

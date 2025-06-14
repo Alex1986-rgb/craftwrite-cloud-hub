@@ -1,15 +1,30 @@
 
-import Seo from "@/components/Seo";
-import AboutLayout from "@/components/about/AboutLayout";
-import { getAboutSeoData } from "@/components/about/AboutSEO";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import AboutHeroSection from "@/components/about/AboutHeroSection";
+import MissionSection from "@/components/about/MissionSection";
+import TeamExpertiseSection from "@/components/about/TeamExpertiseSection";
+import CompanyTimelineSection from "@/components/about/CompanyTimelineSection";
+import ValuesSection from "@/components/about/ValuesSection";
+import AchievementsSection from "@/components/about/AchievementsSection";
+import CertificationsSection from "@/components/about/CertificationsSection";
+import OfficeSection from "@/components/about/OfficeSection";
 
 export default function About() {
-  const seoData = getAboutSeoData();
-
   return (
     <>
-      <Seo {...seoData} />
-      <AboutLayout />
+      <Header />
+      <main className="relative overflow-hidden">
+        <AboutHeroSection />
+        <MissionSection />
+        <TeamExpertiseSection />
+        <CompanyTimelineSection />
+        <ValuesSection />
+        <AchievementsSection />
+        <CertificationsSection />
+        <OfficeSection />
+      </main>
+      <Footer />
     </>
   );
 }
