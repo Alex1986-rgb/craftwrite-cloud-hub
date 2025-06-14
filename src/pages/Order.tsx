@@ -9,6 +9,7 @@ import Seo from "@/components/Seo";
 import OrderServiceCard from "@/components/order/OrderServiceCard";
 import OrderQuestionGroup from "@/components/order/OrderQuestionGroup";
 import OrderFormHeader from "@/components/order/OrderFormHeader";
+import OrderProgressBar from "@/components/order/OrderProgressBar";
 
 // Возможные услуги
 const SERVICES = [
@@ -131,6 +132,27 @@ const Order = () => {
     }, 1300);
   };
 
+  // Функция для вычисления прогресса заполнения формы
+  function calcProgress() {
+    let steps = 4; // name, email, service, details
+    let score = 0;
+    if (form.name.trim()) score++;
+    if (form.email.trim()) score++;
+    if (form.service.trim()) score++;
+    if (form.details.trim()) score++;
+    // дополнительные вопросы, если есть
+    const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
+    if (currentQuestions.length > 0) {
+      steps += currentQuestions.length;
+      currentQuestions.forEach(q => {
+        if (form.additional[q.label] && form.additional[q.label].trim()) score++;
+      });
+    }
+    let percent = Math.round((score / steps) * 100);
+    if (percent > 100) percent = 100;
+    return percent;
+  }
+
   // Дополнительные вопросы для выбранной услуги
   const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
 
@@ -147,6 +169,8 @@ const Order = () => {
           className="relative bg-card max-w-xl w-full space-y-4 p-8 rounded-2xl shadow-2xl border border-muted/20 animate-scale-in"
           autoComplete="off"
         >
+          {/* Новый прогресс-бар */}
+          <OrderProgressBar progress={calcProgress()} />
           <OrderFormHeader />
           {/* Бейдж выбранной услуги */}
           <div className="mx-auto flex flex-col items-center -mt-3 mb-3 animate-fade-in">
