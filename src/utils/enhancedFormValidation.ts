@@ -1,111 +1,58 @@
 
-export interface ValidationRule {
+interface ValidationRule {
   field: string;
   message: string;
   isValid: boolean;
 }
 
-export const createValidationRules = (form: {
+interface FormData {
   name: string;
   email: string;
   service: string;
   details: string;
-}): ValidationRule[] => {
+  additional: Record<string, string>;
+}
+
+export function createValidationRules(form: FormData): ValidationRule[] {
   const rules: ValidationRule[] = [];
 
-  // Валидация имени
-  if (!form.name.trim()) {
-    rules.push({
-      field: "name",
-      message: "Имя обязательно для заполнения",
-      isValid: false
-    });
-  } else if (form.name.trim().length < 2) {
-    rules.push({
-      field: "name", 
-      message: "Имя должно содержать минимум 2 символа",
-      isValid: false
-    });
-  } else {
-    rules.push({
-      field: "name",
-      message: "Имя корректно",
-      isValid: true
-    });
-  }
+  // Name validation
+  rules.push({
+    field: "Имя",
+    message: form.name.trim() ? "Имя заполнено корректно" : "Введите ваше имя",
+    isValid: form.name.trim().length >= 2
+  });
 
-  // Валидация email
+  // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!form.email.trim()) {
-    rules.push({
-      field: "email",
-      message: "Email обязателен для заполнения",
-      isValid: false
-    });
-  } else if (!emailRegex.test(form.email)) {
-    rules.push({
-      field: "email",
-      message: "Введите корректный email адрес",
-      isValid: false
-    });
-  } else {
-    rules.push({
-      field: "email",
-      message: "Email корректен",
-      isValid: true
-    });
-  }
+  rules.push({
+    field: "Email",
+    message: emailRegex.test(form.email) ? "Email заполнен корректно" : "Введите корректный email адрес",
+    isValid: emailRegex.test(form.email)
+  });
 
-  // Валидация услуги
-  if (!form.service.trim()) {
-    rules.push({
-      field: "service",
-      message: "Выберите тип услуги",
-      isValid: false
-    });
-  } else {
-    rules.push({
-      field: "service",
-      message: "Услуга выбрана",
-      isValid: true
-    });
-  }
+  // Service validation
+  rules.push({
+    field: "Услуга",
+    message: form.service ? "Услуга выбрана" : "Выберите тип услуги",
+    isValid: Boolean(form.service)
+  });
 
-  // Валидация описания
-  if (!form.details.trim()) {
-    rules.push({
-      field: "details",
-      message: "Опишите детали вашего проекта",
-      isValid: false
-    });
-  } else if (form.details.trim().length < 20) {
-    rules.push({
-      field: "details",
-      message: "Описание должно содержать минимум 20 символов для лучшего понимания задачи",
-      isValid: false
-    });
-  } else if (form.details.trim().length > 2000) {
-    rules.push({
-      field: "details",
-      message: "Описание слишком длинное (максимум 2000 символов)",
-      isValid: false
-    });
-  } else {
-    rules.push({
-      field: "details",
-      message: "Описание проекта детальное и понятное",
-      isValid: true
-    });
-  }
+  // Details validation
+  rules.push({
+    field: "Описание",
+    message: form.details.trim().length >= 20 ? "Описание заполнено подробно" : "Добавьте более подробное описание (минимум 20 символов)",
+    isValid: form.details.trim().length >= 20
+  });
 
   return rules;
-};
+}
 
-export const getFormCompletionPercentage = (rules: ValidationRule[]): number => {
-  const validRules = rules.filter(rule => rule.isValid);
-  return Math.round((validRules.length / rules.length) * 100);
-};
+export function getFormCompletionPercentage(validationRules: ValidationRule[]): number {
+  const validRules = validationRules.filter(rule => rule.isValid);
+  return Math.round((validRules.length / validationRules.length) * 100);
+}
 
-export const isFormValid = (rules: ValidationRule[]): boolean => {
-  return rules.every(rule => rule.isValid);
-};
+export function isFormValid(validationRules: ValidationRule[]): boolean {
+  return validationRules.every(rule => rule.isValid);
+}
