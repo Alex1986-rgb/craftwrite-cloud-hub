@@ -95,7 +95,11 @@ export default function Blog() {
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(blogPosts.map(post => post.category)));
-    return ["all", ...cats];
+    const categoriesWithCount = ["all", ...cats].map(cat => ({
+      name: cat,
+      count: cat === "all" ? blogPosts.length : blogPosts.filter(p => p.category === cat).length
+    }));
+    return categoriesWithCount;
   }, []);
 
   const filteredPosts = useMemo(() => {
@@ -180,11 +184,7 @@ export default function Blog() {
               <BlogCategories
                 categories={categories}
                 selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-                postCounts={categories.reduce((acc, cat) => {
-                  acc[cat] = cat === "all" ? blogPosts.length : blogPosts.filter(p => p.category === cat).length;
-                  return acc;
-                }, {} as Record<string, number>)}
+                setSelectedCategory={setSelectedCategory}
               />
             </div>
           </section>

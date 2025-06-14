@@ -97,12 +97,20 @@ export default function Portfolio() {
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(portfolioProjects.map(project => project.category)));
-    return ["all", ...cats];
+    const categoriesWithCount = ["all", ...cats].map(cat => ({
+      name: cat,
+      count: cat === "all" ? portfolioProjects.length : portfolioProjects.filter(p => p.category === cat).length
+    }));
+    return categoriesWithCount;
   }, []);
 
   const industries = useMemo(() => {
     const inds = Array.from(new Set(portfolioProjects.map(project => project.category))); // Using category as industry since industry doesn't exist
-    return ["all", ...inds];
+    const industriesWithCount = ["all", ...inds].map(ind => ({
+      name: ind,
+      count: ind === "all" ? portfolioProjects.length : portfolioProjects.filter(p => p.category === ind).length
+    }));
+    return industriesWithCount;
   }, []);
 
   const filteredProjects = useMemo(() => {
