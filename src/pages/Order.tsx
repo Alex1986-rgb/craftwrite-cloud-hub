@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import Seo from "@/components/Seo";
+import OrderServiceCard from "@/components/order/OrderServiceCard";
+import OrderQuestionGroup from "@/components/order/OrderQuestionGroup";
 
 // Возможные услуги
 const SERVICES = [
@@ -75,9 +77,14 @@ const Order = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  // Обработка смены услуги
-  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const service = e.target.value;
+  // NEW: фильтр для поиска услуги
+  const [serviceFilter, setServiceFilter] = useState("");
+  const filteredServices = SERVICES.filter(s =>
+    s.toLowerCase().includes(serviceFilter.toLowerCase())
+  );
+
+  // Обработка смены услуги (карточка)
+  const handleServiceSelect = (service: string) => {
     setForm({
       ...form,
       service,
@@ -124,107 +131,69 @@ const Order = () => {
     }, 1300);
   };
 
-  // Рендер уточняющих
-  const renderQuestions = () => {
-    const questions = SERVICE_QUESTIONS[form.service];
-    if (!questions) return null;
-    return questions.map((q, idx) => {
-      const value = form.additional[q.label] || "";
-      if (q.type === "text") {
-        return (
-          <Input
-            key={q.label}
-            name={q.label}
-            value={value}
-            required
-            placeholder={q.label}
-            onChange={e => handleAdditionalChange(q.label, e.target.value)}
-            className="mt-2"
-          />
-        );
-      }
-      if (q.type === "textarea") {
-        return (
-          <Textarea
-            key={q.label}
-            name={q.label}
-            value={value}
-            required
-            placeholder={q.label}
-            rows={3}
-            onChange={e => handleAdditionalChange(q.label, e.target.value)}
-            className="mt-2"
-          />
-        );
-      }
-      if (q.type === "select" && q.options) {
-        return (
-          <select
-            key={q.label}
-            name={q.label}
-            value={value}
-            required
-            onChange={e => handleAdditionalChange(q.label, e.target.value)}
-            className="border-input bg-background rounded-md px-3 py-2 text-sm mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <option value="" disabled>
-              {q.label}
-            </option>
-            {q.options.map(opt => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        );
-      }
-      return null;
-    });
-  };
+  // Дополнительные вопросы для выбранной услуги
+  const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
 
   return (
     <>
       <Header />
-      <main className="min-h-screen flex items-center justify-center bg-background py-10 px-4">
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-white/85 to-background py-10 px-2 md:px-4">
         <Seo
           title="Оформить заказ — CopyPro Cloud"
           description="Заполните форму заказа на тексты: копирайтинг для бизнеса, сайтов, маркетинга. Свяжемся быстро, работаем профессионально!"
         />
         <form
           onSubmit={handleSubmit}
-          className="bg-card max-w-md w-full space-y-4 p-8 rounded-xl shadow-md"
+          className="relative bg-card max-w-xl w-full space-y-4 p-8 rounded-2xl shadow-lg border border-muted/20 animate-fade-in"
           autoComplete="off"
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-4">
-            Оформить заказ
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-2 animate-fade-in">
+            Закажите текст прямо сейчас
           </h1>
-          <Input
-            name="name"
-            placeholder="Ваше имя"
-            required
-            value={form.name}
-            onChange={handleChange}
-          />
-          <Input
-            type="email"
-            name="email"
-            placeholder="Ваш email"
-            required
-            value={form.email}
-            onChange={handleChange}
-          />
-          <select
-            name="service"
-            value={form.service}
-            onChange={handleServiceChange}
-            className="border-input bg-background rounded-md px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            {SERVICES.map((s) => (
-              <option key={s}>{s}</option>
-            ))}
-          </select>
+          <div className="mb-3">
+            <Input
+              name="name"
+              placeholder="Ваше имя"
+              required
+              value={form.name}
+              onChange={handleChange}
+            />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Ваш email"
+              required
+              value={form.email}
+              className="mt-2"
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Input
+              placeholder="Найти услугу…"
+              className="mb-2"
+              value={serviceFilter}
+              onChange={e => setServiceFilter(e.target.value)}
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+              {filteredServices.map((s) => (
+                <OrderServiceCard
+                  key={s}
+                  label={s}
+                  active={form.service === s}
+                  onClick={() => handleServiceSelect(s)}
+                />
+              ))}
+            </div>
+          </div>
           {/* Показать дополнительные уточняющие вопросы */}
-          {renderQuestions()}
+          {currentQuestions.length > 0 && (
+            <OrderQuestionGroup
+              questions={currentQuestions}
+              answers={form.additional}
+              onChange={handleAdditionalChange}
+            />
+          )}
           <Textarea
             name="details"
             placeholder="Комментарий, пожелания или ссылка на ТЗ"
@@ -234,9 +203,17 @@ const Order = () => {
             onChange={handleChange}
             className="mt-2"
           />
-          <Button type="submit" size="lg" className="w-full" disabled={loading}>
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full mt-4 shadow-lg text-lg"
+            disabled={loading}
+          >
             {loading ? "Отправка..." : "Отправить заказ"}
           </Button>
+          <div className="text-xs text-muted-foreground text-center mt-1">
+            Нажимая, вы даёте согласие на обработку персональных данных
+          </div>
         </form>
       </main>
       <Footer />
