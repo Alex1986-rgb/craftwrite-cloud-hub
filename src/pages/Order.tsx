@@ -1,4 +1,3 @@
-
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { useState } from "react";
@@ -9,6 +8,7 @@ import { toast } from "@/components/ui/use-toast";
 import Seo from "@/components/Seo";
 import OrderServiceCard from "@/components/order/OrderServiceCard";
 import OrderQuestionGroup from "@/components/order/OrderQuestionGroup";
+import OrderFormHeader from "@/components/order/OrderFormHeader";
 
 // Возможные услуги
 const SERVICES = [
@@ -144,13 +144,17 @@ const Order = () => {
         />
         <form
           onSubmit={handleSubmit}
-          className="relative bg-card max-w-xl w-full space-y-4 p-8 rounded-2xl shadow-lg border border-muted/20 animate-fade-in"
+          className="relative bg-card max-w-xl w-full space-y-4 p-8 rounded-2xl shadow-2xl border border-muted/20 animate-scale-in"
           autoComplete="off"
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-2 animate-fade-in">
-            Закажите текст прямо сейчас
-          </h1>
-          <div className="mb-3">
+          <OrderFormHeader />
+          {/* Бейдж выбранной услуги */}
+          <div className="mx-auto flex flex-col items-center -mt-3 mb-3 animate-fade-in">
+            <span className="rounded-full border border-muted bg-muted/30 text-foreground px-3 py-1 text-sm font-semibold shadow hover:scale-105 transition-transform duration-200 animate-scale-in">
+              {form.service}
+            </span>
+          </div>
+          <div>
             <Input
               name="name"
               placeholder="Ваше имя"
@@ -188,11 +192,16 @@ const Order = () => {
           </div>
           {/* Показать дополнительные уточняющие вопросы */}
           {currentQuestions.length > 0 && (
-            <OrderQuestionGroup
-              questions={currentQuestions}
-              answers={form.additional}
-              onChange={handleAdditionalChange}
-            />
+            <div className="pb-2 pt-1 border-t border-dashed border-muted animate-fade-in">
+              <span className="text-xs font-semibold text-muted-foreground mb-2 inline-block animate-fade-in">
+                {form.service}: уточните детали
+              </span>
+              <OrderQuestionGroup
+                questions={currentQuestions}
+                answers={form.additional}
+                onChange={handleAdditionalChange}
+              />
+            </div>
           )}
           <Textarea
             name="details"
@@ -222,4 +231,3 @@ const Order = () => {
 };
 
 export default Order;
-
