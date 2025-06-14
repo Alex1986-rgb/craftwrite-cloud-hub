@@ -1,26 +1,15 @@
-
 import { useParams, Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { 
-  ArrowLeft, 
-  BarChart3, 
-  CheckCircle, 
-  TrendingUp, 
-  Users, 
-  Award,
-  ExternalLink,
-  Calendar,
-  Target,
-  Zap,
-  Star,
-  Globe,
-  Clock,
-  DollarSign
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import ProjectHeroSection from "@/components/portfolio/ProjectHeroSection";
+import ProjectMetrics from "@/components/portfolio/ProjectMetrics";
+import ProjectDetails from "@/components/portfolio/ProjectDetails";
+import ProjectResults from "@/components/portfolio/ProjectResults";
+import ProjectTechnologies from "@/components/portfolio/ProjectTechnologies";
+import ProjectTestimonial from "@/components/portfolio/ProjectTestimonial";
+import ProjectCTA from "@/components/portfolio/ProjectCTA";
 
 const portfolioDetails = {
   1: {
@@ -246,222 +235,13 @@ export default function PortfolioDetail() {
     <>
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-background via-slate-50/30 to-primary/5">
-        {/* Hero секция */}
-        <section className="pt-32 pb-20 relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          </div>
-          
-          <div className="container max-w-7xl mx-auto px-4 relative z-10">
-            <div className="mb-12">
-              <Button variant="outline" asChild className="mb-8 hover:bg-white/80 border-2">
-                <Link to="/portfolio" className="flex items-center gap-2">
-                  <ArrowLeft className="w-4 h-4" />
-                  Вернуться к портфолио
-                </Link>
-              </Button>
-              
-              <div className="flex flex-wrap items-center gap-6 mb-8">
-                <Badge className="bg-gradient-to-r from-primary to-blue-600 text-white px-6 py-3 text-lg border-0">
-                  {project.category}
-                </Badge>
-                <div className="flex items-center gap-3 text-muted-foreground bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Calendar className="w-5 h-5" />
-                  <span className="font-medium">{project.date}</span>
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Clock className="w-5 h-5" />
-                  <span className="font-medium">{project.duration}</span>
-                </div>
-                <div className="flex items-center gap-3 text-muted-foreground bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Users className="w-5 h-5" />
-                  <span className="font-medium">{project.client}</span>
-                </div>
-              </div>
-              
-              <h1 className="text-4xl md:text-7xl font-playfair font-bold mb-8 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-                {project.title}
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Метрики */}
-        <section className="py-20 bg-white/60 backdrop-blur-sm">
-          <div className="container max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-center mb-16 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              Ключевые результаты
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {Object.entries(project.metrics).map(([key, value], index) => (
-                <Card key={key} className="group p-8 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-4 bg-gradient-to-br from-white to-slate-50/50 border-0 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="text-4xl md:text-5xl font-bold text-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                      {value}
-                    </div>
-                    <div className="text-sm md:text-base text-muted-foreground font-medium">
-                      {key === 'conversion' && 'Конверсия'}
-                      {key === 'traffic' && 'Трафик'}
-                      {key === 'time' && 'Время на сайте'}
-                      {key === 'bounce' && 'Показатель отказов'}
-                      {key === 'leadCost' && 'Стоимость лида'}
-                      {key === 'sales' && 'Продажи'}
-                      {key === 'leads' && 'Заявки'}
-                      {key === 'investment' && 'Инвестиции'}
-                      {key === 'users' && 'Пользователи'}
-                      {key === 'openRate' && 'Open Rate'}
-                      {key === 'clickRate' && 'Click Rate'}
-                      {key === 'churnReduction' && 'Снижение Churn'}
-                      {key === 'ptSales' && 'Продажи PT'}
-                      {key === 'topPositions' && 'ТОП позиции'}
-                      {key === 'organicGrowth' && 'Органический рост'}
-                      {key === 'brandAwareness' && 'Узнаваемость'}
-                      {key === 'trialConversion' && 'Trial конверсия'}
-                      {key === 'salesCycle' && 'Цикл продаж'}
-                      {key === 'averageCheck' && 'Средний чек'}
-                      {key === 'mrrGrowth' && 'Рост MRR'}
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Детали проекта */}
-        <section className="py-20">
-          <div className="container max-w-7xl mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              {/* Вызов */}
-              <Card className="group p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-gradient-to-br from-red-50 to-orange-50 border-red-200/50">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="p-4 bg-gradient-to-r from-red-500 to-orange-600 text-white rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                    <Target className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-3xl font-playfair font-bold text-red-700">Вызов</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-lg">
-                  {project.challenge}
-                </p>
-              </Card>
-
-              {/* Решение */}
-              <Card className="group p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200/50">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="p-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                    <Zap className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-3xl font-playfair font-bold text-blue-700">Решение</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed text-lg">
-                  {project.solution}
-                </p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Результаты */}
-        <section className="py-20 bg-gradient-to-br from-emerald-50/50 to-green-50/50">
-          <div className="container max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-center mb-16 flex items-center justify-center gap-4">
-              <Award className="w-12 h-12 text-primary" />
-              <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                Достигнутые результаты
-              </span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {project.results.map((result, index) => (
-                <div key={index} className="group flex items-start gap-4 p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="flex-shrink-0 p-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl group-hover:scale-110 transition-transform duration-300">
-                    <CheckCircle className="w-6 h-6" />
-                  </div>
-                  <span className="text-foreground font-medium text-lg">{result}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Технологии */}
-        <section className="py-20">
-          <div className="container max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-center mb-16 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Использованные технологии
-            </h2>
-            <div className="flex flex-wrap justify-center gap-6">
-              {project.technologies.map((tech, index) => (
-                <Badge key={tech} className="group px-8 py-4 text-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white border-0 hover:from-purple-600 hover:to-pink-700 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                  <span className="relative z-10">{tech}</span>
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Отзыв клиента */}
-        <section className="py-20 bg-gradient-to-r from-primary via-blue-600 to-purple-600 text-white relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/5 rounded-full blur-2xl"></div>
-          </div>
-          
-          <div className="container max-w-5xl mx-auto px-4 text-center relative z-10">
-            <div className="flex justify-center mb-8">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-8 h-8 text-yellow-400 fill-current" />
-              ))}
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold mb-12">Отзыв клиента</h2>
-            
-            <blockquote className="text-2xl md:text-3xl italic mb-12 leading-relaxed font-light">
-              "{project.testimonial.text}"
-            </blockquote>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 inline-block">
-              <div className="font-semibold text-2xl mb-2">{project.testimonial.author}</div>
-              <div className="opacity-90 text-lg">{project.testimonial.position}</div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-32 bg-gradient-to-br from-slate-900 via-primary/10 to-background relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-full blur-3xl"></div>
-          </div>
-          
-          <div className="container max-w-5xl mx-auto px-4 text-center relative z-10">
-            <h2 className="text-4xl md:text-6xl font-playfair font-bold mb-8 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Хотите такие же результаты?
-            </h2>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-              Обсудим ваш проект и покажем, как наш опыт поможет достичь ваших целей
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="text-lg px-10 py-6 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Link to="/order" className="flex items-center gap-3">
-                  <Zap className="w-6 h-6" />
-                  Начать проект
-                  <ExternalLink className="w-6 h-6" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-lg px-10 py-6 border-2 hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                <Link to="/portfolio" className="flex items-center gap-3">
-                  <Globe className="w-6 h-6" />
-                  Все кейсы
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+        <ProjectHeroSection project={project} />
+        <ProjectMetrics metrics={project.metrics} />
+        <ProjectDetails challenge={project.challenge} solution={project.solution} />
+        <ProjectResults results={project.results} />
+        <ProjectTechnologies technologies={project.technologies} />
+        <ProjectTestimonial testimonial={project.testimonial} />
+        <ProjectCTA />
       </main>
       <Footer />
     </>
