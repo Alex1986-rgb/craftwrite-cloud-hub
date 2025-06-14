@@ -1,6 +1,5 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3 } from "lucide-react";
+import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download } from "lucide-react";
 import GenerationForm from "./GenerationForm";
 import ResultDisplay from "./ResultDisplay";
 import TemplateLibrary from "./TemplateLibrary";
@@ -11,6 +10,7 @@ import QuickPresets from "./QuickPresets";
 import BatchGeneration from "./BatchGeneration";
 import TextRefiner from "./TextRefiner";
 import QualityAnalyzer from "./QualityAnalyzer";
+import ExportManager from "./ExportManager";
 
 interface FormData {
   prompt: string;
@@ -84,7 +84,7 @@ export default function TabNavigation({
 }: TabNavigationProps) {
   return (
     <Tabs defaultValue="generator" className="w-full">
-      <TabsList className="grid w-full grid-cols-8">
+      <TabsList className="grid w-full grid-cols-9">
         <TabsTrigger value="generator" className="flex items-center gap-2">
           <Wand2 className="w-4 h-4" />
           Генератор
@@ -100,6 +100,10 @@ export default function TabNavigation({
         <TabsTrigger value="analyzer" className="flex items-center gap-2">
           <BarChart3 className="w-4 h-4" />
           Анализ
+        </TabsTrigger>
+        <TabsTrigger value="export" className="flex items-center gap-2">
+          <Download className="w-4 h-4" />
+          Экспорт
         </TabsTrigger>
         <TabsTrigger value="templates" className="flex items-center gap-2">
           <Library className="w-4 h-4" />
@@ -167,6 +171,14 @@ export default function TabNavigation({
             onAnalyze={onAnalyzeQuality}
           />
         )}
+      </TabsContent>
+
+      <TabsContent value="export">
+        <ExportManager
+          text={generatedText}
+          title={`Сгенерированный ${selectedContentType?.label || 'текст'}`}
+          contentType={selectedContentType?.label}
+        />
       </TabsContent>
 
       <TabsContent value="templates">
