@@ -16,8 +16,12 @@ const HeroSection = () => (
       </Button>
       <Button variant="outline" size="lg">Войти в личный кабинет</Button>
       <Button variant="secondary" size="lg">Оставить заявку</Button>
+      <Button variant="link" size="lg" asChild>
+        <Link to="/about">О нас</Link>
+      </Button>
     </div>
   </section>
 );
 
 export default HeroSection;
+
