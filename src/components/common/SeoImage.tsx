@@ -12,6 +12,10 @@ interface SeoImageProps {
   loading?: "lazy" | "eager";
   priority?: boolean;
   fallbackSrc?: string;
+  ariaLabel?: string;
+  role?: string;
+  sizes?: string;
+  srcSet?: string;
 }
 
 export default function SeoImage({
@@ -23,7 +27,11 @@ export default function SeoImage({
   height,
   loading = "lazy",
   priority = false,
-  fallbackSrc = "/placeholder.svg"
+  fallbackSrc = "/placeholder.svg",
+  ariaLabel,
+  role,
+  sizes,
+  srcSet
 }: SeoImageProps) {
   const [imageSrc, setImageSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,8 +55,10 @@ export default function SeoImage({
         <div 
           className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center"
           aria-label="Загрузка изображения"
+          role="status"
         >
           <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+          <span className="sr-only">Загружается изображение</span>
         </div>
       )}
       
@@ -67,11 +77,24 @@ export default function SeoImage({
           hasError && imageSrc === fallbackSrc ? "filter grayscale" : ""
         )}
         itemProp="image"
+        aria-label={ariaLabel || alt}
+        role={role}
+        sizes={sizes}
+        srcSet={srcSet}
+        decoding="async"
       />
       
       {hasError && imageSrc === fallbackSrc && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-500 text-sm">
-          Изображение недоступно
+        <div 
+          className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-500 text-sm"
+          role="alert"
+          aria-live="polite"
+        >
+          <span className="text-center px-2">
+            Изображение недоступно
+            <br />
+            <span className="text-xs text-gray-400">({alt})</span>
+          </span>
         </div>
       )}
     </div>
