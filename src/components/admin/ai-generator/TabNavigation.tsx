@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Wand2, Library, Bookmark, MessageSquare, History } from "lucide-react";
 import GenerationForm from "./GenerationForm";
@@ -7,6 +6,7 @@ import TemplateLibrary from "./TemplateLibrary";
 import PresetManager from "./PresetManager";
 import PromptLibrary from "./PromptLibrary";
 import GenerationHistory from "./GenerationHistory";
+import QuickPresets from "./QuickPresets";
 
 interface FormData {
   prompt: string;
@@ -114,11 +114,8 @@ export default function TabNavigation({
             onRegenerate={onGenerate}
           />
         </div>
-        <PresetManager
-          currentSettings={formData}
-          onApplyPreset={onApplyPreset}
-          onSavePreset={onSavePreset}
-        />
+        {/* Добавляем QuickPresets в основную вкладку */}
+        <QuickPresets onApplyPreset={onApplyPreset} />
       </TabsContent>
 
       <TabsContent value="templates">
