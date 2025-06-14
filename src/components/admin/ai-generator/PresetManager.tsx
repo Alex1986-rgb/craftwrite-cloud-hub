@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Plus, Star, Edit, Trash2, Copy, Search, Filter, Tag, Clock, Target } from "lucide-react";
+import { Settings, Plus, Star, Edit, Trash2, Copy, Search, Filter, Tag, Clock, Target, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Preset {
