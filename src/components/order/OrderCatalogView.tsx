@@ -76,12 +76,17 @@ export default function OrderCatalogView({
   }, [services, searchQuery, category, difficulty, priceRange, popularity]);
 
   return (
-    <>
+    <main role="main" aria-label="Каталог услуг копирайтинга">
       <header className="animate-fade-in mb-12">
         <OrderPageHero onQuickOrder={onQuickOrder} />
       </header>
 
-      <section className="animate-fade-in mb-8" style={{ animationDelay: '0.2s' }} aria-label="Фильтры услуг">
+      <section 
+        className="animate-fade-in mb-8" 
+        style={{ animationDelay: '0.2s' }} 
+        aria-label="Фильтры и поиск услуг"
+        role="search"
+      >
         <OrderAdvancedFilters
           services={services}
           filteredServices={filteredServices}
@@ -99,14 +104,30 @@ export default function OrderCatalogView({
         />
       </section>
 
-      <section className="animate-fade-in" style={{ animationDelay: '0.4s' }} aria-label="Каталог услуг">
+      <section 
+        className="animate-fade-in" 
+        style={{ animationDelay: '0.4s' }} 
+        aria-label="Список доступных услуг"
+        role="region"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          Найдено {filteredServices.length} услуг из {services.length}
+        </div>
+        
         {filteredServices.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-20">
+          <div 
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-20"
+            role="list"
+            aria-label={`Список услуг: ${filteredServices.length} результатов`}
+          >
             {filteredServices.map((service, index) => (
               <div
                 key={service.slug}
                 className="animate-fade-in"
                 style={{ animationDelay: `${0.1 * index}s` }}
+                role="listitem"
               >
                 <OrderServiceCardEnhanced
                   service={service}
@@ -122,6 +143,6 @@ export default function OrderCatalogView({
       </section>
       
       <OrderSeoSection />
-    </>
+    </main>
   );
 }

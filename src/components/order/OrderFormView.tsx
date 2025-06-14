@@ -10,7 +10,7 @@ interface OrderFormViewProps {
 
 export default function OrderFormView({ onBackToCatalog }: OrderFormViewProps) {
   return (
-    <>
+    <main role="main" aria-label="Форма заказа копирайтинг услуг">
       {/* Enhanced background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" role="presentation" aria-hidden="true">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/15 via-purple-400/12 to-pink-400/8 rounded-full blur-3xl animate-pulse"></div>
@@ -18,8 +18,8 @@ export default function OrderFormView({ onBackToCatalog }: OrderFormViewProps) {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-64 md:h-64 bg-gradient-to-r from-yellow-400/10 via-orange-400/8 to-red-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
       </div>
 
-      <div className="mb-8 md:mb-12 flex flex-col gap-6 animate-fade-in">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <header className="mb-8 md:mb-12 flex flex-col gap-6 animate-fade-in">
+        <nav className="flex flex-col sm:flex-row items-start sm:items-center gap-4" aria-label="Навигация по форме заказа">
           <Button 
             variant="outline" 
             onClick={onBackToCatalog}
@@ -30,18 +30,29 @@ export default function OrderFormView({ onBackToCatalog }: OrderFormViewProps) {
             <span className="font-semibold">Вернуться к каталогу</span>
           </Button>
           
-          <div className="flex items-center gap-3 text-sm md:text-base text-slate-700 bg-gradient-to-r from-white/80 to-blue-50/80 backdrop-blur-sm px-6 py-3 md:px-8 md:py-4 rounded-xl border border-slate-200/60 shadow-sm">
+          <div 
+            className="flex items-center gap-3 text-sm md:text-base text-slate-700 bg-gradient-to-r from-white/80 to-blue-50/80 backdrop-blur-sm px-6 py-3 md:px-8 md:py-4 rounded-xl border border-slate-200/60 shadow-sm"
+            role="note"
+            aria-label="Информация о каталоге услуг"
+          >
             <Sparkles className="w-5 h-5 text-blue-500" aria-hidden="true" />
             <span>Или выберите готовое решение из каталога услуг</span>
           </div>
-        </div>
+        </nav>
         
-        <OrderFeatureCards />
-      </div>
+        <section aria-label="Преимущества нашего сервиса">
+          <OrderFeatureCards />
+        </section>
+      </header>
       
-      <section className="animate-fade-in" style={{ animationDelay: '0.3s' }} aria-label="Форма заказа">
+      <section 
+        className="animate-fade-in" 
+        style={{ animationDelay: '0.3s' }} 
+        aria-label="Форма для создания заказа"
+        role="form"
+      >
         <OrderForm />
       </section>
-    </>
+    </main>
   );
 }
