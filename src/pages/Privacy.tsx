@@ -1,9 +1,14 @@
 
+import { useState, useEffect } from "react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Seo from "@/components/Seo";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import { Shield, Lock, Eye, FileText, CheckCircle } from "lucide-react";
+import PrivacyNavigation from "@/components/privacy/PrivacyNavigation";
+import PrivacySection from "@/components/privacy/PrivacySection";
+import PrivacyTimeline from "@/components/privacy/PrivacyTimeline";
+import PrivacyContactForm from "@/components/privacy/PrivacyContactForm";
+import { Shield, Lock, Eye, FileText, Users, Database, CheckCircle } from "lucide-react";
 
 const seoText = `
 Политика конфиденциальности на CopyPro Cloud — ваша приватность в безопасности.
@@ -18,178 +23,327 @@ const seoText = `
 CopyPro Cloud выбирает честность и заботу о клиентах!
 `;
 
-const privacyPoints = [
-  {
-    icon: Shield,
-    title: "Защита персональных данных",
-    description: "Вся персональная информация строго защищается и не передаётся третьим лицам без вашего согласия.",
-    gradient: "from-green-500 to-emerald-600"
-  },
-  {
-    icon: Lock,
-    title: "Безопасное хранение",
-    description: "Мы используем современные технологии шифрования для безопасного хранения ваших данных.",
-    gradient: "from-blue-500 to-indigo-600"
-  },
-  {
-    icon: Eye,
-    title: "Прозрачность использования",
-    description: "Данные используются только для связи с вами по вопросам заказов и обратной связи.",
-    gradient: "from-purple-500 to-pink-600"
-  },
-  {
-    icon: FileText,
-    title: "Соответствие законодательству",
-    description: "Обработка данных ведется в полном соответствии с требованиями ФЗ «О персональных данных».",
-    gradient: "from-orange-500 to-red-600"
-  }
-];
+const Privacy = () => {
+  const [activeSection, setActiveSection] = useState("general");
 
-const Privacy = () => (
-  <>
-    <Header />
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-blue-50/20 relative overflow-hidden">
-      <Seo
-        title="Политика конфиденциальности — CopyPro Cloud"
-        description="Условия хранения, обработки персональных данных и защиты личной информации клиентов CopyPro Cloud."
-      />
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["general", "collection", "usage", "storage", "rights", "contacts"];
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 150 && rect.bottom >= 150;
+        }
+        return false;
+      });
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
 
-      {/* Ultra-Modern Background Elements - Mobile responsive */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-green-400/10 via-blue-400/8 to-purple-400/6 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-40 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-blue-400/10 via-indigo-400/8 to-purple-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute -bottom-40 right-1/4 w-36 h-36 md:w-72 md:h-72 bg-gradient-to-r from-purple-400/8 via-pink-400/6 to-blue-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        
-        {/* Security-themed grid pattern - hidden on mobile */}
-        <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-        
-        {/* Floating security elements - hidden on small screens */}
-        <div className="hidden lg:block absolute top-1/4 left-1/5 w-3 h-3 bg-green-400/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-        <div className="hidden lg:block absolute top-3/4 right-1/5 w-2 h-2 bg-blue-400/40 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-        <div className="hidden lg:block absolute top-1/2 left-4/5 w-4 h-4 bg-purple-400/25 rounded-full animate-bounce" style={{ animationDelay: '2.5s' }}></div>
-      </div>
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-      <div className="relative z-10 py-8 md:py-16 px-4">
-        {/* Hero Section - Mobile responsive */}
-        <section className="max-w-6xl mx-auto text-center mb-12 md:mb-20 animate-fade-in">
-          <div className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-green-100/80 to-blue-100/80 text-green-700 px-4 py-3 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-bold mb-6 md:mb-8 border border-green-200/50 shadow-lg backdrop-blur-sm">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <Shield className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="whitespace-nowrap">Ваша безопасность — наш приоритет</span>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-          </div>
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-blue-50/20 relative overflow-hidden">
+        <Seo
+          title="Политика конфиденциальности — CopyPro Cloud"
+          description="Условия хранения, обработки персональных данных и защиты личной информации клиентов CopyPro Cloud."
+        />
+
+        {/* Ultra-Modern Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-green-400/10 via-blue-400/8 to-purple-400/6 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-1/2 -left-40 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-blue-400/10 via-indigo-400/8 to-purple-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute -bottom-40 right-1/4 w-36 h-36 md:w-72 md:h-72 bg-gradient-to-r from-purple-400/8 via-pink-400/6 to-blue-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 bg-gradient-to-r from-slate-900 via-green-800 to-blue-800 bg-clip-text text-transparent leading-tight tracking-tight px-4">
-            Политика
-            <br />
-            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">конфиденциальности</span>
-          </h1>
-          
-          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium mb-8 md:mb-10 px-4">
-            Мы гарантируем полную защиту ваших персональных данных и соблюдение всех требований законодательства
-          </p>
-        </section>
-
-        {/* Privacy Principles Section - Mobile responsive */}
-        <section className="max-w-6xl mx-auto mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            {privacyPoints.map((point, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-white/95 via-green-50/30 to-blue-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border border-green-200/30 relative overflow-hidden hover:scale-105 transition-all duration-500 animate-fade-in group"
-                style={{ animationDelay: `${0.1 * (index + 1)}s` }}
-              >
-                {/* Card background effects */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-400/5 via-transparent to-blue-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-green-400/10 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="relative z-10">
-                  <div className={`inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r ${point.gradient} rounded-2xl md:rounded-3xl mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}>
-                    <point.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  
-                  <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-slate-800 group-hover:text-green-600 transition-colors duration-300">
-                    {point.title}
-                  </h3>
-                  
-                  <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-                    {point.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Main Content Section - Mobile responsive */}
-        <section className="max-w-4xl mx-auto mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <div className="bg-gradient-to-br from-white/95 via-green-50/30 to-blue-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-8 md:p-12 shadow-2xl border border-green-200/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400/5 via-transparent to-blue-400/5"></div>
-            <div className="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 bg-gradient-to-br from-green-400/10 to-transparent rounded-full blur-2xl"></div>
-            
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-green-500 to-blue-600 rounded-xl md:rounded-2xl shadow-lg">
-                  <FileText className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                  Основные положения
-                </h2>
-              </div>
-              
-              <div className="space-y-4 md:space-y-6 text-slate-600 text-base md:text-lg leading-relaxed">
-                <div className="flex items-start gap-3 md:gap-4">
-                  <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-green-500 flex-shrink-0 mt-1" />
-                  <p>
-                    Ваша персональная информация строго защищается и не передаётся третьим лицам. 
-                    Мы используем данные только для связи с вами по вопросам заказов и обратной связи.
-                  </p>
-                </div>
-                
-                <div className="flex items-start gap-3 md:gap-4">
-                  <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-green-500 flex-shrink-0 mt-1" />
-                  <p>
-                    Оформляя заказ, вы соглашаетесь с обработкой персональных данных в соответствии 
-                    с требованиями ФЗ «О персональных данных».
-                  </p>
-                </div>
-                
-                <div className="flex items-start gap-3 md:gap-4">
-                  <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-green-500 flex-shrink-0 mt-1" />
-                  <p>
-                    По всем вопросам, связанным с обработкой и хранением данных, вы можете обратиться 
-                    через форму обратной связи или написать нам на почту.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section - Mobile responsive */}
-        <section className="max-w-4xl mx-auto text-center mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-          <div className="bg-gradient-to-br from-green-100/80 to-blue-100/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-6 md:p-8 border border-green-200/50 shadow-lg">
-            <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
-              <Eye className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
-              <h3 className="text-lg md:text-xl font-bold text-green-800">Вопросы по конфиденциальности?</h3>
-            </div>
-            <p className="text-base md:text-lg text-green-700 leading-relaxed px-4">
-              Если у вас есть вопросы о том, как мы обрабатываем ваши данные, 
-              <br className="hidden sm:block" />
-              <span className="font-bold">обратитесь к нам любым удобным способом</span> — 
-              мы всегда готовы предоставить подробную информацию.
-            </p>
-          </div>
-        </section>
-
-        {/* SEO Text */}
-        <div className="animate-fade-in px-4" style={{ animationDelay: '0.8s' }}>
-          <SeoTextExpandable text={seoText} />
+          <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
         </div>
-      </div>
-    </main>
-    <Footer />
-  </>
-);
+
+        <div className="relative z-10 py-8 md:py-16 px-4">
+          {/* Hero Section */}
+          <section className="max-w-6xl mx-auto text-center mb-12 md:mb-20 animate-fade-in">
+            <div className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-green-100/80 to-blue-100/80 text-green-700 px-4 py-3 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-bold mb-6 md:mb-8 border border-green-200/50 shadow-lg backdrop-blur-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <Shield className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="whitespace-nowrap">Ваша безопасность — наш приоритет</span>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            </div>
+            
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 bg-gradient-to-r from-slate-900 via-green-800 to-blue-800 bg-clip-text text-transparent leading-tight tracking-tight px-4">
+              Политика
+              <br />
+              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">конфиденциальности</span>
+            </h1>
+            
+            <p className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium mb-8 md:mb-10 px-4">
+              Мы гарантируем полную защиту ваших персональных данных и соблюдение всех требований законодательства
+            </p>
+          </section>
+
+          {/* Main Content with Navigation */}
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Navigation Sidebar */}
+              <div className="lg:col-span-1">
+                <PrivacyNavigation 
+                  activeSection={activeSection} 
+                  onSectionChange={scrollToSection} 
+                />
+              </div>
+
+              {/* Content */}
+              <div className="lg:col-span-3">
+                <PrivacySection
+                  id="general"
+                  title="Общие положения"
+                  icon={<Shield className="w-6 h-6 text-blue-600" />}
+                  type="info"
+                >
+                  <p>
+                    CopyPro Cloud (далее — "Компания", "мы") обязуется защищать конфиденциальность 
+                    всех пользователей наших услуг. Настоящая политика конфиденциальности описывает, 
+                    как мы собираем, используем, храним и защищаем вашу персональную информацию.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div className="flex items-start gap-3 p-4 bg-white/50 rounded-lg border border-blue-200/30">
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-semibold text-slate-800 mb-1">Соответствие GDPR</h4>
+                        <p className="text-sm text-slate-600">Полное соответствие европейским стандартам</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-4 bg-white/50 rounded-lg border border-blue-200/30">
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-semibold text-slate-800 mb-1">ФЗ-152</h4>
+                        <p className="text-sm text-slate-600">Соблюдение российского законодательства</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p>
+                    Используя наши услуги, вы соглашаетесь с условиями данной политики конфиденциальности. 
+                    Если вы не согласны с какими-либо условиями, пожалуйста, не используйте наши услуги.
+                  </p>
+                </PrivacySection>
+
+                <PrivacySection
+                  id="collection"
+                  title="Какие данные мы собираем"
+                  icon={<Database className="w-6 h-6 text-green-600" />}
+                  type="info"
+                >
+                  <p>Мы собираем следующие типы персональных данных:</p>
+                  
+                  <div className="space-y-4 my-6">
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-l-4 border-blue-500">
+                      <h4 className="font-semibold text-slate-800 mb-2">Контактная информация</h4>
+                      <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Имя и фамилия</li>
+                        <li>• Адрес электронной почты</li>
+                        <li>• Номер телефона</li>
+                        <li>• Название компании (при необходимости)</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-l-4 border-green-500">
+                      <h4 className="font-semibold text-slate-800 mb-2">Техническая информация</h4>
+                      <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• IP-адрес</li>
+                        <li>• Тип браузера и операционной системы</li>
+                        <li>• Информация об устройстве</li>
+                        <li>• Файлы cookie и данные сессий</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <p>
+                    Мы собираем эти данные только в объеме, необходимом для предоставления качественных услуг 
+                    и поддержания связи с нашими клиентами.
+                  </p>
+                </PrivacySection>
+
+                <PrivacySection
+                  id="usage"
+                  title="Как мы используем ваши данные"
+                  icon={<Eye className="w-6 h-6 text-purple-600" />}
+                  type="success"
+                >
+                  <p>Ваши персональные данные используются исключительно для:</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    {[
+                      { title: "Выполнение заказов", desc: "Обработка и выполнение ваших заказов на копирайтинг" },
+                      { title: "Коммуникация", desc: "Связь с вами по вопросам проектов и обратной связи" },
+                      { title: "Улучшение сервиса", desc: "Анализ использования для улучшения наших услуг" },
+                      { title: "Техническая поддержка", desc: "Предоставление технической помощи и поддержки" }
+                    ].map((item, index) => (
+                      <div key={index} className="p-4 bg-white/80 rounded-lg border border-green-200/50 shadow-sm">
+                        <h4 className="font-semibold text-slate-800 mb-2">{item.title}</h4>
+                        <p className="text-sm text-slate-600">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg border border-green-200">
+                    <p className="text-sm text-slate-700">
+                      <strong>Важно:</strong> Мы никогда не продаем, не сдаем в аренду и не передаем 
+                      ваши персональные данные третьим лицам в коммерческих целях.
+                    </p>
+                  </div>
+                </PrivacySection>
+
+                <PrivacySection
+                  id="storage"
+                  title="Хранение и защита данных"
+                  icon={<Lock className="w-6 h-6 text-red-600" />}
+                  type="warning"
+                >
+                  <p>
+                    Мы применяем современные технологии и методы для обеспечения безопасности ваших данных:
+                  </p>
+                  
+                  <div className="space-y-4 my-6">
+                    <div className="p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg">
+                      <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-red-600" />
+                        Технические меры защиты
+                      </h4>
+                      <ul className="text-sm text-slate-600 space-y-2">
+                        <li>• SSL/TLS шифрование при передаче данных</li>
+                        <li>• Шифрование данных в базе данных</li>
+                        <li>• Регулярное резервное копирование</li>
+                        <li>• Многофакторная аутентификация</li>
+                        <li>• Мониторинг безопасности 24/7</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+                      <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-600" />
+                        Организационные меры
+                      </h4>
+                      <ul className="text-sm text-slate-600 space-y-2">
+                        <li>• Ограниченный доступ к данным</li>
+                        <li>• Обучение сотрудников вопросам безопасности</li>
+                        <li>• Регулярный аудит безопасности</li>
+                        <li>• Политики и процедуры защиты данных</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <p>
+                    Данные хранятся в течение времени, необходимого для выполнения целей обработки, 
+                    но не более 5 лет с момента последнего взаимодействия.
+                  </p>
+                </PrivacySection>
+
+                <PrivacySection
+                  id="rights"
+                  title="Ваши права"
+                  icon={<Users className="w-6 h-6 text-indigo-600" />}
+                  type="info"
+                >
+                  <p>В соответствии с действующим законодательством, вы имеете следующие права:</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    {[
+                      { 
+                        title: "Право на доступ", 
+                        desc: "Получить информацию о том, какие данные мы о вас храним",
+                        icon: "👁️"
+                      },
+                      { 
+                        title: "Право на исправление", 
+                        desc: "Исправить неточную или неполную информацию",
+                        icon: "✏️"
+                      },
+                      { 
+                        title: "Право на удаление", 
+                        desc: "Запросить удаление ваших персональных данных",
+                        icon: "🗑️"
+                      },
+                      { 
+                        title: "Право на ограничение", 
+                        desc: "Ограничить обработку ваших данных",
+                        icon: "⏸️"
+                      },
+                      { 
+                        title: "Право на портативность", 
+                        desc: "Получить ваши данные в структурированном формате",
+                        icon: "📋"
+                      },
+                      { 
+                        title: "Право на возражение", 
+                        desc: "Возразить против обработки ваших данных",
+                        icon: "🚫"
+                      }
+                    ].map((right, index) => (
+                      <div key={index} className="p-4 bg-white/80 rounded-lg border border-indigo-200/50 shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <span className="text-2xl">{right.icon}</span>
+                          <div>
+                            <h4 className="font-semibold text-slate-800 mb-1">{right.title}</h4>
+                            <p className="text-sm text-slate-600">{right.desc}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-lg border border-indigo-200">
+                    <p className="text-sm text-slate-700">
+                      Для реализации любого из этих прав обратитесь к нам через форму обратной связи 
+                      или напишите на privacy@copypro.cloud. Мы рассмотрим ваш запрос в течение 30 дней.
+                    </p>
+                  </div>
+                </PrivacySection>
+
+                <PrivacySection
+                  id="contacts"
+                  title="Связаться с нами"
+                  icon={<FileText className="w-6 h-6 text-green-600" />}
+                  type="success"
+                >
+                  <p className="mb-6">
+                    Если у вас есть вопросы о нашей политике конфиденциальности или вы хотите 
+                    воспользоваться своими правами в отношении персональных данных, 
+                    свяжитесь с нами любым удобным способом:
+                  </p>
+                  
+                  <PrivacyContactForm />
+                </PrivacySection>
+
+                {/* Timeline */}
+                <div className="mt-12">
+                  <PrivacyTimeline />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SEO Text */}
+          <div className="animate-fade-in px-4 mt-16" style={{ animationDelay: '0.8s' }}>
+            <SeoTextExpandable text={seoText} />
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+};
 
 export default Privacy;
