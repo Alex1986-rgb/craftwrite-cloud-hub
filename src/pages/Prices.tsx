@@ -4,6 +4,7 @@ import Seo from "@/components/Seo";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 
 const seoText = `
 Цены на копирайтинг и создание текстов от CopyPro Cloud — всё прозрачно и честно.
@@ -27,39 +28,8 @@ const prices = [
   { service: "E-mail рассылка", price: "от 1200 ₽" },
 ];
 
-const handleStripeCheckout = async (
-  setLoading: (loading: boolean) => void,
-  setError: (msg: string | null) => void
-) => {
-  setLoading(true);
-  setError(null);
-
-  try {
-    // Call the edge function to create a Stripe Checkout Session
-    const res = await fetch("/functions/v1/create-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        priceId: "price_67890",
-        successUrl: `${window.location.origin}/payment-success`,
-        cancelUrl: `${window.location.origin}/payment-cancelled`,
-      }),
-    });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      setError("Ошибка при создании платежа. Попробуйте позже.");
-    }
-  } catch (e) {
-    setError("Ошибка соединения. Проверьте сеть.");
-  }
-  setLoading(false);
-};
-
 const Prices = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { loading, error, handleStripeCheckout } = useStripeCheckout();
 
   return (
     <>
@@ -89,7 +59,7 @@ const Prices = () => {
           </table>
           <div className="flex justify-center mb-6">
             <Button
-              onClick={() => handleStripeCheckout(setLoading, setError)}
+              onClick={handleStripeCheckout}
               disabled={loading}
               className="text-lg px-8 py-3"
             >
