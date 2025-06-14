@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SERVICES } from "@/data/services";
 import { FILTERS, FORMATS, LANGS, TOPICS } from "@/components/landing/ServicesCatalogSection";
@@ -43,7 +44,7 @@ export default function Order() {
           <Card key={service.slug} className="p-4 flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <span className="font-bold">{service.name}</span>
-              <Button asChild variant="ghost" size="xs">
+              <Button asChild variant="ghost" size="sm">
                 <Link to={`/service/${service.slug}`}>Подробнее</Link>
               </Button>
             </div>

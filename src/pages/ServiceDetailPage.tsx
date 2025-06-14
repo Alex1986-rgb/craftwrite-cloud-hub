@@ -5,6 +5,7 @@ import { ServiceSeoExcerpt } from "@/components/service/ServiceSeoExcerpt";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Seo from "@/components/Seo";
 
 function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,8 +22,16 @@ function ServiceDetailPage() {
     );
   }
 
+  // SEO — формируем title и description динамически
+  const seoTitle = `${service.name} — подробное описание услуги | CopyPro Cloud`;
+  const seoDesc = service.detail.length > 200 ? service.detail.substring(0, 197) + "..." : service.detail;
+
   return (
     <section className="max-w-2xl mx-auto py-10">
+      <Seo
+        title={seoTitle}
+        description={seoDesc}
+      />
       <Card className="shadow-md border-primary/40 bg-background">
         <CardContent className="p-6">
           <CardTitle className="text-2xl flex gap-2 items-center mb-2">
