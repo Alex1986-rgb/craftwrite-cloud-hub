@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import Seo from "@/components/Seo";
 
 const SERVICES = [
   "SEO-статья",
@@ -48,6 +48,10 @@ const Order = () => {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background py-10 px-4">
+      <Seo
+        title="Оформить заказ — CopyPro Cloud"
+        description="Заполните форму заказа на тексты: копирайтинг для бизнеса, сайтов, маркетинга. Свяжемся быстро, работаем профессионально!"
+      />
       <form
         onSubmit={handleSubmit}
         className="bg-card max-w-md w-full space-y-4 p-8 rounded-xl shadow-md"
