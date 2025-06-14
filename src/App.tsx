@@ -15,6 +15,7 @@ import PortfolioDetail from "./pages/PortfolioDetail";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Privacy from "./pages/Privacy";
+import Sitemap from "./pages/Sitemap";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import FormatDetailPage from "./pages/FormatDetailPage";
 import PaymentCancelled from "./pages/PaymentCancelled";
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-cancelled" element={<PaymentCancelled />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
