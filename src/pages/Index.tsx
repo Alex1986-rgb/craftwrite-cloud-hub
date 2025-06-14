@@ -10,7 +10,7 @@ import BenefitsSection from "@/components/landing/BenefitsSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { Button } from "@/components/ui/button";
-import { Rocket } from "lucide-react";
+import { Rocket, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 
@@ -38,49 +38,100 @@ const Index = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background flex flex-col pb-8 animate-fade-in">
+      <main className="min-h-screen bg-background relative overflow-hidden">
         <Seo
           title="CopyPro Cloud — 30+ дипломированных SEO-копирайтеров, 100% уникальность"
           description="Профессиональная команда из 30+ дипломированных копирайтеров. Гарантия уникальности 95-100%, проверка на Text.ru, ссылки на все проверки. Заказать тексты от экспертов!"
         />
-        {/* Hero Section */}
-        <HeroSection />
+        
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 -left-40 w-60 h-60 bg-blue-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
+        </div>
 
-        {/* Команда профессионалов */}
-        <TeamSection />
-
-        {/* Секция доверия и контроля качества */}
-        <TrustSection />
-
-        {/* Процесс работы */}
-        <ProcessSection />
-
-        {/* Секция "Преимущества" */}
-        <BenefitsSection />
-
-        {/* Быстрый call to action */}
-        <section className="container max-w-3xl mx-auto mt-12 flex flex-col items-center gap-4 px-4">
-          <div className="inline-flex items-center gap-2 p-1 px-4 rounded-full bg-muted/60 text-base">
-            <Rocket className="w-5 h-5 text-primary" />
-            Платформа №1 для заказа текстов от профессионалов
+        <div className="relative z-10">
+          {/* Hero Section */}
+          <div className="animate-fade-in">
+            <HeroSection />
           </div>
-          <h3 className="text-2xl font-playfair font-bold text-primary/90 text-center mt-2 mb-2">
-            Готовы к новому уровню контента от экспертов?
-          </h3>
-          <Button size="lg" asChild className="rounded-full px-8 py-5 mt-2 text-base md:text-lg shadow-lg hover-scale">
-            <Link to="/order">Заказать у профессионалов</Link>
-          </Button>
-        </section>
 
-        {/* Секция "Отзывы" */}
-        <TestimonialsSection />
+          {/* Команда профессионалов */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <TeamSection />
+          </div>
 
-        {/* Секция "Контакты" */}
-        <ContactSection />
+          {/* Секция доверия и контроля качества */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <TrustSection />
+          </div>
 
-        {/* SEO-блок — информативный SEO-текст */}
-        <SeoTextExpandable text={seoText} />
+          {/* Процесс работы */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <ProcessSection />
+          </div>
 
+          {/* Секция "Преимущества" */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <BenefitsSection />
+          </div>
+
+          {/* Premium Call to Action Section */}
+          <section className="py-20 relative">
+            <div className="container max-w-4xl mx-auto px-4">
+              <div className="relative bg-gradient-to-br from-primary/10 via-purple-500/5 to-blue-500/10 rounded-3xl p-12 border border-primary/20 backdrop-blur-sm shadow-2xl overflow-hidden">
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-2xl"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                
+                <div className="relative z-10 text-center">
+                  <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium mb-6 border border-primary/20">
+                    <Rocket className="w-5 h-5" />
+                    Премиум-платформа №1 для заказа текстов
+                  </div>
+                  
+                  <h3 className="text-4xl md:text-5xl font-playfair font-bold bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent mb-6 leading-tight">
+                    Готовы к новому уровню контента от экспертов?
+                  </h3>
+                  
+                  <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Присоединитесь к сотням довольных клиентов, которые уже получают профессиональные тексты от наших экспертов
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <Button size="lg" asChild className="group rounded-full px-10 py-6 text-lg font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90">
+                      <Link to="/order" className="flex items-center gap-2">
+                        Заказать у профессионалов
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </Button>
+                    
+                    <div className="text-sm text-muted-foreground flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      30+ экспертов онлайн
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Секция "Отзывы" */}
+          <div className="animate-fade-in" style={{ animationDelay: '1.0s' }}>
+            <TestimonialsSection />
+          </div>
+
+          {/* Секция "Контакты" */}
+          <div className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
+            <ContactSection />
+          </div>
+
+          {/* SEO-блок — информативный SEO-текст */}
+          <div className="animate-fade-in" style={{ animationDelay: '1.4s' }}>
+            <SeoTextExpandable text={seoText} />
+          </div>
+        </div>
       </main>
       <Footer />
     </>

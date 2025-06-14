@@ -1,9 +1,10 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Подключение Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap');
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
@@ -89,6 +90,7 @@
     width: 100vw;
     max-width: 100vw;
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   *, *::before, *::after {
@@ -102,12 +104,14 @@
     min-width: 0;
     max-width: 100vw;
     overflow-x: hidden;
+    line-height: 1.6;
   }
 
-  h1, h2, h3 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    letter-spacing: -0.01em;
-    @apply tracking-tight font-extrabold;
+    letter-spacing: -0.02em;
+    @apply tracking-tight font-bold;
+    line-height: 1.2;
   }
 
   .order-bg-blur {
@@ -132,4 +136,81 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Enhanced animations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .hover-scale {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-2xl hover:shadow-primary/25;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent;
+  }
+
+  .bg-glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  .bg-glass-dark {
+    @apply bg-black/80 backdrop-blur-md border border-white/10;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better focus states */
+button:focus-visible,
+a:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary;
+}
+
+/* Improved selection styling */
+::selection {
+  @apply bg-primary/20;
 }
