@@ -10,7 +10,9 @@ import Order from "./pages/Order";
 import About from "./pages/About";
 import Prices from "./pages/Prices";
 import Portfolio from "./pages/Portfolio";
+import PortfolioDetail from "./pages/PortfolioDetail";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 import Privacy from "./pages/Privacy";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import FormatDetailPage from "./pages/FormatDetailPage";
@@ -33,7 +35,9 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/:id" element={<PortfolioDetail />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancelled" element={<PaymentCancelled />} />

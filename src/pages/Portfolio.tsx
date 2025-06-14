@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -71,23 +70,23 @@ const portfolioItems = [
   },
   {
     id: 3,
-    title: "Блог IT-консалтинговой компании",
-    category: "Блоги",
-    client: "IT Solutions Pro",
-    description: "Разработка контент-стратегии и написание экспертных статей для позиционирования в B2B сегменте",
+    title: "Контент-стратегия для FinTech стартапа",
+    category: "Контент-маркетинг",
+    client: "PayFlow",
+    description: "Разработка комплексной контент-стратегии для финтех-стартапа: от лендинга до блога и email-рассылок",
     results: [
-      "Рост лидов через блог на 150%",
-      "Увеличение экспертности бренда",
-      "Топ-3 по ключевым запросам"
+      "Привлечение $2M инвестиций",
+      "Регистрация 10K+ пользователей",
+      "Конверсия лендинга 8.2%"
     ],
     metrics: {
-      leads: "+150%",
-      authority: "Топ-3",
-      articles: "24"
+      investment: "$2M",
+      users: "10K+",
+      conversion: "8.2%"
     },
-    tags: ["B2B", "Экспертность", "IT"],
+    tags: ["FinTech", "Стартап", "Инвестиции"],
     image: "/placeholder.svg",
-    featured: false
+    featured: true
   },
   {
     id: 4,
