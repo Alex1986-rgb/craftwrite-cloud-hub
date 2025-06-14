@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,7 @@ import ServiceDetailPage from "./pages/ServiceDetailPage";
 import FormatDetailPage from "./pages/FormatDetailPage";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import AdminPanel from "./pages/AdminPanel";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +42,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+          <Route path="/admin/*" element={<AdminPanel />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
