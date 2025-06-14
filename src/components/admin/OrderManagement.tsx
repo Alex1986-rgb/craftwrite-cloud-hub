@@ -16,7 +16,9 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-  DollarSign
+  DollarSign,
+  User,
+  Calendar
 } from "lucide-react";
 import {
   Dialog,
@@ -32,69 +34,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-interface Order {
-  id: string;
-  clientName: string;
-  clientEmail: string;
-  service: string;
-  status: 'new' | 'in_progress' | 'review' | 'completed' | 'cancelled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  amount: number;
-  deadline: string;
-  createdAt: string;
-  description: string;
-  aiGenerated: boolean;
-}
+import { useOrderManagement } from "@/hooks/useOrderManagement";
 
 export default function OrderManagement() {
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: "ORD-001",
-      clientName: "ООО 'Инновационные технологии'",
-      clientEmail: "tech@company.ru",
-      service: "SEO-статья",
-      status: "in_progress",
-      priority: "high",
-      amount: 8500,
-      deadline: "2024-12-20",
-      createdAt: "2024-12-14",
-      description: "Статья о внедрении AI в бизнес-процессы, 3000 знаков",
-      aiGenerated: false
-    },
-    {
-      id: "ORD-002",
-      clientName: "ИП Петров Алексей",
-      clientEmail: "petrov@business.ru",
-      service: "Продающий лендинг",
-      status: "completed",
-      priority: "medium",
-      amount: 25000,
-      deadline: "2024-12-15",
-      createdAt: "2024-12-10",
-      description: "Лендинг для курсов по маркетингу",
-      aiGenerated: true
-    },
-    {
-      id: "ORD-003",
-      clientName: "Старт-ап XYZ",
-      clientEmail: "hello@startupxyz.com",
-      service: "Email-кампания",
-      status: "new",
-      priority: "urgent",
-      amount: 12000,
-      deadline: "2024-12-18",
-      createdAt: "2024-12-14",
-      description: "Серия из 5 писем для email-рассылки",
-      aiGenerated: false
-    }
-  ]);
+  const { 
+    orders, 
+    loading, 
+    searchQuery, 
+    statusFilter, 
+    priorityFilter,
+    selectedOrder,
+    loadOrders, 
+    searchOrders, 
+    setStatusFilter,
+    setPriorityFilter,
+    setSelectedOrder,
+    updateOrderStatus
+  } = useOrderManagement();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
 
-  const getStatusBadge = (status: Order['status']) => {
+  const getStatusBadge = (status: string) => {
     const statusConfig = {
       new: { label: "Новый", className: "bg-yellow-100 text-yellow-800" },
       in_progress: { label: "В работе", className: "bg-blue-100 text-blue-800" },
@@ -103,11 +65,11 @@ export default function OrderManagement() {
       cancelled: { label: "Отменен", className: "bg-red-100 text-red-800" }
     };
     
-    const config = statusConfig[status];
+    const config = statusConfig[status as keyof typeof statusConfig];
     return <Badge className={config.className}>{config.label}</Badge>;
   };
 
-  const getPriorityBadge = (priority: Order['priority']) => {
+  const getPriorityBadge = (priority: string) => {
     const priorityConfig = {
       low: { label: "Низкий", className: "bg-gray-100 text-gray-800" },
       medium: { label: "Средний", className: "bg-blue-100 text-blue-800" },
@@ -115,19 +77,21 @@ export default function OrderManagement() {
       urgent: { label: "Срочно", className: "bg-red-100 text-red-800" }
     };
     
-    const config = priorityConfig[priority];
+    const config = priorityConfig[priority as keyof typeof priorityConfig];
     return <Badge variant="outline" className={config.className}>{config.label}</Badge>;
   };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.id.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+    await updateOrderStatus(orderId, newStatus);
+  };
+
+  const orderStats = {
+    total: orders.length,
+    new: orders.filter(o => o.status === 'new').length,
+    inProgress: orders.filter(o => o.status === 'in_progress').length,
+    completed: orders.filter(o => o.status === 'completed').length,
+    totalValue: orders.reduce((sum, o) => sum + o.amount, 0)
+  };
 
   return (
     <div className="space-y-6">
@@ -143,6 +107,79 @@ export default function OrderManagement() {
         </Button>
       </div>
 
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <DollarSign className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-slate-600">Всего заказов</p>
+                <p className="text-xl font-bold">{orderStats.total}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-yellow-600" />
+              </div>
+              <div>
+                <p className="text-sm text-slate-600">Новые</p>
+                <p className="text-xl font-bold">{orderStats.new}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Clock className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-slate-600">В работе</p>
+                <p className="text-xl font-bold">{orderStats.inProgress}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm text-slate-600">Завершено</p>
+                <p className="text-xl font-bold">{orderStats.completed}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <DollarSign className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <p className="text-sm text-slate-600">Общая сумма</p>
+                <p className="text-xl font-bold">₽{orderStats.totalValue.toLocaleString()}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Filters */}
       <Card>
         <CardContent className="p-6">
@@ -152,7 +189,7 @@ export default function OrderManagement() {
               <Input
                 placeholder="Поиск по клиенту, услуге, номеру заказа..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => searchOrders(e.target.value)}
                 className="pl-10"
               />
             </div>
@@ -169,10 +206,18 @@ export default function OrderManagement() {
                 <SelectItem value="cancelled">Отмененные</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline">
-              <Filter className="w-4 h-4 mr-2" />
-              Фильтры
-            </Button>
+            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Приоритет" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Все приоритеты</SelectItem>
+                <SelectItem value="low">Низкий</SelectItem>
+                <SelectItem value="medium">Средний</SelectItem>
+                <SelectItem value="high">Высокий</SelectItem>
+                <SelectItem value="urgent">Срочный</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
@@ -180,7 +225,7 @@ export default function OrderManagement() {
       {/* Orders Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Заказы ({filteredOrders.length})</CardTitle>
+          <CardTitle>Заказы ({orders.length})</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -197,7 +242,7 @@ export default function OrderManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredOrders.map((order) => (
+              {orders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -216,12 +261,28 @@ export default function OrderManagement() {
                     </div>
                   </TableCell>
                   <TableCell>{order.service}</TableCell>
-                  <TableCell>{getStatusBadge(order.status)}</TableCell>
+                  <TableCell>
+                    <Select 
+                      value={order.status} 
+                      onValueChange={(value) => handleStatusChange(order.id, value)}
+                    >
+                      <SelectTrigger className="w-32">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="new">Новый</SelectItem>
+                        <SelectItem value="in_progress">В работе</SelectItem>
+                        <SelectItem value="review">На проверке</SelectItem>
+                        <SelectItem value="completed">Завершен</SelectItem>
+                        <SelectItem value="cancelled">Отменен</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell>{getPriorityBadge(order.priority)}</TableCell>
                   <TableCell className="font-medium">₽{order.amount.toLocaleString()}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-slate-400" />
+                      <Calendar className="w-4 h-4 text-slate-400" />
                       {new Date(order.deadline).toLocaleDateString('ru-RU')}
                     </div>
                   </TableCell>
@@ -237,34 +298,65 @@ export default function OrderManagement() {
                             <Eye className="w-4 h-4" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
+                        <DialogContent className="max-w-3xl">
                           <DialogHeader>
                             <DialogTitle>Детали заказа {order.id}</DialogTitle>
                           </DialogHeader>
                           {selectedOrder && (
-                            <div className="space-y-4">
-                              <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                  <label className="text-sm font-medium text-slate-700">Клиент</label>
-                                  <p className="text-slate-900">{selectedOrder.clientName}</p>
-                                  <p className="text-sm text-slate-500">{selectedOrder.clientEmail}</p>
+                            <div className="space-y-6">
+                              <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                  <div>
+                                    <label className="text-sm font-medium text-slate-700">Клиент</label>
+                                    <div className="mt-1 p-3 bg-slate-50 rounded-lg">
+                                      <p className="font-medium">{selectedOrder.clientName}</p>
+                                      <p className="text-sm text-slate-500">{selectedOrder.clientEmail}</p>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium text-slate-700">Услуга</label>
+                                    <div className="mt-1 p-3 bg-slate-50 rounded-lg">
+                                      <p>{selectedOrder.service}</p>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div>
-                                  <label className="text-sm font-medium text-slate-700">Услуга</label>
-                                  <p className="text-slate-900">{selectedOrder.service}</p>
-                                </div>
-                                <div>
-                                  <label className="text-sm font-medium text-slate-700">Статус</label>
-                                  <div className="mt-1">{getStatusBadge(selectedOrder.status)}</div>
-                                </div>
-                                <div>
-                                  <label className="text-sm font-medium text-slate-700">Сумма</label>
-                                  <p className="text-slate-900 font-medium">₽{selectedOrder.amount.toLocaleString()}</p>
+                                <div className="space-y-4">
+                                  <div>
+                                    <label className="text-sm font-medium text-slate-700">Статус и приоритет</label>
+                                    <div className="mt-1 p-3 bg-slate-50 rounded-lg flex gap-2">
+                                      {getStatusBadge(selectedOrder.status)}
+                                      {getPriorityBadge(selectedOrder.priority)}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium text-slate-700">Финансы</label>
+                                    <div className="mt-1 p-3 bg-slate-50 rounded-lg">
+                                      <p className="font-semibold text-lg">₽{selectedOrder.amount.toLocaleString()}</p>
+                                      <p className="text-sm text-slate-500">Дедлайн: {new Date(selectedOrder.deadline).toLocaleDateString('ru-RU')}</p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                               <div>
-                                <label className="text-sm font-medium text-slate-700">Описание</label>
-                                <p className="text-slate-900 mt-1">{selectedOrder.description}</p>
+                                <label className="text-sm font-medium text-slate-700">Описание заказа</label>
+                                <div className="mt-1 p-4 bg-slate-50 rounded-lg">
+                                  <p className="text-slate-900">{selectedOrder.description}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between pt-4 border-t">
+                                <div className="text-sm text-slate-500">
+                                  Создан: {new Date(selectedOrder.createdAt).toLocaleDateString('ru-RU')}
+                                </div>
+                                <div className="flex gap-2">
+                                  <Button variant="outline">
+                                    <Edit className="w-4 h-4 mr-2" />
+                                    Редактировать
+                                  </Button>
+                                  <Button variant="outline">
+                                    <Download className="w-4 h-4 mr-2" />
+                                    Скачать
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           )}
@@ -282,6 +374,16 @@ export default function OrderManagement() {
               ))}
             </TableBody>
           </Table>
+          
+          {orders.length === 0 && (
+            <div className="text-center py-8 text-slate-500">
+              <DollarSign className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+              <p>Заказы не найдены</p>
+              {searchQuery && (
+                <p className="text-sm">Попробуйте изменить поисковый запрос</p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
