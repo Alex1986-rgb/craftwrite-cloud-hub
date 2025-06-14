@@ -1,15 +1,18 @@
 
 import { useState } from "react";
 import { SERVICES } from "@/data/services";
-import { FILTERS, FORMATS, LANGS, TOPICS } from "@/components/landing/ServicesCatalogSection";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import OrderForm from "@/components/order/OrderForm";
-import { ArrowLeft, Search, Filter, Star, Zap, Shield, Award, Sparkles } from "lucide-react";
+import OrderPageHero from "@/components/order/OrderPageHero";
+import OrderFilters from "@/components/order/OrderFilters";
+import OrderServiceGrid from "@/components/order/OrderServiceGrid";
+import OrderEmptyState from "@/components/order/OrderEmptyState";
+import OrderBackground from "@/components/order/OrderBackground";
+import { ArrowLeft } from "lucide-react";
 
 const seoText = `
 Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
@@ -40,6 +43,17 @@ export default function Order() {
       (topic === "all" || service.topic === topic)
     );
   });
+
+  const handleQuickOrder = () => {
+    setShowServiceCatalog(false);
+  };
+
+  const handleResetFilters = () => {
+    setCategory("all");
+    setFormat("all");
+    setLang("all");
+    setTopic("all");
+  };
 
   if (!showServiceCatalog) {
     return (
@@ -84,181 +98,30 @@ export default function Order() {
     <>
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/20 relative overflow-hidden">
-        {/* Ultra-modern background elements - responsive sizing */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/10 via-purple-400/8 to-pink-400/6 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-2/3 right-1/3 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-emerald-400/10 via-blue-400/8 to-purple-400/6 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-1/4 left-1/2 w-36 h-36 md:w-72 md:h-72 bg-gradient-to-r from-pink-400/8 via-orange-400/6 to-yellow-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          
-          {/* Advanced grid pattern - hidden on mobile */}
-          <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-          
-          {/* Floating particles - hidden on mobile */}
-          <div className="hidden lg:block absolute top-1/3 left-1/5 w-3 h-3 bg-blue-400/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-          <div className="hidden lg:block absolute top-2/3 right-1/4 w-2 h-2 bg-purple-400/40 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-          <div className="hidden lg:block absolute top-1/2 left-4/5 w-4 h-4 bg-emerald-400/25 rounded-full animate-bounce" style={{ animationDelay: '2.5s' }}></div>
-        </div>
+        <OrderBackground />
 
         <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-16 relative z-10">
-          {/* Hero Section - Mobile-first responsive */}
-          <div className="text-center mb-12 md:mb-20 animate-fade-in">
-            <div className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-blue-100/80 to-purple-100/80 text-blue-700 px-4 py-2 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-bold mb-6 md:mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <Star className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="hidden sm:inline">Элитная команда</span> SEO-экспертов
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent leading-tight tracking-tight px-2">
-              Каталог услуг <br />
-              <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">профессионального</span> копирайтинга
-            </h1>
-            
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium mb-6 md:mb-10 px-4">
-              Выберите подходящую услугу из нашего каталога или перейдите к быстрому оформлению заказа
-            </p>
-            
-            {/* Enhanced trust indicators - mobile responsive */}
-            <div className="flex flex-wrap justify-center items-center gap-3 md:gap-6 mb-6 md:mb-10 px-4">
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 px-3 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-emerald-200/50 shadow-lg backdrop-blur-sm">
-                <Shield className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">100% уникальность</span>
-              </div>
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 px-3 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-blue-200/50 shadow-lg backdrop-blur-sm">
-                <Zap className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">От 24 часов</span>
-              </div>
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 px-3 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-purple-200/50 shadow-lg backdrop-blur-sm">
-                <Award className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">30+ экспертов</span>
-              </div>
-            </div>
+          <OrderPageHero onQuickOrder={handleQuickOrder} />
 
-            <Button 
-              onClick={() => setShowServiceCatalog(false)}
-              size="lg"
-              className="relative shadow-2xl transition-all duration-700 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-400 hover:via-blue-400 hover:to-purple-400 px-6 py-4 md:px-12 md:py-7 text-base md:text-lg font-bold rounded-full hover:scale-105 md:hover:scale-110 hover:-translate-y-1 md:hover:-translate-y-2 hover:shadow-emerald-500/25 border-0"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-sm"></div>
-              <Sparkles className="w-4 h-4 md:w-5 md:h-5 mr-2 relative z-10" />
-              <span className="relative z-10">Быстрый заказ</span>
-            </Button>
-          </div>
+          <OrderFilters
+            category={category}
+            format={format}
+            lang={lang}
+            topic={topic}
+            filteredCount={filtered.length}
+            onCategoryChange={setCategory}
+            onFormatChange={setFormat}
+            onLangChange={setLang}
+            onTopicChange={setTopic}
+          />
 
-          {/* Ultra-Enhanced Filters - Mobile responsive */}
-          <Card className="p-4 md:p-10 mb-8 md:mb-16 shadow-2xl border-0 bg-gradient-to-br from-white/95 via-blue-50/30 to-purple-50/20 backdrop-blur-lg relative overflow-hidden animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5"></div>
-            <div className="absolute top-0 right-0 w-16 h-16 md:w-32 md:h-32 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-2xl"></div>
-            
-            <div className="relative z-10">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl md:rounded-2xl shadow-lg">
-                  <Filter className="w-5 h-5 md:w-7 md:h-7 text-white" />
-                </div>
-                <h3 className="text-xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Умные фильтры поиска
-                </h3>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-                {[
-                  { label: "Категория", value: category, setter: setCategory, options: FILTERS },
-                  { label: "Формат", value: format, setter: setFormat, options: FORMATS },
-                  { label: "Язык", value: lang, setter: setLang, options: LANGS },
-                  { label: "Тематика", value: topic, setter: setTopic, options: TOPICS }
-                ].map((filter, index) => (
-                  <div key={filter.label} className="animate-fade-in" style={{ animationDelay: `${0.1 * (index + 1)}s` }}>
-                    <label className="block text-sm font-bold mb-2 md:mb-4 text-slate-700">{filter.label}</label>
-                    <select
-                      value={filter.value}
-                      onChange={e => filter.setter(e.target.value)}
-                      className="w-full rounded-xl md:rounded-2xl border-2 border-slate-200/50 px-3 py-2 md:px-6 md:py-4 text-sm bg-white/90 backdrop-blur-sm hover:border-blue-300/60 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 shadow-lg font-medium"
-                    >
-                      {filter.options.map(option => 
-                        <option value={option.value} key={option.value}>{option.label}</option>
-                      )}
-                    </select>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4">
-                <div className="flex items-center gap-2">
-                  <Search className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
-                  <span className="text-slate-600 font-medium text-sm md:text-lg">
-                    Найдено услуг: <span className="font-bold text-blue-600 text-lg md:text-xl">{filtered.length}</span>
-                  </span>
-                </div>
-                <div className="flex gap-1 md:gap-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Ultra-Enhanced Service Cards - Responsive grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-10 mb-12 md:mb-20">
-            {filtered.map((service, index) => (
-              <Card 
-                key={service.slug} 
-                className="group p-4 md:p-8 hover:shadow-2xl transition-all duration-700 border-0 bg-gradient-to-br from-white/95 to-slate-50/30 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 md:hover:-translate-y-3 relative overflow-hidden animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Card background effects */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                <div className="absolute top-0 right-0 w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                
-                <div className="flex flex-col h-full relative z-10">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl md:rounded-3xl mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 shadow-lg">
-                    <Star className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  
-                  <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-slate-800 group-hover:text-blue-600 transition-colors duration-300 leading-tight">{service.name}</h3>
-                  <p className="text-slate-600 text-sm mb-4 md:mb-6 flex-grow line-clamp-3 leading-relaxed">{service.desc}</p>
-                  
-                  <div className="flex flex-col gap-3 md:gap-4">
-                    <Button asChild variant="outline" size="sm" className="border-2 border-slate-200/60 hover:border-blue-400/60 hover:bg-blue-50/80 transition-all duration-300 font-medium text-sm">
-                      <Link to={`/service/${service.slug}`}>Подробнее</Link>
-                    </Button>
-                    <Button 
-                      onClick={() => setShowServiceCatalog(false)}
-                      size="sm" 
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 font-semibold text-sm"
-                    >
-                      Заказать сейчас
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {filtered.length === 0 && (
-            <div className="text-center py-12 md:py-24 animate-fade-in px-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-gradient-to-r from-slate-100 to-slate-200 rounded-full mb-6 md:mb-8 shadow-lg">
-                <Search className="w-8 h-8 md:w-12 md:h-12 text-slate-400" />
-              </div>
-              <div className="text-2xl md:text-3xl font-bold text-slate-600 mb-4 md:mb-6">
-                По выбранным фильтрам услуги не найдены
-              </div>
-              <p className="text-slate-500 mb-6 md:mb-8 max-w-md mx-auto text-base md:text-lg">
-                Попробуйте изменить критерии поиска или сбросить все фильтры
-              </p>
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setCategory("all");
-                  setFormat("all");
-                  setLang("all");
-                  setTopic("all");
-                }}
-                className="px-6 py-3 md:px-10 md:py-4 text-base md:text-lg font-semibold border-2 border-blue-300/60 hover:border-blue-500 hover:bg-blue-50/80 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                Сбросить фильтры
-              </Button>
-            </div>
+          {filtered.length > 0 ? (
+            <OrderServiceGrid
+              services={filtered}
+              onOrderNow={handleQuickOrder}
+            />
+          ) : (
+            <OrderEmptyState onResetFilters={handleResetFilters} />
           )}
           
           <div className="animate-fade-in px-4" style={{ animationDelay: '1s' }}>
