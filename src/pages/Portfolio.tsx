@@ -7,10 +7,22 @@ import PortfolioFilters from "@/components/portfolio/PortfolioFilters";
 import FeaturedProjects from "@/components/portfolio/FeaturedProjects";
 import AllProjects from "@/components/portfolio/AllProjects";
 import PortfolioCTASection from "@/components/portfolio/PortfolioCTASection";
+import { portfolioProjects, portfolioCategories } from "@/data/portfolioProjects";
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Фильтруем проекты
+  const filteredProjects = portfolioProjects.filter(project => {
+    const matchesCategory = activeFilter === "all" || project.category === activeFilter;
+    const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         project.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Получаем избранные проекты
+  const featuredProjects = portfolioProjects.filter(project => project.featured);
 
   return (
     <>
@@ -23,18 +35,16 @@ export default function Portfolio() {
         
         <div className="container mx-auto px-4 py-8 md:py-16">
           <PortfolioFilters
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
+            categories={portfolioCategories}
+            selectedCategory={activeFilter}
+            onCategoryChange={setActiveFilter}
           />
           
           {searchQuery === "" && activeFilter === "all" && (
-            <FeaturedProjects />
+            <FeaturedProjects projects={featuredProjects} />
           )}
           
-          <AllProjects 
-            filter={activeFilter}
-            searchQuery={searchQuery}
-          />
+          <AllProjects projects={filteredProjects} />
           
           <PortfolioCTASection />
         </div>

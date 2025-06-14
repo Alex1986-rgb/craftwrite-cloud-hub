@@ -14,8 +14,13 @@ export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Получаем уникальные категории
-  const categories = ["all", ...new Set(blogPosts.map(post => post.category))];
+  // Получаем уникальные категории с подсчетом
+  const uniqueCategories = ["all", ...new Set(blogPosts.map(post => post.category))];
+  const categories = uniqueCategories.map(cat => ({
+    name: cat,
+    count: cat === "all" ? blogPosts.length : blogPosts.filter(post => post.category === cat).length,
+    color: "blue"
+  }));
 
   // Фильтруем посты
   const filteredPosts = blogPosts.filter(post => {
@@ -45,8 +50,7 @@ export default function Blog() {
           <BlogCategories
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            totalPosts={filteredPosts.length}
+            setSelectedCategory={setSelectedCategory}
           />
 
           {filteredPosts.length > 0 ? (

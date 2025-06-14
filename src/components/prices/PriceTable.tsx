@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Star, Zap, Crown } from "lucide-react";
@@ -66,14 +65,10 @@ const pricingPlans = [
 ];
 
 export default function PriceTable() {
-  const { createCheckoutSession, loading } = useStripeCheckout();
+  const { loading, handleStripeCheckout } = useStripeCheckout();
 
   const handleGetStarted = async (priceId: string) => {
-    await createCheckoutSession({
-      priceId,
-      successUrl: `${window.location.origin}/payment-success`,
-      cancelUrl: `${window.location.origin}/prices`
-    });
+    await handleStripeCheckout(priceId);
   };
 
   return (
