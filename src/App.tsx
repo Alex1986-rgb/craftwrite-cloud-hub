@@ -12,6 +12,7 @@ import Portfolio from "./pages/Portfolio";
 import Blog from "./pages/Blog";
 import Privacy from "./pages/Privacy";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
+import FormatDetailPage from "./pages/FormatDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/order" element={<Order />} />
           <Route path="/service/:slug" element={<ServiceDetailPage />} />
-          <Route path="/format/:slug" element={<import('./pages/FormatDetailPage').then(m => m.default)} />
+          <Route path="/format/:slug" element={<FormatDetailPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/portfolio" element={<Portfolio />} />
