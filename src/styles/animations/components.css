@@ -1,0 +1,41 @@
+
+/* Component-Specific Effects */
+@layer utilities {
+  .glass-effect {
+    backdrop-filter: blur(14px) saturate(160%);
+    background: rgba(255,255,255,0.48);
+    border: 1px solid rgba(209,213,219,0.16);
+  }
+
+  .glass-effect-dark {
+    backdrop-filter: blur(14px) saturate(160%);
+    background: rgba(15,23,42,0.48);
+    border: 1px solid rgba(148,163,184,0.16);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 4px 40px 0 #6366f1c0;
+  }
+
+  .shadow-glow-purple {
+    box-shadow: 0 6px 60px 0 #a21caf58;
+  }
+
+  .shadow-glow-green {
+    box-shadow: 0 6px 60px 0 #10b98158;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-mesh {
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+  }
+}

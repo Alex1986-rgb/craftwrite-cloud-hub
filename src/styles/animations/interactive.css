@@ -1,0 +1,28 @@
+
+/* Interactive & Hover Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-24px) scale(1.05);
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes morphing {
+  0%, 100% {
+    border-radius: 12px;
+  }
+  50% {
+    border-radius: 24px;
+  }
+}
