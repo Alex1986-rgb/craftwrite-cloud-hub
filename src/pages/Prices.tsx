@@ -187,10 +187,7 @@ export default function Prices() {
                   Рассчитайте точную стоимость вашего проекта с учетом всех параметров
                 </p>
               </header>
-              <PriceCalculator 
-                selectedService={selectedService}
-                onServiceChange={setSelectedService}
-              />
+              <PriceCalculator />
             </div>
           </section>
 

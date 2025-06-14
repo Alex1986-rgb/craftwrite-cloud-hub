@@ -57,14 +57,12 @@ const seoData = {
                 "@type": "Organization",
                 "name": SEO_CONFIG.siteName
               },
-              "dateCreated": project.date,
               "genre": project.category,
               "keywords": project.tags.join(", "),
-              "about": project.industry,
-              "hasPart": project.results.map(result => ({
+              "hasPart": Object.entries(project.metrics).map(([key, value]) => ({
                 "@type": "QuantitativeValue",
-                "name": result.metric,
-                "value": result.value
+                "name": key,
+                "value": value
               }))
             }
           }))
@@ -103,14 +101,14 @@ export default function Portfolio() {
   }, []);
 
   const industries = useMemo(() => {
-    const inds = Array.from(new Set(portfolioProjects.map(project => project.industry)));
+    const inds = Array.from(new Set(portfolioProjects.map(project => project.category))); // Using category as industry since industry doesn't exist
     return ["all", ...inds];
   }, []);
 
   const filteredProjects = useMemo(() => {
     return portfolioProjects.filter(project => {
       const matchesCategory = selectedCategory === "all" || project.category === selectedCategory;
-      const matchesIndustry = selectedIndustry === "all" || project.industry === selectedIndustry;
+      const matchesIndustry = selectedIndustry === "all" || project.category === selectedIndustry;
       const matchesSearch = !searchQuery || 
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -152,7 +150,10 @@ export default function Portfolio() {
             aria-labelledby="portfolio-hero-heading"
             role="banner"
           >
-            <PortfolioHero />
+            <PortfolioHero 
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+            />
           </section>
 
           {/* Featured Projects */}
@@ -216,7 +217,6 @@ export default function Portfolio() {
               
               <AllProjects 
                 projects={filteredProjects}
-                searchQuery={searchQuery}
               />
             </div>
           </section>

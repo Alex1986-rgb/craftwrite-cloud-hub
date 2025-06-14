@@ -68,7 +68,7 @@ const seoData = {
           "image": post.image,
           "articleSection": post.category,
           "keywords": post.tags.join(", "),
-          "wordCount": post.readTime * 250
+          "wordCount": parseInt(post.readTime) * 250
         }))
       },
       {
@@ -205,12 +205,9 @@ export default function Blog() {
               {filteredPosts.length > 0 ? (
                 <BlogPostGrid 
                   posts={filteredPosts}
-                  searchQuery={searchQuery}
                 />
               ) : (
                 <BlogEmptyState 
-                  searchQuery={searchQuery}
-                  selectedCategory={selectedCategory}
                   onReset={() => {
                     setSearchQuery("");
                     setSelectedCategory("all");
