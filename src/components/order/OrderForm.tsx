@@ -243,7 +243,7 @@ export default function OrderForm() {
               ) : (
                 <OrderFormActions
                   loading={loading}
-                  isFormValid={isFormValid}
+                  isFormValid={isFormValid()}
                   showValidationSuccess={showValidationSuccess}
                   setShowValidationSuccess={setShowValidationSuccess}
                   handleSubmit={handleSubmit}
