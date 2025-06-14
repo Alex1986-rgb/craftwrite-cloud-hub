@@ -22,7 +22,7 @@ const seoText = `
 `;
 
 const Prices = () => {
-  const { loading, error, handleStripeCheckout } = useStripeCheckout();
+  const { loading, handleStripeCheckout } = useStripeCheckout();
   const [processingId, setProcessingId] = useState<string | null>(null);
 
   const handlePayClick = (priceId: string) => {
@@ -57,7 +57,7 @@ const Prices = () => {
                     <td className="py-4 px-4 text-right">
                       <Button
                         onClick={() => handlePayClick(item.priceId)}
-                        disabled={loading}
+                        disabled={loading && processingId === item.priceId}
                         className="w-full sm:w-auto"
                       >
                         {loading && processingId === item.priceId
@@ -70,9 +70,6 @@ const Prices = () => {
               </tbody>
             </table>
           </div>
-          {error && (
-            <div className="text-red-500 text-center mt-4">{error}</div>
-          )}
           <div className="text-center mt-8">
             Для крупных или уникальных заказов&nbsp;
             <span className="italic text-primary">

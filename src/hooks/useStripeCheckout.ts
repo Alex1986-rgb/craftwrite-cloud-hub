@@ -1,24 +1,23 @@
 
 import { useState } from "react";
 import { createStripeCheckoutSession } from "@/api/payments";
+import { toast } from "@/components/ui/sonner";
 
 type CheckoutResult = {
   loading: boolean;
-  error: string | null;
   handleStripeCheckout: (priceId: string) => Promise<void>;
 };
 
 /**
  * Custom hook to initiate Stripe Checkout flow.
  * Business logic is handled in src/api/payments.ts.
+ * It now uses toast notifications for error feedback.
  */
 export function useStripeCheckout(): CheckoutResult {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleStripeCheckout = async (priceId: string) => {
     setLoading(true);
-    setError(null);
 
     const { url, error: apiError } = await createStripeCheckoutSession({
       priceId,
@@ -29,10 +28,10 @@ export function useStripeCheckout(): CheckoutResult {
     if (url) {
       window.location.href = url;
     } else {
-      setError(apiError || "Ошибка при создании платежа. Попробуйте позже.");
+      toast.error(apiError || "Ошибка при создании платежа. Попробуйте позже.");
       setLoading(false);
     }
   };
 
-  return { loading, error, handleStripeCheckout };
+  return { loading, handleStripeCheckout };
 }
