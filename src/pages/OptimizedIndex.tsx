@@ -6,6 +6,7 @@ import LazySection from "@/components/common/LazySection";
 import SectionSkeleton from "@/components/common/SectionSkeleton";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import SupportWidget from "@/components/common/SupportWidget";
+import AiAssistant from "@/components/ai/AiAssistant";
 import { lazy, Suspense } from "react";
 
 // Optimized lazy loading with better chunking
@@ -132,6 +133,9 @@ export default function OptimizedIndex() {
       
       {/* Support Widget */}
       <SupportWidget />
+      
+      {/* AI Assistant */}
+      <AiAssistant />
     </>
   );
 }
