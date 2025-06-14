@@ -1,7 +1,43 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Globe, ShoppingCart, Mail, MessageCircle, Star, Zap, Target, CheckCircle } from "lucide-react";
+
+// Filter options for the Order page
+export const FILTERS = [
+  { value: "all", label: "Все категории" },
+  { value: "seo", label: "SEO-тексты" },
+  { value: "commercial", label: "Коммерческие тексты" },
+  { value: "social", label: "Соцсети" },
+  { value: "corporate", label: "Корпоративные тексты" }
+];
+
+export const FORMATS = [
+  { value: "all", label: "Все форматы" },
+  { value: "article", label: "Статьи" },
+  { value: "landing", label: "Лендинги" },
+  { value: "product", label: "Карточки товаров" },
+  { value: "email", label: "Email-рассылки" },
+  { value: "social", label: "Посты для соцсетей" },
+  { value: "corporate", label: "Корпоративные материалы" }
+];
+
+export const LANGS = [
+  { value: "all", label: "Все языки" },
+  { value: "ru", label: "Русский" },
+  { value: "en", label: "Английский" },
+  { value: "ua", label: "Украинский" }
+];
+
+export const TOPICS = [
+  { value: "all", label: "Все тематики" },
+  { value: "tech", label: "Технологии" },
+  { value: "business", label: "Бизнес" },
+  { value: "health", label: "Здоровье" },
+  { value: "finance", label: "Финансы" },
+  { value: "education", label: "Образование" },
+  { value: "ecommerce", label: "E-commerce" },
+  { value: "marketing", label: "Маркетинг" }
+];
 
 const services = [
   {
