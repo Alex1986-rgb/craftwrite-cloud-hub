@@ -1,6 +1,6 @@
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +10,8 @@ import OrderServiceCard from "@/components/order/OrderServiceCard";
 import OrderQuestionGroup from "@/components/order/OrderQuestionGroup";
 import OrderFormHeader from "@/components/order/OrderFormHeader";
 import OrderProgressBar from "@/components/order/OrderProgressBar";
+import { SERVICES, SERVICE_QUESTIONS, getDefaultAdditional } from "@/data/orderQuestions";
+import { useOrderProgress } from "@/hooks/useOrderProgress";
 
 // Возможные услуги
 const SERVICES = [
@@ -144,42 +146,8 @@ const Order = () => {
   // Дополнительные вопросы для выбранной услуги
   const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
 
-  // Следим за прогрессом — если впервые 100%, запускаем flash
-  const [showProgressFlash, setShowProgressFlash] = useState(false);
-  useEffect(() => {
-    const progress = calcProgress();
-    if (progress === 100) {
-      setShowProgressFlash(true);
-    }
-  }, [
-    form.name,
-    form.email,
-    form.service,
-    form.details,
-    form.additional,
-    // Можно добавить сюда другие поля, если появятся в будущем
-  ]);
-
-  // Функция для вычисления прогресса заполнения формы
-  function calcProgress() {
-    let steps = 4; // name, email, service, details
-    let score = 0;
-    if (form.name.trim()) score++;
-    if (form.email.trim()) score++;
-    if (form.service.trim()) score++;
-    if (form.details.trim()) score++;
-    // дополнительные вопросы, если есть
-    const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
-    if (currentQuestions.length > 0) {
-      steps += currentQuestions.length;
-      currentQuestions.forEach(q => {
-        if (form.additional[q.label] && form.additional[q.label].trim()) score++;
-      });
-    }
-    let percent = Math.round((score / steps) * 100);
-    if (percent > 100) percent = 100;
-    return percent;
-  }
+  // --- теперь используем хук ---
+  const { calcProgress, showProgressFlash, setShowProgressFlash } = useOrderProgress(form);
 
   return (
     <>
