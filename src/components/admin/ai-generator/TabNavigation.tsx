@@ -1,11 +1,12 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wand2, Library, Bookmark, MessageSquare } from "lucide-react";
+import { Wand2, Library, Bookmark, MessageSquare, History } from "lucide-react";
 import GenerationForm from "./GenerationForm";
 import ResultDisplay from "./ResultDisplay";
 import TemplateLibrary from "./TemplateLibrary";
 import PresetManager from "./PresetManager";
 import PromptLibrary from "./PromptLibrary";
+import GenerationHistory from "./GenerationHistory";
 
 interface FormData {
   prompt: string;
@@ -20,6 +21,20 @@ interface FormData {
   seoOptimized: boolean;
 }
 
+interface GenerationHistoryItem {
+  id: string;
+  title: string;
+  content: string;
+  contentType: string;
+  createdAt: Date;
+  wordCount: number;
+  parameters: {
+    tone: string;
+    audience: string;
+    keywords: string;
+  };
+}
+
 interface TabNavigationProps {
   formData: FormData;
   setFormData: (data: FormData | ((prev: FormData) => FormData)) => void;
@@ -32,6 +47,11 @@ interface TabNavigationProps {
   onSavePreset: (preset: any) => void;
   onSelectPrompt: (prompt: string) => void;
   selectedContentType?: any;
+  generationHistory: GenerationHistoryItem[];
+  onSaveResult: (title: string) => void;
+  onSelectHistoryResult: (content: string) => void;
+  onSaveHistoryResult: (item: Omit<GenerationHistoryItem, 'id' | 'createdAt'>) => void;
+  onDeleteHistoryResult: (id: string) => void;
 }
 
 export default function TabNavigation({
@@ -45,11 +65,16 @@ export default function TabNavigation({
   onApplyPreset,
   onSavePreset,
   onSelectPrompt,
-  selectedContentType
+  selectedContentType,
+  generationHistory,
+  onSaveResult,
+  onSelectHistoryResult,
+  onSaveHistoryResult,
+  onDeleteHistoryResult
 }: TabNavigationProps) {
   return (
     <Tabs defaultValue="generator" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="generator" className="flex items-center gap-2">
           <Wand2 className="w-4 h-4" />
           Генератор
@@ -66,6 +91,10 @@ export default function TabNavigation({
           <MessageSquare className="w-4 h-4" />
           Промпты
         </TabsTrigger>
+        <TabsTrigger value="history" className="flex items-center gap-2">
+          <History className="w-4 h-4" />
+          История
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="generator" className="space-y-6">
@@ -80,6 +109,9 @@ export default function TabNavigation({
             generatedText={generatedText}
             setGeneratedText={setGeneratedText}
             selectedContentType={selectedContentType}
+            formData={formData}
+            onSaveResult={onSaveResult}
+            onRegenerate={onGenerate}
           />
         </div>
         <PresetManager
@@ -103,6 +135,15 @@ export default function TabNavigation({
 
       <TabsContent value="prompts">
         <PromptLibrary onSelectPrompt={onSelectPrompt} />
+      </TabsContent>
+
+      <TabsContent value="history">
+        <GenerationHistory
+          history={generationHistory}
+          onSelectResult={onSelectHistoryResult}
+          onSaveResult={onSaveHistoryResult}
+          onDeleteResult={onDeleteHistoryResult}
+        />
       </TabsContent>
     </Tabs>
   );

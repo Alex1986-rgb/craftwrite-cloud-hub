@@ -1,12 +1,26 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Bot, FileText, Mail, MessageSquare, Users } from "lucide-react";
 import TabNavigation from "./ai-generator/TabNavigation";
 
+interface GenerationHistoryItem {
+  id: string;
+  title: string;
+  content: string;
+  contentType: string;
+  createdAt: Date;
+  wordCount: number;
+  parameters: {
+    tone: string;
+    audience: string;
+    keywords: string;
+  };
+}
+
 export default function AITextGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState("");
+  const [generationHistory, setGenerationHistory] = useState<GenerationHistoryItem[]>([]);
   const [formData, setFormData] = useState({
     prompt: "",
     textType: "",
@@ -74,6 +88,42 @@ ${formData.includeCTA ? 'Призыв к действию: Закажите пр
     }, 3000);
   };
 
+  const handleSaveResult = (title: string) => {
+    const newHistoryItem: GenerationHistoryItem = {
+      id: Date.now().toString(),
+      title,
+      content: generatedText,
+      contentType: contentTypes.find(t => t.value === formData.textType)?.label || 'Неизвестный тип',
+      createdAt: new Date(),
+      wordCount: generatedText.split(' ').length,
+      parameters: {
+        tone: toneOptions.find(t => t.value === formData.tone)?.label || 'не указан',
+        audience: audienceOptions.find(a => a.value === formData.audience)?.label || 'не указана',
+        keywords: formData.keywords
+      }
+    };
+
+    setGenerationHistory(prev => [newHistoryItem, ...prev]);
+  };
+
+  const handleSelectHistoryResult = (content: string) => {
+    setGeneratedText(content);
+  };
+
+  const handleSaveHistoryResult = (item: Omit<GenerationHistoryItem, 'id' | 'createdAt'>) => {
+    const updatedItem: GenerationHistoryItem = {
+      ...item,
+      id: Date.now().toString(),
+      createdAt: new Date()
+    };
+    
+    setGenerationHistory(prev => [updatedItem, ...prev]);
+  };
+
+  const handleDeleteHistoryResult = (id: string) => {
+    setGenerationHistory(prev => prev.filter(item => item.id !== id));
+  };
+
   const handleApplyTemplate = (template: any) => {
     setFormData(prev => ({
       ...prev,
@@ -132,6 +182,11 @@ ${formData.includeCTA ? 'Призыв к действию: Закажите пр
         onSavePreset={handleSavePreset}
         onSelectPrompt={handleSelectPrompt}
         selectedContentType={selectedContentType}
+        generationHistory={generationHistory}
+        onSaveResult={handleSaveResult}
+        onSelectHistoryResult={handleSelectHistoryResult}
+        onSaveHistoryResult={handleSaveHistoryResult}
+        onDeleteHistoryResult={handleDeleteHistoryResult}
       />
     </div>
   );
