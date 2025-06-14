@@ -140,7 +140,8 @@ const blogPosts = {
 
 export default function BlogDetail() {
   const { id } = useParams();
-  const post = blogPosts[id as keyof typeof blogPosts];
+  const postId = id ? parseInt(id, 10) : null;
+  const post = postId && postId in blogPosts ? blogPosts[postId as keyof typeof blogPosts] : null;
 
   if (!post) {
     return (
@@ -272,7 +273,7 @@ export default function BlogDetail() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {post.relatedPosts.map((relatedId) => {
-                const relatedPost = blogPosts[relatedId as keyof typeof blogPosts];
+                const relatedPost = relatedId in blogPosts ? blogPosts[relatedId as keyof typeof blogPosts] : null;
                 if (!relatedPost) return null;
                 
                 return (

@@ -115,7 +115,8 @@ const portfolioDetails = {
 
 export default function PortfolioDetail() {
   const { id } = useParams();
-  const project = portfolioDetails[id as keyof typeof portfolioDetails];
+  const projectId = id ? parseInt(id, 10) : null;
+  const project = projectId && projectId in portfolioDetails ? portfolioDetails[projectId as keyof typeof portfolioDetails] : null;
 
   if (!project) {
     return (
