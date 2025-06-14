@@ -1,7 +1,9 @@
 
 // Main SEO texts export file
 import { CONTENT_MARKETING_SEO } from "./seo/contentMarketing";
-import { SELLING_COPY_SEO } from "./seo/sellingCopy";
+import { LANDING_PAGES_SEO } from "./seo/landingPages";
+import { WEB_COPYWRITING_SEO } from "./seo/webCopywriting";
+import { SALES_SCRIPTS_SEO } from "./seo/salesScripts";
 import { ECOMMERCE_SEO } from "./seo/ecommerce";
 import { SOCIAL_MEDIA_SEO } from "./seo/socialMedia";
 import { EMAIL_MARKETING_SEO } from "./seo/emailMarketing";
@@ -14,8 +16,14 @@ export const SEO_TEXTS = {
   // Content Marketing
   ...CONTENT_MARKETING_SEO,
   
-  // Selling Copy
-  ...SELLING_COPY_SEO,
+  // Landing Pages
+  ...LANDING_PAGES_SEO,
+  
+  // Web Copywriting
+  ...WEB_COPYWRITING_SEO,
+  
+  // Sales Scripts
+  ...SALES_SCRIPTS_SEO,
   
   // E-commerce
   ...ECOMMERCE_SEO,
@@ -39,12 +47,10 @@ export const SEO_TEXTS = {
   ...TECHNICAL_DOCS_SEO,
 
   // Additional services with placeholder texts (to be expanded)
-  "sales-script": SELLING_COPY_SEO["sales-script"] || `**Скрипты продаж - профессиональные сценарии для увеличения конверсии**`,
   "telegram-channel": `**Telegram-канал: стратегия контента для максимального охвата и монетизации**`,
   
   // Default fallback for any missing services
   "seo-article": CONTENT_MARKETING_SEO["seo-article"] || `**SEO-статьи - ваш путь на первые позиции поисковых систем**`,
-  "web-copy": SELLING_COPY_SEO["web-copy"] || `**Веб-копирайтинг - тексты, которые конвертируют посетителей в клиентов**`,
   "case-study": CONTENT_MARKETING_SEO["case-study"] || `**Кейс-стади - истории успеха, которые убеждают лучше любой рекламы**`,
   "commercial-proposal": BUSINESS_DOCUMENTS_SEO["commercial-proposal"],
   "press-release": BUSINESS_DOCUMENTS_SEO["press-release"],  
@@ -57,7 +63,9 @@ export const SEO_TEXTS = {
 // For backward compatibility - export individual categories
 export {
   CONTENT_MARKETING_SEO,
-  SELLING_COPY_SEO,
+  LANDING_PAGES_SEO,
+  WEB_COPYWRITING_SEO,
+  SALES_SCRIPTS_SEO,
   ECOMMERCE_SEO,
   SOCIAL_MEDIA_SEO,
   EMAIL_MARKETING_SEO,
