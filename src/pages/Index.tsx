@@ -11,7 +11,7 @@ import BenefitsSection from "@/components/landing/BenefitsSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { Button } from "@/components/ui/button";
-import { Rocket, ArrowRight, Sparkles, Target, Star } from "lucide-react";
+import { Rocket, ArrowRight, Sparkles, Target, Star, Shield, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 
