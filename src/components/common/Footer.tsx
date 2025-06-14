@@ -1,6 +1,8 @@
 
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Clock, Shield, Award } from "lucide-react";
+import { Sparkles, Mail, Clock, Shield, Award, Phone } from "lucide-react";
+import SocialLinks from "./SocialLinks";
+import DeveloperInfo from "./DeveloperInfo";
 
 const footerLinks = [
   { label: "Главная", to: "/" },
@@ -64,7 +66,7 @@ export default function Footer() {
               </p>
 
               {/* Trust Indicators */}
-              <div className="space-y-3">
+              <div className="space-y-3 mb-6">
                 {trustIndicators.map((item, index) => (
                   <div key={index} className="flex items-center gap-3 text-sm">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
@@ -76,6 +78,12 @@ export default function Footer() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Social Links */}
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-4 text-sm">Мы в соцсетях</h4>
+                <SocialLinks variant="default" />
               </div>
             </div>
 
@@ -95,10 +103,29 @@ export default function Footer() {
               </nav>
             </div>
 
-            {/* More Links */}
+            {/* Contact & More Links */}
             <div>
-              <h3 className="font-bold text-slate-800 mb-6">Дополнительно</h3>
-              <nav className="space-y-3">
+              <h3 className="font-bold text-slate-800 mb-6">Контакты</h3>
+              
+              <div className="space-y-3 mb-6">
+                <a 
+                  href="tel:+79257338648"
+                  className="flex items-center gap-2 text-slate-600 hover:text-green-600 transition-colors duration-300 text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  +7 (925) 733-86-48
+                </a>
+                
+                <a 
+                  href="mailto:optteem@mail.ru"
+                  className="flex items-center gap-2 text-slate-600 hover:text-purple-600 transition-colors duration-300 text-sm"
+                >
+                  <Mail className="w-4 h-4" />
+                  optteem@mail.ru
+                </a>
+              </div>
+
+              <div className="space-y-3">
                 {footerLinks.slice(4).map((link) => (
                   <Link
                     to={link.to}
@@ -108,20 +135,13 @@ export default function Footer() {
                     {link.label}
                   </Link>
                 ))}
-              </nav>
-
-              {/* Contact */}
-              <div className="mt-6 pt-6 border-t border-slate-200">
-                <h4 className="font-semibold text-slate-800 mb-3 text-sm">Контакты</h4>
-                <a 
-                  href="mailto:info@copyprocloud.ru"
-                  className="flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors duration-300 text-sm"
-                >
-                  <Mail className="w-4 h-4" />
-                  info@copyprocloud.ru
-                </a>
               </div>
             </div>
+          </div>
+
+          {/* Developer Info Section */}
+          <div className="mt-12 pt-8 border-t border-slate-200/50">
+            <DeveloperInfo variant="compact" className="mb-8" />
           </div>
         </div>
 

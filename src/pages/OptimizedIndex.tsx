@@ -1,4 +1,3 @@
-
 import OptimizedHeader from "@/components/common/OptimizedHeader";
 import Footer from "@/components/common/Footer";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
@@ -128,6 +127,9 @@ export default function OptimizedIndex() {
         </div>
       </main>
       <Footer />
+      
+      {/* Support Widget */}
+      <SupportWidget />
     </>
   );
 }
