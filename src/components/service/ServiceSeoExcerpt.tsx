@@ -1,15 +1,23 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ServiceSeoExcerptEnhanced } from "./ServiceSeoExcerptEnhanced";
 
 interface ServiceSeoExcerptProps {
   seoText: string;
+  serviceName?: string;
 }
 
-export const ServiceSeoExcerpt = ({ seoText }: ServiceSeoExcerptProps) => {
-  const [expanded, setExpanded] = useState(false);
+export const ServiceSeoExcerpt = ({ seoText, serviceName = "услуги" }: ServiceSeoExcerptProps) => {
+  // Проверяем, содержит ли текст расширенную разметку
+  const hasEnhancedContent = seoText.includes('📊') || seoText.includes('```') || seoText.includes('**');
+  
+  if (hasEnhancedContent) {
+    return <ServiceSeoExcerptEnhanced seoText={seoText} serviceName={serviceName} />;
+  }
 
-  // Первый абзац — до первой двойной новой строки/абзаца
+  // Fallback для простых текстов
+  const [expanded, setExpanded] = useState(false);
   const firstPara = seoText.split(/\n\s*\n/)[0];
   const rest = seoText.substring(firstPara.length).trim();
 
