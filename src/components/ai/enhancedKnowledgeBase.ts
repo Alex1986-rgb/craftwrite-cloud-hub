@@ -26,22 +26,23 @@ export const baseKnowledge = {
 // Генерация знаний из услуг
 export const servicesKnowledge = SERVICES.reduce((acc, service) => {
   const keywords = [
-    service.title.toLowerCase(),
+    service.name.toLowerCase(),
     service.category.toLowerCase(),
     ...service.tags.map(tag => tag.toLowerCase()),
     service.slug
   ].join(',');
   
-  const description = `${service.title} - ${service.shortDescription}
+  const description = `${service.name} - ${service.desc}
   
-  📝 Описание: ${service.description}
-  💰 Цена: от ${service.price}
-  ⏰ Срок: ${service.deliveryTime}
+  📝 Описание: ${service.detail}
+  💰 Цена: от ${service.price.min}${service.price.currency} до ${service.price.max}${service.price.currency}
+  ⏰ Срок: ${service.deliveryTime.min}-${service.deliveryTime.max} ${service.deliveryTime.unit}
   
   Что включено:
   ${service.features.map(f => `• ${f}`).join('\n')}
   
-  ${service.benefits ? `Преимущества:\n${service.benefits.map(b => `✓ ${b}`).join('\n')}` : ''}`;
+  Правила выполнения:
+  ${service.rules.map(r => `✓ ${r}`).join('\n')}`;
   
   acc[keywords] = description;
   return acc;
@@ -91,7 +92,7 @@ export const orderProcessKnowledge = {
   6️⃣ Получите готовый текст с отчетом об уникальности
   7️⃣ Бесплатные правки в течение 30 дней
   
-  Доступные услуги: ${SERVICES.map(s => s.title).join(', ')}`
+  Доступные услуги: ${SERVICES.map(s => s.name).join(', ')}`
 };
 
 // Специальные предложения и рекомендации
@@ -159,12 +160,12 @@ export const getServiceRecommendations = (userMessage: string): string[] => {
 // Функция расчета примерной стоимости
 export const calculateEstimate = (serviceType: string, details: string): string => {
   const service = SERVICES.find(s => 
-    s.title.toLowerCase().includes(serviceType.toLowerCase()) ||
+    s.name.toLowerCase().includes(serviceType.toLowerCase()) ||
     s.category.toLowerCase().includes(serviceType.toLowerCase())
   );
   
   if (service) {
-    return `Примерная стоимость ${service.title}: от ${service.price}. Срок выполнения: ${service.deliveryTime}. Для точного расчета нужно обсудить детали проекта.`;
+    return `Примерная стоимость ${service.name}: от ${service.price.min}${service.price.currency} до ${service.price.max}${service.price.currency}. Срок выполнения: ${service.deliveryTime.min}-${service.deliveryTime.max} ${service.deliveryTime.unit}. Для точного расчета нужно обсудить детали проекта.`;
   }
   
   return "Для расчета стоимости мне нужно больше информации о вашем проекте. Опишите подробнее ваши задачи.";
