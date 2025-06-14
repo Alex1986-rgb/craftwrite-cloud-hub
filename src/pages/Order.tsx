@@ -141,6 +141,25 @@ const Order = () => {
     }, 1300);
   };
 
+  // Дополнительные вопросы для выбранной услуги
+  const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
+
+  // Следим за прогрессом — если впервые 100%, запускаем flash
+  const [showProgressFlash, setShowProgressFlash] = useState(false);
+  useEffect(() => {
+    const progress = calcProgress();
+    if (progress === 100) {
+      setShowProgressFlash(true);
+    }
+  }, [
+    form.name,
+    form.email,
+    form.service,
+    form.details,
+    form.additional,
+    // Можно добавить сюда другие поля, если появятся в будущем
+  ]);
+
   // Функция для вычисления прогресса заполнения формы
   function calcProgress() {
     let steps = 4; // name, email, service, details
@@ -162,9 +181,6 @@ const Order = () => {
     return percent;
   }
 
-  // Дополнительные вопросы для выбранной услуги
-  const currentQuestions = SERVICE_QUESTIONS[form.service] || [];
-
   return (
     <>
       <Header />
@@ -179,7 +195,11 @@ const Order = () => {
           autoComplete="off"
         >
           {/* Новый прогресс-бар */}
-          <OrderProgressBar progress={calcProgress()} />
+          <OrderProgressBar
+            progress={calcProgress()}
+            flash={showProgressFlash}
+            onFlashEnd={() => setShowProgressFlash(false)}
+          />
           <OrderFormHeader />
           {/* Бейдж выбранной услуги с иконкой */}
           <div className="mx-auto flex flex-col items-center -mt-3 mb-3 animate-fade-in">
