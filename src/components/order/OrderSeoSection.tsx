@@ -41,16 +41,64 @@ const seoText = `
 
 export default function OrderSeoSection() {
   return (
-    <section className="animate-fade-in px-4 mt-20" style={{ animationDelay: '0.6s' }} aria-label="О наших услугах">
-      <div className="max-w-4xl mx-auto">
+    <section className="animate-fade-in px-4 mt-20" style={{ animationDelay: '0.6s' }} aria-labelledby="seo-section-heading">
+      <article className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-4">
+          <h2 
+            id="seo-section-heading"
+            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-4"
+          >
             Профессиональный копирайтинг для вашего бизнеса
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" aria-hidden="true"></div>
         </header>
-        <SeoTextExpandable text={seoText} />
-      </div>
+        
+        <div role="region" aria-label="Подробная информация о наших услугах">
+          <SeoTextExpandable text={seoText} />
+        </div>
+        
+        {/* Structured data for SEO */}
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "name": "Профессиональный копирайтинг",
+              "description": "Заказ качественных текстов для бизнеса: SEO-статьи, лендинги, описания товаров",
+              "provider": {
+                "@type": "Organization",
+                "name": "CopyPro Cloud",
+                "url": "https://copypro.cloud"
+              },
+              "serviceType": "Copywriting",
+              "areaServed": "RU",
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Каталог копирайтинг услуг",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "SEO-статьи",
+                      "description": "Оптимизированные под поисковые запросы статьи"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service", 
+                      "name": "Лендинги",
+                      "description": "Продающие страницы с высокой конверсией"
+                    }
+                  }
+                ]
+              }
+            })
+          }}
+        />
+      </article>
     </section>
   );
 }

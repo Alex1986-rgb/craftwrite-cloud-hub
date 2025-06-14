@@ -116,7 +116,8 @@ export const generateWebPageStructuredData = (page: any) => {
     },
     about: page.about,
     keywords: page.keywords,
-    dateModified: new Date().toISOString()
+    dateModified: new Date().toISOString(),
+    mainEntity: page.mainEntity
   });
 };
 
@@ -153,5 +154,26 @@ export const generateLocalBusinessStructuredData = () => {
       worstRating: "1"
     },
     openingHours: "Mo,Tu,We,Th,Fr 09:00-18:00"
+  });
+};
+
+// Дополнительные функции для расширенной SEO-оптимизации
+export const generateServiceCatalogStructuredData = (services: any[]) => {
+  return generateStructuredData("CollectionPage", {
+    name: "Каталог копирайтинг услуг",
+    description: "Полный каталог профессиональных копирайтинг услуг",
+    url: `${SEO_CONFIG.baseUrl}/order`,
+    inLanguage: "ru",
+    hasPart: services.map(service => ({
+      "@type": "Service",
+      name: service.name,
+      description: service.desc,
+      category: service.category,
+      offers: {
+        "@type": "Offer",
+        price: service.price.min,
+        priceCurrency: "RUB"
+      }
+    }))
   });
 };

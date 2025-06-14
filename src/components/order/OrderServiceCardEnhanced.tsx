@@ -40,7 +40,13 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
   const popularityPercentage = (service.popularity / 5) * 100;
   
   return (
-    <Card className="group relative overflow-hidden border-2 hover:border-blue-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white/95 backdrop-blur-sm h-full flex flex-col">
+    <Card 
+      className="group relative overflow-hidden border-2 hover:border-blue-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white/95 backdrop-blur-sm h-full flex flex-col"
+      role="article"
+      aria-labelledby={`service-title-${service.slug}`}
+      itemScope 
+      itemType="https://schema.org/Service"
+    >
       {/* Decorative gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
       
@@ -67,18 +73,25 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
           </div>
         </div>
         
-        <CardTitle className="text-lg font-bold text-gray-900 leading-tight mb-2 group-hover:text-blue-700 transition-colors">
+        <CardTitle 
+          id={`service-title-${service.slug}`}
+          className="text-lg font-bold text-gray-900 leading-tight mb-2 group-hover:text-blue-700 transition-colors"
+          itemProp="name"
+        >
           {service.name}
         </CardTitle>
         
-        <CardDescription className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+        <CardDescription 
+          className="text-sm text-gray-600 leading-relaxed line-clamp-3"
+          itemProp="description"
+        >
           {service.desc}
         </CardDescription>
       </CardHeader>
 
       <CardContent className="relative z-10 flex-1 space-y-4">
         {/* Popularity indicator */}
-        <div className="space-y-2">
+        <div className="space-y-2" role="group" aria-label="Показатель популярности услуги">
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600 flex items-center gap-1">
               <TrendingUp className="w-4 h-4" aria-hidden="true" />
@@ -90,6 +103,10 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
             value={popularityPercentage} 
             className="h-2 bg-gray-100"
             aria-label={`Популярность услуги: ${popularityPercentage.toFixed(0)}%`}
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={popularityPercentage}
           />
         </div>
 
@@ -97,29 +114,40 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
 
         {/* Tags */}
         {service.tags && service.tags.length > 0 && (
-          <div className="space-y-2">
+          <section className="space-y-2" aria-label="Ключевые особенности услуги">
             <h4 className="text-sm font-medium text-gray-700">Ключевые особенности:</h4>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1" role="list">
               {service.tags.slice(0, 3).map((tag, index) => (
                 <Badge 
                   key={index} 
                   variant="outline" 
                   className="text-xs px-2 py-1 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors"
+                  role="listitem"
                 >
                   {tag}
                 </Badge>
               ))}
               {service.tags.length > 3 && (
-                <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-50 text-gray-600 border-gray-200">
+                <Badge 
+                  variant="outline" 
+                  className="text-xs px-2 py-1 bg-gray-50 text-gray-600 border-gray-200"
+                  aria-label={`И еще ${service.tags.length - 3} особенностей`}
+                >
                   +{service.tags.length - 3}
                 </Badge>
               )}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Pricing */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
+        <section 
+          className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100"
+          aria-label="Информация о стоимости и сроках"
+          itemProp="offers"
+          itemScope
+          itemType="https://schema.org/Offer"
+        >
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-700">Стоимость:</span>
             <div className="flex items-center gap-1 text-xs text-blue-600">
@@ -129,7 +157,10 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
           </div>
           
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-gray-900">
+            <span 
+              className="text-2xl font-bold text-gray-900"
+              itemProp="price"
+            >
               {service.price.min.toLocaleString('ru-RU')} ₽
             </span>
             {service.price.max > service.price.min && (
@@ -137,15 +168,16 @@ export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMor
                 — {service.price.max.toLocaleString('ru-RU')} ₽
               </span>
             )}
+            <meta itemProp="priceCurrency" content="RUB" />
           </div>
           
           <p className="text-xs text-gray-600 mt-1">
             Итоговая стоимость зависит от объема и сложности задачи
           </p>
-        </div>
+        </section>
       </CardContent>
 
-      <CardFooter className="relative z-10 pt-4 flex flex-col gap-2">
+      <CardFooter className="relative z-10 pt-4 flex flex-col gap-2" role="group" aria-label="Действия с услугой">
         <Button 
           onClick={onSelect}
           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 group-hover:shadow-lg"

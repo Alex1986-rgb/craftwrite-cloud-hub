@@ -17,6 +17,13 @@ const seoData = {
     "@type": "WebPage",
     name: "Заказ текстов",
     description: "Профессиональные копирайтинг услуги онлайн",
+    url: `${SEO_CONFIG.baseUrl}/order`,
+    inLanguage: "ru",
+    isPartOf: {
+      "@type": "WebSite",
+      name: SEO_CONFIG.siteName,
+      url: SEO_CONFIG.baseUrl
+    },
     breadcrumb: generateBreadcrumbStructuredData([
       { name: "Главная", url: "/" },
       { name: "Заказать тексты", url: "/order" }
@@ -31,11 +38,19 @@ const seoData = {
           "@type": "Service",
           name: service.name,
           description: service.desc,
+          provider: {
+            "@type": "Organization",
+            name: SEO_CONFIG.siteName,
+            url: SEO_CONFIG.baseUrl
+          },
           offers: {
             "@type": "Offer",
             price: service.price.min,
-            priceCurrency: "RUB"
-          }
+            priceCurrency: "RUB",
+            availability: "https://schema.org/InStock"
+          },
+          category: service.category,
+          serviceType: "Copywriting"
         }
       }))
     }
