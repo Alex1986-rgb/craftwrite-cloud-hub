@@ -1,14 +1,11 @@
 
 import PaymentCancelledContent from "./PaymentCancelledContent";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import PageLayout from "@/components/common/PageLayout";
 
 export default function PaymentCancelledLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <PageLayout>
       <PaymentCancelledContent />
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }

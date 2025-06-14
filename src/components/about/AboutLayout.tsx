@@ -1,14 +1,11 @@
 
 import AboutContent from "./AboutContent";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import PageLayout from "@/components/common/PageLayout";
 
 export default function AboutLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <PageLayout>
       <AboutContent />
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }

@@ -1,14 +1,11 @@
 
 import PricesContent from "./PricesContent";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import PageLayout from "@/components/common/PageLayout";
 
 export default function PricesLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <PageLayout>
       <PricesContent />
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }
