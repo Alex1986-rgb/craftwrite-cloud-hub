@@ -2,7 +2,13 @@
 /**
  * Service pricing data for the Prices page.
  */
-export const prices = [
+export type Price = {
+  service: string;
+  price: string;
+  priceId: string;
+};
+
+export const prices: Price[] = [
   { service: "SEO-статья (1000 знаков)", price: "от 400 ₽", priceId: "price_1PAodpLkdIwHu7iYw8xOa1b2" },
   { service: "Описание товара", price: "от 350 ₽", priceId: "price_1PAodpLkdIwHu7iYc3d4e5f6" },
   { service: "Текст для соцсетей", price: "от 600 ₽", priceId: "price_1PAodpLkdIwHu7iYg7h8i9j0" },
