@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import ProjectHeroSection from "@/components/portfolio/ProjectHeroSection";
-import ProjectMetrics from "@/components/portfolio/ProjectMetrics";
+import SmartNavigation from "@/components/portfolio/SmartNavigation";
+import CompactProjectHero from "@/components/portfolio/CompactProjectHero";
+import OptimizedProjectMetrics from "@/components/portfolio/OptimizedProjectMetrics";
+import ProjectTextExamples from "@/components/portfolio/ProjectTextExamples";
 import ProjectDetails from "@/components/portfolio/ProjectDetails";
 import ProjectResults from "@/components/portfolio/ProjectResults";
 import ProjectTechnologies from "@/components/portfolio/ProjectTechnologies";
 import ProjectTestimonial from "@/components/portfolio/ProjectTestimonial";
-import ProjectCTA from "@/components/portfolio/ProjectCTA";
+import MinimalProjectCTA from "@/components/portfolio/MinimalProjectCTA";
 
 const portfolioDetails = {
   1: {
@@ -234,14 +236,16 @@ export default function PortfolioDetail() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-background via-slate-50/30 to-primary/5">
-        <ProjectHeroSection project={project} />
-        <ProjectMetrics metrics={project.metrics} />
+      <SmartNavigation />
+      <main className="min-h-screen bg-white">
+        <CompactProjectHero project={project} />
+        <OptimizedProjectMetrics metrics={project.metrics} />
+        <ProjectTextExamples />
         <ProjectDetails challenge={project.challenge} solution={project.solution} />
         <ProjectResults results={project.results} />
         <ProjectTechnologies technologies={project.technologies} />
         <ProjectTestimonial testimonial={project.testimonial} />
-        <ProjectCTA />
+        <MinimalProjectCTA />
       </main>
       <Footer />
     </>
