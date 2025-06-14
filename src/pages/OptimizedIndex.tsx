@@ -1,4 +1,3 @@
-
 import OptimizedHeader from "@/components/common/OptimizedHeader";
 import Footer from "@/components/common/Footer";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
@@ -6,7 +5,7 @@ import LazySection from "@/components/common/LazySection";
 import SectionSkeleton from "@/components/common/SectionSkeleton";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import SupportWidget from "@/components/common/SupportWidget";
-import AiAssistant from "@/components/ai/AiAssistant";
+import EnhancedAiAssistant from "@/components/ai/EnhancedAiAssistant";
 import { lazy, Suspense } from "react";
 
 // Optimized lazy loading with better chunking
@@ -135,7 +134,7 @@ export default function OptimizedIndex() {
       <SupportWidget />
       
       {/* AI Assistant */}
-      <AiAssistant />
+      <EnhancedAiAssistant />
     </>
   );
 }

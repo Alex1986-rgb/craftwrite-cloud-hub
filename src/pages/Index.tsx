@@ -20,6 +20,7 @@ import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaran
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import AiAssistant from "@/components/ai/AiAssistant";
+import EnhancedAiAssistant from "@/components/ai/EnhancedAiAssistant";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -118,11 +119,8 @@ export default function Index() {
       </main>
       <Footer />
       
-      {/* Support Widget */}
       <SupportWidget />
-      
-      {/* AI Assistant */}
-      <AiAssistant />
+      <EnhancedAiAssistant />
     </>
   );
 }
