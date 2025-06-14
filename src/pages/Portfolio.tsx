@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { portfolioProjects } from "@/data/portfolioProjects";
 import Seo from "@/components/Seo";
@@ -33,7 +34,7 @@ const seoData = {
             "@type": "Organization",
             name: SEO_CONFIG.siteName
           },
-          dateCreated: project.completedDate,
+          dateCreated: project.date || project.createdAt,
           genre: project.category,
           keywords: project.tags?.join(", ")
         }
@@ -48,12 +49,14 @@ const seoData = {
 
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [activeIndustry, setActiveIndustry] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProjects = portfolioProjects.filter(project => {
     const categoryMatch = activeCategory === "all" || project.category === activeCategory;
-    const industryMatch = activeIndustry === "all" || project.industry === activeIndustry;
-    return categoryMatch && industryMatch;
+    const searchMatch = !searchQuery || 
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return categoryMatch && searchMatch;
   });
 
   const featuredProjects = portfolioProjects.filter(project => project.featured);
@@ -63,13 +66,14 @@ export default function Portfolio() {
       <Seo {...seoData} />
       <main role="main" className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-purple-50/30">
         <div className="container mx-auto px-4 py-8 md:py-16">
-          <PortfolioHero />
+          <PortfolioHero 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
           
           <PortfolioFilters
-            activeCategory={activeCategory}
-            activeIndustry={activeIndustry}
-            onCategoryChange={setActiveCategory}
-            onIndustryChange={setActiveIndustry}
+            selectedCategory={activeCategory}
+            onCategorySelect={setActiveCategory}
           />
 
           {featuredProjects.length > 0 && (

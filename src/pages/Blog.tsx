@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { blogPosts } from "@/data/blogPosts";
 import Seo from "@/components/Seo";
@@ -29,7 +30,7 @@ const seoData = {
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
-      datePublished: post.publishDate,
+      datePublished: post.date || post.publishedAt,
       author: {
         "@type": "Person",
         name: post.author
@@ -72,7 +73,7 @@ export default function Blog() {
           
           <BlogCategories
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            onCategorySelect={setSelectedCategory}
           />
 
           {featuredPosts.length > 0 && (
