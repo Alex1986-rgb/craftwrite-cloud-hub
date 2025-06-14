@@ -2,6 +2,20 @@
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Seo from "@/components/Seo";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+
+const seoText = `
+Блог CopyPro Cloud — свежие статьи о копирайтинге, SEO, маркетинге и бизнесе онлайн.
+Секреты эффективных текстов, аналитика, новые форматы, разбор ошибок и рекомендации для развития бизнеса через контент.
+
+Что вы найдёте в нашем блоге:
+- Инструкции и советы по заказу и проверке текстов.
+- Реальные истории клиентов и примеры работ.
+- Разбор актуальных трендов рынка копирайтинга.
+- Лайфхаки для SEO-продвижения и повышения конверсии.
+
+Читайте наш блог и внедряйте лучшее в свои проекты!
+`;
 
 const blogPosts = [
   {
@@ -43,6 +57,7 @@ const Blog = () => (
           ))}
         </div>
       </section>
+      <SeoTextExpandable text={seoText} />
     </main>
     <Footer />
   </>

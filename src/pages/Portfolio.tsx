@@ -1,8 +1,23 @@
+
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Seo from "@/components/Seo";
 import PortfolioCard from "@/components/portfolio/PortfolioCard";
 import { useState } from "react";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+
+const seoText = `
+Портфолио CopyPro Cloud — примеры реальных проектов для клиентов из разных сфер.
+Мы гордимся своими результатами: эффективные SEO-статьи, продающие лендинги, описания товаров и экспертные тексты для бизнеса.
+
+Наши преимущества:
+- Разнообразие тематик и форматов: от IT до ритейла, от коротких описаний до сложной аналитики.
+- Тексты, которые приносят результат: трафик, заявки, продажи.
+- Только реальные кейсы, всё написано экспертами нашей команды.
+- Каждый пример — это решение задачи клиента, а не просто демонстрация навыков.
+
+Станьте частью успеха — закажите текст, который изменит ваш бизнес!
+`;
 
 const works = [
   {
@@ -87,6 +102,7 @@ const Portfolio = () => {
             </a>
           </div>
         </section>
+        <SeoTextExpandable text={seoText} />
       </main>
       <Footer />
     </>

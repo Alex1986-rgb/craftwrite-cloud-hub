@@ -2,6 +2,20 @@
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Seo from "@/components/Seo";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+
+const seoText = `
+Цены на копирайтинг и создание текстов от CopyPro Cloud — всё прозрачно и честно.
+Мы предлагаем гибкую ценовую политику для стандартных и индивидуальных заказов: SEO-статьи, продающие лендинги, описания товаров, рассылки и многое другое.
+
+Преимущества работы с нами:
+- Стоимость формируется только из объёма и сложности задания, без скрытых доплат.
+- Для крупных заказов и постоянных клиентов действуют индивидуальные скидки.
+- Вы всегда получаете качественный текст, соответствующий вашему брифу и требованиям ниши.
+- Бесплатная SEO-оптимизация и корректировка по пожеланиям клиента.
+
+С CopyPro Cloud вы заранее знаете, за что платите — никаких сюрпризов.
+`;
 
 const prices = [
   { service: "SEO-статья (1000 знаков)", price: "от 400 ₽" },
@@ -42,6 +56,7 @@ const Prices = () => (
           <span className="italic text-primary">цена обсуждается индивидуально.</span>
         </div>
       </section>
+      <SeoTextExpandable text={seoText} />
     </main>
     <Footer />
   </>

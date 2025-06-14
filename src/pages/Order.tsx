@@ -5,6 +5,21 @@ import { FILTERS, FORMATS, LANGS, TOPICS } from "@/components/landing/ServicesCa
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+
+const seoText = `
+Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
+На платформе можно выбрать формат (SEO-статья, лендинг, описание, пост для соцсетей и др.), тематику, язык и дополнительные параметры для точного выполнения задачи.
+
+Почему нам доверяют:
+- Простой и понятный интерфейс заказа: в пару кликов выберите нужный вариант.
+- Можно подобрать авторов с опытом в отрасли (например: IT, маркетинг, e-commerce, B2B).
+- Оперативное выполнение даже крупных объемов.
+- Контроль качества на каждом этапе.
+- Любые доработки — бесплатно по вашему запросу!
+
+Сделайте контент ещё сильнее вместе с CopyPro Cloud!
+`;
 
 export default function Order() {
   const [category, setCategory] = useState("all");
@@ -55,6 +70,7 @@ export default function Order() {
           </Card>
         ))}
       </div>
+      <SeoTextExpandable text={seoText} />
     </div>
   );
 }
