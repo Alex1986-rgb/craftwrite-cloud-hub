@@ -1,209 +1,348 @@
 
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { 
+  Filter, 
+  ExternalLink, 
+  TrendingUp, 
+  Users, 
+  Target,
+  Award,
+  Eye,
+  ArrowRight,
+  BarChart3,
+  CheckCircle
+} from "lucide-react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import Seo from "@/components/Seo";
-import PortfolioCard from "@/components/portfolio/PortfolioCard";
-import { useState } from "react";
-import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import { Eye, Filter, Sparkles, TrendingUp, Award } from "lucide-react";
 
-const seoText = `
-Портфолио CopyPro Cloud — примеры реальных проектов для клиентов из разных сфер.
-Мы гордимся своими результатами: эффективные SEO-статьи, продающие лендинги, описания товаров и экспертные тексты для бизнеса.
+const categories = [
+  { name: "Все проекты", count: 24 },
+  { name: "SEO-статьи", count: 8 },
+  { name: "Лендинги", count: 6 },
+  { name: "E-commerce", count: 5 },
+  { name: "Блоги", count: 3 },
+  { name: "Email", count: 2 }
+];
 
-Наши преимущества:
-- Разнообразие тематик и форматов: от IT до ритейла, от коротких описаний до сложной аналитики.
-- Тексты, которые приносят результат: трафик, заявки, продажи.
-- Только реальные кейсы, всё написано экспертами нашей команды.
-- Каждый пример — это решение задачи клиента, а не просто демонстрация навыков.
-
-Станьте частью успеха — закажите текст, который изменит ваш бизнес!
-`;
-
-const works = [
+const portfolioItems = [
   {
-    title: "SEO-статья для IT-компании",
-    desc: "Экспертная статья по кибербезопасности (релевантность 98%, заказчик — SaaS-платформа).",
-    image: "photo-1461749280684-dccba630e2f6",
-    tag: "SEO"
+    id: 1,
+    title: "Интернет-магазин электроники TechStore",
+    category: "E-commerce",
+    client: "TechStore",
+    description: "Полное переписывание контента для интернет-магазина: описания категорий, товаров, страницы о компании",
+    results: [
+      "Увеличение конверсии на 245%",
+      "Рост органического трафика на 180%",
+      "Повышение времени на сайте на 65%"
+    ],
+    metrics: {
+      conversion: "+245%",
+      traffic: "+180%",
+      time: "+65%"
+    },
+    tags: ["SEO", "Конверсия", "E-commerce"],
+    image: "/placeholder.svg",
+    featured: true
   },
   {
-    title: "Описания товаров для интернет-магазина",
-    desc: "Более 1500 товарных карточек с уникальными текстами, CR выросла на 17%.",
-    image: "photo-1488590528505-98d2b5aba04b",
-    tag: "Карточки"
+    id: 2,
+    title: "Лендинг курсов программирования CodeAcademy",
+    category: "Лендинги",
+    client: "CodeAcademy",
+    description: "Создание продающего лендинга для онлайн-курсов с психологическими триггерами и четкой структурой",
+    results: [
+      "Конверсия в заявку 18.5%",
+      "Снижение стоимости лида на 40%",
+      "Рост продаж на 320%"
+    ],
+    metrics: {
+      conversion: "18.5%",
+      leadCost: "-40%",
+      sales: "+320%"
+    },
+    tags: ["Лендинг", "Образование", "Конверсия"],
+    image: "/placeholder.svg",
+    featured: true
   },
   {
-    title: "Контент для лендинга онлайн-курса",
-    desc: "Продающий структурный текст: результат — 42% рост заявок.",
-    image: "photo-1483058712412-4245e9b90334",
-    tag: "Лендинг"
+    id: 3,
+    title: "Блог IT-консалтинговой компании",
+    category: "Блоги",
+    client: "IT Solutions Pro",
+    description: "Разработка контент-стратегии и написание экспертных статей для позиционирования в B2B сегменте",
+    results: [
+      "Рост лидов через блог на 150%",
+      "Увеличение экспертности бренда",
+      "Топ-3 по ключевым запросам"
+    ],
+    metrics: {
+      leads: "+150%",
+      authority: "Топ-3",
+      articles: "24"
+    },
+    tags: ["B2B", "Экспертность", "IT"],
+    image: "/placeholder.svg",
+    featured: false
   },
   {
-    title: "Юридическая аналитика для B2B",
-    desc: "Сложная экспертная статья, уникальность 100%, большой объём, аудит пройден.",
-    image: "photo-1526374965328-7f61d4dc18c5",
-    tag: "Другое"
+    id: 4,
+    title: "Email-кампания для фитнес-клуба",
+    category: "Email",
+    client: "FitLife Club",
+    description: "Серия продающих писем для автоворонки: welcome-серия, реактивация, допродажи",
+    results: [
+      "Open rate 45% (среднее 22%)",
+      "Click rate 12% (среднее 3%)",
+      "Выручка с email +280%"
+    ],
+    metrics: {
+      openRate: "45%",
+      clickRate: "12%",
+      revenue: "+280%"
+    },
+    tags: ["Email", "Фитнес", "Автоворонка"],
+    image: "/placeholder.svg",
+    featured: false
+  },
+  {
+    id: 5,
+    title: "SEO-тексты для юридической компании",
+    category: "SEO-статьи",
+    client: "LegalPro",
+    description: "Комплекс SEO-статей и оптимизация существующих страниц для продвижения юридических услуг",
+    results: [
+      "Вход в ТОП-10 по 85% запросов",
+      "Рост органики на 200%",
+      "Увеличение заявок на 60%"
+    ],
+    metrics: {
+      topPositions: "85%",
+      organic: "+200%",
+      requests: "+60%"
+    },
+    tags: ["SEO", "Юриспруденция", "B2B"],
+    image: "/placeholder.svg",
+    featured: false
+  },
+  {
+    id: 6,
+    title: "Контент для стартапа FinTech",
+    category: "Лендинги",
+    client: "PayFlow",
+    description: "Создание контента для финтех-стартапа: лендинг, блог, соцсети, email-рассылки",
+    results: [
+      "Привлечение $2M инвестиций",
+      "Регистрация 10К+ пользователей",
+      "Конверсия лендинга 8.2%"
+    ],
+    metrics: {
+      investment: "$2M",
+      users: "10K+",
+      conversion: "8.2%"
+    },
+    tags: ["FinTech", "Стартап", "Инвестиции"],
+    image: "/placeholder.svg",
+    featured: false
   }
 ];
 
-const TAGS = [
-  { label: "Все", value: "all" },
-  { label: "SEO", value: "SEO" },
-  { label: "Карточки", value: "Карточки" },
-  { label: "Лендинг", value: "Лендинг" },
-  { label: "Другое", value: "Другое" },
-];
+export default function Portfolio() {
+  const [selectedCategory, setSelectedCategory] = useState("Все проекты");
 
-const Portfolio = () => {
-  const [tag, setTag] = useState("all");
-  const shown = tag === "all" ? works : works.filter(w => w.tag === tag);
+  const filteredItems = portfolioItems.filter(item => 
+    selectedCategory === "Все проекты" || item.category === selectedCategory
+  );
+
+  const featuredItems = filteredItems.filter(item => item.featured);
+  const regularItems = filteredItems.filter(item => !item.featured);
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/20 relative overflow-hidden">
-        <Seo
-          title="Портфолио — CopyPro Cloud"
-          description="Примеры наших текстов, успешные проекты и результаты для клиентов из разных ниш."
-        />
-
-        {/* Ultra-Modern Background Elements - Mobile responsive */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-purple-400/10 via-pink-400/8 to-orange-400/6 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-1/2 -left-40 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-blue-400/10 via-purple-400/8 to-pink-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute -bottom-40 right-1/4 w-36 h-36 md:w-72 md:h-72 bg-gradient-to-r from-pink-400/8 via-orange-400/6 to-yellow-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          
-          {/* Creative grid pattern - hidden on mobile */}
-          <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.02)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-          
-          {/* Creative floating elements - hidden on small screens */}
-          <div className="hidden lg:block absolute top-1/4 left-1/5 w-3 h-3 bg-purple-400/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-          <div className="hidden lg:block absolute top-3/4 right-1/5 w-2 h-2 bg-pink-400/40 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-          <div className="hidden lg:block absolute top-1/2 left-4/5 w-4 h-4 bg-orange-400/25 rounded-full animate-bounce" style={{ animationDelay: '2.5s' }}></div>
-        </div>
-
-        <div className="relative z-10 py-8 md:py-16 px-4">
-          {/* Hero Section - Mobile responsive */}
-          <section className="max-w-6xl mx-auto text-center mb-12 md:mb-20 animate-fade-in">
-            <div className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-purple-100/80 to-pink-100/80 text-purple-700 px-4 py-3 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-bold mb-6 md:mb-8 border border-purple-200/50 shadow-lg backdrop-blur-sm">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-              <Eye className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="whitespace-nowrap">Галерея успешных проектов</span>
-              <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+      <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50">
+        {/* Hero секция */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5"></div>
+          <div className="container max-w-6xl mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <Badge variant="secondary" className="mb-6 px-6 py-3 text-lg font-semibold">
+                <Eye className="w-5 h-5 mr-2" />
+                Портфолио
+              </Badge>
+              <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Наши успешные проекты
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Реальные кейсы с измеримыми результатами. Посмотрите, как наш контент 
+                помогает бизнесу достигать амбициозных целей
+              </p>
             </div>
-            
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 bg-gradient-to-r from-slate-900 via-purple-800 to-pink-800 bg-clip-text text-transparent leading-tight tracking-tight px-4">
-              Портфолио наших
-              <br />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">работ</span>
-            </h1>
-            
-            <p className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium mb-8 md:mb-10 px-4">
-              Примеры реальных проектов, которые принесли нашим клиентам измеримые результаты и рост бизнеса
-            </p>
-            
-            {/* Portfolio-specific trust indicators - Mobile responsive */}
-            <div className="flex flex-wrap justify-center items-center gap-3 md:gap-6 mb-8 md:mb-12 px-4">
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-purple-200/50 shadow-lg backdrop-blur-sm">
-                <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">Реальные результаты</span>
-              </div>
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-pink-50 to-orange-50 text-pink-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-pink-200/50 shadow-lg backdrop-blur-sm">
-                <Sparkles className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">Разные ниши</span>
-              </div>
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-orange-50 to-yellow-50 text-orange-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-orange-200/50 shadow-lg backdrop-blur-sm">
-                <Award className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="whitespace-nowrap">Качество экспертов</span>
-              </div>
-            </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Enhanced Filter Section - Mobile responsive */}
-          <section className="max-w-5xl mx-auto mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="bg-gradient-to-br from-white/95 via-purple-50/30 to-pink-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border border-purple-200/30 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 via-transparent to-pink-400/5"></div>
-              <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-purple-400/10 to-transparent rounded-full blur-2xl"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                  <div className="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl md:rounded-2xl shadow-lg">
-                    <Filter className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    Фильтр проектов
-                  </h3>
-                </div>
-                
-                <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-                  {TAGS.map((filter, index) => (
-                    <button
-                      key={filter.value}
-                      onClick={() => setTag(filter.value)}
-                      className={`px-4 py-2 md:px-6 md:py-3 rounded-full border font-semibold transition-all duration-300 animate-fade-in text-sm md:text-base ${
-                        tag === filter.value
-                          ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg border-transparent scale-105"
-                          : "bg-white/70 border-purple-200/50 text-purple-700 hover:bg-purple-50/80 hover:border-purple-300/60 hover:scale-105"
-                      }`}
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      {filter.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* Фильтры */}
+        <section className="py-8 bg-white border-b">
+          <div className="container max-w-6xl mx-auto px-4">
+            <div className="flex items-center gap-4 mb-6">
+              <Filter className="w-5 h-5 text-muted-foreground" />
+              <span className="font-medium">Фильтр по категориям:</span>
             </div>
-          </section>
-
-          {/* Enhanced Portfolio Grid - Mobile responsive */}
-          <section className="max-w-6xl mx-auto mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
-              {shown.map((item, idx) => (
-                <div
-                  key={item.title}
-                  className="animate-fade-in hover:scale-105 transition-all duration-500"
-                  style={{ animationDelay: `${0.1 * (idx + 1)}s` }}
+            <div className="flex flex-wrap gap-3">
+              {categories.map((category) => (
+                <Button
+                  key={category.name}
+                  variant={selectedCategory === category.name ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className="flex items-center gap-2"
                 >
-                  <PortfolioCard {...item} />
-                </div>
+                  {category.name}
+                  <Badge variant="secondary" className="ml-1">
+                    {category.count}
+                  </Badge>
+                </Button>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Enhanced CTA Section - Mobile responsive */}
-          <section className="max-w-4xl mx-auto text-center mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-gradient-to-br from-white/95 via-purple-50/30 to-pink-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-8 md:p-12 shadow-2xl border border-purple-200/30 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 via-transparent to-pink-400/5"></div>
-              <div className="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 bg-gradient-to-br from-purple-400/10 to-transparent rounded-full blur-2xl"></div>
+        {/* Топовые кейсы */}
+        {featuredItems.length > 0 && (
+          <section className="py-16">
+            <div className="container max-w-6xl mx-auto px-4">
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+                <Award className="w-8 h-8 text-primary" />
+                Топовые кейсы
+              </h2>
               
-              <div className="relative z-10">
-                <h3 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent px-4">
-                  Впечатлены нашими работами?
-                </h3>
-                <p className="text-base md:text-lg text-slate-600 mb-6 md:mb-8 leading-relaxed px-4">
-                  Закажите аналогичный проект и получите результат, который превзойдет ваши ожидания
-                </p>
-                <a
-                  href="/order"
-                  className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-2xl px-6 py-3 md:px-10 md:py-5 text-base md:text-lg hover:from-purple-400 hover:to-pink-400 transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:shadow-purple-500/25"
-                >
-                  <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
-                  <span className="whitespace-nowrap">Хочу похожий текст</span>
-                </a>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                {featuredItems.map((item) => (
+                  <Card key={item.id} className="overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center relative">
+                      <BarChart3 className="w-16 h-16 text-primary" />
+                      <Badge className="absolute top-4 right-4">{item.category}</Badge>
+                    </div>
+                    <div className="p-8">
+                      <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
+                      <p className="text-muted-foreground mb-6">{item.description}</p>
+                      
+                      <div className="grid grid-cols-3 gap-4 mb-6">
+                        {Object.entries(item.metrics).slice(0, 3).map(([key, value]) => (
+                          <div key={key} className="text-center p-3 bg-slate-50 rounded-lg">
+                            <div className="text-2xl font-bold text-primary">{value}</div>
+                            <div className="text-xs text-muted-foreground capitalize">{key}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="space-y-2 mb-6">
+                        {item.results.map((result, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                            <span className="text-sm">{result}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {item.tags.map((tag) => (
+                          <Badge key={tag} variant="outline">{tag}</Badge>
+                        ))}
+                      </div>
+
+                      <Button asChild className="w-full">
+                        <Link to={`/portfolio/${item.id}`} className="flex items-center justify-center gap-2">
+                          Подробнее о проекте
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
               </div>
             </div>
           </section>
+        )}
 
-          {/* SEO Text */}
-          <div className="animate-fade-in px-4" style={{ animationDelay: '0.8s' }}>
-            <SeoTextExpandable text={seoText} />
+        {/* Все проекты */}
+        <section className="py-16">
+          <div className="container max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+              <Target className="w-8 h-8 text-primary" />
+              Все проекты
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {regularItems.map((item) => (
+                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="h-32 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center relative">
+                    <TrendingUp className="w-12 h-12 text-slate-400" />
+                    <Badge variant="outline" className="absolute top-2 right-2 text-xs">
+                      {item.category}
+                    </Badge>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold mb-2 line-clamp-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {item.description}
+                    </p>
+                    
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                      {Object.entries(item.metrics).slice(0, 2).map(([key, value]) => (
+                        <div key={key} className="text-center p-2 bg-slate-50 rounded">
+                          <div className="text-lg font-bold text-primary">{value}</div>
+                          <div className="text-xs text-muted-foreground capitalize">{key}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {item.tags.slice(0, 2).map((tag) => (
+                        <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                      ))}
+                    </div>
+
+                    <Button asChild variant="outline" size="sm" className="w-full">
+                      <Link to={`/portfolio/${item.id}`} className="flex items-center justify-center gap-2">
+                        Детали
+                        <ExternalLink className="w-3 h-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
+
+        {/* CTA секция */}
+        <section className="py-20 bg-gradient-to-r from-primary to-blue-600 text-white">
+          <div className="container max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Хотите такие же результаты?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Обсудим ваш проект и покажем, как наш опыт поможет достичь ваших целей
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" variant="secondary">
+                <Link to="/order" className="flex items-center gap-2">
+                  Начать проект
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Link to="/#contact">Получить консультацию</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>
   );
-};
-
-export default Portfolio;
+}

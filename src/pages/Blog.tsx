@@ -1,198 +1,303 @@
 
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
+import { 
+  Search, 
+  Calendar, 
+  User, 
+  Clock, 
+  ArrowRight,
+  BookOpen,
+  Tag,
+  TrendingUp,
+  Target,
+  Lightbulb
+} from "lucide-react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import Seo from "@/components/Seo";
-import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import { BookOpen, Calendar, TrendingUp, Lightbulb, Users, Target } from "lucide-react";
 
-const seoText = `
-Блог CopyPro Cloud — свежие статьи о копирайтинге, SEO, маркетинге и бизнесе онлайн.
-Секреты эффективных текстов, аналитика, новые форматы, разбор ошибок и рекомендации для развития бизнеса через контент.
-
-Что вы найдёте в нашем блоге:
-- Инструкции и советы по заказу и проверке текстов.
-- Реальные истории клиентов и примеры работ.
-- Разбор актуальных трендов рынка копирайтинга.
-- Лайфхаки для SEO-продвижения и повышения конверсии.
-
-Читайте наш блог и внедряйте лучшее в свои проекты!
-`;
-
-const blogPosts = [
-  {
-    title: "5 причин доверять контент профессионалам",
-    desc: "Почему качественный текст критически важен для вашего бизнеса и как он влияет на конверсию?",
-    date: "Май 2024",
-    category: "Бизнес",
-    icon: Users,
-    gradient: "from-blue-500 to-purple-600"
-  },
-  {
-    title: "Как заказать SEO-статью и не ошибиться",
-    desc: "Главные советы по брифу, поиску исполнителя и проверке результата от экспертов индустрии.",
-    date: "Апрель 2024",
-    category: "SEO",
-    icon: Target,
-    gradient: "from-emerald-500 to-blue-600"
-  },
-  {
-    title: "Роль уникальности текста в SEO-продвижении",
-    desc: "Объясняем, почему уникальность — это не просто процент по сервису проверки, а комплексный показатель качества.",
-    date: "Март 2024",
-    category: "Аналитика",
-    icon: TrendingUp,
-    gradient: "from-purple-500 to-pink-600"
-  },
+const categories = [
+  { name: "Все статьи", count: 48, color: "bg-primary" },
+  { name: "SEO", count: 15, color: "bg-emerald-500" },
+  { name: "Копирайтинг", count: 12, color: "bg-blue-500" },
+  { name: "Контент-маркетинг", count: 10, color: "bg-purple-500" },
+  { name: "Кейсы", count: 8, color: "bg-orange-500" },
+  { name: "Советы", count: 6, color: "bg-cyan-500" }
 ];
 
-const Blog = () => (
-  <>
-    <Header />
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50/30 to-yellow-50/20 relative overflow-hidden">
-      <Seo
-        title="Блог CopyPro Cloud"
-        description="Статьи по копирайтингу, маркетингу, SEO и эффективному бизнесу онлайн."
-      />
+const featuredPosts = [
+  {
+    id: 1,
+    title: "10 секретов эффективного SEO-копирайтинга в 2024 году",
+    excerpt: "Узнайте, как писать тексты, которые не только нравятся людям, но и высоко ранжируются в поисковых системах.",
+    category: "SEO",
+    author: "Анна Петрова",
+    date: "15 мар 2024",
+    readTime: "8 мин",
+    image: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: 2,
+    title: "Кейс: Как мы увеличили конверсию лендинга на 340%",
+    excerpt: "Подробный разбор реального проекта - от постановки задачи до впечатляющих результатов.",
+    category: "Кейсы",
+    author: "Михаил Сидоров",
+    date: "12 мар 2024",
+    readTime: "12 мин",
+    image: "/placeholder.svg",
+    featured: true
+  }
+];
 
-      {/* Ultra-Modern Background Elements - Mobile responsive */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-orange-400/10 via-yellow-400/8 to-red-400/6 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-40 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-blue-400/10 via-purple-400/8 to-pink-400/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute -bottom-40 right-1/4 w-36 h-36 md:w-72 md:h-72 bg-gradient-to-r from-green-400/8 via-blue-400/6 to-purple-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        
-        {/* Knowledge-themed grid pattern - hidden on mobile */}
-        <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(251,146,60,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(251,146,60,0.02)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-        
-        {/* Floating knowledge elements - hidden on small screens */}
-        <div className="hidden lg:block absolute top-1/4 left-1/5 w-3 h-3 bg-orange-400/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-        <div className="hidden lg:block absolute top-3/4 right-1/5 w-2 h-2 bg-yellow-400/40 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-        <div className="hidden lg:block absolute top-1/2 left-4/5 w-4 h-4 bg-red-400/25 rounded-full animate-bounce" style={{ animationDelay: '2.5s' }}></div>
-      </div>
+const regularPosts = [
+  {
+    id: 3,
+    title: "Психология продающих текстов: как влиять на решения клиентов",
+    excerpt: "Разбираем психологические триггеры и приемы, которые заставляют покупать.",
+    category: "Копирайтинг",
+    author: "Елена Козлова",
+    date: "10 мар 2024",
+    readTime: "6 мин",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 4,
+    title: "Контент-план для социальных сетей: пошаговое руководство",
+    excerpt: "Создаем эффективную контент-стратегию для Instagram, Facebook и других платформ.",
+    category: "Контент-маркетинг",
+    author: "Дмитрий Волков",
+    date: "8 мар 2024",
+    readTime: "10 мин",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 5,
+    title: "Email-маркетинг 2024: тренды и лучшие практики",
+    excerpt: "Что работает в email-маркетинге сегодня и как повысить открываемость писем.",
+    category: "Контент-маркетинг",
+    author: "Анна Петрова",
+    date: "5 мар 2024",
+    readTime: "7 мин",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 6,
+    title: "ТОП-10 ошибок в текстах для сайта",
+    excerpt: "Разбираем самые частые ошибки, которые убивают конверсию и отпугивают клиентов.",
+    category: "Советы",
+    author: "Елена Козлова",
+    date: "3 мар 2024",
+    readTime: "5 мин",
+    image: "/placeholder.svg"
+  }
+];
 
-      <div className="relative z-10 py-8 md:py-16 px-4">
-        {/* Hero Section - Mobile responsive */}
-        <section className="max-w-6xl mx-auto text-center mb-12 md:mb-20 animate-fade-in">
-          <div className="inline-flex items-center gap-2 md:gap-3 bg-gradient-to-r from-orange-100/80 to-yellow-100/80 text-orange-700 px-4 py-3 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-bold mb-6 md:mb-8 border border-orange-200/50 shadow-lg backdrop-blur-sm">
-            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-            <BookOpen className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="whitespace-nowrap">База знаний экспертов</span>
-            <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-          </div>
-          
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 md:mb-8 bg-gradient-to-r from-slate-900 via-orange-800 to-red-800 bg-clip-text text-transparent leading-tight tracking-tight px-4">
-            Блог о копирайтинге
-            <br />
-            <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">и маркетинге</span>
-          </h1>
-          
-          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium mb-8 md:mb-10 px-4">
-            Эксклюзивные материалы, профессиональные инсайты и практические советы от команды экспертов CopyPro Cloud
-          </p>
-          
-          {/* Blog-specific trust indicators - Mobile responsive */}
-          <div className="flex flex-wrap justify-center items-center gap-3 md:gap-6 mb-8 md:mb-12 px-4">
-            <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-orange-50 to-red-50 text-orange-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-orange-200/50 shadow-lg backdrop-blur-sm">
-              <Lightbulb className="w-3 h-3 md:w-4 md:h-4" />
-              <span className="whitespace-nowrap">Экспертные инсайты</span>
+export default function Blog() {
+  const [selectedCategory, setSelectedCategory] = useState("Все статьи");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredPosts = [...featuredPosts, ...regularPosts].filter(post => {
+    const matchesCategory = selectedCategory === "Все статьи" || post.category === selectedCategory;
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50">
+        {/* Hero секция */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5"></div>
+          <div className="container max-w-6xl mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <Badge variant="secondary" className="mb-6 px-6 py-3 text-lg font-semibold">
+                <BookOpen className="w-5 h-5 mr-2" />
+                Блог
+              </Badge>
+              <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Экспертные знания в копирайтинге
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Полезные статьи, кейсы и советы от профессионалов индустрии. 
+                Изучайте лучшие практики и развивайте свои навыки
+              </p>
             </div>
-            <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-yellow-50 to-orange-50 text-yellow-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-yellow-200/50 shadow-lg backdrop-blur-sm">
-              <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
-              <span className="whitespace-nowrap">Актуальные тренды</span>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-red-50 to-pink-50 text-red-700 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold border border-red-200/50 shadow-lg backdrop-blur-sm">
-              <Target className="w-3 h-3 md:w-4 md:h-4" />
-              <span className="whitespace-nowrap">Практические советы</span>
+
+            {/* Поиск */}
+            <div className="max-w-md mx-auto mb-12">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                <Input
+                  placeholder="Поиск по статьям..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 h-12"
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Enhanced Blog Posts Section - Mobile responsive */}
-        <section className="max-w-5xl mx-auto mb-10 md:mb-16">
-          <div className="space-y-6 md:space-y-8">
-            {blogPosts.map((post, idx) => (
-              <article 
-                key={idx} 
-                className="bg-gradient-to-br from-white/95 via-orange-50/30 to-yellow-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-2xl border border-orange-200/30 relative overflow-hidden hover:scale-105 transition-all duration-500 animate-fade-in group"
-                style={{ animationDelay: `${idx * 0.2}s` }}
-              >
-                {/* Article background effects */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 via-transparent to-yellow-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-orange-400/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
-                    {/* Enhanced Icon */}
-                    <div className={`inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r ${post.gradient} rounded-2xl md:rounded-3xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 flex-shrink-0`}>
-                      <post.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+        {/* Категории */}
+        <section className="py-8 bg-white border-b">
+          <div className="container max-w-6xl mx-auto px-4">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categories.map((category) => (
+                <Button
+                  key={category.name}
+                  variant={selectedCategory === category.name ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className="flex items-center gap-2"
+                >
+                  <Tag className="w-4 h-4" />
+                  {category.name}
+                  <Badge variant="secondary" className="ml-1">
+                    {category.count}
+                  </Badge>
+                </Button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Рекомендуемые статьи */}
+        {selectedCategory === "Все статьи" && (
+          <section className="py-16">
+            <div className="container max-w-6xl mx-auto px-4">
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+                <TrendingUp className="w-8 h-8 text-primary" />
+                Рекомендуемые статьи
+              </h2>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                {featuredPosts.map((post) => (
+                  <Card key={post.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div className="h-48 bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center">
+                      <BookOpen className="w-16 h-16 text-primary" />
                     </div>
-                    
-                    <div className="flex-1 w-full">
-                      {/* Meta information */}
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3 md:mb-4">
-                        <div className="flex items-center gap-2 text-xs md:text-sm text-slate-500">
-                          <Calendar className="w-3 h-3 md:w-4 md:h-4" />
-                          <span>{post.date}</span>
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        <Badge>{post.category}</Badge>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4" />
+                          {post.date}
                         </div>
-                        <div className={`inline-block px-3 py-1 md:px-4 md:py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${post.gradient} text-white shadow-sm w-fit`}>
-                          {post.category}
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Clock className="w-4 h-4" />
+                          {post.readTime}
                         </div>
                       </div>
                       
-                      {/* Title */}
-                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-slate-800 group-hover:text-orange-600 transition-colors duration-300 leading-tight">
-                        {post.title}
-                      </h2>
+                      <h3 className="text-xl font-bold mb-3 hover:text-primary transition-colors">
+                        <Link to={`/blog/${post.id}`}>{post.title}</Link>
+                      </h3>
                       
-                      {/* Description */}
-                      <p className="text-slate-600 leading-relaxed text-base md:text-lg mb-4 md:mb-6">
-                        {post.desc}
-                      </p>
+                      <p className="text-muted-foreground mb-4">{post.excerpt}</p>
                       
-                      {/* Read more button */}
-                      <div>
-                        <button className={`inline-flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r ${post.gradient} text-white rounded-full font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base`}>
-                          Читать статью
-                          <BookOpen className="w-3 h-3 md:w-4 md:h-4" />
-                        </button>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">{post.author}</span>
+                        </div>
+                        
+                        <Button asChild variant="ghost" size="sm">
+                          <Link to={`/blog/${post.id}`} className="flex items-center gap-2">
+                            Читать далее
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Все статьи */}
+        <section className="py-16">
+          <div className="container max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+              <Lightbulb className="w-8 h-8 text-primary" />
+              Все статьи
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPosts.filter(post => !post.featured || selectedCategory !== "Все статьи").map((post) => (
+                <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="h-32 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                    <Target className="w-12 h-12 text-slate-400" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 mb-3">
+                      <Badge variant="outline">{post.category}</Badge>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="w-3 h-3" />
+                        {post.readTime}
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-lg font-semibold mb-2 hover:text-primary transition-colors line-clamp-2">
+                      <Link to={`/blog/${post.id}`}>{post.title}</Link>
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>
+                    
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        {post.author}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {post.date}
                       </div>
                     </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </Card>
+              ))}
+            </div>
+
+            {filteredPosts.length === 0 && (
+              <div className="text-center py-16">
+                <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Статьи не найдены</h3>
+                <p className="text-muted-foreground">Попробуйте изменить критерии поиска</p>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Coming Soon Section - Mobile responsive */}
-        <section className="max-w-4xl mx-auto text-center mb-10 md:mb-16 animate-fade-in" style={{ animationDelay: '0.8s' }}>
-          <div className="bg-gradient-to-br from-white/95 via-orange-50/30 to-yellow-50/20 backdrop-blur-lg rounded-2xl md:rounded-3xl p-8 md:p-12 shadow-2xl border border-orange-200/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 via-transparent to-yellow-400/5"></div>
-            <div className="absolute top-0 right-0 w-24 h-24 md:w-40 md:h-40 bg-gradient-to-br from-orange-400/10 to-transparent rounded-full blur-2xl"></div>
-            
-            <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-4 md:mb-6 shadow-lg">
-                <Lightbulb className="w-8 h-8 md:w-10 md:h-10 text-white" />
-              </div>
-              
-              <h3 className="text-2xl sm:text-3xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent px-4">
-                Больше материалов уже в разработке
-              </h3>
-              <p className="text-base md:text-lg text-slate-600 leading-relaxed px-4">
-                Наша команда экспертов готовит для вас еще больше полезных статей, гайдов и кейсов. 
-                Подписывайтесь на обновления, чтобы не пропустить новые материалы!
-              </p>
+        {/* CTA секция */}
+        <section className="py-20 bg-gradient-to-r from-primary to-blue-600 text-white">
+          <div className="container max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Хотите больше полезного контента?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Подпишитесь на нашу рассылку и получайте свежие статьи и кейсы первыми
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Input 
+                placeholder="Ваш email"
+                className="bg-white text-gray-900"
+              />
+              <Button variant="secondary" size="lg">
+                Подписаться
+              </Button>
             </div>
           </div>
         </section>
-
-        {/* SEO Text */}
-        <div className="animate-fade-in px-4" style={{ animationDelay: '1s' }}>
-          <SeoTextExpandable text={seoText} />
-        </div>
-      </div>
-    </main>
-    <Footer />
-  </>
-);
-
-export default Blog;
+      </main>
+      <Footer />
+    </>
+  );
+}
