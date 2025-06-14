@@ -74,7 +74,10 @@ export default function AITextGenerator() {
   ];
 
   const handleGenerate = async () => {
-    await generateText(formData);
+    await generateText({
+      ...formData,
+      length: formData.length[0] // Extract the first value from the array
+    });
   };
 
   const handleRetryGeneration = () => {
