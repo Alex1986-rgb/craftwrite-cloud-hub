@@ -18,9 +18,9 @@ export default {
       }
     },
     extend: {
-      fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        playfair: ['Playfair Display', 'serif'],
+      backgroundImage: {
+        'hero-gradient': 'linear-gradient(120deg, #f7fafc 0%, #eae8ff 100%)',
+        'order-bg': 'linear-gradient(120deg, #f7fafc 0%, #e4eeff 100%)',
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -65,7 +65,10 @@ export default {
           'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
-        }
+        },
+        'brand-accent': 'hsl(var(--brand-accent))',
+        'brand-primary': 'hsl(var(--brand-primary))',
+        'brand-cta': 'hsl(var(--brand-cta))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -93,6 +96,13 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
+      },
+      boxShadow: {
+        'form-xl': '0 10px 32px 0 rgba(80,120,180,0.16)',
+      },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+        playfair: ['Playfair Display', 'serif']
       }
     }
   },

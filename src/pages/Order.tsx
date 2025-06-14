@@ -1,3 +1,4 @@
+
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,10 +15,8 @@ import OrderSelectedService from "@/components/order/OrderSelectedService";
 import OrderEmailHint from "@/components/order/OrderEmailHint";
 import OrderConsent from "@/components/order/OrderConsent";
 
-// Улучшенные стили кнопки и формы добавлены в Tailwind-классы
-
+// NEW: главная зона формы с мягким градиентом и большими отступами
 const Order = () => {
-  // Весь стейт и обработчики вынесены в useOrderForm
   const {
     form,
     loading,
@@ -37,25 +36,32 @@ const Order = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent via-background to-muted py-14 px-2 md:px-4 font-inter transition-all">
+      <main className="min-h-screen flex items-center justify-center order-bg-blur py-16 px-2 md:px-4 transition-all duration-300">
         <Seo
           title="Оформить заказ — CopyPro Cloud"
           description="Заполните форму заказа на тексты: копирайтинг для бизнеса, сайтов, маркетинга. Свяжемся быстро, работаем профессионально!"
         />
         <form
           onSubmit={handleSubmit}
-          className="relative bg-card max-w-2xl w-full space-y-8 p-10 rounded-3xl shadow-xl border border-muted/30 animate-scale-in transition-all"
+          className="relative max-w-2xl w-full space-y-9 px-0 sm:px-8 py-12 rounded-3xl shadow-form-xl border border-muted/30 animate-scale-in bg-card transition-all duration-300"
           autoComplete="off"
           aria-label="Форма заказа текста"
         >
+          {/* ИНДИКАТОР ПРОГРЕССА */}
           <OrderProgressBar
             progress={calcProgress()}
             flash={showProgressFlash}
             onFlashEnd={() => setShowProgressFlash(false)}
           />
+
+          {/* ЗАГОЛОВОК */}
           <OrderFormHeader />
+
+          {/* ВЫБРАННАЯ УСЛУГА */}
           <OrderSelectedService serviceName={form.service} />
-          <div>
+
+          {/* ОСНОВНЫЕ ПОЛЯ */}
+          <div className="flex flex-col gap-5">
             <Input
               name="name"
               placeholder="Ваше имя"
@@ -65,7 +71,7 @@ const Order = () => {
               autoFocus
               ref={nameInputRef}
               aria-label="Ваше имя"
-              className="h-12 text-lg placeholder:font-normal"
+              className="h-12 text-lg placeholder:font-normal rounded-xl border border-primary/20 focus:border-brand-accent transition"
             />
             <Input
               type="email"
@@ -73,21 +79,23 @@ const Order = () => {
               placeholder="Ваш e-mail"
               required
               value={form.email}
-              className="mt-4 h-12 text-lg placeholder:font-normal"
+              className="h-12 text-lg placeholder:font-normal rounded-xl border border-primary/20 focus:border-brand-accent transition"
               onChange={handleChange}
               aria-label="Ваш e-mail"
             />
             <OrderEmailHint />
           </div>
+
+          {/* ВЫБОР УСЛУГИ */}
           <div>
             <Input
               placeholder="Найти услугу…"
-              className="mb-2 h-11"
+              className="mb-2 h-11 rounded-xl border-muted shadow-sm"
               value={serviceFilter}
               onChange={e => setServiceFilter(e.target.value)}
               aria-label="Найти услугу"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
               {filteredServices.map((s) => (
                 <OrderServiceCard
                   key={s}
@@ -98,9 +106,11 @@ const Order = () => {
               ))}
             </div>
           </div>
+
+          {/* ДОПОЛНИТЕЛЬНЫЕ ВОПРОСЫ */}
           {currentQuestions.length > 0 && (
-            <div className="pb-3 pt-2 border-t border-dashed border-muted animate-fade-in">
-              <span className="text-xs font-semibold text-muted-foreground mb-2 inline-block animate-fade-in">
+            <div className="pb-4 pt-2 border-t border-dashed border-muted animate-fade-in">
+              <span className="text-xs font-semibold text-brand-accent mb-2 inline-block animate-fade-in">
                 {form.service}: уточните детали
               </span>
               <OrderQuestionGroup
@@ -110,6 +120,8 @@ const Order = () => {
               />
             </div>
           )}
+
+          {/* КОММЕНТАРИЙ */}
           <Textarea
             name="details"
             placeholder="Комментарий, пожелания или ссылка на ТЗ"
@@ -117,16 +129,18 @@ const Order = () => {
             required
             value={form.details}
             onChange={handleChange}
-            className="mt-4 text-base"
+            className="mt-2 text-base rounded-xl border border-primary/20 focus:border-brand-accent transition"
             aria-label="Комментарий или задание"
           />
-          <span className="text-xs text-muted-foreground ml-1">
+          <span className="text-xs text-muted-foreground ml-1 block">
             Здесь можно добавить детали, пожелания или ссылку на готовое ТЗ.
           </span>
+
+          {/* КНОПКА */}
           <Button
             type="submit"
             size="lg"
-            className={`w-full mt-7 shadow-xl rounded-xl text-xl font-bold tracking-tight py-4 transition-all duration-200
+            className={`w-full mt-5 shadow-xl rounded-xl text-xl font-bold tracking-tight py-4 transition-all duration-200
                         ${loading ? "bg-green-400 animate-pulse cursor-not-allowed" : "hover:scale-105 hover:shadow-2xl focus-visible:ring-2 focus-visible:ring-primary"}`}
             disabled={loading}
             aria-busy={loading}
