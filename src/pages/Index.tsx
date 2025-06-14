@@ -8,7 +8,7 @@ import ContactSection from "@/components/landing/ContactSection";
 import { Button } from "@/components/ui/button";
 import { Rocket } from "lucide-react";
 import { Link } from "react-router-dom";
-import SeoTextExpandable from "@/components/landing/SeoTextExpandable";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 
 const seoText = `
 CopyPro Cloud — современная SaaS-платформа для заказа текстов любого типа: SEO-статьи, тексты для лендингов, описания товаров, e-mail рассылки, посты для соцсетей и многое другое. Наш сервис предоставляет профессиональных копирайтеров, актуальные стандарты контента и гибкие возможности для бизнеса любого размера.
