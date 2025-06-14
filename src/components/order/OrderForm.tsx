@@ -50,9 +50,9 @@ export default function OrderForm() {
     if (!form) return false;
     
     switch (currentStep) {
-      case 1: return form.name?.trim() && form.email?.trim();
-      case 2: return form.service;
-      case 3: return form.details?.trim();
+      case 1: return Boolean(form.name?.trim() && form.email?.trim());
+      case 2: return Boolean(form.service);
+      case 3: return Boolean(form.details?.trim());
       case 4: return true;
       default: return false;
     }
