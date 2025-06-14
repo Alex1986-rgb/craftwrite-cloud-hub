@@ -136,11 +136,13 @@ export function useOrderFormState() {
     }
   };
 
-  const isFormValid = () => {
-    return form.name.trim() && 
-           form.email.trim() && 
-           form.service && 
-           form.details.trim();
+  const isFormValid = (): boolean => {
+    return Boolean(
+      form.name.trim() && 
+      form.email.trim() && 
+      form.service && 
+      form.details.trim()
+    );
   };
 
   const calculateEstimatedPrice = () => {
