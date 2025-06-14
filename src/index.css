@@ -1,11 +1,12 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Подключение Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Enhanced design system with professional gradients and animations */
 
 @layer base {
   :root {
@@ -52,6 +53,11 @@
     --brand-accent: 240 72% 67%;
     --brand-primary: 284 87% 60%;
     --brand-cta: 160 88% 48%;
+    
+    /* Enhanced professional gradients */
+    --premium-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --elite-gradient: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
   }
 
   .dark {
@@ -97,20 +103,23 @@
   }
 
   body {
-    @apply bg-[linear-gradient(135deg,#f7fafc_0%,#edf5fd_100%)] text-foreground font-inter;
-    font-family: 'Inter', Arial, sans-serif;
+    @apply bg-gradient-to-br from-background via-muted/20 to-background text-foreground font-inter;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     width: 100vw;
     min-width: 0;
     max-width: 100vw;
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.025em;
     @apply tracking-tight font-bold;
     line-height: 1.2;
+    font-feature-settings: 'liga' on, 'calt' on;
   }
 
   .order-bg-blur {
@@ -137,46 +146,110 @@
   }
 }
 
-/* Enhanced animations */
+/* Enhanced animations and micro-interactions */
 @layer utilities {
   .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
     opacity: 0;
   }
 
   .hover-scale {
-    @apply transition-all duration-300 hover:scale-105;
+    @apply transition-all duration-500 hover:scale-105 hover:-translate-y-1;
   }
 
   .hover-glow {
-    @apply transition-all duration-300 hover:shadow-2xl hover:shadow-primary/25;
+    @apply transition-all duration-500 hover:shadow-2xl hover:shadow-primary/25;
   }
 
   .text-gradient {
     @apply bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent;
   }
 
+  .text-elite-gradient {
+    @apply bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent;
+  }
+
   .bg-glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+    @apply bg-white/90 backdrop-blur-lg border border-white/20 shadow-xl;
   }
 
   .bg-glass-dark {
-    @apply bg-black/80 backdrop-blur-md border border-white/10;
+    @apply bg-black/90 backdrop-blur-lg border border-white/10 shadow-xl;
   }
 
   .floating-badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/20 rounded-full shadow font-bold text-primary text-base;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-primary/15 border border-primary/20 rounded-full shadow-lg font-bold text-primary text-base hover:scale-105 transition-all duration-300;
   }
 
   .trust-gradient {
     @apply bg-gradient-to-r from-green-600 via-primary to-blue-500 bg-clip-text text-transparent;
+  }
+
+  .premium-gradient {
+    background: var(--premium-gradient);
+  }
+
+  .success-gradient {
+    background: var(--success-gradient);
+  }
+
+  .elite-gradient {
+    background: var(--elite-gradient);
+  }
+
+  /* Professional button styles */
+  .btn-elite {
+    @apply bg-gradient-to-r from-primary via-purple-600 to-blue-600 text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl hover:scale-105 hover:-translate-y-1 transition-all duration-500;
+  }
+
+  .btn-premium {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3 px-6 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300;
+  }
+
+  /* Animation delays for staggered effects */
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  .animation-delay-700 {
+    animation-delay: 0.7s;
+  }
+
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+
+  .animation-delay-1500 {
+    animation-delay: 1.5s;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -187,7 +260,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(60px);
   }
   to {
     opacity: 1;
@@ -198,36 +271,70 @@
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.9) translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-/* Smooth scrolling for better UX */
+/* Smooth scrolling with enhanced behavior */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
-/* Better focus states */
+/* Enhanced focus states for accessibility */
 button:focus-visible,
 a:focus-visible {
-  @apply outline-2 outline-offset-2 outline-primary;
+  @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary/50;
 }
 
-/* Improved selection styling */
+/* Professional selection styling */
 ::selection {
-  @apply bg-primary/20;
+  @apply bg-primary/25 text-primary;
 }
 
-/* Animation for hero accent */
+/* Enhanced breathing animation for hero elements */
 @keyframes breathingAccent {
-  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, .2); }
-  70% { box-shadow: 0 0 0 16px rgba(79,70,229,0); }
-  100% { box-shadow: 0 0 0 0 rgba(79,70,229,0);}
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, .3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 0 20px rgba(79,70,229,0);
+    transform: scale(1.05);
+  }
 }
+
 .breathing-accent {
-  animation: breathingAccent 2.5s infinite;
+  animation: breathingAccent 3s infinite;
+}
+
+/* Professional floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Professional pulse with color variation */
+@keyframes colorPulse {
+  0%, 100% { 
+    background: linear-gradient(45deg, #667eea, #764ba2);
+  }
+  33% { 
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+  }
+  66% { 
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
+  }
+}
+
+.animate-color-pulse {
+  animation: colorPulse 4s ease-in-out infinite;
 }
