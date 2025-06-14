@@ -30,7 +30,7 @@ const seoData = {
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
-      datePublished: post.date || post.publishedAt,
+      datePublished: post.date,
       author: {
         "@type": "Person",
         name: post.author
@@ -45,12 +45,25 @@ const seoData = {
   }
 };
 
+// Get unique categories from blog posts
+const getCategories = () => {
+  const categoryCount: Record<string, number> = {};
+  blogPosts.forEach(post => {
+    categoryCount[post.category] = (categoryCount[post.category] || 0) + 1;
+  });
+  
+  return [
+    { name: "Все статьи", count: blogPosts.length },
+    ...Object.entries(categoryCount).map(([name, count]) => ({ name, count }))
+  ];
+};
+
 export default function Blog() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("Все статьи");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = !selectedCategory || post.category === selectedCategory;
+    const matchesCategory = selectedCategory === "Все статьи" || post.category === selectedCategory;
     const matchesSearch = !searchQuery || 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -60,6 +73,7 @@ export default function Blog() {
   });
 
   const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 3);
+  const categories = getCategories();
 
   return (
     <>
@@ -72,8 +86,9 @@ export default function Blog() {
           />
           
           <BlogCategories
+            categories={categories}
             selectedCategory={selectedCategory}
-            onCategorySelect={setSelectedCategory}
+            setSelectedCategory={setSelectedCategory}
           />
 
           {featuredPosts.length > 0 && (
@@ -88,7 +103,7 @@ export default function Blog() {
             ) : (
               <BlogEmptyState 
                 onReset={() => {
-                  setSelectedCategory(null);
+                  setSelectedCategory("Все статьи");
                   setSearchQuery("");
                 }}
               />

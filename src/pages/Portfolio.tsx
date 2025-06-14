@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { portfolioProjects } from "@/data/portfolioProjects";
+import { portfolioProjects, portfolioCategories } from "@/data/portfolioProjects";
 import Seo from "@/components/Seo";
 import { SEO_CONFIG, generateBreadcrumbStructuredData } from "@/utils/seoConfig";
 import PortfolioHero from "@/components/portfolio/PortfolioHero";
@@ -34,7 +34,6 @@ const seoData = {
             "@type": "Organization",
             name: SEO_CONFIG.siteName
           },
-          dateCreated: project.date || project.createdAt,
           genre: project.category,
           keywords: project.tags?.join(", ")
         }
@@ -72,8 +71,9 @@ export default function Portfolio() {
           />
           
           <PortfolioFilters
+            categories={portfolioCategories}
             selectedCategory={activeCategory}
-            onCategorySelect={setActiveCategory}
+            onCategoryChange={setActiveCategory}
           />
 
           {featuredProjects.length > 0 && (
