@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { createStripeCheckoutSession } from "@/api/payments";
 
 type CheckoutResult = {
   loading: boolean;
@@ -9,6 +10,7 @@ type CheckoutResult = {
 
 /**
  * Custom hook to initiate Stripe Checkout flow.
+ * Business logic is handled in src/api/payments.ts.
  */
 export function useStripeCheckout(): CheckoutResult {
   const [loading, setLoading] = useState(false);
@@ -18,27 +20,18 @@ export function useStripeCheckout(): CheckoutResult {
     setLoading(true);
     setError(null);
 
-    try {
-      // Call the edge function to create a Stripe Checkout Session
-      const res = await fetch("/functions/v1/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          priceId: "price_67890",
-          successUrl: `${window.location.origin}/payment-success`,
-          cancelUrl: `${window.location.origin}/payment-cancelled`,
-        }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError("Ошибка при создании платежа. Попробуйте позже.");
-      }
-    } catch (e) {
-      setError("Ошибка соединения. Проверьте сеть.");
+    const { url, error: apiError } = await createStripeCheckoutSession({
+      priceId: "price_67890",
+      successUrl: `${window.location.origin}/payment-success`,
+      cancelUrl: `${window.location.origin}/payment-cancelled`,
+    });
+
+    if (url) {
+      window.location.href = url;
+    } else {
+      setError(apiError || "Ошибка при создании платежа. Попробуйте позже.");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return { loading, error, handleStripeCheckout };
