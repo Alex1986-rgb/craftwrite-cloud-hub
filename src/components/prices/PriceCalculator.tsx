@@ -1,239 +1,213 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import { Calculator, TrendingUp, Clock, Shield } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Calculator, ArrowRight, Zap } from "lucide-react";
 
-const serviceTypes = [
-  { value: "seo-article", label: "SEO-статья", basePrice: 800, unit: "за 1000 знаков" },
-  { value: "product-description", label: "Описание товара", basePrice: 150, unit: "за товар" },
-  { value: "landing", label: "Продающий лендинг", basePrice: 5000, unit: "за страницу" },
-  { value: "social-post", label: "Пост для соцсетей", basePrice: 300, unit: "за пост" },
-  { value: "email", label: "Email-рассылка", basePrice: 800, unit: "за письмо" },
-  { value: "blog-post", label: "Блог-пост", basePrice: 1200, unit: "за статью" }
-];
+const serviceTypes = {
+  "seo-article": { name: "SEO-статья", basePrice: 15, unit: "за 1000 знаков" },
+  "product-description": { name: "Описание товара", basePrice: 350, unit: "за описание" },
+  "social-media": { name: "Посты для соцсетей", basePrice: 600, unit: "за пост" },
+  "landing": { name: "Лендинг", basePrice: 8000, unit: "за страницу" },
+  "email-campaign": { name: "Email-кампания", basePrice: 1200, unit: "за письмо" },
+  "sales-text": { name: "Продающий текст", basePrice: 5000, unit: "за проект" }
+};
 
-const urgencyMultipliers = [
-  { value: "standard", label: "Стандартный (3-5 дней)", multiplier: 1 },
-  { value: "fast", label: "Быстрый (1-2 дня)", multiplier: 1.5 },
-  { value: "urgent", label: "Срочный (24 часа)", multiplier: 2 },
-  { value: "express", label: "Экспресс (12 часов)", multiplier: 2.5 }
-];
+const urgencyMultipliers = {
+  "standard": { name: "Стандартные сроки (5-7 дней)", multiplier: 1 },
+  "fast": { name: "Ускоренно (2-3 дня)", multiplier: 1.5 },
+  "urgent": { name: "Срочно (24 часа)", multiplier: 2 }
+};
 
-const complexityMultipliers = [
-  { value: "simple", label: "Простой", multiplier: 0.8 },
-  { value: "medium", label: "Средний", multiplier: 1 },
-  { value: "complex", label: "Сложный", multiplier: 1.3 },
-  { value: "expert", label: "Экспертный", multiplier: 1.6 }
-];
+const complexityMultipliers = {
+  "simple": { name: "Простой", multiplier: 1 },
+  "medium": { name: "Средний", multiplier: 1.3 },
+  "complex": { name: "Сложный", multiplier: 1.6 }
+};
 
 export default function PriceCalculator() {
   const [serviceType, setServiceType] = useState("");
-  const [quantity, setQuantity] = useState([1]);
-  const [urgency, setUrgency] = useState("");
-  const [complexity, setComplexity] = useState("");
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [quantity, setQuantity] = useState("1");
+  const [urgency, setUrgency] = useState("standard");
+  const [complexity, setComplexity] = useState("medium");
+  const [showResult, setShowResult] = useState(false);
 
-  useEffect(() => {
-    if (serviceType && urgency && complexity) {
-      const service = serviceTypes.find(s => s.value === serviceType);
-      const urgencyMult = urgencyMultipliers.find(u => u.value === urgency);
-      const complexityMult = complexityMultipliers.find(c => c.value === complexity);
+  const calculatePrice = () => {
+    if (!serviceType) return 0;
+    
+    const service = serviceTypes[serviceType as keyof typeof serviceTypes];
+    const urgencyMult = urgencyMultipliers[urgency as keyof typeof urgencyMultipliers].multiplier;
+    const complexityMult = complexityMultipliers[complexity as keyof typeof complexityMultipliers].multiplier;
+    
+    const baseTotal = service.basePrice * parseInt(quantity);
+    const finalPrice = baseTotal * urgencyMult * complexityMult;
+    
+    return Math.round(finalPrice);
+  };
 
-      if (service && urgencyMult && complexityMult) {
-        const baseTotal = service.basePrice * quantity[0];
-        const withUrgency = baseTotal * urgencyMult.multiplier;
-        const final = withUrgency * complexityMult.multiplier;
-        setTotalPrice(Math.round(final));
-      }
-    }
-  }, [serviceType, quantity, urgency, complexity]);
-
-  const selectedService = serviceTypes.find(s => s.value === serviceType);
-  const selectedUrgency = urgencyMultipliers.find(u => u.value === urgency);
-  const selectedComplexity = complexityMultipliers.find(c => c.value === complexity);
+  const handleCalculate = () => {
+    setShowResult(true);
+  };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-12">
-        <Badge variant="secondary" className="mb-4 px-6 py-3 text-lg font-semibold bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20">
-          <Calculator className="w-5 h-5 mr-2" />
-          Калькулятор стоимости
-        </Badge>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-          Рассчитайте стоимость вашего проекта
-        </h2>
-        <p className="text-lg text-muted-foreground">
-          Получите точную оценку стоимости за несколько кликов
-        </p>
-      </div>
+    <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-blue-50/30">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            Калькулятор стоимости
+          </h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Рассчитайте примерную стоимость вашего проекта за несколько кликов
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Форма расчета */}
-        <Card className="p-8 bg-gradient-to-br from-white to-slate-50/50 border-0 shadow-lg">
-          <div className="space-y-6">
-            <div>
-              <Label htmlFor="service-type" className="text-base font-semibold mb-3 block">
-                Тип услуги
-              </Label>
-              <Select value={serviceType} onValueChange={setServiceType}>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Выберите тип услуги" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceTypes.map((service) => (
-                    <SelectItem key={service.value} value={service.value}>
-                      <div>
-                        <div className="font-medium">{service.label}</div>
-                        <div className="text-sm text-muted-foreground">
-                          от {service.basePrice}₽ {service.unit}
+        <div className="max-w-4xl mx-auto">
+          <Card className="p-8 bg-white/80 backdrop-blur-sm shadow-2xl border-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Calculator className="w-6 h-6 text-primary" />
+                  <h3 className="text-2xl font-bold">Параметры проекта</h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="service-type">Тип услуги *</Label>
+                  <Select value={serviceType} onValueChange={setServiceType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите тип услуги" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(serviceTypes).map(([key, service]) => (
+                        <SelectItem key={key} value={key}>
+                          {service.name} ({service.unit})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quantity">Количество</Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    min="1"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    placeholder="1"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="urgency">Срочность</Label>
+                  <Select value={urgency} onValueChange={setUrgency}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(urgencyMultipliers).map(([key, option]) => (
+                        <SelectItem key={key} value={key}>
+                          {option.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="complexity">Сложность проекта</Label>
+                  <Select value={complexity} onValueChange={setComplexity}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(complexityMultipliers).map(([key, option]) => (
+                        <SelectItem key={key} value={key}>
+                          {option.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Button
+                  onClick={handleCalculate}
+                  disabled={!serviceType}
+                  className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+                  size="lg"
+                >
+                  Рассчитать стоимость
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl p-6 border border-primary/10">
+                  <h4 className="text-xl font-bold mb-4">Расчет стоимости</h4>
+                  
+                  {serviceType && (
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span>Базовая стоимость:</span>
+                        <span className="font-semibold">
+                          {serviceTypes[serviceType as keyof typeof serviceTypes].basePrice} ₽ × {quantity}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <span>Коэффициент срочности:</span>
+                        <span className="font-semibold">
+                          ×{urgencyMultipliers[urgency as keyof typeof urgencyMultipliers].multiplier}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <span>Коэффициент сложности:</span>
+                        <span className="font-semibold">
+                          ×{complexityMultipliers[complexity as keyof typeof complexityMultipliers].multiplier}
+                        </span>
+                      </div>
+                      
+                      <hr className="my-4 border-primary/20" />
+                      
+                      {showResult && (
+                        <div className="flex justify-between text-2xl font-bold text-primary animate-fade-in">
+                          <span>Итого:</span>
+                          <span>{calculatePrice().toLocaleString()} ₽</span>
                         </div>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {!serviceType && (
+                    <p className="text-slate-600 text-center py-8">
+                      Выберите тип услуги для расчета стоимости
+                    </p>
+                  )}
+                </div>
 
-            <div>
-              <Label className="text-base font-semibold mb-3 block">
-                Количество: {quantity[0]}
-              </Label>
-              <Slider
-                value={quantity}
-                onValueChange={setQuantity}
-                max={20}
-                min={1}
-                step={1}
-                className="w-full"
-              />
-              <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                <span>1</span>
-                <span>20</span>
+                {showResult && serviceType && (
+                  <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl p-6 border border-emerald-200 animate-fade-in">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Zap className="w-5 h-5 text-emerald-600" />
+                      <h5 className="font-bold text-emerald-800">Что входит в стоимость:</h5>
+                    </div>
+                    <ul className="text-sm text-emerald-700 space-y-1">
+                      <li>• Профессиональное выполнение работы</li>
+                      <li>• Проверка на уникальность</li>
+                      <li>• 1 раунд бесплатных правок</li>
+                      <li>• Техническое задание и консультации</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
-
-            <div>
-              <Label htmlFor="urgency" className="text-base font-semibold mb-3 block">
-                Срочность
-              </Label>
-              <Select value={urgency} onValueChange={setUrgency}>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Выберите срочность" />
-                </SelectTrigger>
-                <SelectContent>
-                  {urgencyMultipliers.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      <div className="flex items-center justify-between w-full">
-                        <span>{option.label}</span>
-                        {option.multiplier > 1 && (
-                          <Badge variant="secondary" className="ml-2">
-                            +{Math.round((option.multiplier - 1) * 100)}%
-                          </Badge>
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="complexity" className="text-base font-semibold mb-3 block">
-                Сложность
-              </Label>
-              <Select value={complexity} onValueChange={setComplexity}>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Выберите сложность" />
-                </SelectTrigger>
-                <SelectContent>
-                  {complexityMultipliers.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      <div className="flex items-center justify-between w-full">
-                        <span>{option.label}</span>
-                        {option.multiplier !== 1 && (
-                          <Badge variant="secondary" className="ml-2">
-                            {option.multiplier > 1 ? '+' : ''}{Math.round((option.multiplier - 1) * 100)}%
-                          </Badge>
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </Card>
-
-        {/* Результат расчета */}
-        <Card className="p-8 bg-gradient-to-br from-primary/5 to-purple-500/5 border border-primary/20">
-          <h3 className="text-2xl font-bold mb-6 text-foreground">
-            Расчет стоимости
-          </h3>
-
-          {totalPrice > 0 ? (
-            <div className="space-y-6">
-              <div className="text-center p-6 bg-white rounded-2xl shadow-sm">
-                <div className="text-4xl font-bold text-primary mb-2">
-                  {totalPrice.toLocaleString()}₽
-                </div>
-                <div className="text-muted-foreground">
-                  Итоговая стоимость
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white/60 rounded-xl">
-                  <span className="font-medium">Услуга:</span>
-                  <span>{selectedService?.label}</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/60 rounded-xl">
-                  <span className="font-medium">Количество:</span>
-                  <span>{quantity[0]}</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/60 rounded-xl">
-                  <span className="font-medium">Срочность:</span>
-                  <span>{selectedUrgency?.label}</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/60 rounded-xl">
-                  <span className="font-medium">Сложность:</span>
-                  <span>{selectedComplexity?.label}</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-3 bg-white/60 rounded-xl">
-                  <TrendingUp className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                  <div className="text-sm font-medium">Качество</div>
-                </div>
-                <div className="p-3 bg-white/60 rounded-xl">
-                  <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                  <div className="text-sm font-medium">В срок</div>
-                </div>
-                <div className="p-3 bg-white/60 rounded-xl">
-                  <Shield className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-                  <div className="text-sm font-medium">Гарантия</div>
-                </div>
-              </div>
-
-              <Button size="lg" className="w-full">
-                Заказать за {totalPrice.toLocaleString()}₽
-              </Button>
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Calculator className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <p className="text-muted-foreground">
-                Выберите параметры для расчета стоимости
-              </p>
-            </div>
-          )}
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

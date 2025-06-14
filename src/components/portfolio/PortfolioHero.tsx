@@ -1,24 +1,58 @@
 
-import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
+import { Search, Award, Target, Briefcase, TrendingUp } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
-export default function PortfolioHero() {
+interface PortfolioHeroProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}
+
+export default function PortfolioHero({ searchQuery, onSearchChange }: PortfolioHeroProps) {
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5"></div>
-      <div className="container max-w-6xl mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-6 px-6 py-3 text-lg font-semibold">
-            <Eye className="w-5 h-5 mr-2" />
-            Портфолио
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Наши успешные проекты
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-emerald-600/10"></div>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 px-6 py-3 rounded-full text-sm font-bold mb-6 border border-purple-200/50 shadow-lg">
+            <Briefcase className="w-5 h-5" />
+            Проекты мирового уровня
+            <Award className="w-5 h-5 text-yellow-500 fill-current" />
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+            Портфолио <br />
+            <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">успешных проектов</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Реальные кейсы с измеримыми результатами. Посмотрите, как наш контент 
-            помогает бизнесу достигать амбициозных целей
+          
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Изучите наши кейсы и результаты. Более 500 успешных проектов для компаний разного масштаба
           </p>
+          
+          <div className="max-w-lg mx-auto relative mb-8">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <Input
+              type="text"
+              placeholder="Поиск проектов..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-12 pr-4 py-4 text-lg border-2 border-slate-200 focus:border-primary rounded-full shadow-lg"
+            />
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex items-center gap-2 bg-white/80 px-6 py-3 rounded-full shadow-lg border border-slate-200/50">
+              <Target className="w-5 h-5 text-emerald-500" />
+              <span className="font-semibold text-slate-700">500+ проектов</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/80 px-6 py-3 rounded-full shadow-lg border border-slate-200/50">
+              <TrendingUp className="w-5 h-5 text-blue-500" />
+              <span className="font-semibold text-slate-700">98% довольных клиентов</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/80 px-6 py-3 rounded-full shadow-lg border border-slate-200/50">
+              <Award className="w-5 h-5 text-purple-500" />
+              <span className="font-semibold text-slate-700">Международные награды</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
