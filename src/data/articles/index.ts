@@ -7,10 +7,10 @@ import { socialMediaCopywritingArticle } from './social-media-copywriting';
 import { contentStrategyBusinessArticle } from './content-strategy-business';
 
 export const missingArticles = [
-  localizationContentArticle,
-  b2bContentStrategyArticle,
-  seoCopywritingGuideArticle,
-  emailMarketingGuideArticle,
-  socialMediaCopywritingArticle,
-  contentStrategyBusinessArticle
+  { ...localizationContentArticle, id: 29 },
+  { ...b2bContentStrategyArticle, id: 30 },
+  { ...seoCopywritingGuideArticle, id: 31 },
+  { ...emailMarketingGuideArticle, id: 32 },
+  { ...socialMediaCopywritingArticle, id: 33 },
+  { ...contentStrategyBusinessArticle, id: 34 }
 ];
