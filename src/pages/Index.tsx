@@ -10,6 +10,8 @@ import ProcessSection from "@/components/landing/ProcessSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ContactSection from "@/components/landing/ContactSection";
+import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
+import FaqSection from "@/components/landing/FaqSection";
 import { Button } from "@/components/ui/button";
 import { Rocket, ArrowRight, Sparkles, Target, Shield, Award, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -71,6 +73,11 @@ const Index = () => {
           {/* Professional Stats Section */}
           <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <ProfessionalStatsSection />
+          </div>
+
+          {/* Services Catalog Section */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <ServicesCatalogSection />
           </div>
 
           {/* Team Section */}
@@ -178,13 +185,18 @@ const Index = () => {
             <TestimonialsSection />
           </div>
 
-          {/* Contact Section */}
+          {/* FAQ Section */}
           <div className="animate-fade-in" style={{ animationDelay: '1.4s' }}>
+            <FaqSection />
+          </div>
+
+          {/* Contact Section */}
+          <div className="animate-fade-in" style={{ animationDelay: '1.6s' }}>
             <ContactSection />
           </div>
 
           {/* SEO Text */}
-          <div className="animate-fade-in" style={{ animationDelay: '1.6s' }}>
+          <div className="animate-fade-in" style={{ animationDelay: '1.8s' }}>
             <SeoTextExpandable text={seoText} />
           </div>
         </div>
