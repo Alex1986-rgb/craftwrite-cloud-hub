@@ -13,6 +13,7 @@ import OrderServiceCard from "./OrderServiceCard";
 import OrderQuestionGroup from "./OrderQuestionGroup";
 import OrderEmailHint from "./OrderEmailHint";
 import OrderConsent from "./OrderConsent";
+import OrderFormErrors from "./OrderFormErrors";
 
 export default function OrderForm() {
   const {
@@ -27,6 +28,8 @@ export default function OrderForm() {
     handleSubmit,
     currentQuestions,
     nameInputRef,
+    errors,
+    isFormValid,
   } = useOrderForm();
 
   const [progress, setProgress] = useState(0);
@@ -66,6 +69,8 @@ export default function OrderForm() {
       {form.service && (
         <OrderSelectedService serviceName={form.service} />
       )}
+
+      <OrderFormErrors errors={errors} />
 
       <Card className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -112,9 +117,9 @@ export default function OrderForm() {
               {filteredServices.map((service) => (
                 <OrderServiceCard
                   key={service}
-                  service={service}
-                  isSelected={form.service === service}
-                  onSelect={handleServiceSelect}
+                  label={service}
+                  active={form.service === service}
+                  onClick={() => handleServiceSelect(service)}
                 />
               ))}
             </div>
@@ -124,7 +129,7 @@ export default function OrderForm() {
           {currentQuestions.length > 0 && (
             <OrderQuestionGroup
               questions={currentQuestions}
-              values={form.additional}
+              answers={form.additional}
               onChange={handleAdditionalChange}
             />
           )}
@@ -147,7 +152,7 @@ export default function OrderForm() {
           <div className="space-y-3">
             <Button
               type="submit"
-              disabled={loading || progress < 100}
+              disabled={loading || !isFormValid}
               className="w-full"
               size="lg"
             >
