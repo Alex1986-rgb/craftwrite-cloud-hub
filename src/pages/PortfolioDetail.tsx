@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import SmartNavigation from "@/components/portfolio/SmartNavigation";
-import CompactProjectHero from "@/components/portfolio/CompactProjectHero";
+import ModernProjectHero from "@/components/portfolio/ModernProjectHero";
 import OptimizedProjectMetrics from "@/components/portfolio/OptimizedProjectMetrics";
 import ProjectTextExamples from "@/components/portfolio/ProjectTextExamples";
 import ProjectDetails from "@/components/portfolio/ProjectDetails";
@@ -238,7 +238,7 @@ export default function PortfolioDetail() {
       <Header />
       <SmartNavigation />
       <main className="min-h-screen bg-white">
-        <CompactProjectHero project={project} />
+        <ModernProjectHero project={project} />
         <OptimizedProjectMetrics metrics={project.metrics} />
         <ProjectTextExamples />
         <ProjectDetails challenge={project.challenge} solution={project.solution} />
