@@ -1,5 +1,6 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wand2, Library, Bookmark, MessageSquare, History } from "lucide-react";
+import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3 } from "lucide-react";
 import GenerationForm from "./GenerationForm";
 import ResultDisplay from "./ResultDisplay";
 import TemplateLibrary from "./TemplateLibrary";
@@ -7,6 +8,9 @@ import PresetManager from "./PresetManager";
 import PromptLibrary from "./PromptLibrary";
 import GenerationHistory from "./GenerationHistory";
 import QuickPresets from "./QuickPresets";
+import BatchGeneration from "./BatchGeneration";
+import TextRefiner from "./TextRefiner";
+import QualityAnalyzer from "./QualityAnalyzer";
 
 interface FormData {
   prompt: string;
@@ -42,6 +46,9 @@ interface TabNavigationProps {
   setGeneratedText: (text: string) => void;
   isGenerating: boolean;
   onGenerate: () => void;
+  onBatchGenerate?: (variants: number, temperature: number) => Promise<string[]>;
+  onRefineText?: (text: string, instruction: string, preserveLength: boolean) => Promise<string>;
+  onAnalyzeQuality?: (text: string, keywords?: string) => Promise<any>;
   onApplyTemplate: (template: any) => void;
   onApplyPreset: (preset: any) => void;
   onSavePreset: (preset: any) => void;
@@ -61,6 +68,9 @@ export default function TabNavigation({
   setGeneratedText,
   isGenerating,
   onGenerate,
+  onBatchGenerate,
+  onRefineText,
+  onAnalyzeQuality,
   onApplyTemplate,
   onApplyPreset,
   onSavePreset,
@@ -74,10 +84,22 @@ export default function TabNavigation({
 }: TabNavigationProps) {
   return (
     <Tabs defaultValue="generator" className="w-full">
-      <TabsList className="grid w-full grid-cols-5">
+      <TabsList className="grid w-full grid-cols-8">
         <TabsTrigger value="generator" className="flex items-center gap-2">
           <Wand2 className="w-4 h-4" />
           Генератор
+        </TabsTrigger>
+        <TabsTrigger value="batch" className="flex items-center gap-2">
+          <Zap className="w-4 h-4" />
+          Пакетная
+        </TabsTrigger>
+        <TabsTrigger value="refiner" className="flex items-center gap-2">
+          <Edit3 className="w-4 h-4" />
+          Доработка
+        </TabsTrigger>
+        <TabsTrigger value="analyzer" className="flex items-center gap-2">
+          <BarChart3 className="w-4 h-4" />
+          Анализ
         </TabsTrigger>
         <TabsTrigger value="templates" className="flex items-center gap-2">
           <Library className="w-4 h-4" />
@@ -114,8 +136,37 @@ export default function TabNavigation({
             onRegenerate={onGenerate}
           />
         </div>
-        {/* Добавляем QuickPresets в основную вкладку */}
         <QuickPresets onApplyPreset={onApplyPreset} />
+      </TabsContent>
+
+      <TabsContent value="batch">
+        {onBatchGenerate && (
+          <BatchGeneration
+            formData={formData}
+            onGenerate={onBatchGenerate}
+            isGenerating={isGenerating}
+          />
+        )}
+      </TabsContent>
+
+      <TabsContent value="refiner">
+        {onRefineText && (
+          <TextRefiner
+            initialText={generatedText}
+            onRefine={onRefineText}
+            isRefining={isGenerating}
+          />
+        )}
+      </TabsContent>
+
+      <TabsContent value="analyzer">
+        {onAnalyzeQuality && (
+          <QualityAnalyzer
+            text={generatedText}
+            keywords={formData.keywords}
+            onAnalyze={onAnalyzeQuality}
+          />
+        )}
       </TabsContent>
 
       <TabsContent value="templates">

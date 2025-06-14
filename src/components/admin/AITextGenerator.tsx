@@ -26,6 +26,9 @@ export default function AITextGenerator() {
     generatedText,
     error,
     generateText,
+    generateBatch,
+    refineText,
+    analyzeQuality,
     setGeneratedText,
     clearError,
     hasApiKey,
@@ -78,6 +81,21 @@ export default function AITextGenerator() {
       ...formData,
       length: formData.length[0] // Extract the first value from the array
     });
+  };
+
+  const handleBatchGenerate = async (variants: number, temperature: number) => {
+    return await generateBatch({
+      ...formData,
+      length: formData.length[0]
+    }, variants, temperature);
+  };
+
+  const handleRefineText = async (text: string, instruction: string, preserveLength: boolean) => {
+    return await refineText(text, instruction, preserveLength);
+  };
+
+  const handleAnalyzeQuality = async (text: string, keywords?: string) => {
+    return await analyzeQuality(text, keywords);
   };
 
   const handleRetryGeneration = () => {
@@ -189,6 +207,9 @@ export default function AITextGenerator() {
           setGeneratedText={setGeneratedText}
           isGenerating={isGenerating}
           onGenerate={handleGenerate}
+          onBatchGenerate={handleBatchGenerate}
+          onRefineText={handleRefineText}
+          onAnalyzeQuality={handleAnalyzeQuality}
           onApplyTemplate={handleApplyTemplate}
           onApplyPreset={handleApplyPreset}
           onSavePreset={handleSavePreset}
