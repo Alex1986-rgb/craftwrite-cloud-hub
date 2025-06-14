@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -345,14 +344,24 @@ const ServicesCatalogSection = () => {
                     {TOPICS.find(t => t.value === service.topic)?.label}
                   </span>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-4 self-start hover-scale"
-                  asChild
-                >
-                  <Link to="/order">Заказать</Link>
-                </Button>
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="self-start hover-scale"
+                    asChild
+                  >
+                    <Link to="/order" state={{ preselect: service.slug }}>Заказать</Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="self-start"
+                    asChild
+                  >
+                    <Link to={`/service/${service.slug}`}>Подробнее</Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))

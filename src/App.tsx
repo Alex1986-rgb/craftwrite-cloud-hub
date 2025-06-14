@@ -11,6 +11,7 @@ import Prices from "./pages/Prices";
 import Portfolio from "./pages/Portfolio";
 import Blog from "./pages/Blog";
 import Privacy from "./pages/Privacy";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/service/:slug" element={<ServiceDetailPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/portfolio" element={<Portfolio />} />
