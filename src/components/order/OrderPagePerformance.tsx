@@ -5,6 +5,13 @@ interface OrderPagePerformanceProps {
   children: React.ReactNode;
 }
 
+// Extend Window interface for our custom observer
+declare global {
+  interface Window {
+    orderPageObserver?: PerformanceObserver;
+  }
+}
+
 const OrderPagePerformance = memo(function OrderPagePerformance({ children }: OrderPagePerformanceProps) {
   useEffect(() => {
     // Add critical CSS to head if not already present
@@ -64,7 +71,7 @@ const OrderPagePerformance = memo(function OrderPagePerformance({ children }: Or
       
       try {
         observer.observe({entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift']});
-        (window as any).orderPageObserver = observer;
+        window.orderPageObserver = observer;
       } catch (e) {
         console.log('Performance observer not supported');
       }

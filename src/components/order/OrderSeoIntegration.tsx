@@ -1,5 +1,6 @@
 
 import { ReactNode } from "react";
+import { Helmet } from "react-helmet-async";
 import OrderPagePerformance from "./OrderPagePerformance";
 import OrderAccessibilityEnhancer from "./OrderAccessibilityEnhancer";
 
@@ -16,43 +17,43 @@ export default function OrderSeoIntegration({
   pageTitle = "Заказ профессиональных текстов",
   pageDescription = "Оформите заказ на создание качественного контента для вашего бизнеса"
 }: OrderSeoIntegrationProps) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": pageTitle,
+    "description": pageDescription,
+    "url": "https://copypro.cloud/order",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "description": "Профессиональные копирайтинг услуги",
+      "seller": {
+        "@type": "Organization",
+        "name": "CopyPro Cloud",
+        "url": "https://copypro.cloud"
+      }
+    },
+    "featureList": [
+      "Создание SEO-статей",
+      "Написание лендингов",
+      "Контент для социальных сетей",
+      "Email-маркетинг",
+      "Описания товаров"
+    ],
+    "inLanguage": "ru",
+    "isAccessibleForFree": false,
+    "usageInfo": "Коммерческое использование разрешено"
+  };
+
   return (
     <OrderPagePerformance>
       <OrderAccessibilityEnhancer announcements={announcements}>
-        {/* Enhanced page metadata */}
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": pageTitle,
-              "description": pageDescription,
-              "url": "https://copypro.cloud/order",
-              "applicationCategory": "BusinessApplication",
-              "operatingSystem": "Web Browser",
-              "offers": {
-                "@type": "Offer",
-                "description": "Профессиональные копирайтинг услуги",
-                "seller": {
-                  "@type": "Organization",
-                  "name": "CopyPro Cloud",
-                  "url": "https://copypro.cloud"
-                }
-              },
-              "featureList": [
-                "Создание SEO-статей",
-                "Написание лендингов",
-                "Контент для социальных сетей",
-                "Email-маркетинг",
-                "Описания товаров"
-              ],
-              "inLanguage": "ru",
-              "isAccessibleForFree": false,
-              "usageInfo": "Коммерческое использование разрешено"
-            })
-          }}
-        />
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </Helmet>
         
         {/* Breadcrumb navigation for SEO */}
         <nav aria-label="Навигация по сайту" className="sr-only">
