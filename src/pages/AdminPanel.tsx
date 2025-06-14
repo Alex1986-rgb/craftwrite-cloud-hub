@@ -1,6 +1,7 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -12,9 +13,10 @@ import PageEditor from "@/components/admin/PageEditor";
 import PaymentManager from "@/components/admin/PaymentManager";
 import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 import SettingsPanel from "@/components/admin/SettingsPanel";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 
-export default function AdminPanel() {
+function AdminContent() {
   const { isAuthenticated, loading } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -55,5 +57,15 @@ export default function AdminPanel() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function AdminPanel() {
+  return (
+    <ErrorBoundary>
+      <AdminAuthProvider>
+        <AdminContent />
+      </AdminAuthProvider>
+    </ErrorBoundary>
   );
 }
