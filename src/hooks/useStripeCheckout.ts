@@ -5,7 +5,7 @@ import { createStripeCheckoutSession } from "@/api/payments";
 type CheckoutResult = {
   loading: boolean;
   error: string | null;
-  handleStripeCheckout: () => Promise<void>;
+  handleStripeCheckout: (priceId: string) => Promise<void>;
 };
 
 /**
@@ -16,12 +16,12 @@ export function useStripeCheckout(): CheckoutResult {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleStripeCheckout = async () => {
+  const handleStripeCheckout = async (priceId: string) => {
     setLoading(true);
     setError(null);
 
     const { url, error: apiError } = await createStripeCheckoutSession({
-      priceId: "price_67890",
+      priceId,
       successUrl: `${window.location.origin}/payment-success`,
       cancelUrl: `${window.location.origin}/payment-cancelled`,
     });

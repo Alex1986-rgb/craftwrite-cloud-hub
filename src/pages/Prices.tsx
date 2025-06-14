@@ -1,3 +1,4 @@
+
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Seo from "@/components/Seo";
@@ -22,6 +23,12 @@ const seoText = `
 
 const Prices = () => {
   const { loading, error, handleStripeCheckout } = useStripeCheckout();
+  const [processingId, setProcessingId] = useState<string | null>(null);
+
+  const handlePayClick = (priceId: string) => {
+    setProcessingId(priceId);
+    handleStripeCheckout(priceId);
+  };
 
   return (
     <>
@@ -31,37 +38,42 @@ const Prices = () => {
           title="Цены на услуги — CopyPro Cloud"
           description="Прозрачные и доступные цены на копирайтинг, SEO-статьи, тексты для бизнеса. Экономьте время и бюджет с CopyPro Cloud!"
         />
-        <section className="max-w-2xl mx-auto w-full">
+        <section className="max-w-4xl mx-auto w-full">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 text-center">Цены на услуги</h1>
-          <table className="w-full border rounded-xl overflow-hidden mb-8 bg-card shadow">
-            <thead className="bg-muted">
-              <tr>
-                <th className="py-2 px-4 text-left">Услуга</th>
-                <th className="py-2 px-4 text-left">Цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              {prices.map((item, idx) => (
-                <tr key={idx} className="even:bg-muted/40">
-                  <td className="py-2 px-4">{item.service}</td>
-                  <td className="py-2 px-4 font-semibold">{item.price}</td>
+          <div className="border rounded-xl overflow-hidden bg-card shadow">
+            <table className="w-full">
+              <thead className="bg-muted">
+                <tr>
+                  <th className="py-3 px-4 text-left font-semibold">Услуга</th>
+                  <th className="py-3 px-4 text-left font-semibold">Цена</th>
+                  <th className="py-3 px-4 text-right font-semibold">Действие</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex justify-center mb-6">
-            <Button
-              onClick={handleStripeCheckout}
-              disabled={loading}
-              className="text-lg px-8 py-3"
-            >
-              {loading ? "Перенаправление..." : "Оплатить"}
-            </Button>
+              </thead>
+              <tbody>
+                {prices.map((item) => (
+                  <tr key={item.priceId} className="border-t even:bg-muted/40">
+                    <td className="py-4 px-4">{item.service}</td>
+                    <td className="py-4 px-4 font-semibold">{item.price}</td>
+                    <td className="py-4 px-4 text-right">
+                      <Button
+                        onClick={() => handlePayClick(item.priceId)}
+                        disabled={loading}
+                        className="w-full sm:w-auto"
+                      >
+                        {loading && processingId === item.priceId
+                          ? "Обработка..."
+                          : "Оплатить"}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
           {error && (
-            <div className="text-red-500 text-center mb-4">{error}</div>
+            <div className="text-red-500 text-center mt-4">{error}</div>
           )}
-          <div className="text-center">
+          <div className="text-center mt-8">
             Для крупных или уникальных заказов&nbsp;
             <span className="italic text-primary">
               цена обсуждается индивидуально.
