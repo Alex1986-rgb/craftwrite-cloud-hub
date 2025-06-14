@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { blogPosts } from "@/data/blogPosts";
+import { missingArticles } from "@/data/articles";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import BlogHeader from "@/components/blog/BlogHeader";
@@ -10,28 +11,31 @@ import BlogFeaturedPosts from "@/components/blog/BlogFeaturedPosts";
 import BlogEmptyState from "@/components/blog/BlogEmptyState";
 import BlogCTA from "@/components/blog/BlogCTA";
 
+// Combine all posts
+const allPosts = [...blogPosts, ...missingArticles];
+
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Получаем уникальные категории с подсчетом
-  const uniqueCategories = ["all", ...new Set(blogPosts.map(post => post.category))];
+  // Get unique categories with counts
+  const uniqueCategories = ["all", ...new Set(allPosts.map(post => post.category))];
   const categories = uniqueCategories.map(cat => ({
     name: cat,
-    count: cat === "all" ? blogPosts.length : blogPosts.filter(post => post.category === cat).length,
+    count: cat === "all" ? allPosts.length : allPosts.filter(post => post.category === cat).length,
     color: "blue"
   }));
 
-  // Фильтруем посты
-  const filteredPosts = blogPosts.filter(post => {
+  // Filter posts
+  const filteredPosts = allPosts.filter(post => {
     const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  // Получаем избранные посты (первые 3)
-  const featuredPosts = blogPosts.slice(0, 3);
+  // Get featured posts (first 3 from all posts)
+  const featuredPosts = allPosts.slice(0, 3);
 
   return (
     <>

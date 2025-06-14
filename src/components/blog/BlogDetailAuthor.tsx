@@ -4,7 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen, TrendingUp } from "lucide-react";
 
 interface BlogPost {
-  author: string;
+  author: {
+    name: string;
+    avatar: string;
+    bio: string;
+  };
   category: string;
 }
 
@@ -19,13 +23,12 @@ export default function BlogDetailAuthor({ post }: BlogDetailAuthorProps) {
         <Card className="p-8">
           <div className="flex items-start gap-6">
             <div className="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-              {post.author.split(' ').map(n => n[0]).join('')}
+              {post.author.name.split(' ').map(n => n[0]).join('')}
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold mb-2">{post.author}</h3>
+              <h3 className="text-xl font-bold mb-2">{post.author.name}</h3>
               <p className="text-muted-foreground mb-4">
-                Эксперт по {post.category.toLowerCase()} с 8-летним опытом. 
-                Помог более чем 200 компаниям улучшить свои результаты.
+                {post.author.bio}
               </p>
               <div className="flex items-center gap-4">
                 <Badge variant="outline">

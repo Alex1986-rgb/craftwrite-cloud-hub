@@ -1,3 +1,4 @@
+
 export interface BlogPost {
   id: number;
   title: string;
@@ -14,6 +15,7 @@ export interface BlogPost {
   category: string;
   tags: string[];
   relatedPosts: number[];
+  featured?: boolean;
 }
 
 export const blogPosts: BlogPost[] = [
