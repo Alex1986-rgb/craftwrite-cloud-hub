@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SERVICES } from "@/data/services";
 import { Button } from "@/components/ui/button";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
@@ -7,8 +7,8 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import OrderForm from "@/components/order/OrderForm";
 import OrderPageHero from "@/components/order/OrderPageHero";
-import OrderFilters from "@/components/order/OrderFilters";
-import OrderServiceGrid from "@/components/order/OrderServiceGrid";
+import OrderAdvancedFilters from "@/components/order/OrderAdvancedFilters";
+import OrderServiceCardEnhanced from "@/components/order/OrderServiceCardEnhanced";
 import OrderEmptyState from "@/components/order/OrderEmptyState";
 import OrderBackground from "@/components/order/OrderBackground";
 import { ArrowLeft, Sparkles, Zap, Star, Shield, Clock, Target } from "lucide-react";
@@ -53,29 +53,65 @@ const seoText = `
 
 export default function Order() {
   const [showServiceCatalog, setShowServiceCatalog] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [format, setFormat] = useState("all");
-  const [lang, setLang] = useState("all");
-  const [topic, setTopic] = useState("all");
+  const [difficulty, setDifficulty] = useState("all");
+  const [priceRange, setPriceRange] = useState("all");
+  const [popularity, setPopularity] = useState("all");
 
-  const filtered = SERVICES.filter(service => {
-    return (
-      (category === "all" || service.category === category) &&
-      (format === "all" || service.format === format) &&
-      (lang === "all" || service.lang === lang) &&
-      (topic === "all" || service.topic === topic)
-    );
-  });
+  const filteredServices = useMemo(() => {
+    return SERVICES.filter(service => {
+      const matchesSearch = !searchQuery || 
+        service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      const matchesCategory = category === "all" || service.category === category;
+      const matchesDifficulty = difficulty === "all" || service.difficulty === difficulty;
+      
+      const matchesPrice = priceRange === "all" || (() => {
+        switch (priceRange) {
+          case "budget": return service.price.max <= 3000;
+          case "standard": return service.price.min >= 3000 && service.price.max <= 10000;
+          case "premium": return service.price.min >= 10000 && service.price.max <= 20000;
+          case "enterprise": return service.price.min >= 20000;
+          default: return true;
+        }
+      })();
+
+      const matchesPopularity = popularity === "all" || (() => {
+        switch (popularity) {
+          case "high": return service.popularity >= 4;
+          case "medium": return service.popularity === 3;
+          case "low": return service.popularity <= 2;
+          default: return true;
+        }
+      })();
+
+      return matchesSearch && matchesCategory && matchesDifficulty && matchesPrice && matchesPopularity;
+    });
+  }, [searchQuery, category, difficulty, priceRange, popularity]);
 
   const handleQuickOrder = () => {
     setShowServiceCatalog(false);
   };
 
-  const handleResetFilters = () => {
+  const handleClearFilters = () => {
+    setSearchQuery("");
     setCategory("all");
-    setFormat("all");
-    setLang("all");
-    setTopic("all");
+    setDifficulty("all");
+    setPriceRange("all");
+    setPopularity("all");
+  };
+
+  const handleServiceSelect = (serviceName: string) => {
+    // Логика для выбора услуги и перехода к форме заказа
+    setShowServiceCatalog(false);
+  };
+
+  const handleLearnMore = (serviceSlug: string) => {
+    // Логика для перехода к детальной странице услуги
+    window.open(`/service/${serviceSlug}`, '_blank');
   };
 
   if (!showServiceCatalog) {
@@ -173,28 +209,43 @@ export default function Order() {
             <OrderPageHero onQuickOrder={handleQuickOrder} />
           </div>
 
-          <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <OrderFilters
+          <div className="animate-fade-in mb-8" style={{ animationDelay: '0.2s' }}>
+            <OrderAdvancedFilters
+              services={SERVICES}
+              filteredServices={filteredServices}
+              searchQuery={searchQuery}
               category={category}
-              format={format}
-              lang={lang}
-              topic={topic}
-              filteredCount={filtered.length}
+              difficulty={difficulty}
+              priceRange={priceRange}
+              popularity={popularity}
+              onSearchChange={setSearchQuery}
               onCategoryChange={setCategory}
-              onFormatChange={setFormat}
-              onLangChange={setLang}
-              onTopicChange={setTopic}
+              onDifficultyChange={setDifficulty}
+              onPriceRangeChange={setPriceRange}
+              onPopularityChange={setPopularity}
+              onClearFilters={handleClearFilters}
             />
           </div>
 
           <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            {filtered.length > 0 ? (
-              <OrderServiceGrid
-                services={filtered}
-                onOrderNow={handleQuickOrder}
-              />
+            {filteredServices.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-20">
+                {filteredServices.map((service, index) => (
+                  <div
+                    key={service.slug}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${0.1 * index}s` }}
+                  >
+                    <OrderServiceCardEnhanced
+                      service={service}
+                      onSelect={() => handleServiceSelect(service.name)}
+                      onLearnMore={() => handleLearnMore(service.slug)}
+                    />
+                  </div>
+                ))}
+              </div>
             ) : (
-              <OrderEmptyState onResetFilters={handleResetFilters} />
+              <OrderEmptyState onResetFilters={handleClearFilters} />
             )}
           </div>
           
