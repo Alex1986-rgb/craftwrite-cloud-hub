@@ -1,18 +1,21 @@
 
-import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Calendar, Clock, Share2 } from "lucide-react";
+import { Calendar, Clock, User } from "lucide-react";
 
 interface BlogPost {
   id: number;
   title: string;
   excerpt: string;
   category: string;
-  author: string;
+  author: {
+    name: string;
+    avatar: string;
+    bio: string;
+  };
   date: string;
   readTime: string;
-  tags: string[];
+  image: string;
+  featured?: boolean;
 }
 
 interface BlogDetailHeroProps {
@@ -21,49 +24,29 @@ interface BlogDetailHeroProps {
 
 export default function BlogDetailHero({ post }: BlogDetailHeroProps) {
   return (
-    <section className="py-20">
+    <section className="py-16 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
       <div className="container max-w-4xl mx-auto px-4">
-        <Button variant="outline" asChild className="mb-8">
-          <Link to="/blog" className="flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Вернуться к блогу
-          </Link>
-        </Button>
-
-        <div className="mb-8">
+        <div className="text-center mb-8">
           <Badge className="mb-4">{post.category}</Badge>
-          <h1 className="text-3xl md:text-5xl font-playfair font-bold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
             {post.title}
           </h1>
-          
-          <div className="flex flex-wrap items-center gap-6 text-muted-foreground mb-6">
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              {post.author}
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              {post.date}
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              {post.readTime}
-            </div>
-          </div>
-
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
             {post.excerpt}
           </p>
-
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              <Share2 className="w-4 h-4 mr-2" />
-              Поделиться
-            </Button>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">{tag}</Badge>
-              ))}
+          
+          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              <span>{post.author.name}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>{post.date}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              <span>{post.readTime}</span>
             </div>
           </div>
         </div>
