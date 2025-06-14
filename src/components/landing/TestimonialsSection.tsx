@@ -18,12 +18,12 @@ const reviews = [
 ];
 
 const TestimonialsSection = () => (
-  <section className="py-12 bg-muted/50 rounded-xl mx-4 md:mx-auto max-w-5xl mt-12 shadow-md animate-fade-in">
-    <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">Отзывы клиентов</h2>
+  <section className="py-14 bg-muted/70 rounded-3xl mx-2 md:mx-auto max-w-5xl mt-14 shadow-xl animate-fade-in">
+    <h2 className="text-2xl md:text-3xl font-playfair font-bold text-center mb-8">Отзывы клиентов</h2>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2 md:px-0">
       {reviews.map((review, idx) => (
-        <Card key={idx} className="p-0 border-primary/20 bg-background">
-          <CardContent className="py-6 flex flex-col items-center gap-4">
+        <Card key={idx} className="p-0 border-primary/20 bg-background shadow-lg">
+          <CardContent className="py-8 flex flex-col items-center gap-5">
             <Avatar>
               <AvatarFallback>{review.name[0]}</AvatarFallback>
             </Avatar>

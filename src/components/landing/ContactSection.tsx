@@ -23,15 +23,15 @@ const ContactSection = () => {
       });
       setForm({ name: "", email: "", message: "" });
       setLoading(false);
-    }, 1300);
+    }, 1200);
   }
 
   return (
-    <section className="py-8 max-w-xl mx-auto px-4">
-      <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4">Контакты</h2>
+    <section className="py-12 max-w-xl mx-auto px-4">
+      <h2 className="text-2xl md:text-3xl font-playfair font-bold text-center mb-4">Контакты</h2>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-card rounded-xl shadow-md p-6"
+        className="flex flex-col gap-4 bg-card rounded-2xl shadow-xl p-8 border border-primary/10"
         autoComplete="off"
       >
         <Input
@@ -41,6 +41,7 @@ const ContactSection = () => {
           required
           value={form.name}
           onChange={handleChange}
+          className="h-12 rounded-xl"
         />
         <Input
           type="email"
@@ -49,6 +50,7 @@ const ContactSection = () => {
           required
           value={form.email}
           onChange={handleChange}
+          className="h-12 rounded-xl"
         />
         <Textarea
           name="message"
@@ -57,8 +59,9 @@ const ContactSection = () => {
           required
           value={form.message}
           onChange={handleChange}
+          className="rounded-xl"
         />
-        <Button type="submit" size="lg" className="mt-2" disabled={loading}>
+        <Button type="submit" size="lg" className="mt-2 rounded-xl shadow" disabled={loading}>
           {loading ? "Отправка..." : "Отправить"}
         </Button>
       </form>
