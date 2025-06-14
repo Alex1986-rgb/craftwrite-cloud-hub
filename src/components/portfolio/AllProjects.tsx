@@ -1,22 +1,20 @@
 
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Target, TrendingUp, ExternalLink } from "lucide-react";
-
-type Project = {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  metrics: Record<string, string>;
-  tags: string[];
-};
+import { portfolioProjects } from "@/data/portfolioProjects";
+import EnhancedPortfolioCard from "./EnhancedPortfolioCard";
+import { Target } from "lucide-react";
 
 type AllProjectsProps = {
-  projects: Project[];
+  projects: typeof portfolioProjects;
 };
+
+const imagePool = [
+  "photo-1488590528505-98d2b5aba04b",
+  "photo-1461749280684-dccba630e2f6", 
+  "photo-1486312338219-ce68d2c6f44d",
+  "photo-1498050108023-c5249f4df085",
+  "photo-1483058712412-4245e9b90334",
+  "photo-1496307653780-42ee777d4833"
+];
 
 export default function AllProjects({ projects }: AllProjectsProps) {
   return (
@@ -28,43 +26,19 @@ export default function AllProjects({ projects }: AllProjectsProps) {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="h-32 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center relative">
-                <TrendingUp className="w-12 h-12 text-slate-400" />
-                <Badge variant="outline" className="absolute top-2 right-2 text-xs">
-                  {item.category}
-                </Badge>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-semibold mb-2 line-clamp-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                  {item.description}
-                </p>
-                
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  {Object.entries(item.metrics).slice(0, 2).map(([key, value]) => (
-                    <div key={key} className="text-center p-2 bg-slate-50 rounded">
-                      <div className="text-lg font-bold text-primary">{value}</div>
-                      <div className="text-xs text-muted-foreground capitalize">{key}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {item.tags.slice(0, 2).map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                  ))}
-                </div>
-
-                <Button asChild variant="outline" size="sm" className="w-full">
-                  <Link to={`/portfolio/${item.id}`} className="flex items-center justify-center gap-2">
-                    Детали
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                </Button>
-              </div>
-            </Card>
+          {projects.map((project, index) => (
+            <EnhancedPortfolioCard
+              key={project.id}
+              id={project.id}
+              title={project.title}
+              category={project.category}
+              description={project.description}
+              metrics={project.metrics}
+              tags={project.tags}
+              featured={project.featured}
+              results={project.results}
+              image={imagePool[index % imagePool.length]}
+            />
           ))}
         </div>
       </div>
