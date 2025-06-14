@@ -1,9 +1,11 @@
+
 import OptimizedHeader from "@/components/common/OptimizedHeader";
 import Footer from "@/components/common/Footer";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import LazySection from "@/components/common/LazySection";
 import SectionSkeleton from "@/components/common/SectionSkeleton";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import SupportWidget from "@/components/common/SupportWidget";
 import { lazy, Suspense } from "react";
 
 // Optimized lazy loading with better chunking

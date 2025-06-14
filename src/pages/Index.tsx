@@ -18,7 +18,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import NewsletterSection from "@/components/landing/NewsletterSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
-import SupportWidget from "@/components/landing/SupportWidget";
+import SupportWidget from "@/components/common/SupportWidget";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
