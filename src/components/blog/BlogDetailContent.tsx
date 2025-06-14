@@ -53,11 +53,15 @@ export default function BlogDetailContent({ post }: BlogDetailContentProps) {
                 [&_th]:border [&_th]:border-gray-200 [&_th]:px-4 [&_th]:py-3 [&_th]:text-left [&_th]:font-semibold [&_th]:text-white [&_th]:text-sm
                 [&_td]:border [&_td]:border-gray-200 [&_td]:px-4 [&_td]:py-3 [&_td]:text-muted-foreground [&_td]:text-sm
                 [&_tbody_tr:nth-child(even)]:bg-gray-50 [&_tbody_tr:hover]:bg-blue-50 [&_tbody_tr]:transition-colors
+                [&_.stats-box]:bg-gradient-to-r [&_.stats-box]:from-purple-50 [&_.stats-box]:to-indigo-50 [&_.stats-box]:border [&_.stats-box]:border-purple-200 [&_.stats-box]:rounded-lg [&_.stats-box]:p-6 [&_.stats-box]:mb-6 [&_.stats-box]:shadow-sm
                 [&_.highlight-box]:bg-gradient-to-r [&_.highlight-box]:from-green-50 [&_.highlight-box]:to-emerald-50 [&_.highlight-box]:border [&_.highlight-box]:border-green-200 [&_.highlight-box]:rounded-lg [&_.highlight-box]:p-6 [&_.highlight-box]:mb-6 [&_.highlight-box]:shadow-sm
                 [&_.warning-box]:bg-gradient-to-r [&_.warning-box]:from-yellow-50 [&_.warning-box]:to-orange-50 [&_.warning-box]:border [&_.warning-box]:border-yellow-200 [&_.warning-box]:rounded-lg [&_.warning-box]:p-6 [&_.warning-box]:mb-6 [&_.warning-box]:shadow-sm
                 [&_.info-box]:bg-gradient-to-r [&_.info-box]:from-cyan-50 [&_.info-box]:to-blue-50 [&_.info-box]:border [&_.info-box]:border-cyan-200 [&_.info-box]:rounded-lg [&_.info-box]:p-6 [&_.info-box]:mb-6 [&_.info-box]:shadow-sm
                 [&_.success-box]:bg-gradient-to-r [&_.success-box]:from-green-50 [&_.success-box]:to-teal-50 [&_.success-box]:border [&_.success-box]:border-green-300 [&_.success-box]:rounded-lg [&_.success-box]:p-6 [&_.success-box]:mb-6 [&_.success-box]:shadow-sm
-                [&_.article-image]:w-full [&_.article-image]:rounded-lg [&_.article-image]:shadow-lg [&_.article-image]:mb-6 [&_.article-image]:border [&_.article-image]:border-gray-200"
+                [&_.tips-box]:bg-gradient-to-r [&_.tips-box]:from-amber-50 [&_.tips-box]:to-yellow-50 [&_.tips-box]:border [&_.tips-box]:border-amber-200 [&_.tips-box]:rounded-lg [&_.tips-box]:p-6 [&_.tips-box]:mb-6 [&_.tips-box]:shadow-sm
+                [&_.quote-box]:bg-gradient-to-r [&_.quote-box]:from-slate-50 [&_.quote-box]:to-gray-50 [&_.quote-box]:border [&_.quote-box]:border-slate-200 [&_.quote-box]:rounded-lg [&_.quote-box]:p-6 [&_.quote-box]:mb-6 [&_.quote-box]:shadow-sm [&_.quote-box]:italic
+                [&_.cta-box]:bg-gradient-to-r [&_.cta-box]:from-blue-500 [&_.cta-box]:to-purple-600 [&_.cta-box]:text-white [&_.cta-box]:rounded-lg [&_.cta-box]:p-6 [&_.cta-box]:mb-6 [&_.cta-box]:shadow-lg [&_.cta-box]:text-center
+                [&_.article-image]:w-full [&_.article-image]:rounded-lg [&_.article-image]:shadow-lg [&_.article-image]:mb-6 [&_.article-image]:border [&_.article-image]:border-gray-200 [&_.article-image]:max-h-96 [&_.article-image]:object-cover"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </Card>
