@@ -1,146 +1,67 @@
 
+import { AlertCircle, ArrowLeft, RefreshCw, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { XCircle, ArrowLeft, Home, RefreshCw, HelpCircle } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 export default function PaymentCancelledContent() {
   return (
     <main 
       id="main-content"
-      className="flex-1 flex items-center justify-center px-4 py-16"
+      className="flex-1 flex items-center justify-center py-16 px-4"
       role="main"
-      aria-labelledby="cancelled-heading"
+      aria-label="Оплата отменена"
     >
-      <section className="text-center max-w-2xl mx-auto">
-        {/* Cancelled Animation */}
-        <div className="mb-8 relative" role="img" aria-label="Иконка отмененной оплаты">
-          <div className="mx-auto w-24 h-24 bg-red-100 rounded-full flex items-center justify-center">
-            <XCircle className="w-12 h-12 text-red-500" aria-hidden="true" />
+      <div className="max-w-2xl mx-auto text-center">
+        {/* Icon */}
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-red-100 rounded-full mb-6">
+            <AlertCircle className="w-12 h-12 text-red-600" />
           </div>
         </div>
 
-        <header className="mb-8">
-          <h1 
-            id="cancelled-heading"
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-          >
-            Оплата отменена
-          </h1>
-          <p className="text-lg text-gray-600 mb-2">
-            Процесс оплаты был прерван. Ваш заказ не был обработан.
-          </p>
-          <p className="text-gray-500">
-            Не переживайте — никакие средства с вашего счета не были списаны.
-          </p>
-        </header>
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Оплата отменена
+        </h1>
 
-        {/* Possible Reasons */}
-        <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8" aria-labelledby="reasons-heading">
-          <h2 id="reasons-heading" className="text-xl font-semibold text-gray-900 mb-4">
-            Возможные причины отмены
-          </h2>
-          <div className="space-y-3 text-left">
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
-              <p className="text-gray-600">Вы нажали кнопку "Отмена" в платежной форме</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
-              <p className="text-gray-600">Произошла техническая ошибка в процессе оплаты</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
-              <p className="text-gray-600">Недостаточно средств на карте</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
-              <p className="text-gray-600">Банк заблокировал транзакцию по соображениям безопасности</p>
-            </div>
-          </div>
-        </section>
+        <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+          Ваш платеж был отменен. Не волнуйтесь — никакие средства не были списаны с вашего счета.
+        </p>
 
-        {/* Action Buttons */}
-        <nav className="flex flex-col sm:flex-row gap-4 justify-center mb-8" aria-label="Возможные действия">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+        {/* Action buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <Button asChild size="lg" className="min-w-48">
             <Link to="/order" className="flex items-center gap-2">
-              <RefreshCw className="w-5 h-5" aria-hidden="true" />
+              <RefreshCw className="w-5 h-5" />
               Попробовать снова
             </Link>
           </Button>
           
-          <Button asChild variant="outline" size="lg">
+          <Button asChild variant="outline" size="lg" className="min-w-48">
             <Link to="/" className="flex items-center gap-2">
-              <Home className="w-5 h-5" aria-hidden="true" />
+              <ArrowLeft className="w-5 h-5" />
               На главную
             </Link>
           </Button>
+        </div>
 
-          <Button asChild variant="outline" size="lg">
-            <button 
-              onClick={() => window.history.back()} 
-              className="flex items-center gap-2"
-              aria-label="Вернуться назад"
-            >
-              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-              Назад
-            </button>
-          </Button>
-        </nav>
-
-        {/* Alternative Payment Methods */}
-        <section className="bg-blue-50 rounded-lg p-6 border border-blue-200 mb-8" aria-labelledby="alternatives-heading">
-          <h2 id="alternatives-heading" className="text-lg font-semibold text-gray-900 mb-4">
-            Альтернативные способы оплаты
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Если у вас возникли проблемы с онлайн-оплатой, мы можем предложить другие варианты:
-          </p>
-          <div className="space-y-2 text-left">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-gray-700">Банковский перевод</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-gray-700">Оплата по счету для юридических лиц</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-gray-700">Постоплата (для постоянных клиентов)</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Support */}
-        <section className="bg-yellow-50 rounded-lg p-6 border border-yellow-200" aria-labelledby="support-heading">
-          <h2 id="support-heading" className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-yellow-600" aria-hidden="true" />
+        {/* Help section */}
+        <Card className="p-6 bg-gray-50 border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">
             Нужна помощь?
-          </h2>
+          </h3>
           <p className="text-gray-600 mb-4">
-            Если проблема повторяется или у вас есть вопросы, обратитесь в нашу службу поддержки:
+            Если у вас возникли проблемы с оплатой, наша команда поддержки готова помочь вам 24/7.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="mailto:support@copypro.cloud" 
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-              aria-label="Написать в службу поддержки"
-            >
-              <span>support@copypro.cloud</span>
+          <Button asChild variant="outline" className="w-full sm:w-auto">
+            <a href="mailto:support@copyprocloud.ru" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              Связаться с поддержкой
             </a>
-            <a 
-              href="tel:+74951234567" 
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-              aria-label="Позвонить в службу поддержки"
-            >
-              +7 (495) 123-45-67
-            </a>
-          </div>
-          <p className="text-sm text-gray-500 mt-3">
-            Режим работы: пн-пт с 9:00 до 18:00 (МСК)
-          </p>
-        </section>
-      </section>
+          </Button>
+        </Card>
+      </div>
     </main>
   );
 }
