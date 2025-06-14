@@ -17,7 +17,8 @@ export default function Blog() {
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === "Все статьи" || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -25,7 +26,9 @@ export default function Blog() {
     ? initialFeaturedPosts 
     : initialFeaturedPosts.filter(post => post.category === selectedCategory);
 
-  const displayedRegularPosts = filteredPosts.filter(post => !post.featured || selectedCategory !== "Все статьи");
+  const displayedRegularPosts = filteredPosts.filter(post => 
+    selectedCategory === "Все статьи" ? !post.featured : true
+  );
 
   return (
     <>
