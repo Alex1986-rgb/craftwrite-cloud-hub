@@ -84,9 +84,24 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  html {
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
   body {
     @apply bg-[linear-gradient(135deg,#f7fafc_0%,#edf5fd_100%)] text-foreground font-inter;
     font-family: 'Inter', Arial, sans-serif;
+    width: 100vw;
+    min-width: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   h1, h2, h3 {
@@ -98,6 +113,14 @@
   .order-bg-blur {
     background: var(--form-gradient);
     @apply backdrop-blur-md;
+  }
+
+  .container {
+    width: 100%!important;
+    min-width: 0!important;
+    max-width: 100vw!important;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 

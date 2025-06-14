@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SERVICES } from "@/data/services";
 import { FILTERS, FORMATS, LANGS, TOPICS } from "@/components/landing/ServicesCatalogSection";
@@ -41,33 +42,51 @@ export default function Order() {
   return (
     <>
       <Header />
-      <main className="max-w-4xl mx-auto py-6">
-        <h1 className="text-2xl font-bold mb-4">Оформление заказа</h1>
-        <div className="flex flex-wrap gap-3 mb-6">
-          <select value={category} onChange={e => setCategory(e.target.value)} className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px]">
+      <main className="w-full max-w-4xl mx-auto py-4 px-2 sm:px-4 md:py-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">Оформление заказа</h1>
+        {/* Фильтры: мобильный флекс-вертикальный, на md+ — горизонтальный */}
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-6 items-stretch sm:items-end">
+          <select
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
+          >
             {FILTERS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
           </select>
-          <select value={format} onChange={e => setFormat(e.target.value)} className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px]">
+          <select
+            value={format}
+            onChange={e => setFormat(e.target.value)}
+            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
+          >
             {FORMATS.map(f => <option value={f.value} key={f.value}>{f.label}</option>)}
           </select>
-          <select value={lang} onChange={e => setLang(e.target.value)} className="rounded-lg border px-3 py-2 shadow text-sm min-w-[100px]">
+          <select
+            value={lang}
+            onChange={e => setLang(e.target.value)}
+            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[100px] w-full sm:w-auto"
+          >
             {LANGS.map(l => <option value={l.value} key={l.value}>{l.label}</option>)}
           </select>
-          <select value={topic} onChange={e => setTopic(e.target.value)} className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px]">
+          <select
+            value={topic}
+            onChange={e => setTopic(e.target.value)}
+            className="rounded-lg border px-3 py-2 shadow text-sm min-w-[120px] w-full sm:w-auto"
+          >
             {TOPICS.map(t => <option value={t.value} key={t.value}>{t.label}</option>)}
           </select>
         </div>
+        {/* Карточки: по 1 колонке на мобиле, по 2 на sm+, равные ширины, обрезка содержимого */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           {filtered.map(service => (
-            <Card key={service.slug} className="p-4 flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="font-bold">{service.name}</span>
-                <Button asChild variant="ghost" size="sm">
+            <Card key={service.slug} className="p-4 flex flex-col gap-3 h-full min-w-0">
+              <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2">
+                <span className="font-bold text-base">{service.name}</span>
+                <Button asChild variant="ghost" size="sm" className="px-2 py-1">
                   <Link to={`/service/${service.slug}`}>Подробнее</Link>
                 </Button>
               </div>
-              <p className="text-muted-foreground text-xs">{service.desc}</p>
-              <Button asChild variant="default" size="sm">
+              <p className="text-muted-foreground text-xs line-clamp-3">{service.desc}</p>
+              <Button asChild variant="default" size="sm" className="mt-auto w-full sm:w-auto">
                 <Link to={`/order?type=${service.slug}`}>Выбрать</Link>
               </Button>
             </Card>

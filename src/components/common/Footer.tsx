@@ -15,16 +15,16 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="w-full border-t border-border bg-muted/30 py-6 mt-10">
-      <div className="container max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 px-3 sm:px-6">
+      <div className="container max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 px-2 sm:px-6">
         <div className="flex items-center gap-1 text-primary font-semibold text-lg">
           CopyProCloud<span className="mx-1 text-muted-foreground/60">© {new Date().getFullYear()}</span>
         </div>
-        <nav className="flex flex-wrap gap-4">
+        <nav className="flex flex-wrap gap-3 md:gap-4 justify-center">
           {footerLinks.map((link) => (
             <Link
               to={link.to}
               key={link.to}
-              className="text-muted-foreground hover:text-primary transition-colors text-sm"
+              className="text-muted-foreground hover:text-primary transition-colors text-xs xs:text-sm"
             >
               {link.label}
             </Link>
