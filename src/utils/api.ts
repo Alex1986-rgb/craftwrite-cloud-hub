@@ -67,7 +67,31 @@ class ApiClient {
       ...params,
     });
 
-    return this.request<T[]>(`${endpoint}?${searchParams}`);
+    const response = await this.request<PaginatedResponse<T>>(`${endpoint}?${searchParams}`);
+    
+    // Ensure the response has the required pagination properties
+    if (response.data && !response.error) {
+      return {
+        ...response,
+        data: response.data.data || [],
+        total: response.data.total || 0,
+        page: response.data.page || page,
+        limit: response.data.limit || limit,
+        totalPages: response.data.totalPages || Math.ceil((response.data.total || 0) / limit),
+        status: response.status
+      };
+    }
+
+    // Return error response with pagination structure
+    return {
+      data: [],
+      total: 0,
+      page,
+      limit,
+      totalPages: 0,
+      error: response.error,
+      status: 'error'
+    };
   }
 }
 
