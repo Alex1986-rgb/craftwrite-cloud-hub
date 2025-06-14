@@ -1,95 +1,21 @@
 
-import AboutHeroSection from "./AboutHeroSection";
-import MissionSection from "./MissionSection";
-import ValuesSection from "./ValuesSection";
-import TeamExpertiseSection from "./TeamExpertiseSection";
-import AchievementsSection from "./AchievementsSection";
-import CompanyTimelineSection from "./CompanyTimelineSection";
-import CertificationsSection from "./CertificationsSection";
-import OfficeSection from "./OfficeSection";
-
 export default function AboutContent() {
   return (
-    <main 
-      id="main-content"
-      role="main" 
-      aria-label="О компании CopyPro Cloud"
-      itemProp="mainEntity"
-      itemScope
-      itemType="https://schema.org/Organization"
-    >
-      {/* Hero Section */}
-      <section 
-        aria-labelledby="about-hero-heading"
-        role="banner"
-      >
-        <AboutHeroSection />
-      </section>
-
-      {/* Mission Section */}
-      <section 
-        aria-labelledby="mission-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <MissionSection />
-      </section>
-
-      {/* Values Section */}
-      <section 
-        aria-labelledby="values-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <ValuesSection />
-      </section>
-
-      {/* Team Section */}
-      <section 
-        aria-labelledby="team-expertise-heading"
-        role="region"
-        className="py-16 md:py-24"
-        itemScope
-        itemType="https://schema.org/Organization"
-      >
-        <TeamExpertiseSection />
-      </section>
-
-      {/* Timeline Section */}
-      <section 
-        aria-labelledby="timeline-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <CompanyTimelineSection />
-      </section>
-
-      {/* Achievements Section */}
-      <section 
-        aria-labelledby="achievements-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <AchievementsSection />
-      </section>
-
-      {/* Certifications Section */}
-      <section 
-        aria-labelledby="certifications-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <CertificationsSection />
-      </section>
-
-      {/* Office Section */}
-      <section 
-        aria-labelledby="office-heading"
-        role="region"
-        className="py-16 md:py-24"
-      >
-        <OfficeSection />
-      </section>
+    <main className="flex-1 py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-8">О компании CopyPro Cloud</h1>
+        <div className="prose max-w-none">
+          <p className="text-lg text-gray-600 mb-6">
+            CopyPro Cloud — ведущая команда профессиональных SEO-копирайтеров, которая помогает бизнесу 
+            достигать целей через качественный контент.
+          </p>
+          <p className="text-gray-600 mb-6">
+            Мы специализируемся на создании текстов, которые не только привлекают внимание, 
+            но и приводят к конверсиям. Наша команда состоит из опытных специалистов в области 
+            контент-маркетинга, SEO-оптимизации и продающих текстов.
+          </p>
+        </div>
+      </div>
     </main>
   );
 }

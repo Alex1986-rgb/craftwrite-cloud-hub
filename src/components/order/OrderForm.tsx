@@ -19,6 +19,19 @@ import OrderFormPricing from "./OrderFormPricing";
 import OrderFormActions from "./OrderFormActions";
 
 export default function OrderForm() {
+  const orderFormState = useOrderFormState();
+  
+  // Add safety check for orderFormState
+  if (!orderFormState) {
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <Card className="p-8 text-center">
+          <p>Загрузка формы заказа...</p>
+        </Card>
+      </div>
+    );
+  }
+
   const {
     form,
     currentStep,
@@ -32,21 +45,25 @@ export default function OrderForm() {
     calculateEstimatedPrice,
     getEstimatedDeliveryTime,
     getSelectedService
-  } = useOrderFormState();
+  } = orderFormState;
 
   const [showValidationSuccess, setShowValidationSuccess] = useState(false);
-  const estimatedPrice = calculateEstimatedPrice();
-  const deliveryTime = getEstimatedDeliveryTime();
-  const selectedService = getSelectedService();
+  
+  // Add safety checks
+  const estimatedPrice = calculateEstimatedPrice ? calculateEstimatedPrice() : 5000;
+  const deliveryTime = getEstimatedDeliveryTime ? getEstimatedDeliveryTime() : "3-5 дней";
+  const selectedService = getSelectedService ? getSelectedService() : null;
 
   // Get all service names for the selector
-  const availableServices = SERVICES.map(service => service.name);
+  const availableServices = SERVICES?.map(service => service.name) || [];
 
   const canGoNext = () => {
+    if (!form) return false;
+    
     switch (currentStep) {
-      case 1: return form.name.trim() && form.email.trim();
+      case 1: return form.name?.trim() && form.email?.trim();
       case 2: return form.service;
-      case 3: return form.details.trim();
+      case 3: return form.details?.trim();
       case 4: return true;
       default: return false;
     }
@@ -64,13 +81,19 @@ export default function OrderForm() {
     }
   };
 
+  const handleFormChange = (updates: any) => {
+    if (updateForm) {
+      updateForm(updates);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6 md:space-y-8">
       <OrderFormHeader />
       
-      <OrderFormSteps currentStep={currentStep} completedSteps={completedSteps} />
+      <OrderFormSteps currentStep={currentStep} completedSteps={completedSteps || []} />
 
-      {form.service && currentStep > 2 && (
+      {form?.service && currentStep > 2 && (
         <OrderSelectedService 
           serviceName={form.service}
           serviceDetails={selectedService}
@@ -82,10 +105,10 @@ export default function OrderForm() {
           <Card className="p-6 md:p-8 shadow-2xl border-0 bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-sm">
             <div className="min-h-[400px]">
               {/* Step content rendering */}
-              {currentStep === 1 && (
+              {currentStep === 1 && form && (
                 <OrderFormContact
                   form={form}
-                  handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+                  handleChange={(e) => handleFormChange({ [e.target.name]: e.target.value })}
                   nameInputRef={nameInputRef}
                   formProgress={0}
                 />
@@ -94,49 +117,49 @@ export default function OrderForm() {
               {currentStep === 2 && (
                 <OrderFormService
                   filteredServices={availableServices}
-                  selectedService={form.service}
-                  onServiceSelect={(service) => updateForm({ service })}
+                  selectedService={form?.service || ""}
+                  onServiceSelect={(service) => handleFormChange({ service })}
                 />
               )}
               
-              {currentStep === 3 && (
+              {currentStep === 3 && form && (
                 <OrderFormDetails
-                  details={form.details}
-                  handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+                  details={form.details || ""}
+                  handleChange={(e) => handleFormChange({ [e.target.name]: e.target.value })}
                 />
               )}
               
-              {currentStep === 4 && (
+              {currentStep === 4 && form && (
                 <div className="space-y-8">
                   <OrderFormDeadline
-                    selectedDeadline={form.deadline}
-                    onDeadlineChange={(deadline) => updateForm({ deadline })}
+                    selectedDeadline={form.deadline || ""}
+                    onDeadlineChange={(deadline) => handleFormChange({ deadline })}
                   />
                   
                   <OrderFormAdvanced
-                    additionalServices={form.additionalServices}
-                    onAdditionalServicesChange={(additionalServices) => updateForm({ additionalServices })}
-                    targetAudience={form.targetAudience}
-                    onTargetAudienceChange={(targetAudience) => updateForm({ targetAudience })}
-                    seoKeywords={form.seoKeywords}
-                    onSeoKeywordsChange={(seoKeywords) => updateForm({ seoKeywords })}
-                    preferredStyle={form.preferredStyle}
-                    onPreferredStyleChange={(preferredStyle) => updateForm({ preferredStyle })}
-                    additionalRequirements={form.additionalRequirements}
-                    onAdditionalRequirementsChange={(additionalRequirements) => updateForm({ additionalRequirements })}
+                    additionalServices={form.additionalServices || []}
+                    onAdditionalServicesChange={(additionalServices) => handleFormChange({ additionalServices })}
+                    targetAudience={form.targetAudience || ""}
+                    onTargetAudienceChange={(targetAudience) => handleFormChange({ targetAudience })}
+                    seoKeywords={form.seoKeywords || ""}
+                    onSeoKeywordsChange={(seoKeywords) => handleFormChange({ seoKeywords })}
+                    preferredStyle={form.preferredStyle || ""}
+                    onPreferredStyleChange={(preferredStyle) => handleFormChange({ preferredStyle })}
+                    additionalRequirements={form.additionalRequirements || ""}
+                    onAdditionalRequirementsChange={(additionalRequirements) => handleFormChange({ additionalRequirements })}
                   />
                 </div>
               )}
               
-              {currentStep === 5 && (
+              {currentStep === 5 && form && (
                 <OrderFormSummary
-                  service={form.service}
-                  deadline={form.deadline}
+                  service={form.service || ""}
+                  deadline={form.deadline || ""}
                   estimatedPrice={estimatedPrice}
                   deliveryTime={deliveryTime}
-                  clientName={form.name}
-                  clientEmail={form.email}
-                  details={form.details}
+                  clientName={form.name || ""}
+                  clientEmail={form.email || ""}
+                  details={form.details || ""}
                   serviceDetails={selectedService}
                   onEdit={() => setCurrentStep(1)}
                 />
@@ -169,10 +192,10 @@ export default function OrderForm() {
               ) : (
                 <OrderFormActions
                   loading={loading}
-                  isFormValid={isFormValid()}
+                  isFormValid={isFormValid ? isFormValid() : false}
                   showValidationSuccess={showValidationSuccess}
                   setShowValidationSuccess={setShowValidationSuccess}
-                  handleSubmit={handleSubmit}
+                  handleSubmit={handleSubmit || (() => {})}
                 />
               )}
             </div>
@@ -182,8 +205,8 @@ export default function OrderForm() {
         <div className="lg:col-span-1">
           <div className="sticky top-8 space-y-6">
             <OrderFormPricing
-              service={form.service}
-              deadline={form.deadline}
+              service={form?.service || ""}
+              deadline={form?.deadline || ""}
               estimatedPrice={estimatedPrice}
               deliveryTime={deliveryTime}
               serviceDetails={selectedService}
@@ -208,7 +231,7 @@ export default function OrderForm() {
                   <div className="mt-4 p-3 bg-white/60 rounded-lg">
                     <div className="text-xs font-semibold text-blue-800 mb-1">Для этой услуги важно:</div>
                     <div className="text-xs text-blue-600">
-                      {selectedService.recs.slice(0, 2).map((rec, index) => (
+                      {selectedService.recs?.slice(0, 2).map((rec, index) => (
                         <div key={index} className="mb-1">• {rec}</div>
                       ))}
                     </div>
