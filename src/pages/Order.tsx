@@ -1,4 +1,3 @@
-
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,9 @@ import OrderFormHeader from "@/components/order/OrderFormHeader";
 import OrderProgressBar from "@/components/order/OrderProgressBar";
 import { useOrderProgress } from "@/hooks/useOrderProgress";
 import { useOrderForm } from "@/hooks/useOrderForm";
+import OrderSelectedService from "@/components/order/OrderSelectedService";
+import OrderEmailHint from "@/components/order/OrderEmailHint";
+import OrderConsent from "@/components/order/OrderConsent";
 
 // Улучшенные стили кнопки и формы добавлены в Tailwind-классы
 
@@ -52,15 +54,7 @@ const Order = () => {
             onFlashEnd={() => setShowProgressFlash(false)}
           />
           <OrderFormHeader />
-          <div className="mx-auto flex flex-col items-center -mt-3 mb-3 animate-fade-in">
-            <span className="rounded-full border border-muted bg-muted/30 text-foreground px-3 py-1 text-sm font-semibold shadow flex items-center gap-1 hover:scale-105 transition-transform duration-200 animate-scale-in">
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline-block mr-1 text-yellow-500">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                <path d="M15 8l-5.5 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              {form.service}
-            </span>
-          </div>
+          <OrderSelectedService serviceName={form.service} />
           <div>
             <Input
               name="name"
@@ -82,7 +76,7 @@ const Order = () => {
               onChange={handleChange}
               aria-label="Ваш email"
             />
-            <span className="text-xs text-muted-foreground ml-1">На этот email придёт подтверждение заказа</span>
+            <OrderEmailHint />
           </div>
           <div>
             <Input
@@ -132,7 +126,7 @@ const Order = () => {
             type="submit"
             size="lg"
             className={`w-full mt-4 shadow-lg text-lg transition-all duration-200 
-                        ${loading ? "bg-green-400 animate-pulse cursor-not-allowed" : "hover:scale-105"}`}
+                        ${loading ? "bg-green-400 animate-pulse cursor-not-allowed" : "hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary"}`}
             disabled={loading}
             aria-busy={loading}
             aria-label="Отправить заказ"
@@ -147,9 +141,7 @@ const Order = () => {
               </>
             ) : "Отправить заказ"}
           </Button>
-          <div className="text-xs text-muted-foreground text-center mt-1">
-            Нажимая, вы даёте согласие на обработку персональных данных
-          </div>
+          <OrderConsent />
         </form>
       </main>
       <Footer />
@@ -158,4 +150,3 @@ const Order = () => {
 };
 
 export default Order;
-
