@@ -6,11 +6,7 @@ interface BlogPost {
   title: string;
   image: string;
   content: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
+  author: string;
 }
 
 interface BlogDetailContentProps {
