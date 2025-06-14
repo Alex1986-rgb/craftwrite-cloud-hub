@@ -1,4 +1,3 @@
-
 export interface BlogPost {
   id: number;
   title: string;
@@ -221,7 +220,8 @@ export const blogPosts: BlogPost[] = [
     readTime: "12 мин",
     category: "Копирайтинг",
     tags: ["копирайтинг", "конверсия", "маркетинг", "продажи"],
-    relatedPosts: [2, 3, 4]
+    relatedPosts: [2, 3, 4],
+    featured: true
   },
   {
     id: 2,
@@ -461,10 +461,10 @@ export const blogPosts: BlogPost[] = [
 
       <h2>Примеры успешного применения</h2>
 
-      <h3>Кейс 1: HubSpot</h3>
+      <h3>Кейс: HubSpot</h3>
       <p>Замена зеленой CTA-кнопки на красную привела к увеличению кликов на 21%. Красный цвет создал ощущение срочности и выделился на фоне остального дизайна.</p>
 
-      <h3>Кейс 2: Performable</h3>
+      <h3>Кейс: Performable</h3>
       <p>Изменение цвета кнопки с зеленого на красный увеличило конверсию на 21%. Красный цвет лучше привлекал внимание пользователей.</p>
 
       <blockquote>
@@ -495,7 +495,8 @@ export const blogPosts: BlogPost[] = [
     readTime: "15 мин",
     category: "Дизайн",
     tags: ["дизайн", "психология", "цвет", "конверсия"],
-    relatedPosts: [1, 3, 5]
+    relatedPosts: [1, 3, 5],
+    featured: true
   },
   {
     id: 3,
@@ -850,7 +851,8 @@ export const blogPosts: BlogPost[] = [
     readTime: "18 мин",
     category: "SEO",
     tags: ["SEO", "копирайтинг", "поисковая оптимизация", "контент-маркетинг"],
-    relatedPosts: [1, 2, 4]
+    relatedPosts: [1, 2, 4],
+    featured: true
   },
   {
     id: 4,
@@ -929,7 +931,8 @@ export const blogPosts: BlogPost[] = [
     readTime: "14 мин",
     category: "Email-маркетинг",
     tags: ["email-маркетинг", "автоматизация", "конверсия"],
-    relatedPosts: [1, 5, 6]
+    relatedPosts: [1, 5, 6],
+    featured: true
   },
   {
     id: 5,
@@ -991,7 +994,8 @@ export const blogPosts: BlogPost[] = [
     readTime: "16 мин",
     category: "B2B маркетинг",
     tags: ["B2B", "контент-маркетинг", "стратегия", "лиды"],
-    relatedPosts: [1, 4, 7]
+    relatedPosts: [1, 4, 7],
+    featured: true
   }
 ];
 
