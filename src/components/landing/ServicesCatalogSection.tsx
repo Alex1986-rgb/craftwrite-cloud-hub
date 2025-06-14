@@ -74,6 +74,27 @@ export const ServicesCatalogSection = () => {
             </button>
           ))}
         </div>
+        <div className="mb-10 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
+          {/* КАРТОЧКИ ВИДОВ ТЕКСТОВ */}
+          {[
+            ...new Set(
+              SERVICES.map(s => ({
+                format: s.format,
+                slug: s.slug,
+                name: s.name,
+                desc: s.desc,
+              }))
+            ),
+          ].map((f) => (
+            <div key={f.slug} className="bg-card rounded-lg p-3 border">
+              <div className="font-semibold text-base mb-1">{f.name}</div>
+              <div className="text-xs text-muted-foreground mb-2">{f.desc}</div>
+              <Button asChild variant="link" size="sm" className="px-0">
+                <Link to={`/format/${f.slug}`}>Подробнее о виде</Link>
+              </Button>
+            </div>
+          ))}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(service => (
             <div key={service.slug} className="bg-card rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
