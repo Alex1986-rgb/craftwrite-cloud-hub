@@ -50,19 +50,21 @@ export default function OrderProgressBar({ progress, flash, onFlashEnd }: OrderP
           style={{ width: `${progress}%` }}
         />
       </div>
-      <style jsx global>{`
-        .order-progress-flash {
-          animation: order-flash 0.7s cubic-bezier(0.19,1,0.22,1);
-          box-shadow: 0 0 18px 6px #e7fca2;
-        }
-        @keyframes order-flash {
-          0% { box-shadow: 0 0 0 0 #e7fca200; }
-          20% { box-shadow: 0 0 25px 10px #f6fa6f60; }
-          40% { box-shadow: 0 0 22px 6px #e7fca2; }
-          70% { box-shadow: 0 0 18px 4px #e7fca280; }
-          100% { box-shadow: 0 0 0 0 #e7fca200; }
-        }
-      `}</style>
+      <style>
+        {`
+          .order-progress-flash {
+            animation: order-flash 0.7s cubic-bezier(0.19,1,0.22,1);
+            box-shadow: 0 0 18px 6px #e7fca2;
+          }
+          @keyframes order-flash {
+            0% { box-shadow: 0 0 0 0 #e7fca200; }
+            20% { box-shadow: 0 0 25px 10px #f6fa6f60; }
+            40% { box-shadow: 0 0 22px 6px #e7fca2; }
+            70% { box-shadow: 0 0 18px 4px #e7fca280; }
+            100% { box-shadow: 0 0 0 0 #e7fca200; }
+          }
+        `}
+      </style>
     </div>
   );
 }
