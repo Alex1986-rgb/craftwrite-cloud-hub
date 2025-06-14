@@ -33,7 +33,6 @@ export default function ProjectMetrics({ metrics }: ProjectMetricsProps) {
           <RadialBar
             label={{ fill: '#fff', position: 'insideStart' }}
             background
-            clockwise
             dataKey="value"
             cornerRadius={10}
           />
