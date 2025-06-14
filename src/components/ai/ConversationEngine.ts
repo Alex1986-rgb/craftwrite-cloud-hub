@@ -1,12 +1,14 @@
-
 import { ConversationState, ConversationStep, conversationSteps, clientTypeDetection, moodDetection, ClientProfile, ProjectDetails } from "./ConversationContext";
 import { AdvancedPriceCalculator, PriceCalculation } from "./PriceCalculator";
-import { enhancedKnowledgeBase, getServiceRecommendations } from "./enhancedKnowledgeBase";
+import { MasterKnowledgeBase } from "./MasterKnowledgeBase";
+import { IntelligentNavigator } from "./IntelligentNavigator";
+import { ExpertTextKnowledge } from "./ExpertTextKnowledge";
 
 export interface ConversationResponse {
   text: string;
   recommendations?: string[];
   priceCalculation?: PriceCalculation;
+  quickLinks?: Array<{ title: string; url: string; description: string }>;
   newState: ConversationState;
 }
 
@@ -49,9 +51,38 @@ export class ConversationEngine {
     }
     newState.mood = moodDetection(userMessage);
 
-    // Проверяем, нужно ли перейти к расчету стоимости
+    // Генерируем быстрые ссылки на основе контекста
+    const quickLinks = IntelligentNavigator.generateQuickLinks(userMessage, newState.context);
+
+    // Проверяем на вопросы о компании
+    const companyInfo = MasterKnowledgeBase.getCompanyInfo(userMessage);
+    if (companyInfo) {
+      return {
+        text: companyInfo,
+        quickLinks: IntelligentNavigator.generateClosingLinks("company"),
+        newState
+      };
+    }
+
+    // Обработка вопросов о ценах и расчетах
     if (lowerMessage.includes('рассчита') || lowerMessage.includes('стоимость') || lowerMessage.includes('цена') || lowerMessage.includes('сколько')) {
       return this.handlePriceCalculation(userMessage, newState);
+    }
+
+    // Обработка экспертных вопросов о копирайтинге
+    if (this.isExpertQuestion(userMessage)) {
+      return this.handleExpertQuestion(userMessage, newState);
+    }
+
+    // Поиск в мастер-базе знаний
+    const expertResponse = MasterKnowledgeBase.generateExpertResponse(userMessage);
+    if (expertResponse.answer) {
+      return {
+        text: expertResponse.answer,
+        recommendations: expertResponse.recommendations,
+        quickLinks: expertResponse.quickLinks,
+        newState
+      };
     }
 
     // Обработка многоэтапного диалога
@@ -59,25 +90,12 @@ export class ConversationEngine {
       return this.handleConversationStep(userMessage, newState);
     }
 
-    // Поиск в базе знаний с персонализацией
-    for (const [keywords, response] of Object.entries(enhancedKnowledgeBase)) {
-      if (keywords.split(',').some(keyword => lowerMessage.includes(keyword.trim()))) {
-        const personalizedResponse = this.personalizeResponse(response, newState);
-        const recommendations = getServiceRecommendations(userMessage);
-        
-        return {
-          text: personalizedResponse,
-          recommendations: recommendations.length > 0 ? recommendations : undefined,
-          newState
-        };
-      }
-    }
-
     // Если это первое сообщение, начинаем квалификацию
     if (state.context.length === 0) {
       newState.currentStep = 'welcome';
       return {
         text: this.generateWelcomeResponse(userMessage, newState),
+        quickLinks,
         newState
       };
     }
@@ -86,8 +104,69 @@ export class ConversationEngine {
     return {
       text: this.generateContextualResponse(userMessage, newState),
       recommendations: ["Консультация", "Расчет стоимости", "Портфолио"],
+      quickLinks,
       newState
     };
+  }
+
+  private static isExpertQuestion(message: string): boolean {
+    const expertKeywords = [
+      'как писать', 'как создать', 'что такое', 'секреты', 'советы',
+      'seo', 'лендинг', 'заголовок', 'структура', 'техника',
+      'формула', 'метод', 'способ', 'прием', 'фишка'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return expertKeywords.some(keyword => lowerMessage.includes(keyword));
+  }
+
+  private static handleExpertQuestion(userMessage: string, state: ConversationState): ConversationResponse {
+    const newState = { ...state };
+    const lowerMessage = userMessage.toLowerCase();
+
+    // Определяем тип вопроса и даем экспертный ответ
+    let textType = 'общий';
+    if (lowerMessage.includes('seo') || lowerMessage.includes('сео')) textType = 'seo';
+    else if (lowerMessage.includes('лендинг') || lowerMessage.includes('продающ')) textType = 'лендинг';
+    else if (lowerMessage.includes('email') || lowerMessage.includes('рассылк')) textType = 'email';
+    else if (lowerMessage.includes('соцсет') || lowerMessage.includes('контент')) textType = 'соцсети';
+
+    const expertAdvice = ExpertTextKnowledge.getWritingAdvice(textType);
+    const quickLinks = IntelligentNavigator.generateQuickLinks(userMessage, newState.context);
+
+    // Добавляем персональное предложение
+    const personalOffer = this.generatePersonalOffer(newState.clientProfile.type, textType);
+
+    return {
+      text: expertAdvice + "\n\n" + personalOffer,
+      quickLinks,
+      recommendations: this.getExpertRecommendations(textType),
+      newState
+    };
+  }
+
+  private static generatePersonalOffer(clientType: string, textType: string): string {
+    if (clientType === 'новичок') {
+      return "🎁 **Специально для новичков:**\nБесплатная консультация + скидка 15% на первый заказ!\nПомогу составить техническое задание и выберем оптимальную стратегию для вашего проекта.";
+    } else if (clientType === 'бизнес') {
+      return "💼 **Для бизнес-клиентов:**\nПерсональный менеджер + корпоративные скидки до 25%\nКомплексная стратегия контент-маркетинга в подарок при заказе пакета услуг.";
+    } else if (clientType === 'постоянный') {
+      return "🤝 **Для постоянных клиентов:**\nПриоритетное выполнение заказов + скидка 20%\nИндивидуальные условия сотрудничества и персональные рекомендации.";
+    } else {
+      return "🚀 **Готовы применить эти знания на практике?**\nЗакажите профессиональный текст у экспертов CopyPro Cloud!\nГарантируем результат и делимся секретами мастерства.";
+    }
+  }
+
+  private static getExpertRecommendations(textType: string): string[] {
+    const recommendations: { [key: string]: string[] } = {
+      'seo': ["SEO-статья", "Анализ конкурентов", "Семантическое ядро"],
+      'лендинг': ["Продающий лендинг", "A/B тестирование", "Аналитика конверсий"],
+      'email': ["Email-рассылка", "Автоворонки", "Сегментация базы"],
+      'соцсети': ["Контент-план", "SMM-стратегия", "Вирусный контент"],
+      'общий': ["Консультация эксперта", "Аудит текстов", "Контент-стратегия"]
+    };
+
+    return recommendations[textType] || recommendations['общий'];
   }
 
   private static handlePriceCalculation(userMessage: string, state: ConversationState): ConversationResponse {
@@ -100,8 +179,16 @@ export class ConversationEngine {
     // Если недостаточно информации, задаем уточняющие вопросы
     if (!projectDetails.serviceType) {
       newState.currentStep = 'service_type';
+      const quickLinks = [
+        { title: "📝 SEO-статьи", url: "/service/seo-article", description: "Тексты для поисковых систем" },
+        { title: "🚀 Лендинги", url: "/service/landing-page", description: "Продающие страницы" },
+        { title: "📱 Контент для соцсетей", url: "/service/social-media-post", description: "Посты и сторис" },
+        { title: "📧 Email-рассылки", url: "/service/email-campaign", description: "Письма для подписчиков" }
+      ];
+
       return {
-        text: "Отлично, давайте рассчитаем стоимость! 💰\n\nЧтобы дать точную цену, мне нужно понять, какой тип контента вам нужен. Выберите из списка ниже или опишите своими словами:",
+        text: "Отлично! Помогу рассчитать точную стоимость 💰\n\nДля персонального расчета нужно понять тип контента. Выберите из популярных услуг ниже или опишите своими словами:\n\n🔸 SEO-статьи для сайта\n🔸 Продающие лендинги\n🔸 Контент для соцсетей\n🔸 Email-рассылки\n🔸 Описания товаров\n🔸 Другое (опишите подробнее)\n\nИли нажмите на быструю ссылку ниже! 👇",
+        quickLinks,
         newState
       };
     }
@@ -121,10 +208,16 @@ export class ConversationEngine {
     };
 
     const responseText = this.generatePriceResponse(calculation, newState);
+    const quickLinks = [
+      { title: "🛒 Оформить заказ", url: "/order", description: "Быстрое оформление" },
+      { title: "💬 Консультация", url: "tel:+79257338648", description: "Обсудить детали" },
+      { title: "📋 Все услуги", url: "/", description: "Каталог услуг" }
+    ];
 
     return {
       text: responseText,
       priceCalculation: calculation,
+      quickLinks,
       newState
     };
   }
@@ -172,9 +265,9 @@ export class ConversationEngine {
 
     // Персонализированное вступление
     if (state.clientProfile.type === 'новичок') {
-      response += "Отлично! Вижу, что вы делаете первые шаги в копирайтинге. Я специально рассчитал для вас оптимальный вариант 😊\n\n";
+      response += "Отлично! Для начинающих клиентов подготовил оптимальный расчет 😊\n\n";
     } else if (state.clientProfile.type === 'бизнес') {
-      response += "Прекрасно! Для корпоративного клиента я подготовил детальный расчет с максимальными возможностями оптимизации 💼\n\n";
+      response += "Прекрасно! Для корпоративного клиента составил детальный расчет с максимальными возможностями оптимизации 💼\n\n";
     } else if (state.clientProfile.type === 'постоянный') {
       response += "Как приятно снова работать с вами! Конечно, для постоянного клиента у меня есть особые условия 🤝\n\n";
     } else {
@@ -199,21 +292,6 @@ export class ConversationEngine {
       response += "Готов приступить к работе немедленно! Хотите оформить заказ? ⚡";
     } else {
       response += "Что скажете? Готовы начать работу над проектом? Или есть вопросы по расчету? 😊";
-    }
-
-    return response;
-  }
-
-  private static personalizeResponse(baseResponse: string, state: ConversationState): string {
-    let response = baseResponse;
-
-    // Добавляем персонализацию в зависимости от типа клиента
-    if (state.clientProfile.type === 'новичок' && !response.includes('новичок')) {
-      response += "\n\n💡 Кстати, для новых клиентов у нас скидка 10% на первый заказ!";
-    } else if (state.clientProfile.type === 'постоянный') {
-      response += "\n\n🎉 Как постоянному клиенту, предоставляю вам приоритетную поддержку и дополнительные скидки!";
-    } else if (state.clientProfile.type === 'бизнес') {
-      response += "\n\n💼 Для корпоративных клиентов у нас есть специальные пакеты и персональный менеджер.";
     }
 
     return response;

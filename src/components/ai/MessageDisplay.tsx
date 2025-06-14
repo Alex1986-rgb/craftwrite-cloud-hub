@@ -1,6 +1,7 @@
 
 import { Bot, User, Clock } from "lucide-react";
 import { PriceCalculationDisplay } from "./PriceCalculationDisplay";
+import { QuickLinksDisplay } from "./QuickLinksDisplay";
 import { Button } from "@/components/ui/button";
 
 export interface Message {
@@ -10,6 +11,7 @@ export interface Message {
   timestamp: Date;
   recommendations?: string[];
   priceCalculation?: any;
+  quickLinks?: Array<{ title: string; url: string; description: string }>;
   isThinking?: boolean;
   mood?: 'friendly' | 'professional' | 'enthusiastic' | 'empathetic';
 }
@@ -64,11 +66,16 @@ export const MessageDisplay = ({ messages, onRecommendationClick }: MessageDispl
           {message.priceCalculation && !message.isUser && (
             <PriceCalculationDisplay calculation={message.priceCalculation} />
           )}
+
+          {/* Quick Links Display */}
+          {message.quickLinks && !message.isUser && (
+            <QuickLinksDisplay links={message.quickLinks} />
+          )}
           
           {/* Recommendations */}
           {message.recommendations && !message.isUser && (
             <div className="ml-11 space-y-1">
-              <p className="text-xs text-slate-600 font-medium">Рекомендуемые услуги:</p>
+              <p className="text-xs text-slate-600 font-medium">💡 Рекомендуемые услуги:</p>
               <div className="flex flex-wrap gap-1">
                 {message.recommendations.map((rec, index) => (
                   <Button

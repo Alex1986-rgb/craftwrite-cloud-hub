@@ -70,12 +70,14 @@ const HumanLikeAiAssistant = () => {
     // Определяем сложность ответа для реалистичной задержки
     const isComplexQuery = messageText.toLowerCase().includes('рассчита') || 
                           messageText.toLowerCase().includes('стоимость') ||
+                          messageText.toLowerCase().includes('как написать') ||
+                          messageText.toLowerCase().includes('секреты') ||
                           messageText.split(' ').length > 10;
     
     const delay = ConversationEngine.addThinkingDelay(isComplexQuery ? 'complex' : 'medium');
 
     setTimeout(() => {
-      const { text, recommendations, priceCalculation, newState } = ConversationEngine.generatePersonalizedResponse(messageText, conversationState);
+      const { text, recommendations, priceCalculation, quickLinks, newState } = ConversationEngine.generatePersonalizedResponse(messageText, conversationState);
       
       setConversationState(newState);
       
@@ -89,6 +91,7 @@ const HumanLikeAiAssistant = () => {
         timestamp: new Date(),
         recommendations,
         priceCalculation,
+        quickLinks,
         mood: ConversationEngine.getResponseStyle(newState.clientProfile.type, newState.mood) as any
       };
 
