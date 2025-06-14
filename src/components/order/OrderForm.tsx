@@ -1,8 +1,8 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useOrderFormState } from "@/hooks/useOrderFormState";
+import { useState } from "react";
 
 import OrderFormHeader from "./OrderFormHeader";
 import OrderFormSteps from "./OrderFormSteps";
@@ -30,6 +30,7 @@ export default function OrderForm() {
     calculateEstimatedPrice
   } = useOrderFormState();
 
+  const [showValidationSuccess, setShowValidationSuccess] = useState(false);
   const estimatedPrice = calculateEstimatedPrice();
 
   const renderStepContent = () => {
@@ -147,7 +148,73 @@ export default function OrderForm() {
         <div className="lg:col-span-3">
           <Card className="p-6 md:p-8 shadow-2xl border-0 bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-sm">
             <div className="min-h-[400px]">
-              {renderStepContent()}
+              {/* Step content rendering */}
+              {currentStep === 1 && (
+                <OrderFormContact
+                  form={form}
+                  handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+                  nameInputRef={nameInputRef}
+                  formProgress={0}
+                />
+              )}
+              
+              {currentStep === 2 && (
+                <OrderFormService
+                  filteredServices={[
+                    "SEO-статья",
+                    "Лендинг", 
+                    "Описание товара",
+                    "Пост в соцсети",
+                    "Email-рассылка",
+                    "Презентация",
+                    "Веб-контент",
+                    "Техническая документация"
+                  ]}
+                  selectedService={form.service}
+                  onServiceSelect={(service) => updateForm({ service })}
+                />
+              )}
+              
+              {currentStep === 3 && (
+                <OrderFormDetails
+                  details={form.details}
+                  handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+                />
+              )}
+              
+              {currentStep === 4 && (
+                <div className="space-y-8">
+                  <OrderFormDeadline
+                    selectedDeadline={form.deadline}
+                    onDeadlineChange={(deadline) => updateForm({ deadline })}
+                  />
+                  
+                  <OrderFormAdvanced
+                    additionalServices={form.additionalServices}
+                    onAdditionalServicesChange={(additionalServices) => updateForm({ additionalServices })}
+                    targetAudience={form.targetAudience}
+                    onTargetAudienceChange={(targetAudience) => updateForm({ targetAudience })}
+                    seoKeywords={form.seoKeywords}
+                    onSeoKeywordsChange={(seoKeywords) => updateForm({ seoKeywords })}
+                    preferredStyle={form.preferredStyle}
+                    onPreferredStyleChange={(preferredStyle) => updateForm({ preferredStyle })}
+                    additionalRequirements={form.additionalRequirements}
+                    onAdditionalRequirementsChange={(additionalRequirements) => updateForm({ additionalRequirements })}
+                  />
+                </div>
+              )}
+              
+              {currentStep === 5 && (
+                <OrderFormSummary
+                  service={form.service}
+                  deadline={form.deadline}
+                  estimatedPrice={estimatedPrice}
+                  clientName={form.name}
+                  clientEmail={form.email}
+                  details={form.details}
+                  onEdit={() => setCurrentStep(1)}
+                />
+              )}
             </div>
             
             {/* Navigation */}
@@ -177,8 +244,8 @@ export default function OrderForm() {
                 <OrderFormActions
                   loading={loading}
                   isFormValid={isFormValid}
-                  showValidationSuccess={false}
-                  setShowValidationSuccess={() => {}}
+                  showValidationSuccess={showValidationSuccess}
+                  setShowValidationSuccess={setShowValidationSuccess}
                   handleSubmit={handleSubmit}
                 />
               )}
