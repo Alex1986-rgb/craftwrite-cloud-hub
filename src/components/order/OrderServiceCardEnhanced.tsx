@@ -1,9 +1,11 @@
 
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Clock, DollarSign, CheckCircle, ArrowRight, Target, Zap, TrendingUp, Award, Shield } from "lucide-react";
-import { Service } from "@/data/services";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Clock, Star, TrendingUp, Users, ChevronRight, Info } from "lucide-react";
+import { Service } from "@/data/types/service";
 
 interface OrderServiceCardEnhancedProps {
   service: Service;
@@ -11,199 +13,158 @@ interface OrderServiceCardEnhancedProps {
   onLearnMore: () => void;
 }
 
-export default function OrderServiceCardEnhanced({ 
-  service, 
-  onSelect, 
-  onLearnMore 
-}: OrderServiceCardEnhancedProps) {
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "Простая": return "bg-green-100 text-green-700 border-green-200";
-      case "Средняя": return "bg-yellow-100 text-yellow-700 border-yellow-200";
-      case "Сложная": return "bg-orange-100 text-orange-700 border-orange-200";
-      case "Экспертная": return "bg-red-100 text-red-700 border-red-200";
-      default: return "bg-gray-100 text-gray-700 border-gray-200";
-    }
-  };
+const getDifficultyColor = (difficulty: string) => {
+  switch (difficulty) {
+    case 'easy': return 'text-green-600 bg-green-50 border-green-200';
+    case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    case 'hard': return 'text-red-600 bg-red-50 border-red-200';
+    default: return 'text-gray-600 bg-gray-50 border-gray-200';
+  }
+};
 
-  const getDifficultyIcon = (difficulty: string) => {
-    switch (difficulty) {
-      case "Простая": return <TrendingUp className="w-3 h-3" />;
-      case "Средняя": return <Target className="w-3 h-3" />;
-      case "Сложная": return <Zap className="w-3 h-3" />;
-      case "Экспертная": return <Award className="w-3 h-3" />;
-      default: return <Star className="w-3 h-3" />;
-    }
-  };
+const getDifficultyText = (difficulty: string) => {
+  switch (difficulty) {
+    case 'easy': return 'Простая';
+    case 'medium': return 'Средняя';
+    case 'hard': return 'Сложная';
+    default: return 'Не указана';
+  }
+};
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "Продающие тексты": return <Target className="w-4 h-4" />;
-      case "Контент-маркетинг": return <Zap className="w-4 h-4" />;
-      case "E-commerce": return <DollarSign className="w-4 h-4" />;
-      case "Социальные сети": return <Star className="w-4 h-4" />;
-      case "Email-маркетинг": return <ArrowRight className="w-4 h-4" />;
-      case "Бизнес-документы": return <Shield className="w-4 h-4" />;
-      default: return <Star className="w-4 h-4" />;
-    }
-  };
+const getCategoryIcon = (category: string) => {
+  // Здесь можно добавить специфические иконки для категорий
+  return '📝'; // Пока используем эмодзи как placeholder
+};
 
-  const getPriceDisplay = () => {
-    if (service.price.min === service.price.max) {
-      return `${service.price.min.toLocaleString()} ${service.price.currency}`;
-    }
-    return `${service.price.min.toLocaleString()}-${service.price.max.toLocaleString()} ${service.price.currency}`;
-  };
-
-  const getDeliveryDisplay = () => {
-    if (service.deliveryTime.min === service.deliveryTime.max) {
-      return `${service.deliveryTime.min} ${service.deliveryTime.unit}`;
-    }
-    return `${service.deliveryTime.min}-${service.deliveryTime.max} ${service.deliveryTime.unit}`;
-  };
-
+export default function OrderServiceCardEnhanced({ service, onSelect, onLearnMore }: OrderServiceCardEnhancedProps) {
+  const popularityPercentage = (service.popularity / 5) * 100;
+  
   return (
-    <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-700 bg-gradient-to-br from-white via-white to-slate-50/30 hover:scale-[1.02] hover:-translate-y-1">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+    <Card className="group relative overflow-hidden border-2 hover:border-blue-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white/95 backdrop-blur-sm h-full flex flex-col">
+      {/* Decorative gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
       
-      {/* Enhanced popularity indicator */}
-      {service.popularity >= 4 && (
-        <div className="absolute top-4 right-4 z-10">
-          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 shadow-lg animate-pulse">
-            <Star className="w-3 h-3 mr-1 fill-current" />
-            ТОП
-          </Badge>
-        </div>
-      )}
-
-      <div className="p-6 relative z-10">
-        {/* Enhanced header */}
-        <div className="flex items-start gap-4 mb-4">
-          <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
-            {getCategoryIcon(service.category)}
+      <CardHeader className="relative z-10 pb-4">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xl" role="img" aria-label={`Иконка категории ${service.category}`}>
+              {getCategoryIcon(service.category)}
+            </span>
+            <Badge 
+              variant="secondary" 
+              className={`text-xs px-2 py-1 font-medium ${getDifficultyColor(service.difficulty)}`}
+              aria-label={`Сложность: ${getDifficultyText(service.difficulty)}`}
+            >
+              {getDifficultyText(service.difficulty)}
+            </Badge>
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2 leading-tight mb-2">
-              {service.name}
-            </h3>
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                {service.category}
-              </Badge>
-              <Badge variant="outline" className={`text-xs flex items-center gap-1 ${getDifficultyColor(service.difficulty)}`}>
-                {getDifficultyIcon(service.difficulty)}
-                {service.difficulty}
-              </Badge>
+          
+          <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded-full">
+            <Users className="w-3 h-3" aria-hidden="true" />
+            <span className="font-medium" aria-label={`Рейтинг популярности: ${service.popularity} из 5`}>
+              {service.popularity}/5
+            </span>
+          </div>
+        </div>
+        
+        <CardTitle className="text-lg font-bold text-gray-900 leading-tight mb-2 group-hover:text-blue-700 transition-colors">
+          {service.name}
+        </CardTitle>
+        
+        <CardDescription className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+          {service.desc}
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="relative z-10 flex-1 space-y-4">
+        {/* Popularity indicator */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-600 flex items-center gap-1">
+              <TrendingUp className="w-4 h-4" aria-hidden="true" />
+              Популярность
+            </span>
+            <span className="font-medium text-gray-800">{popularityPercentage.toFixed(0)}%</span>
+          </div>
+          <Progress 
+            value={popularityPercentage} 
+            className="h-2 bg-gray-100"
+            aria-label={`Популярность услуги: ${popularityPercentage.toFixed(0)}%`}
+          />
+        </div>
+
+        <Separator className="my-4" />
+
+        {/* Tags */}
+        {service.tags && service.tags.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-gray-700">Ключевые особенности:</h4>
+            <div className="flex flex-wrap gap-1">
+              {service.tags.slice(0, 3).map((tag, index) => (
+                <Badge 
+                  key={index} 
+                  variant="outline" 
+                  className="text-xs px-2 py-1 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors"
+                >
+                  {tag}
+                </Badge>
+              ))}
+              {service.tags.length > 3 && (
+                <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-50 text-gray-600 border-gray-200">
+                  +{service.tags.length - 3}
+                </Badge>
+              )}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Enhanced description */}
-        <p className="text-sm text-slate-600 mb-4 line-clamp-3 leading-relaxed">
-          {service.desc}
-        </p>
-
-        {/* Enhanced key features */}
-        <div className="mb-5">
-          <div className="text-xs font-medium text-slate-700 mb-2 flex items-center gap-1">
-            <CheckCircle className="w-3 h-3 text-green-500" />
-            Включено в стоимость:
+        {/* Pricing */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Стоимость:</span>
+            <div className="flex items-center gap-1 text-xs text-blue-600">
+              <Clock className="w-3 h-3" aria-hidden="true" />
+              <span>от {service.deliveryTime.min} дн.</span>
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-1">
-            {service.features.slice(0, 3).map((feature, index) => (
-              <div key={index} className="flex items-center gap-2 text-xs text-slate-600">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0"></div>
-                <span className="line-clamp-1">{feature}</span>
-              </div>
-            ))}
-            {service.features.length > 3 && (
-              <div className="text-xs text-blue-600 font-medium mt-1">
-                + еще {service.features.length - 3} услуг
-              </div>
+          
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-gray-900">
+              {service.price.min.toLocaleString('ru-RU')} ₽
+            </span>
+            {service.price.max > service.price.min && (
+              <span className="text-sm text-gray-600">
+                — {service.price.max.toLocaleString('ru-RU')} ₽
+              </span>
             )}
           </div>
+          
+          <p className="text-xs text-gray-600 mt-1">
+            Итоговая стоимость зависит от объема и сложности задачи
+          </p>
         </div>
+      </CardContent>
 
-        {/* Enhanced metrics */}
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200/50">
-            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-              <DollarSign className="w-4 h-4 text-green-600" />
-            </div>
-            <div>
-              <div className="text-xs text-green-600 font-medium">Стоимость</div>
-              <div className="text-sm font-bold text-green-800">
-                {getPriceDisplay()}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200/50">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <Clock className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <div className="text-xs text-blue-600 font-medium">Срок</div>
-              <div className="text-sm font-bold text-blue-800">
-                {getDeliveryDisplay()}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Enhanced tags */}
-        <div className="flex flex-wrap gap-1 mb-5">
-          {service.tags.slice(0, 4).map((tag, index) => (
-            <Badge key={index} variant="secondary" className="text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
-              {tag}
-            </Badge>
-          ))}
-          {service.tags.length > 4 && (
-            <Badge variant="secondary" className="text-xs bg-slate-200 text-slate-500">
-              +{service.tags.length - 4}
-            </Badge>
-          )}
-        </div>
-
-        {/* Enhanced actions */}
-        <div className="flex gap-2 mb-4">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={onLearnMore}
-            className="flex-1 border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 group"
-          >
-            <span>Подробнее</span>
-          </Button>
-          <Button 
-            onClick={onSelect}
-            size="sm" 
-            className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 border-0 shadow-lg hover:shadow-xl transition-all duration-300 group"
-          >
-            <span>Выбрать</span>
-            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-          </Button>
-        </div>
-
-        {/* Enhanced popularity stars */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`w-3 h-3 transition-colors duration-200 ${
-                  i < service.popularity 
-                    ? "text-yellow-400 fill-current" 
-                    : "text-slate-300"
-                }`} 
-              />
-            ))}
-          </div>
-          <div className="text-xs text-slate-500 font-medium">
-            {service.popularity}/5 рейтинг
-          </div>
-        </div>
-      </div>
+      <CardFooter className="relative z-10 pt-4 flex flex-col gap-2">
+        <Button 
+          onClick={onSelect}
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 group-hover:shadow-lg"
+          aria-label={`Заказать ${service.name}`}
+        >
+          <span>Заказать сейчас</span>
+          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          onClick={onLearnMore}
+          className="w-full border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-all duration-300"
+          aria-label={`Подробнее о ${service.name}`}
+        >
+          <Info className="w-4 h-4 mr-2" aria-hidden="true" />
+          Подробнее
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
