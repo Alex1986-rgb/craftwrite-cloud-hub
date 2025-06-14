@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Download, Mail, Share2, FileText, FileWord, File } from "lucide-react";
+import { Download, Mail, Share2, FileText, File } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { exportService } from "@/services/export";
 
@@ -44,7 +43,7 @@ export default function ExportManager({ text, title = "Сгенерирован�
   const exportFormats = [
     { value: "txt", label: "Текстовый файл (.txt)", icon: FileText },
     { value: "pdf", label: "PDF документ (.pdf)", icon: File },
-    { value: "docx", label: "Word документ (.docx)", icon: FileWord },
+    { value: "docx", label: "Word документ (.docx)", icon: File },
     { value: "md", label: "Markdown (.md)", icon: FileText },
     { value: "html", label: "HTML файл (.html)", icon: FileText }
   ];
