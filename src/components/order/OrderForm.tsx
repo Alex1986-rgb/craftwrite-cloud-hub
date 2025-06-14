@@ -36,7 +36,7 @@ export default function OrderForm() {
   const [showValidationSuccess, setShowValidationSuccess] = useState(false);
 
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-6">
+    <div className="max-w-2xl mx-auto p-4 space-y-4 md:space-y-6">
       <OrderFormHeader />
       
       <OrderProgressIndicator currentStep={currentStep} />
@@ -50,20 +50,20 @@ export default function OrderForm() {
         showSuccess={showValidationSuccess}
       />
 
-      <Card className="p-6 shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <Card className="p-4 md:p-6 shadow-lg border-0 bg-gradient-to-br from-card to-card/80">
+        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           {/* Основная информация */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Контактная информация</h3>
-              <div className="text-sm text-muted-foreground">
+          <div className="space-y-3 md:space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+              <h3 className="text-base md:text-lg font-semibold">Контактная информация</h3>
+              <div className="text-xs md:text-sm text-muted-foreground">
                 Прогресс: {formProgress}%
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Ваше имя *</Label>
+                <Label htmlFor="name" className="text-sm md:text-base">Ваше имя *</Label>
                 <Input
                   ref={nameInputRef}
                   id="name"
@@ -71,13 +71,13 @@ export default function OrderForm() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Введите ваше имя"
-                  className="transition-all duration-200 focus:ring-2"
+                  className="transition-all duration-200 focus:ring-2 text-sm md:text-base py-2 md:py-3"
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email" className="text-sm md:text-base">Email *</Label>
                 <Input
                   id="email"
                   name="email"
@@ -85,7 +85,7 @@ export default function OrderForm() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="your@email.com"
-                  className="transition-all duration-200 focus:ring-2"
+                  className="transition-all duration-200 focus:ring-2 text-sm md:text-base py-2 md:py-3"
                   required
                 />
                 <OrderEmailHint />
@@ -94,8 +94,8 @@ export default function OrderForm() {
           </div>
 
           {/* Выбор услуги */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Тип услуги</h3>
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-base md:text-lg font-semibold">Тип услуги</h3>
             <ServiceSelector
               services={filteredServices}
               selectedService={form.service}
@@ -105,8 +105,8 @@ export default function OrderForm() {
 
           {/* Дополнительные вопросы */}
           {currentQuestions.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Дополнительные параметры</h3>
+            <div className="space-y-3 md:space-y-4">
+              <h3 className="text-base md:text-lg font-semibold">Дополнительные параметры</h3>
               <OrderQuestionGroup
                 questions={currentQuestions}
                 answers={form.additional}
@@ -116,21 +116,21 @@ export default function OrderForm() {
           )}
 
           {/* Детали проекта */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Детали проекта</h3>
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-base md:text-lg font-semibold">Детали проекта</h3>
             <div className="space-y-2">
-              <Label htmlFor="details">Подробное описание *</Label>
+              <Label htmlFor="details" className="text-sm md:text-base">Подробное описание *</Label>
               <Textarea
                 id="details"
                 name="details"
                 value={form.details}
                 onChange={handleChange}
                 placeholder="Опишите ваш проект максимально подробно: цели, целевую аудиторию, стиль, особые требования..."
-                rows={5}
-                className="transition-all duration-200 focus:ring-2 resize-none"
+                rows={4}
+                className="transition-all duration-200 focus:ring-2 resize-none text-sm md:text-base"
                 required
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
+              <div className="flex flex-col sm:flex-row justify-between text-xs text-muted-foreground gap-1">
                 <span>Минимум 20 символов для качественного выполнения</span>
                 <span>{form.details.length}/2000</span>
               </div>
@@ -138,41 +138,43 @@ export default function OrderForm() {
           </div>
 
           {/* Кнопка отправки */}
-          <div className="space-y-4 pt-4 border-t">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowValidationSuccess(!showValidationSuccess)}
-                className="sm:w-auto"
-              >
-                {showValidationSuccess ? "Скрыть" : "Показать"} статус полей
-              </Button>
-              
-              <Button
-                type="submit"
-                disabled={loading || !isFormValid}
-                className="flex-1 sm:flex-none sm:min-w-[200px] relative overflow-hidden"
-                size="lg"
-              >
-                {loading ? (
-                  <div className="flex items-center gap-2">
-                    <LoadingSpinner size="sm" />
-                    Отправляем заказ...
-                  </div>
-                ) : (
-                  "Отправить заказ"
-                )}
-              </Button>
-            </div>
-            
-            <OrderConsent />
-            
-            {!isFormValid && (
-              <div className="text-center text-sm text-muted-foreground">
-                Заполните все обязательные поля для отправки заказа
+          <div className="space-y-3 md:space-y-4 pt-3 md:pt-4 border-t">
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowValidationSuccess(!showValidationSuccess)}
+                  className="text-xs md:text-sm px-3 py-2 md:px-4 md:py-2"
+                >
+                  {showValidationSuccess ? "Скрыть" : "Показать"} статус полей
+                </Button>
+                
+                <Button
+                  type="submit"
+                  disabled={loading || !isFormValid}
+                  className="flex-1 sm:flex-none sm:min-w-[200px] relative overflow-hidden text-sm md:text-base px-4 py-3 md:px-6 md:py-4"
+                  size="lg"
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <LoadingSpinner size="sm" />
+                      <span className="text-xs md:text-sm">Отправляем заказ...</span>
+                    </div>
+                  ) : (
+                    "Отправить заказ"
+                  )}
+                </Button>
               </div>
-            )}
+              
+              <OrderConsent />
+              
+              {!isFormValid && (
+                <div className="text-center text-xs md:text-sm text-muted-foreground">
+                  Заполните все обязательные поля для отправки заказа
+                </div>
+              )}
+            </div>
           </div>
         </form>
       </Card>
