@@ -1,4 +1,3 @@
-
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/common/Header";
@@ -10,6 +9,7 @@ import BlogDetailRelated from "@/components/blog/BlogDetailRelated";
 import BlogDetailCTA from "@/components/blog/BlogDetailCTA";
 import { blogPosts } from "@/data/blogPosts";
 import { missingArticles } from "@/data/articles";
+import { expandedBlogPosts } from "@/data/blog";
 
 // Объединяем все статьи
 const allPosts = [...blogPosts, ...missingArticles];

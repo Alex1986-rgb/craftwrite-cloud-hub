@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { blogPosts } from "@/data/blogPosts";
 import { missingArticles } from "@/data/articles";
+import { expandedBlogPosts } from "@/data/blog";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import BlogHeader from "@/components/blog/BlogHeader";
@@ -12,7 +12,7 @@ import BlogEmptyState from "@/components/blog/BlogEmptyState";
 import BlogCTA from "@/components/blog/BlogCTA";
 
 // Combine all posts
-const allPosts = [...blogPosts, ...missingArticles];
+const allPosts = [...blogPosts, ...missingArticles, ...expandedBlogPosts];
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState("all");
