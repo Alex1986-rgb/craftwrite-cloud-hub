@@ -5,6 +5,7 @@ import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { prices } from "@/data/prices";
 
 const seoText = `
 Цены на копирайтинг и создание текстов от CopyPro Cloud — всё прозрачно и честно.
@@ -18,15 +19,6 @@ const seoText = `
 
 С CopyPro Cloud вы заранее знаете, за что платите — никаких сюрпризов.
 `;
-
-const prices = [
-  { service: "SEO-статья (1000 знаков)", price: "от 400 ₽" },
-  { service: "Описание товара", price: "от 350 ₽" },
-  { service: "Текст для соцсетей", price: "от 600 ₽" },
-  { service: "Продающий лендинг", price: "от 4000 ₽" },
-  { service: "Пресс-релиз", price: "от 3000 ₽" },
-  { service: "E-mail рассылка", price: "от 1200 ₽" },
-];
 
 const Prices = () => {
   const { loading, error, handleStripeCheckout } = useStripeCheckout();
