@@ -1,10 +1,10 @@
-
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import FaqSection from "@/components/landing/FaqSection";
 import ContactSection from "@/components/landing/ContactSection";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (

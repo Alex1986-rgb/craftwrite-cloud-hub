@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => (
   <section className="pt-16 pb-12 px-4 md:px-0 flex flex-col items-center bg-gradient-to-b from-card to-background">
@@ -10,7 +11,9 @@ const HeroSection = () => (
       Широкий выбор текстов, профессиональные копирайтеры и быстрый запуск ваших идей!
     </p>
     <div className="flex flex-col md:flex-row gap-4">
-      <Button size="lg" className="shadow hover-scale">Создать заказ</Button>
+      <Button size="lg" className="shadow hover-scale" asChild>
+        <Link to="/order">Создать заказ</Link>
+      </Button>
       <Button variant="outline" size="lg">Войти в личный кабинет</Button>
       <Button variant="secondary" size="lg">Оставить заявку</Button>
     </div>

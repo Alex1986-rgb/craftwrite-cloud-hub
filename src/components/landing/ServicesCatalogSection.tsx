@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const services = [
   "SEO-статьи",
@@ -28,15 +29,17 @@ const ServicesCatalogSection = () => (
         <Card key={service} className="transition-all hover-scale hover:shadow-lg border-primary/30">
           <CardContent className="p-5 flex flex-col h-full justify-between">
             <CardTitle className="text-lg mb-3">{service}</CardTitle>
-            <Button variant="outline" size="sm" className="mt-2 self-start">
-              Заказать
+            <Button variant="outline" size="sm" className="mt-2 self-start" asChild>
+              <Link to="/order">Заказать</Link>
             </Button>
           </CardContent>
         </Card>
       ))}
     </div>
     <div className="flex justify-center mt-7">
-      <Button size="lg" className="shadow hover-scale">Создать заказ</Button>
+      <Button size="lg" className="shadow hover-scale" asChild>
+        <Link to="/order">Создать заказ</Link>
+      </Button>
     </div>
   </section>
 );
