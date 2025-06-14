@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SERVICES } from "@/data/services";
 import { Button } from "@/components/ui/button";
@@ -14,16 +15,18 @@ import { ArrowLeft } from "lucide-react";
 
 const seoText = `
 Заказ текстов на CopyPro Cloud — быстро, удобно и профессионально.
-На платформе можно выбрать формат (SEO-статья, лендинг, описание, пост для соцсетей и др.), тематику, язык и дополнительные параметры для точного выполнения задачи.
+Наша платформа позволяет выбрать оптимальный формат контента (SEO-статья, лендинг, описание товара, пост для соцсетей и др.), 
+указать тематику, язык и дополнительные параметры для максимально точного выполнения задачи.
 
-Почему нам доверяют:
-- Простой и понятный интерфейс заказа: в пару кликов выберите нужный вариант.
-- Можно подобрать авторов с опытом в отрасли (например: IT, маркетинг, e-commerce, B2B).
-- Оперативное выполнение даже крупных объемов.
-- Контроль качества на каждом этапе.
-- Любые доработки — бесплатно по вашему запросу!
+Почему более 10 000 клиентов доверяют нам:
+- Интуитивно понятный интерфейс заказа: создайте техническое задание в несколько кликов
+- Возможность выбора специализированных авторов с опытом в вашей отрасли (IT, маркетинг, e-commerce, B2B, медицина, финансы)
+- Гарантированное оперативное выполнение даже самых крупных и сложных объемов
+- Многоуровневый контроль качества на каждом этапе создания контента
+- Безлимитные доработки и правки — абсолютно бесплатно по вашему запросу в течение 14 дней
 
-Сделайте контент ещё сильнее вместе с CopyPro Cloud!
+Превратите ваш контент в мощный инструмент продаж вместе с CopyPro Cloud!
+Начните прямо сейчас — создание заказа займет менее 3 минут.
 `;
 
 export default function Order() {
@@ -58,14 +61,15 @@ export default function Order() {
       <>
         <Header />
         <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/20 relative overflow-hidden">
-          {/* Modern background decorations */}
+          {/* Улучшенные фоновые декорации */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/8 via-purple-400/6 to-pink-400/4 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-emerald-400/8 via-blue-400/6 to-purple-400/4 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-gradient-to-r from-blue-400/10 via-purple-400/8 to-pink-400/6 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 md:w-80 md:h-80 bg-gradient-to-r from-emerald-400/10 via-blue-400/8 to-purple-400/6 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
             
-            {/* Floating elements - hidden on mobile */}
-            <div className="hidden md:block absolute top-20 right-20 w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce opacity-20" style={{ animationDelay: '0.5s' }}></div>
-            <div className="hidden md:block absolute bottom-40 left-20 w-6 h-6 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full animate-bounce opacity-15" style={{ animationDelay: '1.5s' }}></div>
+            {/* Плавающие элементы для десктопа */}
+            <div className="hidden md:block absolute top-20 right-20 w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce opacity-30" style={{ animationDelay: '0.5s' }}></div>
+            <div className="hidden md:block absolute bottom-40 left-20 w-6 h-6 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full animate-bounce opacity-25" style={{ animationDelay: '1.5s' }}></div>
+            <div className="hidden lg:block absolute top-1/2 right-1/3 w-3 h-3 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-bounce opacity-20" style={{ animationDelay: '2s' }}></div>
           </div>
 
           <div className="container mx-auto px-4 py-6 md:py-12 relative z-10">
@@ -73,13 +77,13 @@ export default function Order() {
               <Button 
                 variant="outline" 
                 onClick={() => setShowServiceCatalog(true)}
-                className="flex items-center gap-2 hover:scale-105 transition-all duration-300 shadow-lg border-2 border-blue-200/50 hover:border-blue-400/60 bg-white/70 backdrop-blur-sm hover:bg-white/90 text-sm md:text-base px-3 py-2 md:px-4 md:py-2"
+                className="flex items-center gap-2 hover:scale-105 transition-all duration-300 shadow-lg border-2 border-blue-200/50 hover:border-blue-400/60 bg-white/80 backdrop-blur-sm hover:bg-white/95 text-sm md:text-base px-4 py-2 md:px-6 md:py-3"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Каталог услуг
+                Вернуться к каталогу
               </Button>
-              <div className="text-xs md:text-sm text-slate-600 bg-white/60 backdrop-blur-sm px-4 py-2 md:px-6 md:py-3 rounded-full border border-slate-200/50 shadow-sm">
-                Или выберите услугу из каталога
+              <div className="text-xs md:text-sm text-slate-600 bg-white/70 backdrop-blur-sm px-4 py-2 md:px-6 md:py-3 rounded-full border border-slate-200/50 shadow-sm">
+                Или выберите готовое решение из каталога услуг
               </div>
             </div>
             <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -122,7 +126,7 @@ export default function Order() {
             <OrderEmptyState onResetFilters={handleResetFilters} />
           )}
           
-          <div className="animate-fade-in px-4" style={{ animationDelay: '1s' }}>
+          <div className="animate-fade-in px-4 mt-16" style={{ animationDelay: '1s' }}>
             <SeoTextExpandable text={seoText} />
           </div>
         </div>
