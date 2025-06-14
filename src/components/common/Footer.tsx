@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 
 const footerLinks = [
   { label: "Главная", to: "/" },
+  { label: "Каталог услуг", to: "/#services" },
+  { label: "Цены", to: "/prices" },
+  { label: "Портфолио", to: "/portfolio" },
+  { label: "Блог", to: "/blog" },
   { label: "Заказ", to: "/order" },
   { label: "О нас", to: "/about" },
+  { label: "Политика", to: "/privacy" },
 ];
 
 export default function Footer() {

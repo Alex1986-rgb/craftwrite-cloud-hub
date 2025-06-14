@@ -5,8 +5,13 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Главная", to: "/" },
-  { label: "Заказ", to: "/order" },
+  { label: "Каталог услуг", to: "/#services" },
+  { label: "Цены", to: "/prices" },
+  { label: "Портфолио", to: "/portfolio" },
+  { label: "Блог", to: "/blog" },
   { label: "О нас", to: "/about" },
+  { label: "Оформить заказ", to: "/order" },
+  { label: "Политика", to: "/privacy" },
 ];
 
 export default function Header() {
