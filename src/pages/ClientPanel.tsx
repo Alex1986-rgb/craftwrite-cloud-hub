@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ClientAuthProvider } from '@/contexts/ClientAuthContext';
@@ -19,6 +18,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Menu, Bell } from 'lucide-react';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import { RealTimeNotifications } from '@/components/client/notifications/RealTimeNotifications';
 
 function ClientContent() {
   const { isAuthenticated, loading, client } = useClientAuth();
@@ -127,6 +127,9 @@ function ClientContent() {
           </div>
         </main>
       </div>
+
+      {/* Real-time Notifications */}
+      <RealTimeNotifications />
     </div>
   );
 }
