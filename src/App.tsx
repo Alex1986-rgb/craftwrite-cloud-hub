@@ -51,6 +51,8 @@ function App() {
             <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
             <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />
             <Route path="/order/chatbot-scripts" element={<PublicLayout><ChatbotScriptsOrder /></PublicLayout>} />
+            <Route path="/order/seo-article" element={<PublicLayout><OrderPage /></PublicLayout>} />
+            <Route path="/order/:serviceId" element={<PublicLayout><OrderPage /></PublicLayout>} />
             <Route path="/terms" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
             <Route path="/privacy" element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
             <Route path="/password-reset" element={<PublicLayout><PasswordResetPage /></PublicLayout>} />
