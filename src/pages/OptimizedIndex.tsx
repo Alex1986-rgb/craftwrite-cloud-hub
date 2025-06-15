@@ -13,7 +13,6 @@ import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
 import SocialProofSection from "@/components/landing/SocialProofSection";
-import NewsletterSection from "@/components/landing/NewsletterSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
@@ -118,7 +117,6 @@ export default function OptimizedIndex() {
         <TeamSection />
         <TrustSection />
         <FaqSection />
-        <NewsletterSection />
         <ContactSection />
         
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
