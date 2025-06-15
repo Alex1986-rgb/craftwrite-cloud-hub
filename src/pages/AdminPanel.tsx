@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
@@ -14,7 +15,12 @@ import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 import SettingsPanel from "@/components/admin/SettingsPanel";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
-import lazy from "@/components/common/lazy";
+import { lazy, Suspense } from "react";
+
+// Ленивая загрузка компонентов
+const UniversalContentManager = lazy(() => import("@/components/admin/content/UniversalContentManager"));
+const PromptManager = lazy(() => import("@/components/admin/prompts/PromptManager"));
+const DynamicPricingManager = lazy(() => import("@/components/admin/pricing/DynamicPricingManager"));
 
 function AdminContent() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -43,26 +49,26 @@ function AdminContent() {
         <AdminHeader onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} />
         
         <main className="p-6">
-          <Routes>
-            <Route path="/" element={<AdminDashboard />} />
-            <Route path="/orders" element={<OrderManagement />} />
-            <Route path="/clients" element={<ClientManagement />} />
-            <Route path="/ai-generator" element={<AITextGenerator />} />
-            <Route path="/page-editor" element={<PageEditor />} />
-            <Route path="/content-manager" element={
-              <lazy(() => import("@/components/admin/content/UniversalContentManager"))></lazy>
-            } />
-            <Route path="/prompts" element={
-              <lazy(() => import("@/components/admin/prompts/PromptManager"))></lazy>
-            } />
-            <Route path="/pricing" element={
-              <lazy(() => import("@/components/admin/pricing/DynamicPricingManager"))></lazy>
-            } />
-            <Route path="/payments" element={<PaymentManager />} />
-            <Route path="/analytics" element={<AnalyticsPanel />} />
-            <Route path="/settings" element={<SettingsPanel />} />
-            <Route path="*" element={<Navigate to="/admin" replace />} />
-          </Routes>
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          }>
+            <Routes>
+              <Route path="/" element={<AdminDashboard />} />
+              <Route path="/orders" element={<OrderManagement />} />
+              <Route path="/clients" element={<ClientManagement />} />
+              <Route path="/ai-generator" element={<AITextGenerator />} />
+              <Route path="/page-editor" element={<PageEditor />} />
+              <Route path="/content-manager" element={<UniversalContentManager />} />
+              <Route path="/prompts" element={<PromptManager />} />
+              <Route path="/pricing" element={<DynamicPricingManager />} />
+              <Route path="/payments" element={<PaymentManager />} />
+              <Route path="/analytics" element={<AnalyticsPanel />} />
+              <Route path="/settings" element={<SettingsPanel />} />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
     </div>
