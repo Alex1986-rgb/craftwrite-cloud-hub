@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Settings } from "lucide-react";
@@ -96,6 +97,14 @@ export default function AITextGenerator() {
     handleGenerate();
   };
 
+  const handleApiKeySet = async (key: string): Promise<boolean> => {
+    const success = await setApiKey(key);
+    if (success) {
+      enhancedOpenAIService.setAPIKeys({ openai: key });
+    }
+    return success;
+  };
+
   const generationHandlers = createGenerationHandlers(
     generatedText,
     formData,
@@ -159,10 +168,7 @@ export default function AITextGenerator() {
       )}
 
       <ApiKeySetup 
-        onApiKeySet={(key) => {
-          setApiKey(key);
-          enhancedOpenAIService.setAPIKeys({ openai: key });
-        }}
+        onApiKeySet={handleApiKeySet}
         hasApiKey={hasApiKey}
       />
 
