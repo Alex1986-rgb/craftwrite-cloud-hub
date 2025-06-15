@@ -9,7 +9,7 @@ export interface SeoMetrics {
 
 export interface CoreWebVitals {
   lcp: number;
-  fid: number;
+  inp: number; // Updated from fid to inp
   cls: number;
 }
 
@@ -26,15 +26,15 @@ export class SeoAnalyticsService {
   async measureWebVitals(): Promise<CoreWebVitals> {
     try {
       const webVitals = await import('web-vitals');
-      const metrics: CoreWebVitals = { lcp: 0, fid: 0, cls: 0 };
+      const metrics: CoreWebVitals = { lcp: 0, inp: 0, cls: 0 };
       
       return new Promise((resolve) => {
         webVitals.onLCP((metric) => {
           metrics.lcp = metric.value;
         });
         
-        webVitals.onFID((metric) => {
-          metrics.fid = metric.value;
+        webVitals.onINP((metric) => {
+          metrics.inp = metric.value;
         });
         
         webVitals.onCLS((metric) => {
@@ -44,7 +44,7 @@ export class SeoAnalyticsService {
       });
     } catch (error) {
       console.warn('Web Vitals not available:', error);
-      return { lcp: 0, fid: 0, cls: 0 };
+      return { lcp: 0, inp: 0, cls: 0 };
     }
   }
 

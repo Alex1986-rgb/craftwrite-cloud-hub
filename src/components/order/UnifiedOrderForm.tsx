@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
@@ -54,7 +54,7 @@ function OrderFormContent({ variant, onOrderCreated }: UnifiedOrderFormProps) {
   const deliveryTime = getEstimatedDeliveryTime();
 
   // Calculate form progress
-  const formProgress = React.useMemo(() => {
+  const formProgress = useMemo(() => {
     let completedFields = 0;
     const totalFields = 5;
     
