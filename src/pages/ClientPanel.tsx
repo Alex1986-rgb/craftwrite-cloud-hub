@@ -19,6 +19,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Menu, Bell } from 'lucide-react';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { RealTimeNotifications } from '@/components/client/notifications/RealTimeNotifications';
+import { EnhancedWorkspace } from '@/components/client/enhanced/EnhancedWorkspace';
 
 function ClientContent() {
   const { isAuthenticated, loading, client } = useClientAuth();
@@ -110,6 +111,7 @@ function ClientContent() {
           <div className="animate-slide-in-up">
             <Routes>
               <Route path="/" element={<ClientDashboard />} />
+              <Route path="/workspace" element={<EnhancedWorkspace />} />
               <Route path="/orders" element={<ClientOrders />} />
               <Route path="/new-order" element={<ClientNewOrder />} />
               <Route path="/documents" element={<ClientDocuments />} />

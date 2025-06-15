@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +23,7 @@ import {
   BarChart,
   Bar,
   PieChart as RechartsPieChart,
+  Pie,
   Cell,
   XAxis,
   YAxis,
@@ -32,9 +32,9 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
 import { AnimatedStatsGrid } from '@/components/ui/animated-stats';
 import { EnhancedProgress } from '@/components/ui/enhanced-progress';
+import { ReportExporter } from '@/utils/reportExport';
 
 export default function EnhancedClientAnalytics() {
   const monthlyData = [
@@ -92,8 +92,12 @@ export default function EnhancedClientAnalytics() {
   ];
 
   const exportReport = (format: 'pdf' | 'excel') => {
-    console.log(`Экспорт отчета в формате ${format}`);
-    // Здесь будет логика экспорта
+    const reportData = ReportExporter.generateClientReport();
+    if (format === 'pdf') {
+      ReportExporter.exportToPDF(reportData);
+    } else {
+      ReportExporter.exportToExcel(reportData);
+    }
   };
 
   return (

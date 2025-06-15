@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,8 @@ import {
   Bell,
   Download,
   BarChart3,
-  HelpCircle
+  HelpCircle,
+  Briefcase
 } from 'lucide-react';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
 
@@ -39,7 +39,7 @@ export default function ClientSidebar({ isOpen, onToggle }: ClientSidebarProps) 
   const { client, logout } = useClientAuth();
   const location = useLocation();
 
-  const navigation = [
+  const menuItems = [
     { name: 'Главная', href: '/client', icon: Home },
     { name: 'Мои заказы', href: '/client/orders', icon: FileText, badge: '2' },
     { name: 'Новый заказ', href: '/client/new-order', icon: Plus },
@@ -48,6 +48,12 @@ export default function ClientSidebar({ isOpen, onToggle }: ClientSidebarProps) 
     { name: 'Поддержка', href: '/client/support', icon: MessageSquare, badge: '1' },
     { name: 'Аналитика', href: '/client/analytics', icon: BarChart3 },
     { name: 'Уведомления', href: '/client/notifications', icon: Bell, badge: '2' },
+    {
+      icon: Briefcase,
+      label: 'Рабочее пространство',
+      href: '/client/workspace',
+      badge: 'NEW'
+    },
   ];
 
   const isActive = (href: string) => {
@@ -134,7 +140,7 @@ export default function ClientSidebar({ isOpen, onToggle }: ClientSidebarProps) 
 
           {/* Enhanced Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {navigation.map((item, index) => (
+            {menuItems.map((item, index) => (
               <Link
                 key={item.name}
                 to={item.href}
