@@ -13,6 +13,11 @@ import TextRefiner from "./TextRefiner";
 import ExportManager from "./ExportManager";
 import EnhancedQualityAnalyzer from "./EnhancedQualityAnalyzer";
 import AIAssistantTab from "./AIAssistantTab";
+import AdvancedPersonalization from "./AdvancedPersonalization";
+import CompetitorAnalysis from "./CompetitorAnalysis";
+import ABTestManager from "./ABTestManager";
+import ConversionPredictor from "./ConversionPredictor";
+import CMSIntegration from "./CMSIntegration";
 import { TabNavigationProps } from "./types/TabNavigationTypes";
 
 export default function TabNavigation({
@@ -97,24 +102,32 @@ export default function TabNavigation({
         />
       </TabsContent>
 
+      <TabsContent value="personalization">
+        <AdvancedPersonalization />
+      </TabsContent>
+
+      <TabsContent value="competitors">
+        <CompetitorAnalysis />
+      </TabsContent>
+
+      <TabsContent value="abtest">
+        <ABTestManager />
+      </TabsContent>
+
+      <TabsContent value="prediction">
+        <ConversionPredictor />
+      </TabsContent>
+
+      <TabsContent value="cms">
+        <CMSIntegration />
+      </TabsContent>
+
       <TabsContent value="export">
         <ExportManager
           text={generatedText}
           title={`Сгенерированный ${selectedContentType?.label || 'текст'}`}
           contentType={selectedContentType?.label}
         />
-      </TabsContent>
-
-      <TabsContent value="templates">
-        <TemplateLibrary onApplyTemplate={onApplyTemplate} />
-      </TabsContent>
-
-      <TabsContent value="presets">
-        <PresetManager onApplyPreset={onApplyPreset} />
-      </TabsContent>
-
-      <TabsContent value="prompts">
-        <PromptLibrary onSelectPrompt={onSelectPrompt} />
       </TabsContent>
 
       <TabsContent value="history">
