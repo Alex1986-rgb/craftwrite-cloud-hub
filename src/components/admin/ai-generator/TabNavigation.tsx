@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download } from "lucide-react";
 import GenerationForm from "./GenerationForm";
@@ -12,6 +11,7 @@ import BatchGeneration from "./BatchGeneration";
 import TextRefiner from "./TextRefiner";
 import QualityAnalyzer from "./QualityAnalyzer";
 import ExportManager from "./ExportManager";
+import EnhancedQualityAnalyzer from "./EnhancedQualityAnalyzer";
 
 interface FormData {
   prompt: string;
@@ -165,13 +165,10 @@ export default function TabNavigation({
       </TabsContent>
 
       <TabsContent value="analyzer">
-        {onAnalyzeQuality && (
-          <QualityAnalyzer
-            text={generatedText}
-            keywords={formData.keywords}
-            onAnalyze={onAnalyzeQuality}
-          />
-        )}
+        <EnhancedQualityAnalyzer
+          text={generatedText}
+          keywords={formData.keywords}
+        />
       </TabsContent>
 
       <TabsContent value="export">
