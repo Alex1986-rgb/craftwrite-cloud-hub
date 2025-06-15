@@ -11,7 +11,6 @@ import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
 import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import NewsletterSection from "@/components/landing/NewsletterSection";
@@ -114,7 +113,6 @@ export default function OptimizedIndex() {
         <ServicesCatalogSection />
         <ModernPricingSection />
         <ProcessSection />
-        <InnovativePortfolioSection />
         <ProfessionalStatsSection />
         <TestimonialsSection />
         <TeamSection />
