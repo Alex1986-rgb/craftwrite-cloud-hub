@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trophy, TrendingUp, Users, Zap, Star, ArrowRight, PlayCircle, Award, Target } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { Trophy, TrendingUp, Users, Star, ArrowRight, PlayCircle, Award, Target, BarChart3 } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const successStories = [
   {
@@ -16,11 +16,9 @@ const successStories = [
     timeline: "6 месяцев",
     metrics: {
       conversion: { before: 2.1, after: 8.8 },
-      revenue: { before: 1200000, after: 5040000 },
-      traffic: { before: 15000, after: 42000 }
+      revenue: { before: 1200000, after: 5040000 }
     },
     quote: "Наша выручка выросла в 4 раза за полгода работы с CopyPro Cloud",
-    avatar: "T",
     color: "blue"
   },
   {
@@ -32,11 +30,9 @@ const successStories = [
     timeline: "4 месяца",
     metrics: {
       conversion: { before: 3.2, after: 8.9 },
-      leads: { before: 280, after: 784 },
-      retention: { before: 45, after: 78 }
+      leads: { before: 280, after: 784 }
     },
     quote: "Конверсия лендинга выросла с 3% до 9% — невероятный результат!",
-    avatar: "C",
     color: "green"
   },
   {
@@ -47,12 +43,10 @@ const successStories = [
     result: "Привлечено $2M инвестиций",
     timeline: "8 месяцев",
     metrics: {
-      investment: { before: 0, after: 2000000 },
-      users: { before: 1200, after: 15000 },
-      conversion: { before: 1.8, after: 6.2 }
+      conversion: { before: 1.8, after: 6.2 },
+      users: { before: 1200, after: 15000 }
     },
     quote: "Качественный контент помог нам привлечь серьезных инвесторов",
-    avatar: "P",
     color: "purple"
   }
 ];
@@ -62,29 +56,25 @@ const keyMetrics = [
     icon: Trophy,
     value: "420%",
     label: "Средний ROI",
-    description: "Возврат инвестиций наших клиентов",
-    gradient: "from-yellow-400 to-orange-500"
+    description: "Возврат инвестиций наших клиентов"
   },
   {
     icon: TrendingUp,
     value: "250%",
     label: "Рост трафика",
-    description: "Увеличение органического трафика",
-    gradient: "from-green-400 to-emerald-500"
+    description: "Увеличение органического трафика"
   },
   {
     icon: Users,
     value: "500+",
     label: "Успешных проектов",
-    description: "Довольных клиентов за год",
-    gradient: "from-blue-400 to-cyan-500"
+    description: "Довольных клиентов за год"
   },
   {
     icon: Star,
     value: "95%",
     label: "Превышение KPI",
-    description: "Проекты с результатом выше плана",
-    gradient: "from-purple-400 to-violet-500"
+    description: "Проекты с результатом выше плана"
   }
 ];
 
@@ -116,32 +106,41 @@ export default function ModernSuccessSection() {
 
   const getColorClasses = (color: string) => {
     const colors = {
-      blue: "from-blue-500 to-blue-600",
-      green: "from-green-500 to-green-600",
-      purple: "from-purple-500 to-purple-600"
+      blue: "from-blue-50 to-blue-100 border-blue-200",
+      green: "from-emerald-50 to-emerald-100 border-emerald-200",
+      purple: "from-purple-50 to-purple-100 border-purple-200"
+    };
+    return colors[color as keyof typeof colors];
+  };
+
+  const getAccentColor = (color: string) => {
+    const colors = {
+      blue: "text-blue-600",
+      green: "text-emerald-600", 
+      purple: "text-purple-600"
     };
     return colors[color as keyof typeof colors];
   };
 
   return (
-    <section className="py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
       {/* Декоративные элементы */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-gradient-to-r from-emerald-400/10 to-cyan-400/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-r from-emerald-100/30 to-cyan-100/30 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Заголовок */}
-        <div className="text-center mb-20">
-          <Badge className="mb-6 bg-gradient-to-r from-emerald-500 to-blue-600 text-white border-0 px-6 py-3 text-lg font-semibold">
+        <div className="text-center mb-16">
+          <Badge className="mb-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 px-6 py-3 text-lg font-semibold shadow-lg">
             <Award className="w-5 h-5 mr-2" />
             Доказанная эффективность
           </Badge>
-          <h2 className="text-5xl md:text-7xl font-playfair font-bold mb-8 bg-gradient-to-r from-white via-blue-100 to-emerald-200 bg-clip-text text-transparent">
+          
+          <h2 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-slate-900 via-blue-900 to-purple-900 bg-clip-text text-transparent">
             Реальные результаты наших клиентов
           </h2>
-          <p className="text-xl text-slate-200 max-w-4xl mx-auto leading-relaxed mb-8">
+          
+          <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed mb-8">
             За последний год мы помогли 500+ компаниям достичь выдающихся результатов. 
             Каждая цифра — это реальный успех наших клиентов.
           </p>
@@ -149,7 +148,7 @@ export default function ModernSuccessSection() {
           <Button 
             onClick={playSuccessStories}
             disabled={isPlaying}
-            className="bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-400 hover:to-blue-500 text-white px-8 py-4 rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
           >
             <PlayCircle className="w-6 h-6 mr-2" />
             {isPlaying ? 'Демонстрация успехов...' : 'Посмотреть истории успеха'}
@@ -157,18 +156,18 @@ export default function ModernSuccessSection() {
         </div>
 
         {/* Ключевые метрики */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {keyMetrics.map((metric, index) => {
             const Icon = metric.icon;
             return (
-              <Card key={index} className="group p-8 bg-white/5 backdrop-blur-lg border-white/10 hover:bg-white/10 transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl">
+              <Card key={index} className="group p-6 bg-white/80 backdrop-blur-sm border-slate-200 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <div className="text-center">
-                  <div className={`inline-flex p-4 bg-gradient-to-r ${metric.gradient} rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="inline-flex p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     <Icon className="w-8 h-8 text-white" />
                   </div>
-                  <div className="text-4xl font-bold text-white mb-2 group-hover:scale-105 transition-transform duration-300">{metric.value}</div>
-                  <div className="text-lg font-semibold text-slate-200 mb-2">{metric.label}</div>
-                  <div className="text-sm text-slate-400">{metric.description}</div>
+                  <div className="text-3xl font-bold text-slate-900 mb-2 group-hover:scale-105 transition-transform duration-300">{metric.value}</div>
+                  <div className="text-lg font-semibold text-slate-700 mb-2">{metric.label}</div>
+                  <div className="text-sm text-slate-500">{metric.description}</div>
                 </div>
               </Card>
             );
@@ -176,37 +175,39 @@ export default function ModernSuccessSection() {
         </div>
 
         {/* Истории успеха */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Переключатели историй */}
-          <div className="space-y-6">
-            <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-              <Target className="w-8 h-8 text-emerald-400" />
-              Истории трансформации
-            </h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-6">
+              <Target className="w-8 h-8 text-blue-600" />
+              <h3 className="text-3xl font-playfair font-bold text-slate-900">
+                Истории трансформации
+              </h3>
+            </div>
             
             {successStories.map((story, index) => (
               <Card 
                 key={story.id}
-                className={`p-6 cursor-pointer transition-all duration-500 ${
+                className={`p-6 cursor-pointer transition-all duration-300 border-2 ${
                   activeStory === index 
-                    ? 'bg-white/15 border-emerald-400/50 scale-105 shadow-2xl' 
-                    : 'bg-white/5 border-white/10 hover:bg-white/10'
+                    ? `bg-gradient-to-r ${getColorClasses(story.color)} scale-105 shadow-xl border-blue-300` 
+                    : 'bg-white/60 border-slate-200 hover:bg-white/80 hover:shadow-lg'
                 }`}
                 onClick={() => setActiveStory(index)}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${getColorClasses(story.color)} rounded-xl flex items-center justify-center text-white font-bold`}>
-                    {story.avatar}
+                  <div className={`w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-md`}>
+                    {story.company.charAt(0)}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-bold text-white">{story.company}</h4>
-                      <Badge className="bg-white/20 text-white text-xs">{story.industry}</Badge>
+                      <h4 className="font-bold text-slate-900">{story.company}</h4>
+                      <Badge className="bg-slate-100 text-slate-700 text-xs border-slate-200">{story.industry}</Badge>
                     </div>
-                    <p className="text-slate-300 text-sm mb-2">{story.challenge}</p>
-                    <div className="text-emerald-400 font-semibold">{story.result}</div>
+                    <p className="text-slate-600 text-sm mb-2">{story.challenge}</p>
+                    <div className={`font-semibold ${getAccentColor(story.color)}`}>{story.result}</div>
                   </div>
-                  <div className="text-slate-400 text-xs">{story.timeline}</div>
+                  <div className="text-slate-400 text-xs bg-slate-100 px-2 py-1 rounded-lg">{story.timeline}</div>
                 </div>
               </Card>
             ))}
@@ -214,23 +215,25 @@ export default function ModernSuccessSection() {
 
           {/* График и детали активной истории */}
           <div className="space-y-6">
-            <Card className="p-8 bg-white/5 backdrop-blur-lg border-white/10">
-              <h4 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <TrendingUp className="w-6 h-6 text-emerald-400" />
-                Динамика роста: {successStories[activeStory].company}
-              </h4>
+            <Card className="p-8 bg-white/80 backdrop-blur-sm border-slate-200 shadow-lg">
+              <div className="flex items-center gap-3 mb-6">
+                <BarChart3 className="w-6 h-6 text-blue-600" />
+                <h4 className="text-2xl font-bold text-slate-900">
+                  Динамика роста: {successStories[activeStory].company}
+                </h4>
+              </div>
               
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" />
-                  <XAxis dataKey="month" tick={{ fill: '#cbd5e1', fontSize: 12 }} />
-                  <YAxis tick={{ fill: '#cbd5e1', fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(255,255,255,0.95)', 
-                      border: 'none',
+                      backgroundColor: 'white', 
+                      border: '1px solid #e2e8f0',
                       borderRadius: '12px',
-                      boxShadow: '0 25px 50px rgba(0,0,0,0.25)'
+                      boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
                     }} 
                   />
                   <Line 
@@ -245,7 +248,7 @@ export default function ModernSuccessSection() {
                     type="monotone" 
                     dataKey="after" 
                     stroke="#10b981" 
-                    strokeWidth={4}
+                    strokeWidth={3}
                     name="После"
                   />
                 </LineChart>
@@ -253,13 +256,13 @@ export default function ModernSuccessSection() {
             </Card>
 
             {/* Отзыв клиента */}
-            <Card className="p-6 bg-gradient-to-r from-white/10 to-white/5 border-white/20">
-              <blockquote className="text-slate-200 italic text-lg mb-4 leading-relaxed">
+            <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 shadow-lg">
+              <blockquote className="text-slate-700 italic text-lg mb-4 leading-relaxed">
                 "{successStories[activeStory].quote}"
               </blockquote>
               <div className="flex items-center justify-between">
-                <div className="text-white font-semibold">{successStories[activeStory].company}</div>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30">
+                <div className="text-slate-900 font-semibold">{successStories[activeStory].company}</div>
+                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
                   {successStories[activeStory].result}
                 </Badge>
               </div>
@@ -268,18 +271,18 @@ export default function ModernSuccessSection() {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center">
-          <h3 className="text-3xl font-bold mb-6 text-white">
+        <Card className="p-12 bg-gradient-to-r from-blue-50 via-white to-purple-50 border-blue-200 shadow-xl text-center">
+          <h3 className="text-3xl font-playfair font-bold mb-6 text-slate-900">
             Готовы стать следующей историей успеха?
           </h3>
-          <p className="text-slate-300 mb-8 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
             Присоединяйтесь к сотням компаний, которые уже трансформировали свой бизнес с помощью качественного контента
           </p>
-          <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-400 hover:to-blue-500 text-white border-0 px-12 py-4 text-lg rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+          <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white border-0 px-12 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
             Начать свою трансформацию
             <ArrowRight className="w-6 h-6 ml-2" />
           </Button>
-        </div>
+        </Card>
       </div>
     </section>
   );
