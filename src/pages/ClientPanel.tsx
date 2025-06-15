@@ -8,6 +8,10 @@ import ClientOrders from '@/components/client/ClientOrders';
 import ClientNewOrder from '@/components/client/ClientNewOrder';
 import ClientDocuments from '@/components/client/ClientDocuments';
 import ClientProfile from '@/components/client/ClientProfile';
+import ClientSupport from '@/components/client/ClientSupport';
+import ClientPayments from '@/components/client/ClientPayments';
+import ClientAnalytics from '@/components/client/ClientAnalytics';
+import ClientNotifications from '@/components/client/ClientNotifications';
 import ClientSidebar from '@/components/client/ClientSidebar';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
 import { Button } from '@/components/ui/button';
@@ -76,9 +80,10 @@ function ClientContent() {
             <Route path="/orders" element={<ClientOrders />} />
             <Route path="/new-order" element={<ClientNewOrder />} />
             <Route path="/documents" element={<ClientDocuments />} />
-            <Route path="/payments" element={<div>Платежи</div>} />
-            <Route path="/support" element={<div>Поддержка</div>} />
-            <Route path="/analytics" element={<div>Аналитика</div>} />
+            <Route path="/payments" element={<ClientPayments />} />
+            <Route path="/support" element={<ClientSupport />} />
+            <Route path="/analytics" element={<ClientAnalytics />} />
+            <Route path="/notifications" element={<ClientNotifications />} />
             <Route path="/profile" element={<ClientProfile />} />
             <Route path="/help" element={<div>Помощь</div>} />
             <Route path="*" element={<Navigate to="/client" replace />} />

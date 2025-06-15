@@ -46,6 +46,7 @@ export default function ClientSidebar({ isOpen, onToggle }: ClientSidebarProps) 
     { name: 'Платежи', href: '/client/payments', icon: CreditCard },
     { name: 'Поддержка', href: '/client/support', icon: MessageSquare, badge: '1' },
     { name: 'Аналитика', href: '/client/analytics', icon: BarChart3 },
+    { name: 'Уведомления', href: '/client/notifications', icon: Bell, badge: '2' },
   ];
 
   const isActive = (href: string) => {
