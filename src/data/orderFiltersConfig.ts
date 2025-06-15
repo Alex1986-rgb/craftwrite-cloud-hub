@@ -70,6 +70,11 @@ export const COMMON_FILTERS: SmartFilter[] = [
       { value: 'middle', label: 'Средний возраст (30-50)', description: 'Состоявшиеся профессионалы' },
       { value: 'senior', label: 'Старшая группа (50+)', description: 'Опытные специалисты, руководители' },
       { value: 'mass', label: 'Массовая аудитория', description: 'Широкий круг потребителей' }
+    ],
+    recommendations: [
+      'Понимание аудитории - основа эффективного текста',
+      'Возраст влияет на стиль и способ подачи информации',
+      'B2B и B2C требуют разного подхода в копирайтинге'
     ]
   },
   {
@@ -87,6 +92,24 @@ export const COMMON_FILTERS: SmartFilter[] = [
       'Срочные заказы требуют больше ресурсов',
       'Экспресс-заказы доступны не для всех типов текстов'
     ]
+  },
+  {
+    id: 'brandVoice',
+    name: 'Голос бренда',
+    type: 'select',
+    description: 'Определите характер коммуникации бренда',
+    options: [
+      { value: 'authoritative', label: 'Авторитетный', description: 'Экспертный, компетентный' },
+      { value: 'innovative', label: 'Инновационный', description: 'Современный, технологичный' },
+      { value: 'caring', label: 'Заботливый', description: 'Понимающий, поддерживающий' },
+      { value: 'playful', label: 'Игривый', description: 'Веселый, креативный' },
+      { value: 'sophisticated', label: 'Утонченный', description: 'Элегантный, премиальный' }
+    ],
+    recommendations: [
+      'Голос бренда должен отражать ценности компании',
+      'Последовательность в коммуникации укрепляет узнаваемость',
+      'Выбор зависит от специфики бизнеса и аудитории'
+    ]
   }
 ];
 
@@ -96,12 +119,17 @@ export const SEO_FILTERS: SmartFilter[] = [
     id: 'seo_optimization',
     name: 'SEO-оптимизация',
     type: 'select',
+    description: 'Уровень поисковой оптимизации статьи',
     options: [
-      { value: 'basic', label: 'Базовая', description: 'Ключевые слова в тексте' },
-      { value: 'advanced', label: 'Расширенная', description: 'Глубокий анализ конкурентов' },
-      { value: 'technical', label: 'Техническая', description: 'Мета-теги, разметка, структура' }
+      { value: 'basic', label: 'Базовая', description: 'Ключевые слова в тексте', priceMultiplier: 1.0 },
+      { value: 'advanced', label: 'Расширенная', description: 'Глубокий анализ конкурентов', priceMultiplier: 1.3 },
+      { value: 'technical', label: 'Техническая', description: 'Мета-теги, разметка, структура', priceMultiplier: 1.6 }
     ],
-    recommendations: ['Техническая SEO-оптимизация повышает эффективность в 2-3 раза']
+    recommendations: [
+      'Техническая SEO-оптимизация повышает эффективность в 2-3 раза',
+      'Базовая оптимизация подходит для начинающих проектов',
+      'Расширенная оптимизация необходима в конкурентных нишах'
+    ]
   },
   {
     id: 'keyword_density',
@@ -110,16 +138,62 @@ export const SEO_FILTERS: SmartFilter[] = [
     min: 1,
     max: 5,
     defaultValue: 2,
-    description: 'Процент ключевых слов в тексте'
+    description: 'Процент ключевых слов в тексте',
+    recommendations: [
+      'Оптимальная плотность: 2-3% для основных запросов',
+      'Переспам ключевых слов может навредить ранжированию',
+      'Используйте синонимы и LSI-ключевые слова'
+    ]
   },
   {
     id: 'semantic_core',
     name: 'Семантическое ядро',
     type: 'select',
+    description: 'Работа с ключевыми словами',
     options: [
       { value: 'provided', label: 'Предоставлю сам', description: 'У вас есть готовое СЯ' },
-      { value: 'research', label: 'Нужен сбор', description: 'Мы соберем семантику' },
-      { value: 'expand', label: 'Расширить существующее', description: 'Дополним ваше СЯ' }
+      { value: 'research', label: 'Нужен сбор', description: 'Мы соберем семантику', priceMultiplier: 1.2 },
+      { value: 'expand', label: 'Расширить существующее', description: 'Дополним ваше СЯ', priceMultiplier: 1.1 }
+    ],
+    recommendations: [
+      'Качественное семантическое ядро - основа успешного SEO',
+      'Сбор СЯ включает анализ конкурентов и подбор LSI',
+      'Расширение СЯ поможет охватить больше запросов'
+    ]
+  },
+  {
+    id: 'content_structure',
+    name: 'Структура контента',
+    type: 'multiselect',
+    description: 'Элементы структуры статьи',
+    options: [
+      { value: 'h1_optimization', label: 'Оптимизация H1', description: 'Уникальный заголовок с ключом' },
+      { value: 'h2_h3_structure', label: 'Структура H2-H3', description: 'Логичная иерархия заголовков' },
+      { value: 'meta_description', label: 'Meta Description', description: 'Привлекательное описание для поиска' },
+      { value: 'internal_linking', label: 'Внутренняя перелинковка', description: 'Ссылки на другие страницы сайта' },
+      { value: 'faq_section', label: 'FAQ секция', description: 'Ответы на популярные вопросы' },
+      { value: 'conclusion_cta', label: 'Заключение с CTA', description: 'Призыв к действию в конце' }
+    ],
+    recommendations: [
+      'Правильная структура улучшает понимание контента поисковыми системами',
+      'FAQ секция помогает попасть в расширенные сниппеты',
+      'Внутренняя перелинковка распределяет вес по сайту'
+    ]
+  },
+  {
+    id: 'competitor_analysis',
+    name: 'Анализ конкурентов',
+    type: 'select',
+    description: 'Глубина изучения конкурентов',
+    options: [
+      { value: 'none', label: 'Не требуется', description: 'Без анализа конкурентов' },
+      { value: 'basic', label: 'Базовый', description: 'Анализ топ-3 конкурентов', priceMultiplier: 1.1 },
+      { value: 'detailed', label: 'Детальный', description: 'Анализ топ-10 + gap-анализ', priceMultiplier: 1.4 }
+    ],
+    recommendations: [
+      'Анализ конкурентов помогает создать уникальный контент',
+      'Gap-анализ выявляет неохваченные темы',
+      'Детальный анализ необходим в высококонкурентных нишах'
     ]
   }
 ];
@@ -130,23 +204,76 @@ export const LANDING_FILTERS: SmartFilter[] = [
     id: 'landing_type',
     name: 'Тип лендинга',
     type: 'select',
+    description: 'Основная цель посадочной страницы',
     options: [
       { value: 'product', label: 'Продукт', description: 'Презентация одного продукта' },
       { value: 'service', label: 'Услуга', description: 'Описание услуги или сервиса' },
       { value: 'event', label: 'Мероприятие', description: 'Регистрация на событие' },
-      { value: 'lead', label: 'Лидогенерация', description: 'Сбор контактов' }
+      { value: 'lead', label: 'Лидогенерация', description: 'Сбор контактов' },
+      { value: 'subscription', label: 'Подписка', description: 'Оформление подписки на сервис' }
+    ],
+    recommendations: [
+      'Тип лендинга определяет структуру и акценты',
+      'Продуктовые лендинги фокусируются на характеристиках',
+      'Лидогенерирующие лендинги делают акцент на выгодах'
     ]
   },
   {
     id: 'conversion_elements',
     name: 'Конверсионные элементы',
     type: 'multiselect',
+    description: 'Элементы для повышения конверсии',
     options: [
       { value: 'testimonials', label: 'Отзывы клиентов', description: 'Социальные доказательства' },
       { value: 'guarantees', label: 'Гарантии', description: 'Снижение рисков' },
       { value: 'urgency', label: 'Срочность', description: 'Ограниченное время' },
       { value: 'scarcity', label: 'Дефицит', description: 'Ограниченное количество' },
-      { value: 'benefits', label: 'Выгоды', description: 'Список преимуществ' }
+      { value: 'benefits', label: 'Выгоды', description: 'Список преимуществ' },
+      { value: 'case_studies', label: 'Кейсы', description: 'Истории успеха клиентов' },
+      { value: 'expert_badges', label: 'Экспертные знаки', description: 'Сертификаты, награды' },
+      { value: 'money_back', label: 'Возврат денег', description: 'Гарантия возврата средств' }
+    ],
+    recommendations: [
+      'Социальные доказательства увеличивают доверие на 70%',
+      'Срочность и дефицит создают мотивацию к действию',
+      'Гарантии снижают страх покупки'
+    ]
+  },
+  {
+    id: 'target_action',
+    name: 'Целевое действие',
+    type: 'select',
+    description: 'Основное действие, которое должен совершить посетитель',
+    options: [
+      { value: 'purchase', label: 'Покупка', description: 'Прямая продажа товара/услуги' },
+      { value: 'consultation', label: 'Консультация', description: 'Запрос консультации' },
+      { value: 'registration', label: 'Регистрация', description: 'Создание аккаунта' },
+      { value: 'download', label: 'Скачивание', description: 'Загрузка материалов' },
+      { value: 'subscription', label: 'Подписка', description: 'Подписка на рассылку/сервис' },
+      { value: 'trial', label: 'Пробный период', description: 'Активация trial-версии' }
+    ],
+    recommendations: [
+      'Одно главное действие на лендинге увеличивает конверсию',
+      'CTA должен быть ярким и заметным',
+      'Используйте активные глаголы в призывах'
+    ]
+  },
+  {
+    id: 'design_approach',
+    name: 'Подход к дизайну',
+    type: 'select',
+    description: 'Стилистическое направление лендинга',
+    options: [
+      { value: 'minimalist', label: 'Минималистичный', description: 'Чистый, простой дизайн' },
+      { value: 'emotional', label: 'Эмоциональный', description: 'Яркие образы, эмоции' },
+      { value: 'technical', label: 'Технический', description: 'Схемы, графики, данные' },
+      { value: 'storytelling', label: 'Сторителлинг', description: 'История бренда/продукта' },
+      { value: 'comparison', label: 'Сравнительный', description: 'Сравнение с конкурентами' }
+    ],
+    recommendations: [
+      'Минимализм работает для B2B аудитории',
+      'Эмоциональный подход эффективен в B2C',
+      'Сторителлинг создает связь с брендом'
     ]
   }
 ];
@@ -157,21 +284,71 @@ export const EMAIL_FILTERS: SmartFilter[] = [
     id: 'email_type',
     name: 'Тип email-кампании',
     type: 'select',
+    description: 'Основная цель email-рассылки',
     options: [
       { value: 'welcome', label: 'Welcome-серия', description: 'Приветственные письма' },
       { value: 'nurturing', label: 'Прогрев', description: 'Образовательный контент' },
       { value: 'sales', label: 'Продажи', description: 'Коммерческие письма' },
-      { value: 'retention', label: 'Удержание', description: 'Реактивация клиентов' }
+      { value: 'retention', label: 'Удержание', description: 'Реактивация клиентов' },
+      { value: 'newsletter', label: 'Новостная рассылка', description: 'Регулярные обновления' },
+      { value: 'transactional', label: 'Транзакционные', description: 'Подтверждения, уведомления' }
+    ],
+    recommendations: [
+      'Welcome-серия имеет самую высокую открываемость',
+      'Прогревающие письма повышают лояльность',
+      'Продающие письма должны содержать четкий CTA'
     ]
   },
   {
     id: 'personalization',
     name: 'Персонализация',
     type: 'select',
+    description: 'Уровень персонализации контента',
     options: [
-      { value: 'basic', label: 'Базовая', description: 'Имя получателя' },
-      { value: 'behavioral', label: 'Поведенческая', description: 'По действиям пользователя' },
-      { value: 'demographic', label: 'Демографическая', description: 'По характеристикам аудитории' }
+      { value: 'basic', label: 'Базовая', description: 'Имя получателя', priceMultiplier: 1.0 },
+      { value: 'behavioral', label: 'Поведенческая', description: 'По действиям пользователя', priceMultiplier: 1.3 },
+      { value: 'demographic', label: 'Демографическая', description: 'По характеристикам аудитории', priceMultiplier: 1.2 },
+      { value: 'dynamic', label: 'Динамическая', description: 'Адаптивный контент в реальном времени', priceMultiplier: 1.5 }
+    ],
+    recommendations: [
+      'Персонализация увеличивает открываемость на 26%',
+      'Поведенческая персонализация повышает CTR в 3 раза',
+      'Динамический контент максимизирует релевантность'
+    ]
+  },
+  {
+    id: 'automation_level',
+    name: 'Уровень автоматизации',
+    type: 'select',
+    description: 'Сложность автоматизации рассылки',
+    options: [
+      { value: 'simple', label: 'Простая', description: 'Последовательная отправка', priceMultiplier: 1.0 },
+      { value: 'conditional', label: 'Условная', description: 'Ветвление по действиям', priceMultiplier: 1.4 },
+      { value: 'ai_driven', label: 'AI-управляемая', description: 'Машинное обучение', priceMultiplier: 1.8 }
+    ],
+    recommendations: [
+      'Условная автоматизация повышает конверсию на 50%',
+      'AI-управляемые кампании самооптимизируются',
+      'Простая автоматизация подходит для стартапов'
+    ]
+  },
+  {
+    id: 'subject_optimization',
+    name: 'Оптимизация темы письма',
+    type: 'multiselect',
+    description: 'Техники оптимизации subject line',
+    options: [
+      { value: 'ab_testing', label: 'A/B тестирование', description: 'Тестирование разных вариантов' },
+      { value: 'emoji_usage', label: 'Использование эмодзи', description: 'Эмодзи для привлечения внимания' },
+      { value: 'urgency_words', label: 'Слова срочности', description: 'Создание чувства неотложности' },
+      { value: 'personalization', label: 'Персонализация темы', description: 'Имя или локация в теме' },
+      { value: 'curiosity_gap', label: 'Интрига', description: 'Создание любопытства' },
+      { value: 'numbers_stats', label: 'Цифры и статистика', description: 'Конкретные данные в теме' }
+    ],
+    recommendations: [
+      'A/B тестирование тем увеличивает открываемость на 15%',
+      'Эмодзи могут повысить открываемость на 56%',
+      'Персонализированные темы работают лучше в 2.6 раза'
     ]
   }
 ];
@@ -182,21 +359,75 @@ export const TELEGRAM_FILTERS: SmartFilter[] = [
     id: 'content_format',
     name: 'Формат контента',
     type: 'multiselect',
+    description: 'Типы контента для канала',
     options: [
       { value: 'text', label: 'Текстовые посты', description: 'Обычные сообщения' },
       { value: 'media', label: 'Медиа-контент', description: 'Фото/видео с текстом' },
       { value: 'polls', label: 'Опросы', description: 'Интерактивные элементы' },
-      { value: 'stories', label: 'Сторис', description: 'Короткий контент' }
+      { value: 'stories', label: 'Сторис', description: 'Короткий контент' },
+      { value: 'carousel', label: 'Карусели', description: 'Несколько изображений' },
+      { value: 'voice', label: 'Голосовые сообщения', description: 'Аудио-контент' },
+      { value: 'documents', label: 'Документы', description: 'PDF, файлы для скачивания' }
+    ],
+    recommendations: [
+      'Медиа-контент получает в 3 раза больше вовлечения',
+      'Опросы увеличивают активность аудитории на 40%',
+      'Разнообразие форматов удерживает внимание'
     ]
   },
   {
     id: 'posting_schedule',
     name: 'График публикаций',
     type: 'select',
+    description: 'Частота размещения контента',
     options: [
       { value: 'daily', label: '1-2 поста в день', description: 'Регулярные публикации' },
       { value: 'frequent', label: '3-5 постов в день', description: 'Активное ведение' },
-      { value: 'intensive', label: '5+ постов в день', description: 'Интенсивный контент' }
+      { value: 'intensive', label: '5-10 постов в день', description: 'Интенсивный контент' },
+      { value: 'news_based', label: 'По новостям', description: 'Реактивный контент' }
+    ],
+    recommendations: [
+      'Оптимальная частота: 2-3 поста в день для большинства каналов',
+      'Новостные каналы могут публиковать чаще',
+      'Качество важнее количества'
+    ]
+  },
+  {
+    id: 'engagement_strategy',
+    name: 'Стратегия вовлечения',
+    type: 'multiselect',
+    description: 'Методы увеличения активности подписчиков',
+    options: [
+      { value: 'questions', label: 'Вопросы к аудитории', description: 'Стимулирование комментариев' },
+      { value: 'contests', label: 'Конкурсы и розыгрыши', description: 'Призы за активность' },
+      { value: 'reactions', label: 'Призывы к реакциям', description: 'Простые способы взаимодействия' },
+      { value: 'user_content', label: 'Пользовательский контент', description: 'Публикация контента подписчиков' },
+      { value: 'live_streams', label: 'Прямые эфиры', description: 'Общение в реальном времени' },
+      { value: 'exclusive_content', label: 'Эксклюзивный контент', description: 'Уникальная информация' }
+    ],
+    recommendations: [
+      'Вопросы к аудитории увеличивают комментарии в 5 раз',
+      'Эксклюзивный контент повышает лояльность',
+      'Конкурсы привлекают новых подписчиков'
+    ]
+  },
+  {
+    id: 'monetization_approach',
+    name: 'Подход к монетизации',
+    type: 'select',
+    description: 'Способ получения дохода с канала',
+    options: [
+      { value: 'advertising', label: 'Реклама', description: 'Рекламные посты и интеграции' },
+      { value: 'affiliate', label: 'Партнерские программы', description: 'Комиссия с продаж' },
+      { value: 'subscription', label: 'Платная подписка', description: 'Премиум контент' },
+      { value: 'products', label: 'Собственные продукты', description: 'Продажа своих товаров/услуг' },
+      { value: 'donations', label: 'Донаты', description: 'Добровольные пожертвования' },
+      { value: 'none', label: 'Без монетизации', description: 'Информационный канал' }
+    ],
+    recommendations: [
+      'Качественная реклама может быть полезной для аудитории',
+      'Собственные продукты дают максимальную прибыль',
+      'Сначала создайте ценность, потом монетизируйте'
     ]
   }
 ];
@@ -235,6 +466,20 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: false,
       options: ['Россия', 'Москва', 'СПб', 'Регионы', 'СНГ', 'Международный'],
       description: 'Географическая привязка для SEO'
+    },
+    {
+      id: 'expert_quotes',
+      label: 'Экспертные мнения',
+      type: 'checkbox',
+      required: false,
+      description: 'Включить цитаты экспертов отрасли'
+    },
+    {
+      id: 'statistics_data',
+      label: 'Статистические данные',
+      type: 'checkbox',
+      required: false,
+      description: 'Добавить актуальную статистику по теме'
     }
   ],
   'landing-page': [
@@ -278,6 +523,22 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: false,
       placeholder: 'Какие проблемы решает ваш продукт?',
       description: 'Проблемы, которые испытывает ваша аудитория'
+    },
+    {
+      id: 'price_strategy',
+      label: 'Ценовая стратегия',
+      type: 'select',
+      required: false,
+      options: ['Указать цену', 'Скрыть цену до консультации', 'Ценовая линейка', 'От ... рублей'],
+      description: 'Как представить цену на лендинге'
+    },
+    {
+      id: 'social_proof',
+      label: 'Социальные доказательства',
+      type: 'multiselect',
+      required: false,
+      options: ['Отзывы клиентов', 'Логотипы компаний', 'Сертификаты', 'Награды', 'Количество клиентов', 'Годы на рынке'],
+      description: 'Элементы доверия для включения'
     }
   ],
   'email-campaigns': [
@@ -312,6 +573,22 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: false,
       options: ['Регистрация', 'Покупка', 'Отказ от корзины', 'День рождения', 'Неактивность'],
       description: 'События, запускающие письма'
+    },
+    {
+      id: 'segmentation',
+      label: 'Сегментация аудитории',
+      type: 'multiselect',
+      required: false,
+      options: ['По полу', 'По возрасту', 'По интересам', 'По поведению', 'По географии', 'По покупкам'],
+      description: 'Критерии разделения аудитории'
+    },
+    {
+      id: 'content_mix',
+      label: 'Соотношение контента',
+      type: 'select',
+      required: false,
+      options: ['80% полезное / 20% продающее', '70% / 30%', '60% / 40%', '50% / 50%'],
+      description: 'Баланс между ценностью и продажами'
     }
   ],
   'telegram-content': [
@@ -346,6 +623,22 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: false,
       options: ['Ответы на комментарии', 'Опросы и голосования', 'Конкурсы и розыгрыши', 'Обратная связь'],
       description: 'Как планируете вовлекать подписчиков?'
+    },
+    {
+      id: 'content_sources',
+      label: 'Источники контента',
+      type: 'multiselect',
+      required: false,
+      options: ['Собственная экспертиза', 'Новости отрасли', 'Пользовательский контент', 'Партнерские материалы', 'Переводы зарубежных источников'],
+      description: 'Откуда будете брать материалы для публикаций'
+    },
+    {
+      id: 'analytics_tracking',
+      label: 'Отслеживание аналитики',
+      type: 'multiselect',
+      required: false,
+      options: ['Просмотры постов', 'Охват аудитории', 'Вовлеченность', 'Переходы по ссылкам', 'Рост подписчиков'],
+      description: 'Какие метрики важны для анализа эффективности'
     }
   ]
 };
