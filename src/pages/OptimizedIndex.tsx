@@ -1,184 +1,138 @@
 
-import OptimizedHeader from "@/components/common/OptimizedHeader";
-import Footer from "@/components/common/Footer";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
-import LazySection from "@/components/common/LazySection";
-import SectionSkeleton from "@/components/common/SectionSkeleton";
+import HeroSection from "@/components/landing/HeroSection";
+import BenefitsSection from "@/components/landing/BenefitsSection";
+import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
+import ProcessSection from "@/components/landing/ProcessSection";
+import TestimonialsSection from "@/components/landing/TestimonialsSection";
+import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
+import FaqSection from "@/components/landing/FaqSection";
+import TeamSection from "@/components/landing/TeamSection";
+import TrustSection from "@/components/landing/TrustSection";
+import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import Footer from "@/components/common/Footer";
+import ModernPricingSection from "@/components/landing/ModernPricingSection";
+import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
+import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
+import SocialProofSection from "@/components/landing/SocialProofSection";
+import NewsletterSection from "@/components/landing/NewsletterSection";
+import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
+import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import EnhancedSeo from "@/components/seo/EnhancedSeo";
-import { createFAQStructuredData } from "@/utils/seoUtils";
-import { lazy, Suspense } from "react";
+import { createOrganizationStructuredData, createWebsiteStructuredData } from "@/utils/seoUtils";
 
-// Optimized lazy loading with better chunking
-const BenefitsSection = lazy(() => import("@/components/landing/BenefitsSection"));
-const ServicesCatalogSection = lazy(() => import("@/components/landing/ServicesCatalogSection"));
-const ModernPricingSection = lazy(() => import("@/components/landing/ModernPricingSection"));
-const InnovativePortfolioSection = lazy(() => import("@/components/landing/InnovativePortfolioSection"));
-const TestimonialsSection = lazy(() => import("@/components/landing/TestimonialsSection"));
-const ContactSection = lazy(() => import("@/components/landing/ContactSection"));
-const CombinedStatsSection = lazy(() => import("@/components/landing/CombinedStatsSection"));
+const seoText = `
+CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
 
-const optimizedSeoText = `
-CopyPro Cloud — лидирующая платформа профессионального копирайтинга с командой из 30+ сертифицированных экспертов.
+Наши ключевые преимущества и достижения:
+- Команда из 50+ дипломированных SEO-копирайтеров с профильным образованием и опытом 5+ лет
+- Гарантия 100% уникальности по Text.ru, Advego, eTXT с официальными отчетами
+- Экспресс-доставка от 24 часов с сохранением премиального качества
+- Глубокая SEO-оптимизация с анализом ТОП-10 конкурентов и семантическим ядром 500+ ключей
+- Круглосуточная техподдержка и бесплатные правки в течение 30 дней
+- Более 5000 успешно реализованных проектов с ростом конверсии клиентов на 40-180%
 
-🚀 Ключевые преимущества:
-• Команда из 30+ дипломированных SEO-копирайтеров с опытом 5+ лет
-• Гарантия 100% уникальности по Text.ru с официальными отчетами  
-• Экспресс-доставка от 24 часов с премиальным качеством
-• Глубокая SEO-оптимизация с анализом конкурентов
-• Круглосуточная поддержка и бесплатные правки 30 дней
-• 2000+ успешных проектов с ростом конверсии до 180%
+Полная экосистема контент-маркетинга CopyPro Cloud:
 
-📝 Полный спектр услуг:
-✓ SEO-статьи и контент-планы
-✓ Коммерческие лендинги и email-воронки  
-✓ Контент для соцсетей и мессенджеров
-✓ Описания для маркетплейсов
-✓ Корпоративный и B2B контент
-✓ Специализированный контент (медицина, юриспруденция, IT)
+SEO-контент и органическое продвижение:
+- Экспертные SEO-статьи 2000-8000 знаков с LSI-оптимизацией
+- Кластерные страницы под высокочастотные запросы
+- Контент-планы на 6-12 месяцев с календарем публикаций
+- Техническое SEO-копирайтинг (Title, Description, H1-H6)
 
-📈 Результаты клиентов:
-• Рост органического трафика на 120-300%
-• Увеличение конверсии на 40-180%
-• ROI контент-маркетинга 300-800%
+Коммерческий контент и продажи:
+- Высококонверсионные лендинги с A/B тестированием
+- Продающие email-воронки и автоматизированные последовательности  
+- Скрипты для отделов продаж и колл-центров
+- Коммерческие предложения с конверсией до 15%
 
-Заказывайте профессиональный копирайтинг уже сегодня!
+Контент для цифровых каналов:
+- Стратегии контент-маркетинга для соцсетей (ВК, Telegram, YouTube)
+- Персонализированные email-рассылки с сегментацией аудитории
+- Контент для мессенджер-маркетинга (WhatsApp, Telegram-боты)
+- UGC-контент и инфлюенсер-коллаборации
+
+E-commerce и маркетплейсы:
+- Детальные описания товаров для Wildberries, Ozon, Яндекс.Маркет
+- SEO-категории для интернет-магазинов
+- Карточки товаров с высоким CTR и конверсией
+- A+ контент для Amazon и международных площадок
+
+Корпоративный и B2B контент:
+- Технические тексты и регламенты
+- Корпоративные блоги и thought leadership статьи  
+- Белые книги (white papers) и кейс-стади
+- Презентации для инвесторов и партнеров
+
+Специализированный контент:
+- Медицинские тексты (при участии врачей-консультантов)
+- Юридический контент (проверка практикующими юристами)
+- Финансовые материалы (соответствие требованиям ЦБ РФ)
+- IT и технологический контент
+
+География работы: Россия, СНГ, Европа, США
+Отраслевая экспертиза: IT, e-commerce, финансы, медицина, образование, недвижимость, производство, услуги
+
+Технологический стек и инструменты:
+- Семантические анализаторы: Serpstat, Ahrefs, SEMrush
+- Проверка уникальности: Text.ru, Advego, eTXT  
+- CRM интеграции: AmoCRM, Битрикс24, HubSpot
+- Аналитика: Google Analytics, Яндекс.Метрика, Hotjar
+
+Результаты наших клиентов (медианные показатели):
+- Рост органического трафика на 120-300% за 6 месяцев
+- Увеличение конверсии лендингов на 40-180%
+- Повышение времени на сайте на 60-120%
+- Снижение показателя отказов на 25-45%
+- ROI контент-маркетинга 300-800%
+
+Закажите профессиональный копирайтинг на CopyPro Cloud уже сегодня и получите результат мирового уровня с гарантией качества!
 `;
 
-// FAQ данные для structured data
-const faqData = [
-  {
-    question: "Какие гарантии качества вы предоставляете?",
-    answer: "Мы гарантируем 100% уникальность текстов по Text.ru, соответствие ТЗ и бесплатные правки в течение 30 дней."
-  },
-  {
-    question: "Сколько времени занимает выполнение заказа?",
-    answer: "Стандартные заказы выполняются за 3-5 рабочих дней. Экспресс-заказы готовы за 24-48 часов."
-  },
-  {
-    question: "Можно ли получить образцы работ?",
-    answer: "Да, вы можете ознакомиться с нашим портфолио и получить образцы работ в вашей тематике."
-  },
-  {
-    question: "Какие форматы текстов вы создаете?",
-    answer: "Мы создаем SEO-статьи, лендинги, описания товаров, контент для соцсетей, email-рассылки и многое другое."
-  }
+// Структурированные данные для главной страницы
+const structuredData = [
+  createOrganizationStructuredData(),
+  createWebsiteStructuredData()
 ];
 
 export default function OptimizedIndex() {
-  const structuredData = [
-    createFAQStructuredData(faqData),
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "CopyPro Cloud",
-      "url": "https://copypro-cloud.lovable.app",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://copypro-cloud.lovable.app/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-  ];
-
   return (
     <>
       <EnhancedSeo
-        title="CopyPro Cloud — Профессиональный копирайтинг и SEO-тексты | 30+ экспертов"
-        description="Заказать профессиональные SEO-тексты от команды из 30+ сертифицированных копирайтеров. Гарантия уникальности, экспресс-доставка от 24 часов. 2000+ успешных проектов."
-        keywords="копирайтинг, SEO тексты, контент маркетинг, написание статей, профессиональные тексты"
+        title="Профессиональный копирайтинг | CopyPro Cloud - Тексты мирового уровня"
+        description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. SEO-тексты, продающие лендинги, контент для соцсетей. Гарантия качества 100%"
+        keywords="копирайтинг, SEO-тексты, продающие тексты, контент-маркетинг, профессиональные тексты"
         structuredData={structuredData}
       />
       
-      <OptimizedHeader />
       <main className="relative overflow-hidden">
-        {/* Hero - критически важная секция загружается сразу */}
-        <ModernHeroSection />
+        <HeroSection />
+        <SocialProofSection />
+        <InteractiveGuaranteesSection />
+        <BenefitsSection />
+        <ExpertiseShowcaseSection />
+        <ServicesCatalogSection />
+        <ModernPricingSection />
+        <ProcessSection />
+        <CaseStudiesSection />
+        <InnovativePortfolioSection />
+        <ProfessionalStatsSection />
+        <TestimonialsSection />
+        <TeamSection />
+        <TrustSection />
+        <FaqSection />
+        <NewsletterSection />
+        <ContactSection />
         
-        {/* Оптимизированные lazy-loaded секции с улучшенными skeleton screens */}
-        <LazySection 
-          fallback={<SectionSkeleton height="350px" />} 
-          rootMargin="150px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="350px" />}>
-            <CombinedStatsSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="500px" />}
-          rootMargin="100px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="500px" />}>
-            <BenefitsSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="650px" />}
-          rootMargin="100px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="650px" />}>
-            <ServicesCatalogSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="750px" />}
-          rootMargin="50px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="750px" />}>
-            <ModernPricingSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="600px" />}
-          rootMargin="50px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="600px" />}>
-            <InnovativePortfolioSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="500px" />}
-          rootMargin="50px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="500px" />}>
-            <TestimonialsSection />
-          </Suspense>
-        </LazySection>
-
-        <LazySection 
-          fallback={<SectionSkeleton height="400px" />}
-          rootMargin="50px"
-          className="will-change-transform"
-        >
-          <Suspense fallback={<SectionSkeleton height="400px" />}>
-            <ContactSection />
-          </Suspense>
-        </LazySection>
-        
-        {/* Оптимизированный SEO блок */}
-        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/80 via-white to-blue-50/30">
-          <SeoTextExpandable text={optimizedSeoText} />
+        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+          <SeoTextExpandable text={seoText} />
         </div>
       </main>
       <Footer />
       
-      {/* Support Widget */}
       <SupportWidget />
-      
-      {/* Human-Like AI Assistant */}
       <HumanLikeAiAssistant />
     </>
   );

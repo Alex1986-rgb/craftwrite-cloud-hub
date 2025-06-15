@@ -1,5 +1,5 @@
 
-import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
+import { onCLS, onFCP, onFID, onLCP, onTTFB } from 'web-vitals';
 
 export interface WebVitalsMetric {
   name: string;
@@ -51,11 +51,11 @@ const sendToAnalytics = (metric: WebVitalsMetric) => {
 
 // Инициализация мониторинга Web Vitals
 export const initWebVitals = () => {
-  getCLS(sendToAnalytics);
-  getFCP(sendToAnalytics);
-  getFID(sendToAnalytics);
-  getLCP(sendToAnalytics);
-  getTTFB(sendToAnalytics);
+  onCLS(sendToAnalytics);
+  onFCP(sendToAnalytics);
+  onFID(sendToAnalytics);
+  onLCP(sendToAnalytics);
+  onTTFB(sendToAnalytics);
 };
 
 // Утилиты для оптимизации
