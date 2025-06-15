@@ -4,6 +4,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ClientAuthProvider } from '@/contexts/ClientAuthContext';
 import ClientLogin from '@/components/client/ClientLogin';
 import ClientDashboard from '@/components/client/ClientDashboard';
+import ClientOrders from '@/components/client/ClientOrders';
+import ClientNewOrder from '@/components/client/ClientNewOrder';
+import ClientDocuments from '@/components/client/ClientDocuments';
+import ClientProfile from '@/components/client/ClientProfile';
 import ClientSidebar from '@/components/client/ClientSidebar';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
 import { Button } from '@/components/ui/button';
@@ -69,13 +73,13 @@ function ClientContent() {
         <main className="p-4 lg:p-6">
           <Routes>
             <Route path="/" element={<ClientDashboard />} />
-            <Route path="/orders" element={<div>Мои заказы</div>} />
-            <Route path="/new-order" element={<div>Новый заказ</div>} />
-            <Route path="/documents" element={<div>Документы</div>} />
+            <Route path="/orders" element={<ClientOrders />} />
+            <Route path="/new-order" element={<ClientNewOrder />} />
+            <Route path="/documents" element={<ClientDocuments />} />
             <Route path="/payments" element={<div>Платежи</div>} />
             <Route path="/support" element={<div>Поддержка</div>} />
             <Route path="/analytics" element={<div>Аналитика</div>} />
-            <Route path="/profile" element={<div>Профиль</div>} />
+            <Route path="/profile" element={<ClientProfile />} />
             <Route path="/help" element={<div>Помощь</div>} />
             <Route path="*" element={<Navigate to="/client" replace />} />
           </Routes>
