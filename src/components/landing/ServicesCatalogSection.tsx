@@ -1,14 +1,16 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Globe, ShoppingCart, Mail, MessageCircle, Star, Zap, Target, CheckCircle } from "lucide-react";
+import { ArrowRight, FileText, Globe, ShoppingCart, Mail, MessageCircle, Star, Zap, Target, CheckCircle, BookOpen, Newspaper, Award, TrendingUp, Users, Briefcase, Camera, Megaphone, Heart, Monitor } from "lucide-react";
 
 // Filter options for the Order page
 export const FILTERS = [
   { value: "all", label: "Все категории" },
-  { value: "seo", label: "SEO-тексты" },
+  { value: "marketplace", label: "Маркетплейсы" },
+  { value: "content", label: "Контент-маркетинг" },
   { value: "commercial", label: "Коммерческие тексты" },
   { value: "social", label: "Соцсети" },
-  { value: "corporate", label: "Корпоративные тексты" }
+  { value: "reviews", label: "Обзоры и рецензии" }
 ];
 
 export const FORMATS = [
@@ -18,7 +20,9 @@ export const FORMATS = [
   { value: "product", label: "Карточки товаров" },
   { value: "email", label: "Email-рассылки" },
   { value: "social", label: "Посты для соцсетей" },
-  { value: "corporate", label: "Корпоративные материалы" }
+  { value: "reviews", label: "Обзоры и рецензии" },
+  { value: "longread", label: "Лонгриды" },
+  { value: "news", label: "Новости" }
 ];
 
 export const LANGS = [
@@ -41,58 +45,184 @@ export const TOPICS = [
 
 const services = [
   {
-    title: "SEO-статьи",
-    desc: "Экспертные статьи с глубокой проработкой темы, 100% уникальность, полная SEO-оптимизация",
-    features: ["Keyword research", "LSI-слова", "Мета-теги", "Структура H1-H6"],
-    price: "от 1500₽",
-    icon: FileText,
-    gradient: "from-blue-500 to-indigo-600",
-    slug: "seo-articles"
+    title: "Карточки Wildberries",
+    desc: "Продающие описания товаров для WB с высокой конверсией и SEO-оптимизацией",
+    features: ["Ключевые слова WB", "Структура по алгоритму", "Эмоциональные триггеры", "Конкурентный анализ"],
+    price: "от 350₽",
+    icon: ShoppingCart,
+    gradient: "from-purple-500 to-pink-600",
+    slug: "wildberries-cards"
   },
   {
-    title: "Лендинги",
-    desc: "Продающие тексты для посадочных страниц с фокусом на конверсию и психологию покупателя",
-    features: ["Структура AIDA", "Триггеры продаж", "CTA-блоки", "A/B тестирование"],
-    price: "от 3000₽",
-    icon: Globe,
+    title: "Карточки OZON",
+    desc: "Оптимизированные описания для OZON с фокусом на ранжирование и продажи",
+    features: ["Rich-контент", "A+ описания", "SEO для OZON", "Инфографика текст"],
+    price: "от 400₽",
+    icon: Target,
+    gradient: "from-blue-500 to-cyan-600",
+    slug: "ozon-cards"
+  },
+  {
+    title: "Лонгриды",
+    desc: "Глубокие экспертные статьи 5000+ символов для укрепления экспертности",
+    features: ["Исследовательский подход", "Инфографика", "Интерактивные элементы", "Экспертные интервью"],
+    price: "от 3500₽",
+    icon: BookOpen,
     gradient: "from-emerald-500 to-green-600",
+    slug: "longreads"
+  },
+  {
+    title: "Продуктовые обзоры",
+    desc: "Честные детальные обзоры товаров и услуг с практическими рекомендациями",
+    features: ["Тестирование продукта", "Pros & Cons", "Сравнение аналогов", "Рейтинговая система"],
+    price: "от 1500₽",
+    icon: Award,
+    gradient: "from-orange-500 to-red-600",
+    slug: "product-reviews"
+  },
+  {
+    title: "Новостные статьи",
+    desc: "Актуальные новости отрасли с экспертной аналитикой и прогнозами",
+    features: ["Оперативность", "Экспертная оценка", "Фактчекинг", "Тренд-анализ"],
+    price: "от 800₽",
+    icon: Newspaper,
+    gradient: "from-indigo-500 to-purple-600",
+    slug: "news-articles"
+  },
+  {
+    title: "Кейс-стади",
+    desc: "Детальные разборы успешных проектов с цифрами и результатами",
+    features: ["Реальные метрики", "Пошаговый анализ", "Выводы и инсайты", "Визуализация данных"],
+    price: "от 2500₽",
+    icon: TrendingUp,
+    gradient: "from-cyan-500 to-blue-600",
+    slug: "case-studies"
+  },
+  {
+    title: "Instagram посты",
+    desc: "Вирусный контент для Instagram с высоким engagement и охватами",
+    features: ["Тренды Instagram", "Хештег-стратегия", "Stories-формат", "Reels-сценарии"],
+    price: "от 250₽",
+    icon: Camera,
+    gradient: "from-pink-500 to-rose-600",
+    slug: "instagram-posts"
+  },
+  {
+    title: "Telegram-контент",
+    desc: "Контент для Telegram-каналов: посты, опросы, интерактивные форматы",
+    features: ["Telegram-форматы", "Интерактивность", "Вирусность", "Подписочная база"],
+    price: "от 200₽",
+    icon: MessageCircle,
+    gradient: "from-blue-400 to-cyan-500",
+    slug: "telegram-content"
+  },
+  {
+    title: "Продающие письма",
+    desc: "Email-рассылки с высокой открываемостью и конверсией в продажи",
+    features: ["Цепляющие темы", "Персонализация", "A/B тестирование", "Автоворонки"],
+    price: "от 600₽",
+    icon: Mail,
+    gradient: "from-green-500 to-emerald-600",
+    slug: "sales-emails"
+  },
+  {
+    title: "Лендинг-страницы",
+    desc: "Высококонверсионные лендинги с психологическими триггерами продаж",
+    features: ["AIDA структура", "Триггеры доверия", "A/B тесты", "Мобильная оптимизация"],
+    price: "от 4000₽",
+    icon: Globe,
+    gradient: "from-violet-500 to-purple-600",
     slug: "landing-pages"
   },
   {
-    title: "Карточки товаров",
-    desc: "Уникальные описания для интернет-магазинов, увеличивающие продажи и конверсию",
-    features: ["УТП товара", "Преимущества", "Характеристики", "SEO-оптимизация"],
-    price: "от 300₽",
-    icon: ShoppingCart,
-    gradient: "from-purple-500 to-pink-600",
-    slug: "product-cards"
+    title: "Отзывы и рецензии",
+    desc: "Профессиональные рецензии товаров, услуг, контента с экспертной оценкой",
+    features: ["Объективная оценка", "Детальный анализ", "Сравнения", "Рекомендации"],
+    price: "от 1200₽",
+    icon: Star,
+    gradient: "from-yellow-500 to-orange-500",
+    slug: "reviews-analysis"
   },
   {
-    title: "Email-рассылки",
-    desc: "Персонализированные письма для повышения открываемости и кликабельности",
-    features: ["Цепляющие заголовки", "Персонализация", "Call-to-Action", "Сегментация"],
-    price: "от 800₽",
-    icon: Mail,
-    gradient: "from-orange-500 to-red-600",
-    slug: "email-campaigns"
+    title: "Пресс-релизы",
+    desc: "Профессиональные пресс-релизы для СМИ и деловых партнеров",
+    features: ["Медиа-формат", "Ньюсмейкинг", "Инфоповоды", "Дистрибуция"],
+    price: "от 1800₽",
+    icon: Megaphone,
+    gradient: "from-red-500 to-pink-600",
+    slug: "press-releases"
   },
   {
-    title: "Посты для соцсетей",
-    desc: "Вирусный контент для Instagram, VK, Telegram с высоким engagement",
-    features: ["Трендовые форматы", "Хештеги", "Storytelling", "Визуальные концепции"],
-    price: "от 200₽",
+    title: "Экспертные статьи",
+    desc: "Авторитетные материалы от имени экспертов для укрепления репутации",
+    features: ["Thought Leadership", "Экспертность", "Авторитет", "Цитируемость"],
+    price: "от 2800₽",
+    icon: Users,
+    gradient: "from-teal-500 to-cyan-600",
+    slug: "expert-articles"
+  },
+  {
+    title: "Коммерческие предложения",
+    desc: "Убедительные КП для B2B сегмента с высокой конверсией в сделки",
+    features: ["B2B подход", "УТП", "Расчеты ROI", "Презентация"],
+    price: "от 2200₽",
+    icon: Briefcase,
+    gradient: "from-slate-500 to-gray-600",
+    slug: "commercial-proposals"
+  },
+  {
+    title: "Сценарии видео",
+    desc: "Сценарии для YouTube, Reels, TikTok с высокой вовлеченностью",
+    features: ["Сторителлинг", "Хуки", "Монтажные листы", "Тайминг"],
+    price: "от 1500₽",
+    icon: Monitor,
+    gradient: "from-rose-500 to-pink-600",
+    slug: "video-scripts"
+  },
+  {
+    title: "Интервью и подкасты",
+    desc: "Сценарии интервью и подкастов с интересными инсайтами",
+    features: ["Вопросы", "Структура", "Инсайты", "Вовлечение"],
+    price: "от 1200₽",
     icon: MessageCircle,
-    gradient: "from-pink-500 to-rose-600",
-    slug: "social-media"
+    gradient: "from-amber-500 to-orange-600",
+    slug: "interviews-podcasts"
   },
   {
-    title: "Корпоративные тексты",
-    desc: "Презентации, отчеты, коммерческие предложения для B2B сегмента",
-    features: ["Деловой стиль", "Структурированность", "Аналитика", "Экспертность"],
-    price: "от 2000₽",
-    icon: Target,
-    gradient: "from-indigo-500 to-purple-600",
-    slug: "corporate-texts"
+    title: "Технические статьи",
+    desc: "Сложные технические материалы, адаптированные для целевой аудитории",
+    features: ["Техническая экспертиза", "Простой язык", "Схемы", "Практичность"],
+    price: "от 3200₽",
+    icon: FileText,
+    gradient: "from-blue-600 to-indigo-600",
+    slug: "technical-articles"
+  },
+  {
+    title: "Lifestyle контент",
+    desc: "Lifestyle статьи для блогов с высокой вовлеченностью аудитории",
+    features: ["Личные истории", "Полезность", "Тренды", "Эмоциональность"],
+    price: "от 1000₽",
+    icon: Heart,
+    gradient: "from-pink-400 to-rose-500",
+    slug: "lifestyle-content"
+  },
+  {
+    title: "Медицинский контент",
+    desc: "Медицинские статьи с проверкой практикующих врачей",
+    features: ["Медицинская точность", "Проверка врачей", "Доказательность", "Этичность"],
+    price: "от 2500₽",
+    icon: Users,
+    gradient: "from-green-400 to-emerald-500",
+    slug: "medical-content"
+  },
+  {
+    title: "Финансовый контент",
+    desc: "Финансовые материалы с соблюдением требований регуляторов",
+    features: ["Комплаенс", "ЦБ РФ требования", "Дисклеймеры", "Риск-менеджмент"],
+    price: "от 2800₽",
+    icon: TrendingUp,
+    gradient: "from-emerald-600 to-green-700",
+    slug: "finance-content"
   }
 ];
 
@@ -115,7 +245,7 @@ const ServicesCatalogSection = () => {
           <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-100/80 to-purple-100/80 text-blue-700 px-6 py-3 rounded-full text-sm font-bold mb-6 border border-blue-200/50 shadow-lg backdrop-blur-sm">
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             <Star className="w-5 h-5" />
-            <span>Премиум каталог услуг</span>
+            <span>20 видов текстов</span>
             <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
           </div>
           
@@ -126,48 +256,47 @@ const ServicesCatalogSection = () => {
           </h2>
           
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
-            Полный спектр текстовых решений от команды элитных экспертов с гарантией качества и уникальности
+            От маркетплейсов до лонгридов — полный спектр текстовых решений для любых задач
           </p>
         </div>
 
         {/* Enhanced Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {services.map((service, index) => (
             <div
               key={service.slug}
-              className="group relative bg-gradient-to-br from-white/90 via-white/70 to-white/50 backdrop-blur-lg rounded-2xl md:rounded-3xl p-8 shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group relative bg-gradient-to-br from-white/90 via-white/70 to-white/50 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
               {/* Card background effects */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <div className="relative z-10">
                 {/* Enhanced Icon */}
-                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${service.gradient} rounded-2xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}>
-                  <service.icon className="w-7 h-7 text-white" />
+                <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${service.gradient} rounded-xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}>
+                  <service.icon className="w-6 h-6 text-white" />
                 </div>
                 
                 {/* Title and Price */}
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors duration-300">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors duration-300 leading-tight">
                     {service.title}
                   </h3>
-                  <div className={`bg-gradient-to-r ${service.gradient} text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md`}>
+                  <div className={`bg-gradient-to-r ${service.gradient} text-white px-2 py-1 rounded-lg text-xs font-semibold shadow-md ml-2`}>
                     {service.price}
                   </div>
                 </div>
                 
                 {/* Description */}
-                <p className="text-slate-600 leading-relaxed mb-6 text-sm">
+                <p className="text-slate-600 leading-relaxed mb-4 text-sm">
                   {service.desc}
                 </p>
                 
                 {/* Features */}
-                <div className="space-y-2 mb-6">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-slate-600">
-                      <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <div className="space-y-1 mb-4">
+                  {service.features.slice(0, 3).map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
+                      <CheckCircle className="w-3 h-3 text-emerald-500 flex-shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}
@@ -176,12 +305,12 @@ const ServicesCatalogSection = () => {
                 {/* CTA Button */}
                 <Button 
                   asChild 
-                  className={`w-full group/btn bg-gradient-to-r ${service.gradient} hover:opacity-90 border-0 rounded-xl py-3 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl`}
+                  className={`w-full group/btn bg-gradient-to-r ${service.gradient} hover:opacity-90 border-0 rounded-xl py-2 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-sm`}
                 >
                   <Link to="/order" className="flex items-center justify-center gap-2">
-                    <Zap className="w-4 h-4" />
+                    <Zap className="w-3 h-3" />
                     Заказать
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </Button>
               </div>
@@ -197,10 +326,10 @@ const ServicesCatalogSection = () => {
             
             <div className="relative z-10">
               <h3 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Не нашли нужную услугу?
+                Нужен другой тип текста?
               </h3>
               <p className="text-lg text-slate-600 mb-6 leading-relaxed">
-                Мы создаем тексты любой сложности и тематики. Обсудим ваш проект индивидуально!
+                Создаем тексты любой сложности и тематики. Обсудим ваш уникальный проект!
               </p>
               <Button 
                 asChild 
