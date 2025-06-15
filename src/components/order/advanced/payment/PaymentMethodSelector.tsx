@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, CheckCircle } from 'lucide-react';
 import { PaymentMethod } from '@/types/advancedOrder';
 
 interface PaymentMethodSelectorProps {
@@ -23,44 +24,45 @@ export default function PaymentMethodSelector({
           Способ оплаты
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 gap-3">
-          {paymentMethods.map((method) => (
-            <div
-              key={method.id}
-              className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                selectedMethod?.id === method.id
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : method.supported
-                  ? 'border-gray-200 hover:border-gray-300'
-                  : 'border-gray-100 opacity-50 cursor-not-allowed'
-              }`}
-              onClick={() => method.supported && onMethodSelect(method)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{method.icon}</span>
-                  <div>
-                    <div className="font-medium flex items-center gap-2">
-                      {method.name}
-                      {!method.supported && (
-                        <Badge variant="secondary">Скоро</Badge>
-                      )}
-                    </div>
-                    <div className="text-sm text-muted-foreground">{method.description}</div>
+      <CardContent className="space-y-3">
+        {paymentMethods.map((method) => (
+          <Button
+            key={method.id}
+            variant={selectedMethod?.id === method.id ? "default" : "outline"}
+            className={`w-full h-auto p-4 justify-start ${
+              !method.supported ? 'opacity-50' : ''
+            }`}
+            onClick={() => method.supported && onMethodSelect(method)}
+            disabled={!method.supported}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">{method.icon}</span>
+                <div className="text-left">
+                  <div className="font-medium">{method.name}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {method.description}
                   </div>
                 </div>
-                <div className="text-right">
-                  {method.fee && method.fee > 0 ? (
-                    <div className="text-sm text-orange-600">+{method.fee}%</div>
-                  ) : (
-                    <div className="text-sm text-green-600">Без комиссии</div>
-                  )}
-                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {method.fee && method.fee > 0 && (
+                  <Badge variant="secondary" className="text-xs">
+                    +{method.fee}%
+                  </Badge>
+                )}
+                {!method.supported && (
+                  <Badge variant="outline" className="text-xs">
+                    Скоро
+                  </Badge>
+                )}
+                {selectedMethod?.id === method.id && (
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                )}
               </div>
             </div>
-          ))}
-        </div>
+          </Button>
+        ))}
       </CardContent>
     </Card>
   );

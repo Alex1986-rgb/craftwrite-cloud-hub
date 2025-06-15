@@ -90,6 +90,117 @@ export const COMMON_FILTERS: SmartFilter[] = [
   }
 ];
 
+// SEO-специфичные фильтры
+export const SEO_FILTERS: SmartFilter[] = [
+  {
+    id: 'seo_optimization',
+    name: 'SEO-оптимизация',
+    type: 'select',
+    options: [
+      { value: 'basic', label: 'Базовая', description: 'Ключевые слова в тексте' },
+      { value: 'advanced', label: 'Расширенная', description: 'Глубокий анализ конкурентов' },
+      { value: 'technical', label: 'Техническая', description: 'Мета-теги, разметка, структура' }
+    ],
+    recommendations: ['Техническая SEO-оптимизация повышает эффективность в 2-3 раза']
+  },
+  {
+    id: 'keyword_density',
+    name: 'Плотность ключевых слов',
+    type: 'range',
+    min: 1,
+    max: 5,
+    defaultValue: 2,
+    description: 'Процент ключевых слов в тексте'
+  },
+  {
+    id: 'semantic_core',
+    name: 'Семантическое ядро',
+    type: 'select',
+    options: [
+      { value: 'provided', label: 'Предоставлю сам', description: 'У вас есть готовое СЯ' },
+      { value: 'research', label: 'Нужен сбор', description: 'Мы соберем семантику' },
+      { value: 'expand', label: 'Расширить существующее', description: 'Дополним ваше СЯ' }
+    ]
+  }
+];
+
+// Лендинг-специфичные фильтры
+export const LANDING_FILTERS: SmartFilter[] = [
+  {
+    id: 'landing_type',
+    name: 'Тип лендинга',
+    type: 'select',
+    options: [
+      { value: 'product', label: 'Продукт', description: 'Презентация одного продукта' },
+      { value: 'service', label: 'Услуга', description: 'Описание услуги или сервиса' },
+      { value: 'event', label: 'Мероприятие', description: 'Регистрация на событие' },
+      { value: 'lead', label: 'Лидогенерация', description: 'Сбор контактов' }
+    ]
+  },
+  {
+    id: 'conversion_elements',
+    name: 'Конверсионные элементы',
+    type: 'multiselect',
+    options: [
+      { value: 'testimonials', label: 'Отзывы клиентов', description: 'Социальные доказательства' },
+      { value: 'guarantees', label: 'Гарантии', description: 'Снижение рисков' },
+      { value: 'urgency', label: 'Срочность', description: 'Ограниченное время' },
+      { value: 'scarcity', label: 'Дефицит', description: 'Ограниченное количество' },
+      { value: 'benefits', label: 'Выгоды', description: 'Список преимуществ' }
+    ]
+  }
+];
+
+// Email-специфичные фильтры
+export const EMAIL_FILTERS: SmartFilter[] = [
+  {
+    id: 'email_type',
+    name: 'Тип email-кампании',
+    type: 'select',
+    options: [
+      { value: 'welcome', label: 'Welcome-серия', description: 'Приветственные письма' },
+      { value: 'nurturing', label: 'Прогрев', description: 'Образовательный контент' },
+      { value: 'sales', label: 'Продажи', description: 'Коммерческие письма' },
+      { value: 'retention', label: 'Удержание', description: 'Реактивация клиентов' }
+    ]
+  },
+  {
+    id: 'personalization',
+    name: 'Персонализация',
+    type: 'select',
+    options: [
+      { value: 'basic', label: 'Базовая', description: 'Имя получателя' },
+      { value: 'behavioral', label: 'Поведенческая', description: 'По действиям пользователя' },
+      { value: 'demographic', label: 'Демографическая', description: 'По характеристикам аудитории' }
+    ]
+  }
+];
+
+// Telegram-специфичные фильтры
+export const TELEGRAM_FILTERS: SmartFilter[] = [
+  {
+    id: 'content_format',
+    name: 'Формат контента',
+    type: 'multiselect',
+    options: [
+      { value: 'text', label: 'Текстовые посты', description: 'Обычные сообщения' },
+      { value: 'media', label: 'Медиа-контент', description: 'Фото/видео с текстом' },
+      { value: 'polls', label: 'Опросы', description: 'Интерактивные элементы' },
+      { value: 'stories', label: 'Сторис', description: 'Короткий контент' }
+    ]
+  },
+  {
+    id: 'posting_schedule',
+    name: 'График публикаций',
+    type: 'select',
+    options: [
+      { value: 'daily', label: '1-2 поста в день', description: 'Регулярные публикации' },
+      { value: 'frequent', label: '3-5 постов в день', description: 'Активное ведение' },
+      { value: 'intensive', label: '5+ постов в день', description: 'Интенсивный контент' }
+    ]
+  }
+];
+
 export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
   'seo-article': [
     {
@@ -116,6 +227,14 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: false,
       options: ['Введение', 'Основная часть', 'Заключение', 'FAQ', 'Список литературы', 'Призыв к действию'],
       description: 'Выберите необходимые разделы статьи'
+    },
+    {
+      id: 'target_region',
+      label: 'Целевой регион',
+      type: 'select',
+      required: false,
+      options: ['Россия', 'Москва', 'СПб', 'Регионы', 'СНГ', 'Международный'],
+      description: 'Географическая привязка для SEO'
     }
   ],
   'landing-page': [
@@ -151,6 +270,14 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: true,
       placeholder: 'Перечислите основные выгоды для клиента',
       description: 'Фокус на пользе для клиента'
+    },
+    {
+      id: 'pain_points',
+      label: 'Боли клиентов',
+      type: 'textarea',
+      required: false,
+      placeholder: 'Какие проблемы решает ваш продукт?',
+      description: 'Проблемы, которые испытывает ваша аудитория'
     }
   ],
   'email-campaigns': [
@@ -177,6 +304,14 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: true,
       options: ['Ежедневно', 'Через день', 'Еженедельно', 'По триггерам'],
       description: 'Как часто отправлять письма?'
+    },
+    {
+      id: 'automation_triggers',
+      label: 'Триггеры автоматизации',
+      type: 'multiselect',
+      required: false,
+      options: ['Регистрация', 'Покупка', 'Отказ от корзины', 'День рождения', 'Неактивность'],
+      description: 'События, запускающие письма'
     }
   ],
   'telegram-content': [
@@ -203,6 +338,30 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
       required: true,
       options: ['Текстовые посты', 'Фото с описанием', 'Видео-контент', 'Опросы', 'Конкурсы', 'Ссылки с анонсом'],
       description: 'Какие форматы контента планируете использовать?'
+    },
+    {
+      id: 'audience_engagement',
+      label: 'Взаимодействие с аудиторией',
+      type: 'multiselect',
+      required: false,
+      options: ['Ответы на комментарии', 'Опросы и голосования', 'Конкурсы и розыгрыши', 'Обратная связь'],
+      description: 'Как планируете вовлекать подписчиков?'
     }
   ]
+};
+
+// Функция для получения специфичных фильтров по услуге
+export const getServiceSpecificFilters = (serviceSlug: string): SmartFilter[] => {
+  switch (serviceSlug) {
+    case 'seo-article':
+      return SEO_FILTERS;
+    case 'landing-page':
+      return LANDING_FILTERS;
+    case 'email-campaigns':
+      return EMAIL_FILTERS;
+    case 'telegram-content':
+      return TELEGRAM_FILTERS;
+    default:
+      return [];
+  }
 };

@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle } from 'lucide-react';
+import { User, Mail, Phone, Building } from 'lucide-react';
 import { OrderFormData } from '@/types/advancedOrder';
 
 interface ContactInfoFormProps {
@@ -21,19 +20,22 @@ export default function ContactInfoForm({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <CheckCircle className="w-5 h-5" />
+          <User className="w-5 h-5" />
           Контактная информация
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Имя *</Label>
+            <Label htmlFor="name" className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              Имя *
+            </Label>
             <Input
               id="name"
-              value={personalInfo.name || ''}
+              value={personalInfo.name}
               onChange={(e) => onPersonalInfoChange({ name: e.target.value })}
-              placeholder="Введите ваше имя"
+              placeholder="Ваше имя"
               className={validationErrors.name ? 'border-red-500' : ''}
             />
             {validationErrors.name && (
@@ -42,11 +44,14 @@ export default function ContactInfoForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email *</Label>
+            <Label htmlFor="email" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              Email *
+            </Label>
             <Input
               id="email"
               type="email"
-              value={personalInfo.email || ''}
+              value={personalInfo.email}
               onChange={(e) => onPersonalInfoChange({ email: e.target.value })}
               placeholder="your@email.com"
               className={validationErrors.email ? 'border-red-500' : ''}
@@ -55,11 +60,12 @@ export default function ContactInfoForm({
               <p className="text-sm text-red-600">{validationErrors.email}</p>
             )}
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="phone">Телефон</Label>
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              Телефон
+            </Label>
             <Input
               id="phone"
               value={personalInfo.phone || ''}
@@ -69,7 +75,10 @@ export default function ContactInfoForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="company">Компания</Label>
+            <Label htmlFor="company" className="flex items-center gap-2">
+              <Building className="w-4 h-4" />
+              Компания
+            </Label>
             <Input
               id="company"
               value={personalInfo.company || ''}
@@ -77,15 +86,6 @@ export default function ContactInfoForm({
               placeholder="Название компании"
             />
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="additional">Дополнительные пожелания</Label>
-          <Textarea
-            id="additional"
-            placeholder="Любые дополнительные требования или пожелания к заказу"
-            rows={3}
-          />
         </div>
       </CardContent>
     </Card>
