@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { 
@@ -14,8 +15,8 @@ import {
   LogOut,
   Zap
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { UnifiedButton } from "@/components/unified";
+import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
 
 interface AdminSidebarProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
   const location = useLocation();
-  const { logout } = useAdminAuth();
+  const { logout } = useUnifiedAuth();
 
   const menuItems = [
     { path: "/admin", icon: Home, label: "Dashboard", badge: null },
@@ -38,28 +39,28 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
   ];
 
   return (
-    <div className={`fixed left-0 top-0 h-full bg-slate-900 border-r border-slate-800 transition-all duration-300 z-50 ${
+    <div className={`fixed left-0 top-0 h-full glass-unified border-r border-white/20 transition-all duration-300 z-50 ${
       isOpen ? 'w-64' : 'w-16'
     }`}>
       {/* Header */}
-      <div className="p-4 border-b border-slate-800">
+      <div className="p-4 border-b border-white/20">
         <div className="flex items-center justify-between">
           {isOpen && (
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 gradient-brand-primary rounded-lg flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <span className="text-white font-bold">CopyPro</span>
             </div>
           )}
-          <Button
+          <UnifiedButton
             variant="ghost"
             size="sm"
             onClick={onToggle}
-            className="text-slate-400 hover:text-white hover:bg-slate-800"
+            className="text-neutral-400 hover:text-white"
           >
             {isOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-          </Button>
+          </UnifiedButton>
         </div>
       </div>
 
@@ -69,11 +70,7 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
           const isActive = location.pathname === item.path;
           return (
             <Link key={item.path} to={item.path}>
-              <div className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group ${
-                isActive 
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}>
+              <div className={`nav-unified-item ${isActive ? 'active' : ''}`}>
                 <item.icon className="w-5 h-5 flex-shrink-0" />
                 {isOpen && (
                   <>
@@ -81,8 +78,8 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
                     {item.badge && (
                       <span className={`ml-auto px-2 py-1 text-xs rounded-full ${
                         item.badge === "NEW" 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-blue-500 text-white'
+                          ? 'bg-success text-white' 
+                          : 'bg-brand-500 text-white'
                       }`}>
                         {item.badge}
                       </span>
@@ -97,16 +94,16 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
 
       {/* Logout */}
       <div className="absolute bottom-4 left-4 right-4">
-        <Button
+        <UnifiedButton
           variant="ghost"
           onClick={logout}
-          className={`w-full text-slate-400 hover:text-white hover:bg-slate-800 ${
+          className={`w-full text-neutral-400 hover:text-white ${
             isOpen ? 'justify-start' : 'justify-center'
           }`}
         >
           <LogOut className="w-5 h-5" />
           {isOpen && <span className="ml-3">Выйти</span>}
-        </Button>
+        </UnifiedButton>
       </div>
     </div>
   );
