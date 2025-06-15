@@ -1,12 +1,151 @@
 
-@import './styles/fonts.css';
-@import './styles/variables.css';
-@import './styles/unified-design-system.css';
-@import './styles/design-system.css';
+@import url('./styles/fonts.css');
+@import url('./styles/variables.css');
+@import url('./styles/base.css');
+@import url('./styles/utilities.css');
+@import url('./styles/design-system.css');
+@import url('./styles/unified-design-system.css');
+@import url('./styles/responsive.css');
+@import url('./styles/animations/index.css');
+@import url('./styles/components/order-form.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import './styles/base.css';
-@import './styles/animations/index.css';
-@import './styles/utilities.css';
-@import './styles/responsive.css';
+
+/* Global base styles */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Improved focus styles */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+  
+  /* Enhanced scrollbar styles */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100 dark:bg-neutral-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 dark:bg-neutral-600 rounded-full;
+    @apply hover:bg-neutral-400 dark:hover:bg-neutral-500;
+  }
+}
+
+/* Enhanced global component styles */
+@layer components {
+  /* Text gradient utility */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent;
+  }
+  
+  /* Glass card with enhanced backdrop */
+  .glass-card {
+    @apply glass-unified backdrop-blur-xl;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .dark .glass-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Enhanced button styles */
+  .btn-primary-enhanced {
+    @apply btn-unified-primary shadow-unified-glow;
+    @apply hover:scale-105 active:scale-95;
+  }
+  
+  /* Page transition wrapper */
+  .page-transition {
+    @apply animate-unified-fade-in;
+  }
+  
+  /* Enhanced container */
+  .container-enhanced {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Sidebar navigation enhancements */
+  .nav-item-enhanced {
+    @apply nav-unified-item hover:scale-105 transition-transform;
+  }
+  
+  .nav-item-enhanced.active {
+    @apply nav-unified-item shadow-unified-glow;
+  }
+}
+
+/* Performance optimizations */
+@layer utilities {
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .glass-card {
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-card {
+    @apply bg-white dark:bg-black border-2 border-black dark:border-white;
+    backdrop-filter: none;
+  }
+  
+  .text-gradient {
+    @apply text-black dark:text-white;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-unified-glow {
+    animation: none;
+  }
+}

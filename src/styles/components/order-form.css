@@ -1,0 +1,223 @@
+
+/* Order Form Component Styles */
+@layer components {
+  /* Order Form Container */
+  .order-form-container {
+    @apply max-w-6xl mx-auto p-4 space-y-6 md:space-y-8;
+  }
+
+  /* Order Form Card */
+  .order-form-card {
+    @apply glass-unified rounded-2xl p-6 md:p-8 shadow-2xl border-0;
+    @apply bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-sm;
+    min-height: 400px;
+  }
+
+  .order-form-card.client-variant {
+    @apply glass-card;
+  }
+
+  /* Order Form Steps */
+  .order-form-steps {
+    @apply mb-8 px-4;
+  }
+
+  .order-form-step {
+    @apply w-12 h-12 rounded-full flex items-center justify-center border-2;
+    @apply transition-all duration-500 mb-3;
+  }
+
+  .order-form-step.completed {
+    @apply bg-gradient-to-r from-green-500 to-emerald-600;
+    @apply border-green-500 text-white shadow-lg scale-110;
+  }
+
+  .order-form-step.current {
+    @apply bg-gradient-to-r from-primary to-blue-600;
+    @apply border-primary text-white shadow-lg animate-pulse scale-110;
+  }
+
+  .order-form-step.inactive {
+    @apply bg-white border-slate-300 text-slate-400;
+  }
+
+  /* Order Form Navigation */
+  .order-form-navigation {
+    @apply flex justify-between mt-8 pt-6;
+    @apply border-t border-slate-200 dark:border-slate-700;
+  }
+
+  .order-form-nav-button {
+    @apply btn-unified-base flex items-center gap-2;
+    @apply transition-all duration-200;
+  }
+
+  .order-form-nav-button.primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600;
+    @apply text-white shadow-md hover:shadow-lg;
+  }
+
+  .order-form-nav-button.client-primary {
+    @apply btn-unified-primary;
+  }
+
+  /* Order Form Sections */
+  .order-form-section {
+    @apply space-y-6;
+  }
+
+  .order-form-section-title {
+    @apply text-lg md:text-xl font-bold;
+    @apply bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent;
+  }
+
+  /* Service Cards */
+  .service-card {
+    @apply p-4 cursor-pointer transition-all duration-200;
+    @apply hover:shadow-lg border-2 rounded-xl;
+  }
+
+  .service-card.selected {
+    @apply ring-2 ring-blue-500 bg-blue-50;
+  }
+
+  .service-card.selected.client-variant {
+    @apply ring-2 ring-brand-500 bg-brand-50 dark:bg-brand-900/20;
+  }
+
+  /* Pricing Card */
+  .pricing-card {
+    @apply p-6 bg-gradient-to-br from-white to-slate-50;
+    @apply border-2 border-primary/20 shadow-xl rounded-xl;
+  }
+
+  .pricing-card.client-variant {
+    @apply glass-card;
+  }
+
+  /* Selected Service Card */
+  .selected-service-card {
+    @apply p-6 border-2 border-primary/20 shadow-lg rounded-xl;
+    @apply bg-gradient-to-br from-blue-50 to-indigo-50;
+  }
+
+  .selected-service-card.client-variant {
+    @apply glass-card;
+  }
+
+  /* Tips Card */
+  .tips-card {
+    @apply p-6 bg-gradient-to-br from-blue-50 to-purple-50;
+    @apply border border-blue-200/50 rounded-xl;
+  }
+
+  .tips-card.client-variant {
+    @apply glass-card;
+  }
+
+  /* Form Controls */
+  .order-form-input {
+    @apply transition-all duration-300 focus:ring-2 focus:ring-primary/20;
+    @apply focus:border-primary resize-none text-sm md:text-base;
+    @apply border-2 hover:border-primary/30;
+  }
+
+  .order-form-textarea {
+    @apply order-form-input;
+  }
+
+  .order-form-select {
+    @apply order-form-input;
+  }
+
+  /* Advanced Options */
+  .advanced-service-option {
+    @apply block p-4 border-2 rounded-xl cursor-pointer;
+    @apply transition-all duration-300;
+  }
+
+  .advanced-service-option.selected {
+    @apply border-primary bg-primary/5 shadow-lg;
+  }
+
+  .advanced-service-option:not(.selected) {
+    @apply border-slate-200 hover:border-primary/50 hover:shadow-md;
+  }
+
+  /* Progress Indicators */
+  .progress-line {
+    @apply absolute top-6 left-0 right-0 h-0.5 bg-slate-200 -z-10;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-primary to-blue-600;
+    @apply transition-all duration-700 ease-in-out;
+  }
+
+  /* Consent Section */
+  .consent-section {
+    @apply space-y-4;
+  }
+
+  .consent-item {
+    @apply flex items-start gap-3 p-4;
+    @apply bg-neutral-50 dark:bg-neutral-800 rounded-lg;
+  }
+
+  .consent-features {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-4;
+    @apply text-xs text-neutral-500 dark:text-neutral-400;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .order-form-card {
+      @apply p-4 md:p-6;
+    }
+    
+    .order-form-steps {
+      @apply px-2;
+    }
+    
+    .service-card {
+      @apply p-3;
+    }
+    
+    .pricing-card {
+      @apply p-4;
+    }
+  }
+}
+
+/* Animation Classes */
+@layer utilities {
+  .animate-order-form-fade-in {
+    animation: orderFormFadeIn 0.4s ease-out;
+  }
+  
+  .animate-order-form-slide-in {
+    animation: orderFormSlideIn 0.5s ease-out;
+  }
+}
+
+@keyframes orderFormFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes orderFormSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
