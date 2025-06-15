@@ -1,5 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download } from "lucide-react";
+
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import TabList from "./TabList";
 import GenerationForm from "./GenerationForm";
 import ResultDisplay from "./ResultDisplay";
 import TemplateLibrary from "./TemplateLibrary";
@@ -9,58 +10,9 @@ import GenerationHistory from "./GenerationHistory";
 import QuickPresets from "./QuickPresets";
 import BatchGeneration from "./BatchGeneration";
 import TextRefiner from "./TextRefiner";
-import QualityAnalyzer from "./QualityAnalyzer";
 import ExportManager from "./ExportManager";
 import EnhancedQualityAnalyzer from "./EnhancedQualityAnalyzer";
-
-interface FormData {
-  prompt: string;
-  textType: string;
-  length: number[];
-  tone: string;
-  audience: string;
-  keywords: string;
-  language: string;
-  includeEmoji: boolean;
-  includeCTA: boolean;
-  seoOptimized: boolean;
-}
-
-interface GenerationHistoryItem {
-  id: string;
-  title: string;
-  content: string;
-  contentType: string;
-  createdAt: Date;
-  wordCount: number;
-  parameters: {
-    tone: string;
-    audience: string;
-    keywords: string;
-  };
-}
-
-interface TabNavigationProps {
-  formData: FormData;
-  setFormData: (data: FormData | ((prev: FormData) => FormData)) => void;
-  generatedText: string;
-  setGeneratedText: (text: string) => void;
-  isGenerating: boolean;
-  onGenerate: () => void;
-  onBatchGenerate?: (variants: number, temperature: number) => Promise<string[]>;
-  onRefineText?: (text: string, instruction: string, preserveLength: boolean) => Promise<string>;
-  onAnalyzeQuality?: (text: string, keywords?: string) => Promise<any>;
-  onApplyTemplate: (template: any) => void;
-  onApplyPreset: (preset: any) => void;
-  onSavePreset: (preset: any) => void;
-  onSelectPrompt: (prompt: string) => void;
-  selectedContentType?: any;
-  generationHistory: GenerationHistoryItem[];
-  onSaveResult: (title: string) => void;
-  onSelectHistoryResult: (content: string) => void;
-  onSaveHistoryResult: (item: Omit<GenerationHistoryItem, 'id' | 'createdAt'>) => void;
-  onDeleteHistoryResult: (id: string) => void;
-}
+import { TabNavigationProps } from "./types/TabNavigationTypes";
 
 export default function TabNavigation({
   formData,
@@ -85,44 +37,7 @@ export default function TabNavigation({
 }: TabNavigationProps) {
   return (
     <Tabs defaultValue="generator" className="w-full">
-      <TabsList className="grid w-full grid-cols-9">
-        <TabsTrigger value="generator" className="flex items-center gap-2">
-          <Wand2 className="w-4 h-4" />
-          Генератор
-        </TabsTrigger>
-        <TabsTrigger value="batch" className="flex items-center gap-2">
-          <Zap className="w-4 h-4" />
-          Пакетная
-        </TabsTrigger>
-        <TabsTrigger value="refiner" className="flex items-center gap-2">
-          <Edit3 className="w-4 h-4" />
-          Доработка
-        </TabsTrigger>
-        <TabsTrigger value="analyzer" className="flex items-center gap-2">
-          <BarChart3 className="w-4 h-4" />
-          Анализ
-        </TabsTrigger>
-        <TabsTrigger value="export" className="flex items-center gap-2">
-          <Download className="w-4 h-4" />
-          Экспорт
-        </TabsTrigger>
-        <TabsTrigger value="templates" className="flex items-center gap-2">
-          <Library className="w-4 h-4" />
-          Шаблоны
-        </TabsTrigger>
-        <TabsTrigger value="presets" className="flex items-center gap-2">
-          <Bookmark className="w-4 h-4" />
-          Пресеты
-        </TabsTrigger>
-        <TabsTrigger value="prompts" className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4" />
-          Промпты
-        </TabsTrigger>
-        <TabsTrigger value="history" className="flex items-center gap-2">
-          <History className="w-4 h-4" />
-          История
-        </TabsTrigger>
-      </TabsList>
+      <TabList />
 
       <TabsContent value="generator" className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

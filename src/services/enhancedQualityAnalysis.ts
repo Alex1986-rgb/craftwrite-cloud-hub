@@ -1,4 +1,3 @@
-
 interface EnhancedQualityAnalysisResult {
   seo: {
     keywordDensity: Record<string, number>;
@@ -146,6 +145,13 @@ class EnhancedQualityAnalysisService {
     }, 0);
     const passiveVoice = (passiveCount / sentences.length) * 100;
 
+    // Fix the sentenceComplexity type issue
+    const getSentenceComplexity = (avgWords: number): 'low' | 'medium' | 'high' => {
+      if (avgWords > 20) return 'high';
+      if (avgWords > 15) return 'medium';
+      return 'low';
+    };
+
     return {
       fleschKincaidScore: Math.max(0, fleschKincaidScore),
       fleschReadingEase: Math.max(0, Math.min(100, fleschReadingEase)),
@@ -154,7 +160,7 @@ class EnhancedQualityAnalysisService {
       complexWords,
       passiveVoice: Math.min(100, passiveVoice),
       readingLevel: this.getReadingLevel(fleschKincaidScore),
-      sentenceComplexity: avgWordsPerSentence > 20 ? 'high' : avgWordsPerSentence > 15 ? 'medium' : 'low'
+      sentenceComplexity: getSentenceComplexity(avgWordsPerSentence)
     };
   }
 
