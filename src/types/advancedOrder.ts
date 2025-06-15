@@ -66,9 +66,12 @@ export interface DynamicQuestion {
   placeholder?: string;
   description?: string;
   options?: string[];
+  dependsOn?: string;
+  showWhen?: any;
   validation?: {
     min?: number;
     max?: number;
+    pattern?: string;
   };
 }
 
