@@ -12,7 +12,7 @@ const unifiedInputVariants = cva(
         error: "border-error focus:shadow-error/30",
         success: "border-success focus:shadow-success/30"
       },
-      size: {
+      inputSize: {
         sm: "px-3 py-2 text-sm min-h-[36px]",
         md: "px-4 py-3 text-base min-h-[44px]",
         lg: "px-5 py-4 text-lg min-h-[52px]"
@@ -20,13 +20,13 @@ const unifiedInputVariants = cva(
     },
     defaultVariants: {
       variant: "default",
-      size: "md"
+      inputSize: "md"
     }
   }
 );
 
 export interface UnifiedInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof unifiedInputVariants> {
   error?: string;
   label?: string;
@@ -34,7 +34,7 @@ export interface UnifiedInputProps
 }
 
 const UnifiedInput = React.forwardRef<HTMLInputElement, UnifiedInputProps>(
-  ({ className, variant, size, type, error, label, description, id, ...props }, ref) => {
+  ({ className, variant, inputSize, type, error, label, description, id, ...props }, ref) => {
     const inputId = id || React.useId();
     const errorVariant = error ? "error" : variant;
     
@@ -51,7 +51,7 @@ const UnifiedInput = React.forwardRef<HTMLInputElement, UnifiedInputProps>(
         <input
           type={type}
           id={inputId}
-          className={cn(unifiedInputVariants({ variant: errorVariant, size, className }))}
+          className={cn(unifiedInputVariants({ variant: errorVariant, inputSize, className }))}
           ref={ref}
           {...props}
         />

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -69,6 +70,35 @@ export default {
         'brand-accent': 'hsl(var(--brand-accent))',
         'brand-primary': 'hsl(var(--brand-primary))',
         'brand-cta': 'hsl(var(--brand-cta))',
+        // Добавляем unified brand цвета
+        brand: {
+          50: 'hsl(var(--color-brand-50))',
+          100: 'hsl(var(--color-brand-100))',
+          200: 'hsl(var(--color-brand-200))',
+          300: 'hsl(var(--color-brand-300))',
+          400: 'hsl(var(--color-brand-400))',
+          500: 'hsl(var(--color-brand-500))',
+          600: 'hsl(var(--color-brand-600))',
+          700: 'hsl(var(--color-brand-700))',
+          800: 'hsl(var(--color-brand-800))',
+          900: 'hsl(var(--color-brand-900))',
+        },
+        neutral: {
+          50: 'hsl(var(--color-neutral-50))',
+          100: 'hsl(var(--color-neutral-100))',
+          200: 'hsl(var(--color-neutral-200))',
+          300: 'hsl(var(--color-neutral-300))',
+          400: 'hsl(var(--color-neutral-400))',
+          500: 'hsl(var(--color-neutral-500))',
+          600: 'hsl(var(--color-neutral-600))',
+          700: 'hsl(var(--color-neutral-700))',
+          800: 'hsl(var(--color-neutral-800))',
+          900: 'hsl(var(--color-neutral-900))',
+        },
+        success: 'hsl(var(--color-success))',
+        warning: 'hsl(var(--color-warning))',
+        error: 'hsl(var(--color-error))',
+        info: 'hsl(var(--color-info))',
       },
       borderRadius: {
         lg: 'var(--radius)',
