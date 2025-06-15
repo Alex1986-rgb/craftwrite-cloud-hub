@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/common/Header';
@@ -90,6 +89,12 @@ export default function ChatbotScriptsOrder() {
     setShowForm(true);
   };
 
+  const handleOrderComplete = () => {
+    setShowForm(false);
+    // Redirect to tracking page
+    navigate('/order/tracking');
+  };
+
   return (
     <>
       <ComprehensiveSeo
@@ -125,18 +130,18 @@ export default function ChatbotScriptsOrder() {
             <div className="max-w-4xl mx-auto text-center">
               <Badge variant="outline" className="mb-4">
                 <Bot className="w-4 h-4 mr-2" />
-                Автоматизация общения
+                Умная автоматизация
               </Badge>
               
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                Скрипты для <span className="text-gradient">чат-ботов</span>
+                Создание <span className="text-gradient">чат-ботов</span>
                 <br />
-                которые продают
+                нового поколения
               </h1>
               
               <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
-                Профессиональные сценарии диалогов для Telegram, WhatsApp, VK и других платформ. 
-                Увеличьте конверсию до 40% с умными скриптами от экспертов CopyPro Cloud.
+                Профессиональные чат-боты с умными сценариями для Telegram, WhatsApp, VK и других платформ. 
+                Увеличьте конверсию до 40% и автоматизируйте общение с клиентами.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -145,26 +150,26 @@ export default function ChatbotScriptsOrder() {
                   className="bg-gradient-to-r from-blue-600 to-purple-600"
                   onClick={() => setShowForm(true)}
                 >
-                  Заказать скрипты
+                  Создать чат-бота
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 <Button variant="outline" size="lg">
-                  Примеры работ
+                  Примеры ботов
                 </Button>
               </div>
               
               <div className="flex items-center justify-center gap-8 mt-8 text-sm text-slate-500">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
-                  Гарантия результата
+                  AI-готовые сценарии
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-blue-500" />
-                  Сроки от 3 дней
+                  Запуск за 3-7 дней
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-4 h-4 text-yellow-500" />
-                  50+ проектов
+                  100+ успешных ботов
                 </div>
               </div>
             </div>
@@ -232,42 +237,43 @@ export default function ChatbotScriptsOrder() {
           </div>
         </section>
 
-        {/* Pricing Section */}
+        {/* Enhanced Pricing Section */}
         <section className="py-16 bg-white/50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Типы скриптов и цены
+                Современные решения для любых задач
               </h2>
-              <p className="text-slate-600">
-                Выберите подходящий тип скриптов для ваших задач
+              <p className="text-slate-600 max-w-2xl mx-auto">
+                Выберите тип чат-бота и платформы. Мы создадим умного помощника с учетом специфики вашего бизнеса
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {SCRIPT_TYPES.map((type, index) => (
                 <Card 
                   key={index} 
                   className={`relative hover:shadow-xl transition-all duration-300 cursor-pointer border-2 ${
                     type.popular 
-                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50' 
+                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 transform hover:scale-105' 
                       : 'border-transparent bg-white hover:border-blue-200'
                   }`}
                   onClick={() => handleTypeSelect(type.title)}
                 >
                   {type.popular && (
                     <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-blue-600">
-                      Популярный
+                      🔥 Популярный
                     </Badge>
                   )}
                   
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-lg">{type.title}</CardTitle>
-                    <div className="text-2xl font-bold text-blue-600">{type.price}</div>
+                  <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-lg mb-2">{type.title}</CardTitle>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">{type.price}</div>
+                    <div className="text-sm text-gray-500">за базовую версию</div>
                   </CardHeader>
                   
                   <CardContent>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3 mb-6">
                       {type.features.map((feature, featureIndex) => (
                         <li key={featureIndex} className="flex items-center gap-2 text-sm">
                           <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -276,19 +282,55 @@ export default function ChatbotScriptsOrder() {
                       ))}
                     </ul>
                     
+                    <div className="space-y-2 mb-4">
+                      <div className="text-xs font-medium text-gray-600">Дополнительно:</div>
+                      <div className="flex flex-wrap gap-1">
+                        <Badge variant="outline" className="text-xs">AI-интеграция</Badge>
+                        <Badge variant="outline" className="text-xs">Аналитика</Badge>
+                        <Badge variant="outline" className="text-xs">Мультиплатформенность</Badge>
+                      </div>
+                    </div>
+                    
                     <Button 
-                      className="w-full mt-6"
+                      className="w-full"
                       variant={type.popular ? "default" : "outline"}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleTypeSelect(type.title);
                       }}
                     >
-                      Выбрать
+                      Создать бота
                     </Button>
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* New features showcase */}
+            <div className="grid md:grid-cols-3 gap-6 mt-12">
+              <Card className="text-center p-6 bg-gradient-to-br from-green-50 to-blue-50">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">AI-готовность</h3>
+                <p className="text-sm text-gray-600">Интеграция с ChatGPT, Claude и другими AI-ассистентами для умных ответов</p>
+              </Card>
+              
+              <Card className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Омниканальность</h3>
+                <p className="text-sm text-gray-600">Один бот работает на всех платформах с адаптацией под каждую</p>
+              </Card>
+              
+              <Card className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Аналитика</h3>
+                <p className="text-sm text-gray-600">Детальная статистика диалогов и конверсий для оптимизации</p>
+              </Card>
             </div>
           </div>
         </section>
