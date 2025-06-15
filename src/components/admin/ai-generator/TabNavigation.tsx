@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download } from "lucide-react";
 import GenerationForm from "./GenerationForm";
@@ -186,11 +187,7 @@ export default function TabNavigation({
       </TabsContent>
 
       <TabsContent value="presets">
-        <PresetManager
-          currentSettings={formData}
-          onApplyPreset={onApplyPreset}
-          onSavePreset={onSavePreset}
-        />
+        <PresetManager onApplyPreset={onApplyPreset} />
       </TabsContent>
 
       <TabsContent value="prompts">
