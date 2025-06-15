@@ -5,7 +5,8 @@ import { ServiceSeoExcerpt } from "@/components/service/ServiceSeoExcerpt";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Seo from "@/components/Seo";
+import EnhancedSeo from "@/components/seo/EnhancedSeo";
+import { createServiceStructuredData, createBreadcrumbStructuredData } from "@/utils/seoUtils";
 
 function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -26,12 +27,29 @@ function ServiceDetailPage() {
   const seoTitle = `${service.name} — подробное описание услуги | CopyPro Cloud`;
   const seoDesc = service.detail.length > 200 ? service.detail.substring(0, 197) + "..." : service.detail;
 
+  // Breadcrumbs для structured data
+  const breadcrumbs = [
+    { name: "Главная", url: "/" },
+    { name: "Услуги", url: "/#services" },
+    { name: service.name, url: `/service/${service.slug}` }
+  ];
+
+  // Structured data для услуги
+  const structuredData = [
+    createServiceStructuredData(service),
+    createBreadcrumbStructuredData(breadcrumbs)
+  ];
+
   return (
     <section className="max-w-2xl mx-auto py-10">
-      <Seo
+      <EnhancedSeo
         title={seoTitle}
         description={seoDesc}
+        keywords={`${service.name}, копирайтинг, ${service.format}, профессиональные тексты`}
+        breadcrumbs={breadcrumbs}
+        structuredData={structuredData}
       />
+      
       <Card className="shadow-md border-primary/40 bg-background">
         <CardContent className="p-6">
           <CardTitle className="text-2xl flex gap-2 items-center mb-2">

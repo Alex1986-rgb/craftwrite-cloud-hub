@@ -7,6 +7,8 @@ import SectionSkeleton from "@/components/common/SectionSkeleton";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
+import EnhancedSeo from "@/components/seo/EnhancedSeo";
+import { createFAQStructuredData } from "@/utils/seoUtils";
 import { lazy, Suspense } from "react";
 
 // Optimized lazy loading with better chunking
@@ -45,9 +47,51 @@ CopyPro Cloud — лидирующая платформа профессиона
 Заказывайте профессиональный копирайтинг уже сегодня!
 `;
 
+// FAQ данные для structured data
+const faqData = [
+  {
+    question: "Какие гарантии качества вы предоставляете?",
+    answer: "Мы гарантируем 100% уникальность текстов по Text.ru, соответствие ТЗ и бесплатные правки в течение 30 дней."
+  },
+  {
+    question: "Сколько времени занимает выполнение заказа?",
+    answer: "Стандартные заказы выполняются за 3-5 рабочих дней. Экспресс-заказы готовы за 24-48 часов."
+  },
+  {
+    question: "Можно ли получить образцы работ?",
+    answer: "Да, вы можете ознакомиться с нашим портфолио и получить образцы работ в вашей тематике."
+  },
+  {
+    question: "Какие форматы текстов вы создаете?",
+    answer: "Мы создаем SEO-статьи, лендинги, описания товаров, контент для соцсетей, email-рассылки и многое другое."
+  }
+];
+
 export default function OptimizedIndex() {
+  const structuredData = [
+    createFAQStructuredData(faqData),
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CopyPro Cloud",
+      "url": "https://copypro-cloud.lovable.app",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://copypro-cloud.lovable.app/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ];
+
   return (
     <>
+      <EnhancedSeo
+        title="CopyPro Cloud — Профессиональный копирайтинг и SEO-тексты | 30+ экспертов"
+        description="Заказать профессиональные SEO-тексты от команды из 30+ сертифицированных копирайтеров. Гарантия уникальности, экспресс-доставка от 24 часов. 2000+ успешных проектов."
+        keywords="копирайтинг, SEO тексты, контент маркетинг, написание статей, профессиональные тексты"
+        structuredData={structuredData}
+      />
+      
       <OptimizedHeader />
       <main className="relative overflow-hidden">
         {/* Hero - критически важная секция загружается сразу */}
