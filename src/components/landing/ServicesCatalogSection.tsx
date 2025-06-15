@@ -3,9 +3,6 @@ import ServiceSectionHeader from "./services/ServiceSectionHeader";
 import ServiceGrid from "./services/ServiceGrid";
 import ServiceCTA from "./services/ServiceCTA";
 
-// Re-export the filter data for other components that might need it
-export { FILTERS, FORMATS, LANGS, TOPICS } from "./services/servicesData";
-
 const ServicesCatalogSection = () => {
   return (
     <section id="services" className="py-16 md:py-24 relative overflow-hidden">
