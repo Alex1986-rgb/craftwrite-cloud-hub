@@ -8,27 +8,23 @@ interface StructuredDataProps {
 
 export function StructuredData({ data, id = 'structured-data' }: StructuredDataProps) {
   useEffect(() => {
-    // Удаляем предыдущие structured data с тем же id
+    // Remove previous structured data
     const existingScript = document.getElementById(id);
     if (existingScript) {
       existingScript.remove();
     }
 
-    // Создаем новый script элемент
+    // Add new structured data
     const script = document.createElement('script');
     script.id = id;
     script.type = 'application/ld+json';
-    
-    // Обрабатываем массив данных или одиночный объект
-    const structuredData = Array.isArray(data) ? data : [data];
-    script.innerHTML = JSON.stringify(structuredData.filter(Boolean), null, 0);
-    
+    script.textContent = JSON.stringify(Array.isArray(data) ? data : [data]);
     document.head.appendChild(script);
 
     return () => {
-      const scriptElement = document.getElementById(id);
-      if (scriptElement) {
-        scriptElement.remove();
+      const scriptToRemove = document.getElementById(id);
+      if (scriptToRemove) {
+        scriptToRemove.remove();
       }
     };
   }, [data, id]);
