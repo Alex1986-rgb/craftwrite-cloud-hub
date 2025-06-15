@@ -107,7 +107,7 @@ export default function AdvancedOrderSystem({
       case 1:
         return Object.keys(orderData.answers).length >= 1;
       case 2:
-        return orderData.personalInfo.name && orderData.personalInfo.email;
+        return Boolean(orderData.personalInfo.name && orderData.personalInfo.email);
       default:
         return true;
     }
