@@ -3,7 +3,6 @@ import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
 import TeamSection from "@/components/landing/TeamSection";
 import TrustSection from "@/components/landing/TrustSection";
@@ -112,7 +111,6 @@ export default function OptimizedIndex() {
         <ServicesCatalogSection />
         <ModernPricingSection />
         <ProcessSection />
-        <ProfessionalStatsSection />
         <TestimonialsSection />
         <TeamSection />
         <TrustSection />
