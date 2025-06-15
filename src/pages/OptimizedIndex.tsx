@@ -16,8 +16,6 @@ import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSect
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import NewsletterSection from "@/components/landing/NewsletterSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
-import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
-import ModernSuccessSection from "@/components/landing/ModernSuccessSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import EnhancedSeo from "@/components/seo/EnhancedSeo";
@@ -116,8 +114,6 @@ export default function OptimizedIndex() {
         <ServicesCatalogSection />
         <ModernPricingSection />
         <ProcessSection />
-        <CaseStudiesSection />
-        <ModernSuccessSection />
         <InnovativePortfolioSection />
         <ProfessionalStatsSection />
         <TestimonialsSection />
