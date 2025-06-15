@@ -1,6 +1,7 @@
 
 @import './styles/fonts.css';
 @import './styles/variables.css';
+@import './styles/unified-design-system.css';
 @import './styles/design-system.css';
 @tailwind base;
 @tailwind components;

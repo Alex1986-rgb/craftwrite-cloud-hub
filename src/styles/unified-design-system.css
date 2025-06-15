@@ -1,0 +1,318 @@
+
+/* Unified Design System - Core Variables */
+@layer base {
+  :root {
+    /* === UNIFIED COLOR PALETTE === */
+    /* Primary Brand Colors */
+    --color-brand-50: 240 249 255;
+    --color-brand-100: 219 234 254;
+    --color-brand-200: 191 219 254;
+    --color-brand-300: 147 197 253;
+    --color-brand-400: 96 165 250;
+    --color-brand-500: 59 130 246;
+    --color-brand-600: 37 99 235;
+    --color-brand-700: 29 78 216;
+    --color-brand-800: 30 64 175;
+    --color-brand-900: 30 58 138;
+    
+    /* Secondary Colors */
+    --color-accent-purple: 147 51 234;
+    --color-accent-emerald: 16 185 129;
+    --color-accent-amber: 245 158 11;
+    --color-accent-rose: 244 63 94;
+    
+    /* Neutral Palette */
+    --color-neutral-50: 248 250 252;
+    --color-neutral-100: 241 245 249;
+    --color-neutral-200: 226 232 240;
+    --color-neutral-300: 203 213 225;
+    --color-neutral-400: 148 163 184;
+    --color-neutral-500: 100 116 139;
+    --color-neutral-600: 71 85 105;
+    --color-neutral-700: 51 65 85;
+    --color-neutral-800: 30 41 59;
+    --color-neutral-900: 15 23 42;
+    
+    /* === UNIFIED SEMANTIC COLORS === */
+    --color-success: var(--color-accent-emerald);
+    --color-warning: var(--color-accent-amber);
+    --color-error: var(--color-accent-rose);
+    --color-info: var(--color-brand-500);
+    
+    /* === UNIFIED GLASS MORPHISM === */
+    --glass-bg-light: rgba(255, 255, 255, 0.15);
+    --glass-bg-dark: rgba(0, 0, 0, 0.15);
+    --glass-border-light: rgba(255, 255, 255, 0.25);
+    --glass-border-dark: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --glass-backdrop: blur(14px) saturate(180%);
+    
+    /* === UNIFIED SPACING SYSTEM === */
+    --space-xs: 0.25rem;    /* 4px */
+    --space-sm: 0.5rem;     /* 8px */
+    --space-md: 1rem;       /* 16px */
+    --space-lg: 1.5rem;     /* 24px */
+    --space-xl: 2rem;       /* 32px */
+    --space-2xl: 3rem;      /* 48px */
+    --space-3xl: 4rem;      /* 64px */
+    --space-4xl: 6rem;      /* 96px */
+    
+    /* === UNIFIED TYPOGRAPHY SCALE === */
+    --text-xs: 0.75rem;     /* 12px */
+    --text-sm: 0.875rem;    /* 14px */
+    --text-base: 1rem;      /* 16px */
+    --text-lg: 1.125rem;    /* 18px */
+    --text-xl: 1.25rem;     /* 20px */
+    --text-2xl: 1.5rem;     /* 24px */
+    --text-3xl: 1.875rem;   /* 30px */
+    --text-4xl: 2.25rem;    /* 36px */
+    --text-5xl: 3rem;       /* 48px */
+    
+    /* === UNIFIED BORDER RADIUS === */
+    --radius-sm: 0.25rem;   /* 4px */
+    --radius-md: 0.5rem;    /* 8px */
+    --radius-lg: 0.75rem;   /* 12px */
+    --radius-xl: 1rem;      /* 16px */
+    --radius-2xl: 1.5rem;   /* 24px */
+    
+    /* === UNIFIED SHADOWS === */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+    --shadow-glow-intense: 0 0 40px rgba(59, 130, 246, 0.5);
+    
+    /* === UNIFIED Z-INDEX SCALE === */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+  }
+
+  .dark {
+    /* Dark theme adjustments */
+    --glass-bg-light: rgba(0, 0, 0, 0.2);
+    --glass-border-light: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* === UNIFIED UTILITY CLASSES === */
+@layer utilities {
+  /* Glass Morphism Components */
+  .glass-unified {
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  .dark .glass-unified {
+    background: var(--glass-bg-dark);
+    border-color: var(--glass-border-dark);
+  }
+  
+  /* Unified Gradients */
+  .gradient-brand-primary {
+    background: linear-gradient(135deg, 
+      hsl(var(--color-brand-500)) 0%, 
+      hsl(var(--color-accent-purple)) 100%);
+  }
+  
+  .gradient-brand-secondary {
+    background: linear-gradient(135deg, 
+      hsl(var(--color-accent-emerald)) 0%, 
+      hsl(var(--color-brand-400)) 100%);
+  }
+  
+  .gradient-text-brand {
+    background: var(--gradient-brand-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Enhanced Shadows */
+  .shadow-unified-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .shadow-unified-glow-intense {
+    box-shadow: var(--shadow-glow-intense);
+  }
+  
+  /* Status Colors */
+  .text-success { color: hsl(var(--color-success)); }
+  .text-warning { color: hsl(var(--color-warning)); }
+  .text-error { color: hsl(var(--color-error)); }
+  .text-info { color: hsl(var(--color-info)); }
+  
+  .bg-success { background-color: hsl(var(--color-success)); }
+  .bg-warning { background-color: hsl(var(--color-warning)); }
+  .bg-error { background-color: hsl(var(--color-error)); }
+  .bg-info { background-color: hsl(var(--color-info)); }
+}
+
+/* === UNIFIED COMPONENT STYLES === */
+@layer components {
+  /* Unified Button Base */
+  .btn-unified-base {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    min-height: 44px; /* Touch-friendly */
+  }
+  
+  /* Button Variants */
+  .btn-unified-primary {
+    @apply btn-unified-base bg-brand-500 text-white hover:bg-brand-600;
+    @apply shadow-md hover:shadow-lg hover:shadow-unified-glow;
+    @apply focus-visible:ring-brand-500;
+  }
+  
+  .btn-unified-secondary {
+    @apply btn-unified-base glass-unified text-brand-700 dark:text-brand-300;
+    @apply hover:shadow-md hover:shadow-unified-glow;
+    @apply focus-visible:ring-brand-400;
+  }
+  
+  .btn-unified-ghost {
+    @apply btn-unified-base text-neutral-700 dark:text-neutral-300;
+    @apply hover:glass-unified hover:text-brand-600 dark:hover:text-brand-400;
+    @apply focus-visible:ring-neutral-400;
+  }
+  
+  /* Unified Card */
+  .card-unified {
+    @apply glass-unified rounded-xl p-6 transition-all duration-300;
+    @apply hover:shadow-lg hover:shadow-unified-glow;
+  }
+  
+  /* Unified Input */
+  .input-unified {
+    @apply glass-unified rounded-lg px-4 py-3 text-base transition-all duration-200;
+    @apply border-0 focus:shadow-md focus:shadow-unified-glow;
+    @apply placeholder:text-neutral-400 dark:placeholder:text-neutral-500;
+    min-height: 44px; /* Touch-friendly */
+  }
+  
+  /* Unified Badge */
+  .badge-unified {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium;
+    @apply glass-unified;
+  }
+  
+  /* Navigation Components */
+  .nav-unified-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium;
+    @apply transition-all duration-200 hover:glass-unified;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500;
+    min-height: 44px; /* Touch-friendly */
+  }
+  
+  .nav-unified-item.active {
+    @apply glass-unified text-brand-600 dark:text-brand-400 shadow-unified-glow;
+  }
+  
+  /* Header Components */
+  .header-unified {
+    @apply glass-unified border-0 border-b border-white/20 backdrop-blur-xl;
+    @apply sticky top-0 z-fixed;
+  }
+  
+  /* Modal Components */
+  .modal-unified-backdrop {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm;
+    z-index: var(--z-modal-backdrop);
+  }
+  
+  .modal-unified-content {
+    @apply glass-unified rounded-xl p-6 shadow-xl;
+    z-index: var(--z-modal);
+  }
+}
+
+/* === UNIFIED ANIMATIONS === */
+@layer utilities {
+  .animate-unified-fade-in {
+    animation: unifiedFadeIn 0.3s ease-out;
+  }
+  
+  .animate-unified-slide-up {
+    animation: unifiedSlideUp 0.4s ease-out;
+  }
+  
+  .animate-unified-scale-in {
+    animation: unifiedScaleIn 0.2s ease-out;
+  }
+  
+  .animate-unified-glow {
+    animation: unifiedGlow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes unifiedFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes unifiedSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes unifiedScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes unifiedGlow {
+  from {
+    box-shadow: var(--shadow-glow);
+  }
+  to {
+    box-shadow: var(--shadow-glow-intense);
+  }
+}
+
+/* === RESPONSIVE UTILITIES === */
+@layer utilities {
+  /* Mobile-first responsive text */
+  .text-unified-responsive-sm { @apply text-sm md:text-base; }
+  .text-unified-responsive-base { @apply text-base md:text-lg; }
+  .text-unified-responsive-lg { @apply text-lg md:text-xl; }
+  .text-unified-responsive-xl { @apply text-xl md:text-2xl; }
+  .text-unified-responsive-2xl { @apply text-2xl md:text-3xl; }
+  .text-unified-responsive-3xl { @apply text-3xl md:text-4xl; }
+  
+  /* Responsive spacing */
+  .space-unified-responsive { @apply space-y-4 md:space-y-6 lg:space-y-8; }
+  .gap-unified-responsive { @apply gap-4 md:gap-6 lg:gap-8; }
+  .p-unified-responsive { @apply p-4 md:p-6 lg:p-8; }
+  
+  /* Responsive grids */
+  .grid-unified-responsive { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6; }
+  .grid-unified-responsive-2 { @apply grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6; }
+}
