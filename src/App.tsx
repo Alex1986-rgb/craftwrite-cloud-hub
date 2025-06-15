@@ -25,6 +25,7 @@ import PasswordUpdatePage from '@/pages/PasswordUpdatePage';
 import EmailVerificationPage from '@/pages/EmailVerificationPage';
 import ClientDashboard from '@/pages/ClientDashboard';
 import OrderPage from '@/pages/OrderPage';
+import ChatbotScriptsOrder from '@/pages/ChatbotScriptsOrder';
 import ModernFooter from '@/components/common/ModernFooter';
 
 const queryClient = new QueryClient({
@@ -49,6 +50,7 @@ function App() {
             <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
             <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />
+            <Route path="/order/chatbot-scripts" element={<PublicLayout><ChatbotScriptsOrder /></PublicLayout>} />
             <Route path="/terms" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
             <Route path="/privacy" element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
             <Route path="/password-reset" element={<PublicLayout><PasswordResetPage /></PublicLayout>} />
