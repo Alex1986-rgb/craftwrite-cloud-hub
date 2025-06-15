@@ -1,9 +1,8 @@
-
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Clock, DollarSign, CheckCircle, ArrowRight, Target, Zap, TrendingUp, Award, Shield } from "lucide-react";
-import { Service } from "@/data/services";
+import { Service } from "@/data/types/service";
 
 interface OrderServiceCardEnhancedProps {
   service: Service;

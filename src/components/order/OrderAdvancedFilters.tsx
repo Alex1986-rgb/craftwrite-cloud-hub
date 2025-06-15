@@ -1,11 +1,10 @@
-
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Clock, DollarSign, TrendingUp, X, Target, Zap, Award, Users } from "lucide-react";
-import { Service } from "@/data/services";
+import { Service } from "@/data/types/service";
 
 interface OrderAdvancedFiltersProps {
   services: Service[];

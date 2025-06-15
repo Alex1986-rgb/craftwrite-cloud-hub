@@ -1,9 +1,8 @@
-
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Clock, DollarSign, CheckCircle, Edit3, Target, Users, Zap } from "lucide-react";
-import { Service } from "@/data/services";
+import { Service } from "@/data/types/service";
 
 interface OrderFormSummaryProps {
   service: string;

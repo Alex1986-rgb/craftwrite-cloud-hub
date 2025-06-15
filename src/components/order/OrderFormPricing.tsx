@@ -1,8 +1,7 @@
-
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calculator, Clock, Star, Shield, TrendingUp, CheckCircle } from "lucide-react";
-import { Service } from "@/data/services";
+import { Service } from "@/data/types/service";
 
 interface OrderFormPricingProps {
   service: string;
