@@ -19,6 +19,7 @@ import FormatDetailPage from "./pages/FormatDetailPage";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import AdminPanel from "./pages/AdminPanel";
+import ClientPanel from "./pages/ClientPanel";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancelled" element={<PaymentCancelled />} />
           <Route path="/admin/*" element={<AdminPanel />} />
+          <Route path="/client/*" element={<ClientPanel />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
