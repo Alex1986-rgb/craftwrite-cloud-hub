@@ -1,7 +1,6 @@
-
 import { Card } from "@/components/ui/card";
 import { Filter, Search } from "lucide-react";
-import { FILTERS, FORMATS, LANGS, TOPICS } from "@/components/landing/ServicesCatalogSection";
+import { FILTERS, FORMATS, LANGS, TOPICS } from "@/data/orderFilters";
 
 interface OrderFiltersProps {
   category: string;
