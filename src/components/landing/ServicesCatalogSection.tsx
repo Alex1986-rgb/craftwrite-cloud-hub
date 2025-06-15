@@ -260,8 +260,8 @@ const ServicesCatalogSection = () => {
           </p>
         </div>
 
-        {/* Enhanced Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {/* Enhanced Services Grid - показываем все 20 видов */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
           {services.map((service, index) => (
             <div
               key={service.slug}

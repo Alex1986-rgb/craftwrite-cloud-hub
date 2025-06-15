@@ -8,6 +8,16 @@ import RoleBasedNavigation from "./RoleBasedNavigation";
 import RoleSwitcher from "./RoleSwitcher";
 import { cn } from "@/lib/utils";
 
+const navLinks = [
+  { label: "Главная", to: "/" },
+  { label: "Услуги", to: "/#services" },
+  { label: "Цены", to: "/prices" },
+  { label: "Портфолио", to: "/portfolio" },
+  { label: "Блог", to: "/blog" },
+  { label: "О нас", to: "/about" },
+  { label: "Политика", to: "/privacy" },
+];
+
 export default function UnifiedHeader() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -38,9 +48,31 @@ export default function UnifiedHeader() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-6">
-          <RoleBasedNavigation variant="horizontal" />
+        {/* Desktop Navigation - добавляем быстрые ссылки */}
+        <div className="hidden lg:flex items-center gap-2">
+          {navLinks.map((link) => (
+            <Button
+              asChild
+              variant={location.pathname === link.to ? "secondary" : "ghost"}
+              size="sm"
+              key={link.to}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium hover:bg-blue-50 hover:text-blue-600 transition-all duration-300",
+                location.pathname === link.to 
+                  ? "bg-blue-100 text-blue-700 font-bold shadow-sm" 
+                  : "text-slate-600"
+              )}
+            >
+              <Link to={link.to}>{link.label}</Link>
+            </Button>
+          ))}
+          
+          {/* Роль-зависимая навигация для авторизованных пользователей */}
+          {isAuthenticated && (
+            <div className="hidden lg:flex items-center gap-2 ml-4">
+              <RoleBasedNavigation variant="horizontal" />
+            </div>
+          )}
         </div>
 
         {/* Desktop Actions */}
@@ -126,16 +158,42 @@ export default function UnifiedHeader() {
             </div>
           )}
 
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation - основные страницы */}
           <nav className="space-y-2">
             <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">
-              Навигация
+              Основные страницы
             </h3>
-            <RoleBasedNavigation 
-              variant="vertical" 
-              className="space-y-1" 
-            />
+            {navLinks.map((link) => (
+              <Button
+                asChild
+                variant={location.pathname === link.to ? "secondary" : "ghost"}
+                size="sm"
+                key={link.to}
+                className={cn(
+                  "w-full justify-start rounded-xl px-4 py-3 text-base font-medium transition-all duration-300",
+                  location.pathname === link.to 
+                    ? "bg-blue-100 text-blue-700 font-bold shadow-sm" 
+                    : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+                )}
+                onClick={closeMobileMenu}
+              >
+                <Link to={link.to}>{link.label}</Link>
+              </Button>
+            ))}
           </nav>
+
+          {/* Mobile Role-based Navigation */}
+          {isAuthenticated && (
+            <nav className="space-y-2">
+              <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">
+                Личный кабинет
+              </h3>
+              <RoleBasedNavigation 
+                variant="vertical" 
+                className="space-y-1" 
+              />
+            </nav>
+          )}
 
           {/* Mobile Actions */}
           <div className="pt-6 border-t border-white/20">
@@ -178,9 +236,9 @@ export default function UnifiedHeader() {
               Контакты
             </h3>
             <div className="space-y-2 text-sm text-neutral-600">
-              <p>Email: info@copyprocloud.ru</p>
+              <p>Email: optteem@mail.ru</p>
+              <p>Телефон: +7 (925) 733-86-48</p>
               <p>Работаем 24/7</p>
-              <p>30+ экспертов готовы к работе</p>
             </div>
           </div>
         </div>
