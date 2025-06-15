@@ -1,16 +1,14 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Shield, Clock, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
+import { Clock, Shield, AlertCircle, ExternalLink } from 'lucide-react';
 import { PaymentMethod, OrderFormData } from '@/types/advancedOrder';
 import { useToast } from '@/hooks/use-toast';
+import ContactInfoForm from './payment/ContactInfoForm';
+import PaymentMethodSelector from './payment/PaymentMethodSelector';
 
 interface IntegratedPaymentFormProps {
   orderData: OrderFormData;
@@ -137,127 +135,17 @@ export default function IntegratedPaymentForm({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Контактная информация */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="w-5 h-5" />
-            Контактная информация
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Имя *</Label>
-              <Input
-                id="name"
-                value={orderData.personalInfo.name || ''}
-                onChange={(e) => onPersonalInfoChange({ name: e.target.value })}
-                placeholder="Введите ваше имя"
-                className={validationErrors.name ? 'border-red-500' : ''}
-              />
-              {validationErrors.name && (
-                <p className="text-sm text-red-600">{validationErrors.name}</p>
-              )}
-            </div>
+      <ContactInfoForm
+        personalInfo={orderData.personalInfo}
+        onPersonalInfoChange={onPersonalInfoChange}
+        validationErrors={validationErrors}
+      />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input
-                id="email"
-                type="email"
-                value={orderData.personalInfo.email || ''}
-                onChange={(e) => onPersonalInfoChange({ email: e.target.value })}
-                placeholder="your@email.com"
-                className={validationErrors.email ? 'border-red-500' : ''}
-              />
-              {validationErrors.email && (
-                <p className="text-sm text-red-600">{validationErrors.email}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">Телефон</Label>
-              <Input
-                id="phone"
-                value={orderData.personalInfo.phone || ''}
-                onChange={(e) => onPersonalInfoChange({ phone: e.target.value })}
-                placeholder="+7 (999) 123-45-67"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="company">Компания</Label>
-              <Input
-                id="company"
-                value={orderData.personalInfo.company || ''}
-                onChange={(e) => onPersonalInfoChange({ company: e.target.value })}
-                placeholder="Название компании"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="additional">Дополнительные пожелания</Label>
-            <Textarea
-              id="additional"
-              placeholder="Любые дополнительные требования или пожелания к заказу"
-              rows={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Способы оплаты */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="w-5 h-5" />
-            Способ оплаты
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 gap-3">
-            {PAYMENT_METHODS.map((method) => (
-              <div
-                key={method.id}
-                className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                  selectedPaymentMethod?.id === method.id
-                    ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                    : method.supported
-                    ? 'border-gray-200 hover:border-gray-300'
-                    : 'border-gray-100 opacity-50 cursor-not-allowed'
-                }`}
-                onClick={() => method.supported && setSelectedPaymentMethod(method)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{method.icon}</span>
-                    <div>
-                      <div className="font-medium flex items-center gap-2">
-                        {method.name}
-                        {!method.supported && (
-                          <Badge variant="secondary">Скоро</Badge>
-                        )}
-                      </div>
-                      <div className="text-sm text-muted-foreground">{method.description}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    {method.fee && method.fee > 0 ? (
-                      <div className="text-sm text-orange-600">+{method.fee}%</div>
-                    ) : (
-                      <div className="text-sm text-green-600">Без комиссии</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <PaymentMethodSelector
+        paymentMethods={PAYMENT_METHODS}
+        selectedMethod={selectedPaymentMethod}
+        onMethodSelect={setSelectedPaymentMethod}
+      />
 
       {/* Итоговая стоимость */}
       <Card>

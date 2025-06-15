@@ -1,16 +1,12 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle2, FileText, HelpCircle } from 'lucide-react';
 import { DynamicQuestion } from '@/types/advancedOrder';
 import { SERVICE_SPECIFIC_QUESTIONS } from '@/data/orderFiltersConfig';
+import QuestionInput from './questions/QuestionInput';
 
 interface DynamicQuestionBuilderProps {
   serviceSlug: string;
@@ -36,7 +32,6 @@ export default function DynamicQuestionBuilder({
     };
     onAnswersChange(newAnswers);
     
-    // Очищаем ошибку валидации при изменении
     if (validationErrors[questionId]) {
       setValidationErrors(prev => {
         const newErrors = { ...prev };
@@ -79,22 +74,6 @@ export default function DynamicQuestionBuilder({
     return null;
   };
 
-  const validateAllQuestions = () => {
-    const errors: Record<string, string> = {};
-    
-    questions.forEach(question => {
-      if (shouldShowQuestion(question)) {
-        const error = validateQuestion(question, answers[question.id]);
-        if (error) {
-          errors[question.id] = error;
-        }
-      }
-    });
-
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
   const shouldShowQuestion = (question: DynamicQuestion): boolean => {
     if (!question.dependsOn || !question.showWhen) {
       return true;
@@ -125,103 +104,6 @@ export default function DynamicQuestionBuilder({
       answered: answeredRequired.length,
       total: requiredQuestions.length
     };
-  };
-
-  const renderQuestionInput = (question: DynamicQuestion) => {
-    const value = answers[question.id];
-    const error = validationErrors[question.id];
-
-    switch (question.type) {
-      case 'text':
-        return (
-          <Input
-            value={value || ''}
-            onChange={(e) => updateAnswer(question.id, e.target.value)}
-            placeholder={question.placeholder}
-            className={error ? 'border-red-500' : ''}
-          />
-        );
-
-      case 'textarea':
-        return (
-          <Textarea
-            value={value || ''}
-            onChange={(e) => updateAnswer(question.id, e.target.value)}
-            placeholder={question.placeholder}
-            rows={4}
-            className={error ? 'border-red-500' : ''}
-          />
-        );
-
-      case 'number':
-        return (
-          <Input
-            type="number"
-            value={value || ''}
-            onChange={(e) => updateAnswer(question.id, parseInt(e.target.value) || 0)}
-            placeholder={question.placeholder}
-            min={question.validation?.min}
-            max={question.validation?.max}
-            className={error ? 'border-red-500' : ''}
-          />
-        );
-
-      case 'select':
-        return (
-          <Select value={value || ''} onValueChange={(val) => updateAnswer(question.id, val)}>
-            <SelectTrigger className={error ? 'border-red-500' : ''}>
-              <SelectValue placeholder="Выберите вариант" />
-            </SelectTrigger>
-            <SelectContent>
-              {question.options?.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
-
-      case 'multiselect':
-        return (
-          <div className="space-y-2">
-            {question.options?.map((option) => (
-              <div key={option} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`${question.id}-${option}`}
-                  checked={value?.includes?.(option) || false}
-                  onCheckedChange={(checked) => {
-                    const currentValues = value || [];
-                    if (checked) {
-                      updateAnswer(question.id, [...currentValues, option]);
-                    } else {
-                      updateAnswer(question.id, currentValues.filter((v: string) => v !== option));
-                    }
-                  }}
-                />
-                <Label htmlFor={`${question.id}-${option}`} className="text-sm">
-                  {option}
-                </Label>
-              </div>
-            ))}
-          </div>
-        );
-
-      case 'checkbox':
-        return (
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id={question.id}
-              checked={value || false}
-              onCheckedChange={(checked) => updateAnswer(question.id, checked)}
-            />
-            <Label htmlFor={question.id}>{question.label}</Label>
-          </div>
-        );
-
-      default:
-        return null;
-    }
   };
 
   const progress = getProgress();
@@ -289,7 +171,12 @@ export default function DynamicQuestionBuilder({
                 <p className="text-sm text-muted-foreground">{question.description}</p>
               )}
 
-              {renderQuestionInput(question)}
+              <QuestionInput
+                question={question}
+                value={answers[question.id]}
+                onChange={(value) => updateAnswer(question.id, value)}
+                hasError={!!error}
+              />
 
               {error && (
                 <p className="text-sm text-red-600 flex items-center gap-1">

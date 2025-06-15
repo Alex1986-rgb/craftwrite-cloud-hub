@@ -1,9 +1,10 @@
-
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Calculator, TrendingUp, Clock, Target, DollarSign } from 'lucide-react';
+import { Calculator, Clock, Target } from 'lucide-react';
+import PriceBreakdownDisplay from './calculator/PriceBreakdownDisplay';
+import PriceRecommendations from './calculator/PriceRecommendations';
 
 interface PriceBreakdown {
   basePrice: number;
@@ -159,27 +160,14 @@ export default function EnhancedPriceCalculator({
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Основная стоимость */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Базовая стоимость</span>
-            <span className="font-medium">{priceBreakdown.basePrice.toLocaleString()} {priceBreakdown.currency}</span>
-          </div>
-          
-          {/* Корректировки */}
-          {Object.entries(priceBreakdown.filterAdjustments).map(([name, amount]) => (
-            <div key={name} className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">+ {name}</span>
-              <span className={amount > 0 ? "text-orange-600" : "text-green-600"}>
-                +{amount.toLocaleString()} {priceBreakdown.currency}
-              </span>
-            </div>
-          ))}
-        </div>
+        <PriceBreakdownDisplay
+          basePrice={priceBreakdown.basePrice}
+          adjustments={priceBreakdown.filterAdjustments}
+          currency={priceBreakdown.currency}
+        />
 
         <hr />
 
-        {/* Итоговая стоимость */}
         <div className="space-y-4">
           <div className="flex justify-between items-center text-lg font-bold">
             <span>Итого:</span>
@@ -195,7 +183,6 @@ export default function EnhancedPriceCalculator({
             </div>
           </div>
 
-          {/* Дополнительная информация */}
           <div className="grid grid-cols-2 gap-4 pt-4 border-t">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
@@ -214,33 +201,7 @@ export default function EnhancedPriceCalculator({
             </div>
           </div>
 
-          {/* Рекомендации по цене */}
-          {priceBreakdown.confidence < 70 && (
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-4">
-              <div className="flex items-start gap-2">
-                <TrendingUp className="w-4 h-4 text-orange-600 mt-0.5" />
-                <div className="text-sm">
-                  <div className="font-medium text-orange-900 mb-1">Уточните детали для точной оценки</div>
-                  <div className="text-orange-700">
-                    Заполните больше фильтров и вопросов для получения более точной стоимости проекта.
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Экономия при выборе пакета */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start gap-2">
-              <DollarSign className="w-4 h-4 text-blue-600 mt-0.5" />
-              <div className="text-sm">
-                <div className="font-medium text-blue-900 mb-1">Экономьте при заказе пакета</div>
-                <div className="text-blue-700">
-                  При заказе 3+ текстов скидка до 15%. При заказе 5+ текстов скидка до 25%.
-                </div>
-              </div>
-            </div>
-          </div>
+          <PriceRecommendations confidence={priceBreakdown.confidence} />
         </div>
       </CardContent>
     </Card>
