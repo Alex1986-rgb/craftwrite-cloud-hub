@@ -9,6 +9,7 @@ import ContactStep from './form-steps/ContactStep';
 import PlatformStep from './form-steps/PlatformStep';
 import AudienceStep from './form-steps/AudienceStep';
 import FinalStep from './form-steps/FinalStep';
+import AdvancedStep from './form-steps/AdvancedStep';
 
 interface ChatbotOrderFormProps {
   selectedType?: string;
@@ -48,7 +49,30 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     platformsPrice: 0,
     scenariosPrice: 0,
     dialogTypesPrice: 0,
+    characterPrice: 0,
+    keywordPrice: 0,
+    lsiPrice: 0,
+    competitorAnalysisPrice: 0,
+    metaDataPrice: 0,
     totalPrice: 0
+  });
+
+  // New advanced options state
+  const [advancedOptions, setAdvancedOptions] = useState({
+    characterCount: 3000,
+    contentQuestions: [] as string[],
+    keywords: [] as string[],
+    keywordMode: 'client' as 'client' | 'auto',
+    lsiKeywords: [] as string[],
+    lsiMode: 'client' as 'client' | 'auto',
+    competitorDomains: [] as string[],
+    metaData: {
+      metaTitle: '',
+      metaDescription: '',
+      companyName: '',
+      includeLinks: false,
+      internalLinks: [] as string[]
+    }
   });
 
   const handleContactChange = (field: string, value: string) => {
@@ -98,6 +122,39 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     }));
   };
 
+  const handleAdvancedOptionsChange = (field: string, value: any) => {
+    setAdvancedOptions(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updatePricingForAdvanced = () => {
+    let additionalPrice = 0;
+    
+    // Character-based pricing
+    const baseCharacterPrice = Math.max(0, (advancedOptions.characterCount - 3000) * 0.5);
+    
+    // Keyword pricing
+    const keywordPrice = advancedOptions.keywordMode === 'auto' ? 1500 : 0;
+    const lsiPrice = advancedOptions.lsiMode === 'auto' ? 1000 : 0;
+    
+    // Competitor analysis
+    const competitorPrice = advancedOptions.competitorDomains.length > 0 ? 2000 : 0;
+    
+    // Meta data
+    const metaPrice = (advancedOptions.metaData.metaTitle || advancedOptions.metaData.metaDescription) ? 800 : 0;
+    
+    additionalPrice = baseCharacterPrice + keywordPrice + lsiPrice + competitorPrice + metaPrice;
+    
+    setPricing(prev => ({
+      ...prev,
+      characterPrice: baseCharacterPrice,
+      keywordPrice,
+      lsiPrice,
+      competitorAnalysisPrice: competitorPrice,
+      metaDataPrice: metaPrice,
+      totalPrice: prev.platformsPrice + prev.scenariosPrice + prev.dialogTypesPrice + additionalPrice
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -127,7 +184,7 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
   };
 
   const nextStep = () => {
-    if (currentStep < 4) {
+    if (currentStep < 5) { // Updated to 5 steps
       setCurrentStep(currentStep + 1);
     }
   };
@@ -176,6 +233,39 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
 
       case 4:
         return (
+          <AdvancedStep
+            characterCount={advancedOptions.characterCount}
+            contentQuestions={advancedOptions.contentQuestions}
+            keywords={advancedOptions.keywords}
+            keywordMode={advancedOptions.keywordMode}
+            lsiKeywords={advancedOptions.lsiKeywords}
+            competitorDomains={advancedOptions.competitorDomains}
+            metaData={advancedOptions.metaData}
+            onCharacterCountChange={(count) => handleAdvancedOptionsChange('characterCount', count)}
+            onContentQuestionsChange={(questions) => handleAdvancedOptionsChange('contentQuestions', questions)}
+            onKeywordsChange={(keywords, mode) => {
+              handleAdvancedOptionsChange('keywords', keywords);
+              handleAdvancedOptionsChange('keywordMode', mode);
+              updatePricingForAdvanced();
+            }}
+            onLSIKeywordsChange={(keywords, mode) => {
+              handleAdvancedOptionsChange('lsiKeywords', keywords);
+              handleAdvancedOptionsChange('lsiMode', mode);
+              updatePricingForAdvanced();
+            }}
+            onCompetitorAnalysisChange={(domains) => {
+              handleAdvancedOptionsChange('competitorDomains', domains);
+              updatePricingForAdvanced();
+            }}
+            onMetaDataChange={(metaData) => {
+              handleAdvancedOptionsChange('metaData', metaData);
+              updatePricingForAdvanced();
+            }}
+          />
+        );
+
+      case 5:
+        return (
           <FinalStep
             projectData={{ goals: projectData.goals, deadline: projectData.deadline }}
             pricing={pricing}
@@ -208,17 +298,17 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
           </Button>
         </div>
         
-        {/* Progress indicator */}
+        {/* Updated progress indicator for 5 steps */}
         <div className="flex items-center gap-2 mt-4">
-          {[1, 2, 3, 4].map((step) => (
+          {[1, 2, 3, 4, 5].map((step) => (
             <div key={step} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                 step <= currentStep ? 'bg-white text-blue-600' : 'bg-white/20 text-white/60'
               }`}>
                 {step}
               </div>
-              {step < 4 && (
-                <div className={`w-16 h-1 mx-2 ${
+              {step < 5 && (
+                <div className={`w-12 h-1 mx-2 ${
                   step < currentStep ? 'bg-white' : 'bg-white/20'
                 }`} />
               )}
@@ -243,7 +333,7 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
               Назад
             </Button>
             
-            {currentStep < 4 ? (
+            {currentStep < 5 ? (
               <Button
                 type="button"
                 onClick={nextStep}
@@ -253,7 +343,7 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
                   (currentStep === 3 && !projectData.audience)
                 }
               >
-                Далее
+                {currentStep === 4 ? 'К финальному шагу' : 'Далее'}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
