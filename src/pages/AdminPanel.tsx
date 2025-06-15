@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
@@ -15,6 +14,7 @@ import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 import SettingsPanel from "@/components/admin/SettingsPanel";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
+import lazy from "@/components/common/lazy";
 
 function AdminContent() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -49,6 +49,15 @@ function AdminContent() {
             <Route path="/clients" element={<ClientManagement />} />
             <Route path="/ai-generator" element={<AITextGenerator />} />
             <Route path="/page-editor" element={<PageEditor />} />
+            <Route path="/content-manager" element={
+              <lazy(() => import("@/components/admin/content/UniversalContentManager"))></lazy>
+            } />
+            <Route path="/prompts" element={
+              <lazy(() => import("@/components/admin/prompts/PromptManager"))></lazy>
+            } />
+            <Route path="/pricing" element={
+              <lazy(() => import("@/components/admin/pricing/DynamicPricingManager"))></lazy>
+            } />
             <Route path="/payments" element={<PaymentManager />} />
             <Route path="/analytics" element={<AnalyticsPanel />} />
             <Route path="/settings" element={<SettingsPanel />} />
