@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Clock, Shield, AlertCircle, ExternalLink } from 'lucide-react';
-import { PaymentMethod, OrderFormData } from '@/types/advancedOrder';
+import { PaymentMethodOption, OrderFormData } from '@/types/advancedOrder';
 import { useToast } from '@/hooks/use-toast';
 import ContactInfoForm from './payment/ContactInfoForm';
 import PaymentMethodSelector from './payment/PaymentMethodSelector';
@@ -13,12 +13,12 @@ import PaymentMethodSelector from './payment/PaymentMethodSelector';
 interface IntegratedPaymentFormProps {
   orderData: OrderFormData;
   onPersonalInfoChange: (info: Partial<OrderFormData['personalInfo']>) => void;
-  onSubmit: (paymentMethod: PaymentMethod) => Promise<void>;
+  onSubmit: (paymentMethod: PaymentMethodOption) => Promise<void>;
   isLoading: boolean;
   className?: string;
 }
 
-const PAYMENT_METHODS: PaymentMethod[] = [
+const PAYMENT_METHODS: PaymentMethodOption[] = [
   {
     id: 'stripe_card',
     name: 'Банковская карта',
@@ -68,7 +68,7 @@ export default function IntegratedPaymentForm({
   isLoading,
   className
 }: IntegratedPaymentFormProps) {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodOption | null>(null);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});

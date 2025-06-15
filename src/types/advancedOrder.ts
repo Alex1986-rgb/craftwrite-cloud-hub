@@ -29,6 +29,7 @@ export interface SmartFilter {
   type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'checkbox_with_options' | 'number' | 'range';
   required?: boolean;
   placeholder?: string;
+  defaultValue?: any;
   options?: Array<{
     label: string;
     value: string;
@@ -57,7 +58,30 @@ export interface SmartQuestion {
   };
 }
 
-export type PaymentMethod = 'card' | 'yandex' | 'sbp' | 'bank_transfer';
+export interface DynamicQuestion {
+  id: string;
+  label: string;
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'number';
+  required?: boolean;
+  placeholder?: string;
+  description?: string;
+  options?: string[];
+  validation?: {
+    min?: number;
+    max?: number;
+  };
+}
+
+export interface PaymentMethodOption {
+  id: string;
+  name: string;
+  icon: string;
+  fee?: number;
+  description: string;
+  supported: boolean;
+}
+
+export type PaymentMethod = PaymentMethodOption;
 
 export interface ServiceQuestion {
   id: string;

@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CreditCard, CheckCircle } from 'lucide-react';
-import { PaymentMethod } from '@/types/advancedOrder';
+import { PaymentMethodOption } from '@/types/advancedOrder';
 
 interface PaymentMethodSelectorProps {
-  paymentMethods: PaymentMethod[];
-  selectedMethod: PaymentMethod | null;
-  onMethodSelect: (method: PaymentMethod) => void;
+  paymentMethods: PaymentMethodOption[];
+  selectedMethod: PaymentMethodOption | null;
+  onMethodSelect: (method: PaymentMethodOption) => void;
 }
 
 export default function PaymentMethodSelector({

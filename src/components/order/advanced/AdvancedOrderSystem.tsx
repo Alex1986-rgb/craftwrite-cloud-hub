@@ -1,7 +1,6 @@
-
 import { useState, useMemo } from 'react';
 import { ArrowLeft, Target, Settings, FileText, Users, List, Table, Image, HelpCircle, Search, Mail, MessageSquare, Globe } from 'lucide-react';
-import { OrderFormData, PaymentMethod } from '@/types/advancedOrder';
+import { OrderFormData, PaymentMethodOption } from '@/types/advancedOrder';
 import { Service } from '@/data/types/service';
 import { COMMON_FILTERS, getServiceSpecificFilters } from '@/data/orderFiltersConfig';
 import { useToast } from '@/hooks/use-toast';
@@ -173,7 +172,7 @@ export default function AdvancedOrderSystem({
     setCurrentStep('payment');
   };
 
-  const handlePaymentSubmit = async (paymentMethod: PaymentMethod) => {
+  const handlePaymentSubmit = async (paymentMethod: PaymentMethodOption) => {
     setIsSubmitting(true);
     
     try {
