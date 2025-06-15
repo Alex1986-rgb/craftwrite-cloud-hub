@@ -15,6 +15,7 @@ import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import EnhancedSeo from "@/components/seo/EnhancedSeo";
 import { createOrganizationStructuredData, createWebsiteStructuredData } from "@/utils/seoUtils";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -101,7 +102,7 @@ export default function OptimizedIndex() {
       />
       
       <main className="relative overflow-hidden">
-        <HeroSection />
+        <ModernHeroSection />
         <InteractiveGuaranteesSection />
         <BenefitsSection />
         <ServicesCatalogSection />
