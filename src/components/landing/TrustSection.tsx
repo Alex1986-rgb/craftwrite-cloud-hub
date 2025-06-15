@@ -1,5 +1,5 @@
 
-import { Shield, Users, Clock, Target, Award, CheckCircle } from "lucide-react";
+import { Shield, Users, Clock, Target, Award, CheckCircle, Star, Globe, Zap, HeadphonesIcon, FileText, TrendingUp, Lock, Heart, Briefcase, Settings, BookOpen, MessageSquare, Trophy, BadgeCheck, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const TrustSection = () => {
@@ -45,6 +45,111 @@ const TrustSection = () => {
       description: "7 дней бесплатных корректировок",
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50/80"
+    },
+    {
+      icon: Star,
+      title: "2000+ заказов",
+      description: "Выполненных проектов",
+      color: "from-yellow-500 to-orange-500",
+      bgColor: "bg-yellow-50/80"
+    },
+    {
+      icon: Globe,
+      title: "100% уникальность",
+      description: "Гарантированная оригинальность",
+      color: "from-cyan-500 to-blue-500",
+      bgColor: "bg-cyan-50/80"
+    },
+    {
+      icon: Zap,
+      title: "24ч средний срок",
+      description: "Экспресс-доставка готовых текстов",
+      color: "from-violet-500 to-purple-500",
+      bgColor: "bg-violet-50/80"
+    },
+    {
+      icon: HeadphonesIcon,
+      title: "24/7 поддержка",
+      description: "Круглосуточная техподдержка",
+      color: "from-indigo-500 to-blue-500",
+      bgColor: "bg-indigo-50/80"
+    },
+    {
+      icon: FileText,
+      title: "20 видов текстов",
+      description: "Полный спектр копирайтинга",
+      color: "from-slate-500 to-gray-500",
+      bgColor: "bg-slate-50/80"
+    },
+    {
+      icon: TrendingUp,
+      title: "98% конверсия",
+      description: "Высокие показатели эффективности",
+      color: "from-emerald-600 to-green-600",
+      bgColor: "bg-emerald-50/80"
+    },
+    {
+      icon: Lock,
+      title: "Конфиденциальность",
+      description: "Полная защита данных клиентов",
+      color: "from-red-500 to-pink-500",
+      bgColor: "bg-red-50/80"
+    },
+    {
+      icon: Heart,
+      title: "500+ клиентов",
+      description: "Довольных заказчиков",
+      color: "from-pink-600 to-rose-600",
+      bgColor: "bg-pink-50/80"
+    },
+    {
+      icon: Briefcase,
+      title: "B2B экспертиза",
+      description: "Специализация по отраслям",
+      color: "from-gray-600 to-slate-600",
+      bgColor: "bg-gray-50/80"
+    },
+    {
+      icon: Settings,
+      title: "CRM интеграция",
+      description: "Автоматизация процессов",
+      color: "from-blue-600 to-indigo-600",
+      bgColor: "bg-blue-50/80"
+    },
+    {
+      icon: BookOpen,
+      title: "Обучение команды",
+      description: "Постоянное развитие экспертов",
+      color: "from-orange-600 to-amber-600",
+      bgColor: "bg-orange-50/80"
+    },
+    {
+      icon: MessageSquare,
+      title: "Консультации",
+      description: "Экспертные рекомендации",
+      color: "from-teal-500 to-cyan-500",
+      bgColor: "bg-teal-50/80"
+    },
+    {
+      icon: Trophy,
+      title: "Лидеры рынка",
+      description: "Признанное качество услуг",
+      color: "from-yellow-600 to-orange-600",
+      bgColor: "bg-yellow-50/80"
+    },
+    {
+      icon: BadgeCheck,
+      title: "Сертификаты",
+      description: "Подтвержденная квалификация",
+      color: "from-green-600 to-emerald-600",
+      bgColor: "bg-green-50/80"
+    },
+    {
+      icon: Lightbulb,
+      title: "Инновации",
+      description: "Современные подходы к контенту",
+      color: "from-purple-600 to-violet-600",
+      bgColor: "bg-purple-50/80"
     }
   ];
 
@@ -72,7 +177,7 @@ const TrustSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
           {trustFeatures.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -80,17 +185,17 @@ const TrustSection = () => {
                 key={index} 
                 className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-white/90 backdrop-blur-sm hover:bg-white"
               >
-                <CardContent className="p-4 text-center relative">
+                <CardContent className="p-3 text-center relative">
                   {/* Gradient overlay на hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
                   
-                  <div className={`relative inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 ${feature.bgColor} group-hover:scale-110 transition-all duration-300 shadow-md`}>
-                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center shadow-sm`}>
-                      <Icon className="w-4 h-4 text-white" />
+                  <div className={`relative inline-flex items-center justify-center w-10 h-10 rounded-xl mb-2 ${feature.bgColor} group-hover:scale-110 transition-all duration-300 shadow-md`}>
+                    <div className={`w-6 h-6 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center shadow-sm`}>
+                      <Icon className="w-3 h-3 text-white" />
                     </div>
                   </div>
                   
-                  <h3 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-slate-700 transition-colors">
+                  <h3 className="text-xs font-bold text-slate-900 mb-1 group-hover:text-slate-700 transition-colors leading-tight">
                     {feature.title}
                   </h3>
                   
