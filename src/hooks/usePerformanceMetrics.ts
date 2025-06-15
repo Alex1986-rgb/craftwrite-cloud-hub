@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 interface PerformanceMetrics {
   lcp: number | null;
-  fid: number | null;
+  inp: number | null; // Заменили fid на inp
   cls: number | null;
   fcp: number | null;
   ttfb: number | null;
@@ -13,7 +13,7 @@ interface PerformanceMetrics {
 export const usePerformanceMetrics = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     lcp: null,
-    fid: null,
+    inp: null, // Заменили fid на inp
     cls: null,
     fcp: null,
     ttfb: null,
@@ -59,8 +59,8 @@ export const usePerformanceMetrics = () => {
     switch (metric) {
       case 'lcp':
         return value <= 2500 ? 'good' : value <= 4000 ? 'needs-improvement' : 'poor';
-      case 'fid':
-        return value <= 100 ? 'good' : value <= 300 ? 'needs-improvement' : 'poor';
+      case 'inp': // Обновили для INP метрики
+        return value <= 200 ? 'good' : value <= 500 ? 'needs-improvement' : 'poor';
       case 'cls':
         return value <= 0.1 ? 'good' : value <= 0.25 ? 'needs-improvement' : 'poor';
       case 'fcp':

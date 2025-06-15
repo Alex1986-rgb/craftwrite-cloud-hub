@@ -1,5 +1,5 @@
 
-import { onCLS, onFCP, onFID, onLCP, onTTFB } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 export interface WebVitalsMetric {
   name: string;
@@ -53,7 +53,7 @@ const sendToAnalytics = (metric: WebVitalsMetric) => {
 export const initWebVitals = () => {
   onCLS(sendToAnalytics);
   onFCP(sendToAnalytics);
-  onFID(sendToAnalytics);
+  onINP(sendToAnalytics); // Заменили onFID на onINP
   onLCP(sendToAnalytics);
   onTTFB(sendToAnalytics);
 };

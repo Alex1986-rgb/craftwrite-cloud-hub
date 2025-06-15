@@ -69,6 +69,33 @@ export const createOrganizationStructuredData = () => {
   };
 };
 
+export const createWebsiteStructuredData = () => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CopyPro Cloud",
+    "description": "Профессиональная платформа копирайтинга с командой сертифицированных экспертов",
+    "url": generateCanonicalUrl('/'),
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": generateCanonicalUrl('/search?q={search_term_string}')
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CopyPro Cloud",
+      "logo": {
+        "@type": "ImageObject",
+        "url": generateCanonicalUrl('/logo.png')
+      }
+    },
+    "inLanguage": "ru-RU"
+  };
+};
+
 export const createServiceStructuredData = (service: any) => {
   return {
     "@context": "https://schema.org",
