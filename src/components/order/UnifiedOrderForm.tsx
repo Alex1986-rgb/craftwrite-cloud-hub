@@ -1,3 +1,4 @@
+
 import { useState, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
@@ -9,7 +10,7 @@ import { useOrderPricing } from '@/hooks/useOrderPricing';
 import { OrderFormLayout } from './OrderFormLayout';
 import OrderFormHeader from './OrderFormHeader';
 import OrderFormSteps from './OrderFormSteps';
-import OrderSelectedService from './OrderFormSelectedService';
+import OrderSelectedService from './OrderSelectedService';
 import OrderFormContact from './OrderFormContact';
 import OrderFormService from './OrderFormService';
 import OrderFormDetails from './OrderFormDetails';
