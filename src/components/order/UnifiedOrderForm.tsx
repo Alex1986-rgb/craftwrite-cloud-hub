@@ -9,7 +9,7 @@ import { useOrderPricing } from '@/hooks/useOrderPricing';
 import { OrderFormLayout } from './OrderFormLayout';
 import OrderFormHeader from './OrderFormHeader';
 import OrderFormSteps from './OrderFormSteps';
-import OrderSelectedService from './OrderSelectedService';
+import OrderSelectedService from './OrderFormSelectedService';
 import OrderFormContact from './OrderFormContact';
 import OrderFormService from './OrderFormService';
 import OrderFormDetails from './OrderFormDetails';
@@ -17,6 +17,7 @@ import OrderFormDeadline from './OrderFormDeadline';
 import OrderFormAdvanced from './OrderFormAdvanced';
 import OrderFormSummary from './OrderFormSummary';
 import OrderFormPricing from './OrderFormPricing';
+import ExpertTipsWidget from './sidebar/ExpertTipsWidget';
 
 interface UnifiedOrderFormProps {
   variant?: 'public' | 'client';
@@ -206,13 +207,19 @@ function OrderFormContent({ variant, onOrderCreated }: UnifiedOrderFormProps) {
   );
 
   const sidebar = (
-    <OrderFormPricing
-      service={form.service}
-      deadline={form.deadline}
-      estimatedPrice={estimatedPrice}
-      deliveryTime={deliveryTime}
-      variant={variant}
-    />
+    <div className="space-y-6">
+      <OrderFormPricing
+        service={form.service}
+        deadline={form.deadline}
+        estimatedPrice={estimatedPrice}
+        deliveryTime={deliveryTime}
+        variant={variant}
+      />
+      <ExpertTipsWidget 
+        selectedService={form.service}
+        className="hidden lg:block"
+      />
+    </div>
   );
 
   return (
