@@ -1,6 +1,6 @@
 
 import { useState, useCallback } from 'react';
-import { openAIService } from '@/services/openai';
+import { textGenerationService } from '@/services/textGenerationService';
 import { useToast } from '@/hooks/use-toast';
 
 interface GenerationParams {
@@ -41,11 +41,11 @@ export function useTextGeneration(): UseTextGenerationReturn {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [hasApiKey, setHasApiKey] = useState(!!openAIService.getApiKey());
+  const [hasApiKey, setHasApiKey] = useState(!!textGenerationService.getApiKey());
   const { toast } = useToast();
 
   const generateText = useCallback(async (params: GenerationParams) => {
-    if (!openAIService.getApiKey()) {
+    if (!textGenerationService.getApiKey()) {
       setError('API ключ OpenAI не установлен');
       toast({
         title: "Ошибка",
@@ -59,7 +59,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     setError(null);
 
     try {
-      const result = await openAIService.generateText(params);
+      const result = await textGenerationService.generateText(params);
       setGeneratedText(result);
       toast({
         title: "Текст сгенерирован",
@@ -83,7 +83,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     variants: number, 
     temperature: number
   ): Promise<string[]> => {
-    if (!openAIService.getApiKey()) {
+    if (!textGenerationService.getApiKey()) {
       throw new Error('API ключ OpenAI не установлен');
     }
 
@@ -91,7 +91,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     setError(null);
 
     try {
-      const results = await openAIService.generateBatch({
+      const results = await textGenerationService.generateBatch({
         ...params,
         variants,
         temperature
@@ -122,7 +122,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     instruction: string, 
     preserveLength: boolean
   ): Promise<string> => {
-    if (!openAIService.getApiKey()) {
+    if (!textGenerationService.getApiKey()) {
       throw new Error('API ключ OpenAI не установлен');
     }
 
@@ -130,7 +130,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     setError(null);
 
     try {
-      const result = await openAIService.refineText({
+      const result = await textGenerationService.refineText({
         originalText: text,
         instruction,
         preserveLength
@@ -151,7 +151,7 @@ export function useTextGeneration(): UseTextGenerationReturn {
     keywords?: string
   ): Promise<QualityAnalysis> => {
     try {
-      return await openAIService.analyzeQuality(text, keywords);
+      return await textGenerationService.analyzeQuality(text, keywords);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Ошибка анализа';
       setError(errorMessage);
@@ -161,9 +161,9 @@ export function useTextGeneration(): UseTextGenerationReturn {
 
   const setApiKey = useCallback(async (key: string): Promise<boolean> => {
     try {
-      const isValid = await openAIService.validateApiKey(key);
+      const isValid = await textGenerationService.validateApiKey(key);
       if (isValid) {
-        openAIService.setApiKey(key);
+        textGenerationService.setApiKey(key);
         setHasApiKey(true);
         setError(null);
         toast({
