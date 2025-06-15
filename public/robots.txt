@@ -1,14 +1,49 @@
-User-agent: Googlebot
+
+User-agent: *
 Allow: /
 
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing Bot
 User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Yandex Bot
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Social Media Bots
+User-agent: facebookexternalhit
 Allow: /
 
 User-agent: Twitterbot
 Allow: /
 
-User-agent: facebookexternalhit
+User-agent: LinkedInBot
 Allow: /
 
-User-agent: *
+User-agent: WhatsApp
 Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /client/
+Disallow: /api/
+
+# Disallow temporary URLs
+Disallow: /temp/
+Disallow: /draft/
+
+# Sitemap location
+Sitemap: https://copypro-cloud.lovable.app/sitemap.xml
+
+# Host
+Host: https://copypro-cloud.lovable.app

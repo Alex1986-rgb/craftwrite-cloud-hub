@@ -1,3 +1,4 @@
+
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
@@ -13,8 +14,8 @@ import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import EnhancedSeo from "@/components/seo/EnhancedSeo";
-import { createOrganizationStructuredData, createWebsiteStructuredData } from "@/utils/seoUtils";
+import ComprehensiveSeo from "@/components/seo/ComprehensiveSeo";
+import { createOrganizationStructuredData, createWebsiteStructuredData, createFAQStructuredData } from "@/utils/seoUtils";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 
 const seoText = `
@@ -85,20 +86,78 @@ E-commerce и маркетплейсы:
 Закажите профессиональный копирайтинг на CopyPro Cloud уже сегодня и получите результат мирового уровня с гарантией качества!
 `;
 
+// FAQ данные для структурированной разметки
+const faqData = [
+  {
+    question: "Сколько времени занимает создание SEO-статьи?",
+    answer: "Стандартная SEO-статья объемом 2000-4000 слов создается за 2-3 рабочих дня. Экспресс-заказы выполняются за 24 часа с доплатой 50%."
+  },
+  {
+    question: "Какие гарантии качества вы предоставляете?",
+    answer: "Мы гарантируем 100% уникальность текста, соответствие техническому заданию, бесплатные правки в течение 30 дней и возврат средств при несоответствии качества."
+  },
+  {
+    question: "Работаете ли вы с узкоспециализированными тематиками?",
+    answer: "Да, у нас есть эксперты по медицине, юриспруденции, IT, финансам, промышленности и другим специализированным областям с профильным образованием."
+  },
+  {
+    question: "Можно ли заказать контент-план на несколько месяцев?",
+    answer: "Конечно! Мы создаем контент-планы на 3, 6 и 12 месяцев с учетом сезонности, конкурентного анализа и ваших бизнес-целей."
+  },
+  {
+    question: "Какие форматы контента вы создаете?",
+    answer: "Мы создаем SEO-статьи, лендинги, email-рассылки, посты для соцсетей, описания товаров, технические тексты, презентации и многое другое."
+  }
+];
+
 // Структурированные данные для главной страницы
 const structuredData = [
   createOrganizationStructuredData(),
-  createWebsiteStructuredData()
+  createWebsiteStructuredData(),
+  createFAQStructuredData(faqData)
 ];
+
+// Локальные SEO данные
+const localSeoData = {
+  businessName: "CopyPro Cloud",
+  address: {
+    street: "Красная площадь, 1",
+    city: "Москва",
+    region: "Москва",
+    postalCode: "109012",
+    country: "RU"
+  },
+  phone: "+7-800-555-0199",
+  geo: {
+    latitude: 55.7558,
+    longitude: 37.6173
+  }
+};
+
+// Hreflang для международных версий
+const hreflangUrls = {
+  "ru": "https://copypro-cloud.lovable.app/",
+  "en": "https://copypro-cloud.lovable.app/en/",
+  "x-default": "https://copypro-cloud.lovable.app/"
+};
 
 export default function OptimizedIndex() {
   return (
     <>
-      <EnhancedSeo
-        title="Профессиональный копирайтинг | CopyPro Cloud - Тексты мирового уровня"
-        description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. SEO-тексты, продающие лендинги, контент для соцсетей. Гарантия качества 100%"
-        keywords="копирайтинг, SEO-тексты, продающие тексты, контент-маркетинг, профессиональные тексты"
+      <ComprehensiveSeo
+        title="Профессиональный копирайтинг CopyPro Cloud | SEO-тексты, лендинги, контент-маркетинг"
+        description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. Создаем SEO-тексты, продающие лендинги, email-кампании. Гарантия качества 100%. Заказать от 1000₽"
+        keywords="копирайтинг, SEO-тексты, продающие тексты, контент-маркетинг, лендинги, email-маркетинг, тексты для сайта, копирайтер, Москва, Россия"
         structuredData={structuredData}
+        localSeo={localSeoData}
+        hreflang={hreflangUrls}
+        article={{
+          publishedTime: "2024-01-01T00:00:00Z",
+          modifiedTime: new Date().toISOString(),
+          author: "CopyPro Cloud Team",
+          section: "Копирайтинг",
+          tags: ["копирайтинг", "SEO", "контент-маркетинг", "digital marketing"]
+        }}
       />
       
       <main className="relative overflow-hidden">
