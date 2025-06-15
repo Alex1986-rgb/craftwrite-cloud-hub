@@ -1,41 +1,4 @@
 
-export interface SmartFilter {
-  id: string;
-  name: string;
-  type: 'select' | 'multiselect' | 'range' | 'text' | 'checkbox';
-  options?: FilterOption[];
-  min?: number;
-  max?: number;
-  defaultValue?: any;
-  description?: string;
-  recommendations?: string[];
-}
-
-export interface FilterOption {
-  value: string;
-  label: string;
-  description?: string;
-  priceMultiplier?: number;
-  icon?: string;
-}
-
-export interface DynamicQuestion {
-  id: string;
-  label: string;
-  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'number' | 'checkbox';
-  required: boolean;
-  options?: string[];
-  placeholder?: string;
-  description?: string;
-  validation?: {
-    min?: number;
-    max?: number;
-    pattern?: string;
-  };
-  dependsOn?: string;
-  showWhen?: any;
-}
-
 export interface OrderFormData {
   serviceSlug: string;
   serviceName: string;
@@ -44,8 +7,8 @@ export interface OrderFormData {
   personalInfo: {
     name: string;
     email: string;
-    phone?: string;
-    company?: string;
+    phone: string;
+    company: string;
   };
   pricing: {
     basePrice: number;
@@ -55,16 +18,52 @@ export interface OrderFormData {
   };
   timeline: {
     estimatedDays: number;
-    deadline?: string;
     priority: 'standard' | 'urgent' | 'express';
   };
 }
 
-export interface PaymentMethod {
+export interface SmartFilter {
   id: string;
   name: string;
-  icon: string;
-  fee?: number;
-  description: string;
-  supported: boolean;
+  description?: string;
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'checkbox_with_options' | 'number' | 'range';
+  required?: boolean;
+  placeholder?: string;
+  options?: Array<{
+    label: string;
+    value: string;
+    priceMultiplier?: number;
+    description?: string;
+  }>;
+  min?: number;
+  max?: number;
+  step?: number;
+  recommendations?: string[];
+  dependencies?: Array<{
+    filterId: string;
+    expectedValue: any;
+  }>;
+}
+
+export interface SmartQuestion {
+  id: string;
+  question: string;
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'boolean';
+  required?: boolean;
+  options?: string[];
+  conditionalOn?: {
+    filterId: string;
+    expectedValue: any;
+  };
+}
+
+export type PaymentMethod = 'card' | 'yandex' | 'sbp' | 'bank_transfer';
+
+export interface ServiceQuestion {
+  id: string;
+  text: string;
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox';
+  options?: string[];
+  required?: boolean;
+  category?: string;
 }

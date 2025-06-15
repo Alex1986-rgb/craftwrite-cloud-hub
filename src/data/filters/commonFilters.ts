@@ -3,112 +3,117 @@ import { SmartFilter } from '@/types/advancedOrder';
 
 export const COMMON_FILTERS: SmartFilter[] = [
   {
-    id: 'topic',
-    name: 'Тематика',
+    id: 'word_count',
+    name: 'Объём текста',
+    description: 'Количество слов в готовом тексте',
     type: 'select',
-    description: 'Выберите основную тематику вашего проекта',
+    required: true,
     options: [
-      { value: 'business', label: 'Бизнес и финансы', description: 'Корпоративные тексты, финансовые услуги' },
-      { value: 'tech', label: 'IT и технологии', description: 'Стартапы, SaaS, технические продукты' },
-      { value: 'health', label: 'Здоровье и медицина', description: 'Медицинские услуги, фармацевтика' },
-      { value: 'ecommerce', label: 'E-commerce', description: 'Интернет-магазины, маркетплейсы' },
-      { value: 'education', label: 'Образование', description: 'Онлайн-курсы, образовательные платформы' },
-      { value: 'realestate', label: 'Недвижимость', description: 'Агентства, застройщики, аренда' },
-      { value: 'beauty', label: 'Красота и здоровье', description: 'Салоны красоты, косметика, фитнес' },
-      { value: 'travel', label: 'Туризм', description: 'Турагентства, отели, экскурсии' },
-      { value: 'auto', label: 'Автомобили', description: 'Автосалоны, автосервисы, запчасти' },
-      { value: 'other', label: 'Другое', description: 'Укажите в комментариях' }
+      { label: '500-1000 слов', value: '500-1000', priceMultiplier: 1 },
+      { label: '1000-2000 слов', value: '1000-2000', priceMultiplier: 1.5 },
+      { label: '2000-3000 слов', value: '2000-3000', priceMultiplier: 2 },
+      { label: '3000+ слов', value: '3000+', priceMultiplier: 2.5 }
     ],
     recommendations: [
-      'Четко определенная тематика поможет создать более релевантный контент',
-      'Мы учитываем специфику отрасли при написании текстов',
-      'Для каждой ниши есть свои особенности подачи информации'
+      'Для SEO-статей рекомендуется объём от 1500 слов',
+      'Большие статьи лучше ранжируются в поисковых системах'
     ]
   },
   {
-    id: 'textLength',
-    name: 'Объем текста',
-    type: 'range',
-    min: 500,
-    max: 15000,
-    defaultValue: 3000,
-    description: 'Укажите желаемый объем в символах',
-    recommendations: [
-      'Для SEO-статей оптимальный объем: 3000-5000 символов',
-      'Для описаний товаров: 500-1500 символов',
-      'Для лендингов: 5000-10000 символов'
-    ]
-  },
-  {
-    id: 'writingStyle',
-    name: 'Стиль написания',
-    type: 'select',
-    description: 'Выберите тон и стиль текста',
-    options: [
-      { value: 'professional', label: 'Профессиональный', description: 'Деловой, формальный стиль' },
-      { value: 'friendly', label: 'Дружелюбный', description: 'Теплый, располагающий тон' },
-      { value: 'expert', label: 'Экспертный', description: 'Авторитетный, компетентный стиль' },
-      { value: 'casual', label: 'Неформальный', description: 'Простой, разговорный язык' },
-      { value: 'luxury', label: 'Премиальный', description: 'Изысканный, статусный стиль' },
-      { value: 'urgent', label: 'Побуждающий', description: 'Мотивирующий к действию' }
-    ],
-    recommendations: [
-      'Стиль должен соответствовать вашей целевой аудитории',
-      'B2B тексты лучше писать профессиональным стилем',
-      'Для молодой аудитории подходит дружелюбный стиль'
-    ]
-  },
-  {
-    id: 'targetAudience',
+    id: 'target_audience',
     name: 'Целевая аудитория',
+    description: 'Для кого предназначен текст',
+    type: 'textarea',
+    required: true,
+    placeholder: 'Опишите вашу целевую аудиторию: возраст, интересы, потребности...',
+    recommendations: [
+      'Чётко определённая ЦА повышает конверсию на 73%',
+      'Укажите демографические данные и болевые точки'
+    ]
+  },
+  {
+    id: 'tone_style',
+    name: 'Тон и стиль изложения',
+    description: 'Как должен звучать ваш текст',
+    type: 'select',
+    required: true,
+    options: [
+      { label: 'Деловой и официальный', value: 'business', priceMultiplier: 1 },
+      { label: 'Дружелюбный и неформальный', value: 'friendly', priceMultiplier: 1 },
+      { label: 'Экспертный и авторитетный', value: 'expert', priceMultiplier: 1.2 },
+      { label: 'Продающий и убеждающий', value: 'sales', priceMultiplier: 1.3 },
+      { label: 'Эмоциональный и вдохновляющий', value: 'emotional', priceMultiplier: 1.1 }
+    ]
+  },
+  {
+    id: 'content_structure',
+    name: 'Структура контента',
+    description: 'Как организовать информацию в тексте',
     type: 'multiselect',
-    description: 'Выберите характеристики вашей аудитории',
     options: [
-      { value: 'b2b', label: 'B2B клиенты', description: 'Бизнес-клиенты, компании' },
-      { value: 'b2c', label: 'B2C клиенты', description: 'Конечные потребители' },
-      { value: 'young', label: 'Молодая аудитория (18-30)', description: 'Студенты, молодые специалисты' },
-      { value: 'middle', label: 'Средний возраст (30-50)', description: 'Состоявшиеся профессионалы' },
-      { value: 'senior', label: 'Старшая группа (50+)', description: 'Опытные специалисты, руководители' },
-      { value: 'mass', label: 'Массовая аудитория', description: 'Широкий круг потребителей' }
+      { label: 'Заголовки H1-H6', value: 'headings', priceMultiplier: 1 },
+      { label: 'Маркированные списки', value: 'bullet_lists', priceMultiplier: 1 },
+      { label: 'Нумерованные списки', value: 'numbered_lists', priceMultiplier: 1 },
+      { label: 'Цитаты и выделения', value: 'quotes', priceMultiplier: 1.1 },
+      { label: 'Врезки и факты', value: 'callouts', priceMultiplier: 1.2 }
     ],
     recommendations: [
-      'Понимание аудитории - основа эффективного текста',
-      'Возраст влияет на стиль и способ подачи информации',
-      'B2B и B2C требуют разного подхода в копирайтинге'
+      'Хорошая структура улучшает читаемость на 58%',
+      'Используйте заголовки для лучшего SEO'
     ]
   },
   {
-    id: 'priority',
-    name: 'Приоритет выполнения',
-    type: 'select',
-    description: 'Выберите срочность выполнения заказа',
+    id: 'add_tables',
+    name: 'Добавить таблицы в текст',
+    description: 'Включить таблицы для структурирования данных',
+    type: 'checkbox_with_options',
     options: [
-      { value: 'standard', label: 'Стандартный (5-7 дней)', priceMultiplier: 1.0, description: 'Обычные сроки' },
-      { value: 'urgent', label: 'Срочный (2-3 дня)', priceMultiplier: 1.5, description: '+50% к стоимости' },
-      { value: 'express', label: 'Экспресс (24 часа)', priceMultiplier: 2.0, description: '+100% к стоимости' }
+      { label: 'Простая таблица сравнения', value: 'comparison', priceMultiplier: 1.3 },
+      { label: 'Таблица характеристик', value: 'features', priceMultiplier: 1.3 },
+      { label: 'Ценовая таблица', value: 'pricing', priceMultiplier: 1.4 },
+      { label: 'Статистическая таблица', value: 'stats', priceMultiplier: 1.2 }
     ],
     recommendations: [
-      'Стандартные сроки обеспечивают лучшее качество',
-      'Срочные заказы требуют больше ресурсов',
-      'Экспресс-заказы доступны не для всех типов текстов'
+      'Таблицы улучшают восприятие сложной информации',
+      'Поисковые системы лучше индексируют структурированные данные'
     ]
   },
   {
-    id: 'brandVoice',
-    name: 'Голос бренда',
-    type: 'select',
-    description: 'Определите характер коммуникации бренда',
+    id: 'add_icons',
+    name: 'Добавить иконки и визуальные элементы',
+    description: 'Рекомендации по иконкам для улучшения восприятия',
+    type: 'checkbox_with_options',
     options: [
-      { value: 'authoritative', label: 'Авторитетный', description: 'Экспертный, компетентный' },
-      { value: 'innovative', label: 'Инновационный', description: 'Современный, технологичный' },
-      { value: 'caring', label: 'Заботливый', description: 'Понимающий, поддерживающий' },
-      { value: 'playful', label: 'Игривый', description: 'Веселый, креативный' },
-      { value: 'sophisticated', label: 'Утонченный', description: 'Элегантный, премиальный' }
+      { label: 'Иконки для заголовков', value: 'header_icons', priceMultiplier: 1.1 },
+      { label: 'Иконки для списков', value: 'list_icons', priceMultiplier: 1.1 },
+      { label: 'Иконки для призывов к действию', value: 'cta_icons', priceMultiplier: 1.2 },
+      { label: 'Схемы и диаграммы', value: 'diagrams', priceMultiplier: 1.5 }
     ],
     recommendations: [
-      'Голос бренда должен отражать ценности компании',
-      'Последовательность в коммуникации укрепляет узнаваемость',
-      'Выбор зависит от специфики бизнеса и аудитории'
+      'Визуальные элементы увеличивают вовлеченность на 80%',
+      'Иконки помогают быстрее сканировать текст'
+    ]
+  },
+  {
+    id: 'content_questions',
+    name: 'Ключевые вопросы для раскрытия темы',
+    description: 'Вопросы, на которые должен отвечать текст',
+    type: 'textarea',
+    placeholder: 'Введите по одному вопросу в строке:\n- Что такое...?\n- Как выбрать...?\n- Почему важно...?',
+    recommendations: [
+      'Вопросы помогают структурировать материал',
+      'FAQ-секции улучшают SEO и пользовательский опыт'
+    ]
+  },
+  {
+    id: 'keywords',
+    name: 'Ключевые слова',
+    description: 'Слова и фразы для SEO-оптимизации',
+    type: 'textarea',
+    placeholder: 'Введите ключевые слова через запятую...',
+    recommendations: [
+      'Используйте 5-10 основных ключевых слов',
+      'Включайте длинные хвосты для лучшего ранжирования'
     ]
   }
 ];

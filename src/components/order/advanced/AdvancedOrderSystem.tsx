@@ -1,6 +1,6 @@
 
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Target, Settings, FileText, CheckCircle2, Search, Mail, MessageSquare, Globe, Table } from 'lucide-react';
+import { ArrowLeft, Target, Settings, FileText, Users, List, Table, Image, HelpCircle, Search, Mail, MessageSquare, Globe } from 'lucide-react';
 import { OrderFormData, PaymentMethod } from '@/types/advancedOrder';
 import { Service } from '@/data/types/service';
 import { COMMON_FILTERS, getServiceSpecificFilters } from '@/data/orderFiltersConfig';
@@ -66,6 +66,72 @@ export default function AdvancedOrderSystem({
 
   const ServiceIcon = getServiceIcon(selectedService.slug);
 
+  // Группируем фильтры по логическим категориям
+  const filterGroups = useMemo(() => {
+    const basicFilters = COMMON_FILTERS.filter(f => 
+      ['word_count', 'tone_style'].includes(f.id)
+    );
+    
+    const audienceFilters = COMMON_FILTERS.filter(f => 
+      ['target_audience'].includes(f.id)
+    );
+    
+    const structureFilters = COMMON_FILTERS.filter(f => 
+      ['content_structure', 'content_questions'].includes(f.id)
+    );
+    
+    const visualFilters = COMMON_FILTERS.filter(f => 
+      ['add_tables', 'add_icons'].includes(f.id)
+    );
+    
+    const seoFilters = COMMON_FILTERS.filter(f => 
+      ['keywords'].includes(f.id)
+    );
+
+    return [
+      {
+        id: 'basic',
+        title: 'Основные параметры',
+        description: 'Базовые настройки текста',
+        icon: Settings,
+        filters: basicFilters,
+        defaultOpen: true
+      },
+      {
+        id: 'audience', 
+        title: 'Целевая аудитория',
+        description: 'Для кого создается контент',
+        icon: Users,
+        filters: audienceFilters,
+        defaultOpen: false
+      },
+      {
+        id: 'structure',
+        title: 'Структура контента',
+        description: 'Организация и подача информации',
+        icon: List,
+        filters: structureFilters,
+        defaultOpen: false
+      },
+      {
+        id: 'visual',
+        title: 'Визуальные элементы',
+        description: 'Таблицы, иконки и оформление',
+        icon: Table,
+        filters: visualFilters,
+        defaultOpen: false
+      },
+      {
+        id: 'seo',
+        title: 'SEO-оптимизация',
+        description: 'Ключевые слова и поисковая оптимизация',
+        icon: Search,
+        filters: seoFilters,
+        defaultOpen: false
+      }
+    ];
+  }, []);
+
   const updateFilters = (filterId: string, value: any) => {
     setOrderData(prev => ({
       ...prev,
@@ -92,7 +158,7 @@ export default function AdvancedOrderSystem({
       (!Array.isArray(value) || value.length > 0)
     ).length;
     
-    const totalPossible = Object.keys({...COMMON_FILTERS, ...serviceSpecificFilters}).length;
+    const totalPossible = filterGroups.reduce((acc, group) => acc + group.filters.length, 0) + serviceSpecificFilters.length;
     const configScore = Math.round((configuredFilters / Math.max(totalPossible, 1)) * 100);
     
     if (configScore < 50) {
@@ -196,86 +262,32 @@ export default function AdvancedOrderSystem({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Основное содержимое - настройки */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Общие настройки */}
-          <FilterGroupCard
-            title="Основные параметры"
-            description="Базовые настройки для вашего текста"
-            icon={Settings}
-            filters={COMMON_FILTERS}
-            values={orderData.filters}
-            onValueChange={updateFilters}
-          />
+          {/* Группы фильтров */}
+          {filterGroups.map(group => (
+            <FilterGroupCard
+              key={group.id}
+              title={group.title}
+              description={group.description}
+              icon={group.icon}
+              filters={group.filters}
+              values={orderData.filters}
+              onValueChange={updateFilters}
+              defaultOpen={group.defaultOpen}
+            />
+          ))}
 
           {/* Специфичные настройки для услуги */}
           {serviceSpecificFilters.length > 0 && (
             <FilterGroupCard
-              title={`Настройки для ${selectedService.name}`}
-              description="Специализированные параметры для данного типа контента"
+              title={`Специальные настройки для ${selectedService.name}`}
+              description="Дополнительные параметры для данного типа контента"
               icon={ServiceIcon}
               filters={serviceSpecificFilters}
               values={orderData.filters}
               onValueChange={updateFilters}
+              defaultOpen={false}
             />
           )}
-
-          {/* Таблица сравнения влияния параметров */}
-          <Card className="bg-gradient-to-br from-gray-50 to-blue-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Table className="w-5 h-5 text-blue-600" />
-                Влияние параметров на результат
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left p-2 font-semibold">Параметр</th>
-                      <th className="text-left p-2 font-semibold">Влияние на SEO</th>
-                      <th className="text-left p-2 font-semibold">Влияние на цену</th>
-                      <th className="text-left p-2 font-semibold">Рекомендация</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    <tr>
-                      <td className="p-2 font-medium">SEO-оптимизация</td>
-                      <td className="p-2">
-                        <div className="flex items-center gap-1">
-                          <div className="w-4 h-2 bg-green-500 rounded"></div>
-                          <span className="text-green-700">Высокое</span>
-                        </div>
-                      </td>
-                      <td className="p-2 text-orange-600">+30-60%</td>
-                      <td className="p-2 text-sm text-gray-600">Обязательно для SEO-текстов</td>
-                    </tr>
-                    <tr>
-                      <td className="p-2 font-medium">Анализ конкурентов</td>
-                      <td className="p-2">
-                        <div className="flex items-center gap-1">
-                          <div className="w-4 h-2 bg-blue-500 rounded"></div>
-                          <span className="text-blue-700">Среднее</span>
-                        </div>
-                      </td>
-                      <td className="p-2 text-orange-600">+10-40%</td>
-                      <td className="p-2 text-sm text-gray-600">Поможет выделиться</td>
-                    </tr>
-                    <tr>
-                      <td className="p-2 font-medium">Объём текста</td>
-                      <td className="p-2">
-                        <div className="flex items-center gap-1">
-                          <div className="w-4 h-2 bg-yellow-500 rounded"></div>
-                          <span className="text-yellow-700">Умеренное</span>
-                        </div>
-                      </td>
-                      <td className="p-2 text-green-600">Линейное</td>
-                      <td className="p-2 text-sm text-gray-600">Больше текста = больше ключей</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Боковая панель */}
