@@ -29,7 +29,7 @@ function OrderFormContentWrapper({ variant, onOrderCreated }: UnifiedOrderFormPr
     <OrderFormNavigation
       variant={variant}
       loading={loading}
-      isFormValid={isFormValid}
+      isFormValid={isFormValid()}
       onSubmit={handleSubmit}
     />
   );
