@@ -12,6 +12,7 @@ const unifiedButtonVariants = cva(
         primary: "btn-unified-primary",
         secondary: "btn-unified-secondary", 
         ghost: "btn-unified-ghost",
+        outline: "border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 focus-visible:ring-gray-300",
         success: "bg-success text-white hover:opacity-90 focus-visible:ring-success",
         warning: "bg-warning text-white hover:opacity-90 focus-visible:ring-warning",
         error: "bg-error text-white hover:opacity-90 focus-visible:ring-error"
