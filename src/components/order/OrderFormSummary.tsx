@@ -15,6 +15,7 @@ interface OrderFormSummaryProps {
   details: string;
   serviceDetails?: Service;
   onEdit: () => void;
+  variant?: 'public' | 'client';
 }
 
 export default function OrderFormSummary({
@@ -26,7 +27,8 @@ export default function OrderFormSummary({
   clientEmail,
   details,
   serviceDetails,
-  onEdit
+  onEdit,
+  variant = 'public'
 }: OrderFormSummaryProps) {
   const getDeadlineText = (deadline: string) => {
     switch (deadline) {

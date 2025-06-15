@@ -10,6 +10,7 @@ interface OrderFormPricingProps {
   estimatedPrice: number;
   deliveryTime?: string;
   serviceDetails?: Service;
+  variant?: 'public' | 'client';
 }
 
 export default function OrderFormPricing({ 
@@ -17,7 +18,8 @@ export default function OrderFormPricing({
   deadline, 
   estimatedPrice,
   deliveryTime,
-  serviceDetails
+  serviceDetails,
+  variant = 'public'
 }: OrderFormPricingProps) {
   const getBasePrice = () => {
     if (!serviceDetails) return 5000;

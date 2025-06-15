@@ -1,4 +1,3 @@
-
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Clock, Zap, Rocket } from "lucide-react";
@@ -6,6 +5,7 @@ import { Clock, Zap, Rocket } from "lucide-react";
 interface OrderFormDeadlineProps {
   selectedDeadline: string;
   onDeadlineChange: (deadline: string) => void;
+  variant?: 'public' | 'client';
 }
 
 const deadlineOptions = [
@@ -37,7 +37,8 @@ const deadlineOptions = [
 
 export default function OrderFormDeadline({ 
   selectedDeadline, 
-  onDeadlineChange 
+  onDeadlineChange,
+  variant = 'public'
 }: OrderFormDeadlineProps) {
   return (
     <div className="space-y-4 md:space-y-6">

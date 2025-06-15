@@ -5,9 +5,14 @@ import { Label } from "@/components/ui/label";
 interface OrderFormDetailsProps {
   details: string;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  variant?: 'public' | 'client';
 }
 
-export default function OrderFormDetails({ details, handleChange }: OrderFormDetailsProps) {
+export default function OrderFormDetails({ 
+  details, 
+  handleChange,
+  variant = 'public'
+}: OrderFormDetailsProps) {
   return (
     <div className="space-y-4 md:space-y-6">
       <h3 className="text-lg md:text-xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">

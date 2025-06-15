@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -20,6 +19,7 @@ interface OrderFormAdvancedProps {
   onPreferredStyleChange: (style: string) => void;
   additionalRequirements: string;
   onAdditionalRequirementsChange: (requirements: string) => void;
+  variant?: 'public' | 'client';
 }
 
 const additionalServiceOptions = [
@@ -51,7 +51,8 @@ export default function OrderFormAdvanced({
   preferredStyle,
   onPreferredStyleChange,
   additionalRequirements,
-  onAdditionalRequirementsChange
+  onAdditionalRequirementsChange,
+  variant = 'public'
 }: OrderFormAdvancedProps) {
   const handleServiceToggle = (serviceId: string) => {
     const updated = additionalServices.includes(serviceId)
