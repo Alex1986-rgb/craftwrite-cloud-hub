@@ -1,4 +1,5 @@
 
+
 @import url('./styles/fonts.css');
 @import url('./styles/variables.css');
 @import url('./styles/base.css');
@@ -20,7 +21,7 @@
   }
   
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
@@ -82,15 +83,6 @@
   .container-enhanced {
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
-  
-  /* Sidebar navigation enhancements */
-  .nav-item-enhanced {
-    @apply nav-unified-item hover:scale-105 transition-transform;
-  }
-  
-  .nav-item-enhanced.active {
-    @apply nav-unified-item shadow-unified-glow;
-  }
 }
 
 /* Performance optimizations */
@@ -149,3 +141,4 @@
     animation: none;
   }
 }
+

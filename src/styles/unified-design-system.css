@@ -215,7 +215,8 @@
   }
   
   .nav-unified-item.active {
-    @apply glass-unified text-brand-600 dark:text-brand-400 shadow-unified-glow;
+    @apply glass-unified text-brand-600 dark:text-brand-400;
+    box-shadow: var(--shadow-glow);
   }
   
   /* Header Components */
