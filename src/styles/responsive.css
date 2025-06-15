@@ -1,39 +1,44 @@
 
-/* Mobile optimizations */
+/* Enhanced Mobile optimizations */
 @media (max-width: 768px) {
   .container {
     @apply px-4;
   }
   
-  /* Improved touch targets */
-  button, a {
+  /* Enhanced touch targets */
+  button, a, .touch-target {
     min-height: 44px;
     min-width: 44px;
+    @apply flex items-center justify-center;
   }
   
-  /* Better text sizes */
+  /* Better text sizes with smooth progression */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  
   .text-responsive-sm {
-    @apply text-sm md:text-base;
+    @apply text-sm sm:text-base;
   }
   
   .text-responsive-base {
-    @apply text-base md:text-lg;
+    @apply text-base sm:text-lg;
   }
   
   .text-responsive-lg {
-    @apply text-lg md:text-xl;
+    @apply text-lg sm:text-xl;
   }
   
   .text-responsive-xl {
-    @apply text-xl md:text-2xl;
+    @apply text-xl sm:text-2xl;
   }
   
   .text-responsive-2xl {
-    @apply text-2xl md:text-3xl;
+    @apply text-2xl sm:text-3xl;
   }
   
   .text-responsive-3xl {
-    @apply text-3xl md:text-4xl;
+    @apply text-3xl sm:text-4xl;
   }
   
   /* Mobile-specific layouts */
@@ -45,12 +50,16 @@
     @apply grid-cols-1;
   }
   
+  .mobile-grid-2x2 {
+    @apply grid-cols-2;
+  }
+  
   .mobile-padding {
-    @apply p-3;
+    @apply p-3 sm:p-4;
   }
   
   .mobile-text {
-    @apply text-sm;
+    @apply text-sm leading-relaxed;
   }
   
   /* Hide on mobile */
@@ -65,7 +74,7 @@
   
   /* Improved card spacing */
   .mobile-card {
-    @apply mx-2 mb-4;
+    @apply mx-2 mb-4 rounded-lg;
   }
   
   /* Better form layouts */
@@ -75,61 +84,93 @@
   
   /* Optimized buttons */
   .mobile-button {
-    @apply w-full py-3 text-base;
+    @apply w-full py-4 text-base font-semibold;
+    min-height: 52px;
   }
   
   /* Enhanced touch areas */
   .touch-target {
-    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center relative;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .touch-target:active {
+    transform: scale(0.98);
+  }
+  
+  /* Mobile typography improvements */
+  .mobile-heading-xl {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+    line-height: 1.1;
+  }
+  
+  .mobile-heading-lg {
+    @apply text-2xl sm:text-3xl md:text-4xl;
+    line-height: 1.2;
+  }
+  
+  /* Better spacing for mobile */
+  .mobile-spacing-tight {
+    @apply space-y-3 sm:space-y-4;
+  }
+  
+  .mobile-spacing-normal {
+    @apply space-y-4 sm:space-y-6;
+  }
+  
+  .mobile-spacing-loose {
+    @apply space-y-6 sm:space-y-8;
+  }
+  
+  /* Mobile-optimized animations */
+  .mobile-animate-soft {
+    transition: all 0.2s ease-out;
+  }
+  
+  .mobile-animate-soft:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Safe area support for mobile devices */
+  .mobile-safe-area {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 }
 
-/* Tablet optimizations */
+/* Extra small devices */
+@media (max-width: 375px) {
+  .container {
+    @apply px-3;
+  }
+  
+  .xs-text-sm {
+    @apply text-sm;
+  }
+  
+  .xs-grid-1 {
+    @apply grid-cols-1;
+  }
+  
+  .xs-spacing-tight {
+    @apply space-y-2;
+  }
+}
+
+/* Large mobile devices and small tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
   .tablet-grid {
-    @apply grid-cols-2;
+    @apply grid-cols-2 lg:grid-cols-3;
   }
   
   .tablet-spacing {
     @apply p-6;
   }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .bg-gradient-to-r {
-    background: solid;
-  }
   
-  .glass-card {
-    @apply border-2 border-slate-800 dark:border-slate-200;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .animate-fade-in,
-  .animate-slide-up,
-  .animate-scale-in,
-  .animate-float,
-  .animate-bounce-in,
-  .animate-slide-in-up,
-  .animate-slide-in-right,
-  .animate-scale-in-center {
-    animation: none;
-  }
-  
-  * {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-/* Dark theme enhancements */
-@media (prefers-color-scheme: dark) {
-  .auto-dark {
-    @apply bg-slate-900 text-slate-100;
+  .tablet-text {
+    @apply text-base;
   }
 }
 
@@ -142,11 +183,75 @@
   .landscape-hide {
     @apply hidden;
   }
+  
+  .landscape-flex-row {
+    @apply flex-row items-center;
+  }
+  
+  /* Optimize hero for landscape mobile */
+  .landscape-hero {
+    @apply min-h-[70vh] py-8;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-gradient-to-r {
+    background: solid;
+  }
+  
+  .glass-card {
+    @apply border-2 border-slate-800 dark:border-slate-200;
+  }
+  
+  .touch-target {
+    @apply border border-slate-400;
+  }
+}
+
+/* Reduced motion support with performance optimization */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale-in,
+  .animate-float,
+  .animate-bounce-in,
+  .animate-slide-in-up,
+  .animate-slide-in-right,
+  .animate-scale-in-center,
+  .animate-bounce-soft,
+  .animate-shimmer,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
+  
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  
+  .mobile-animate-soft {
+    transition: none;
+  }
+}
+
+/* Dark theme enhancements */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    @apply bg-slate-900 text-slate-100;
+  }
+  
+  .touch-target {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Print styles */
 @media print {
-  .print-hidden {
+  .print-hidden,
+  .mobile-only,
+  .desktop-only {
     @apply hidden;
   }
   
@@ -156,5 +261,48 @@
   
   * {
     @apply text-black bg-white;
+  }
+  
+  .touch-target {
+    min-height: auto;
+    min-width: auto;
+  }
+}
+
+/* PWA and iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .ios-fix {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+  }
+  
+  .touch-target {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  /* Reduce complexity for mobile animations */
+  .animate-float {
+    animation: none;
+    transform: translateY(0);
+  }
+  
+  .animate-shimmer {
+    animation-duration: 3s;
+  }
+  
+  /* Optimize backdrop filters for mobile performance */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(8px);
+  }
+  
+  .backdrop-blur-lg {
+    backdrop-filter: blur(6px);
+  }
+  
+  .backdrop-blur-md {
+    backdrop-filter: blur(4px);
   }
 }

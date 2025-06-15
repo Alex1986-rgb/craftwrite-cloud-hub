@@ -50,6 +50,26 @@
   animation: heartbeat 1.5s ease-in-out infinite;
 }
 
+/* Mobile-optimized animations */
+@media (max-width: 768px) {
+  .animate-float {
+    animation-duration: 8s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .animate-shimmer {
+    animation-duration: 3s;
+  }
+  
+  .animate-bounce-soft {
+    animation-duration: 3s;
+  }
+  
+  .animate-pulse-glow {
+    animation-duration: 3s;
+  }
+}
+
 /* Delayed animations */
 .animate-delay-100 {
   animation-delay: 0.1s;
@@ -84,7 +104,7 @@
 .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
 .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
 
-/* Hover animations */
+/* Enhanced hover animations */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -110,11 +130,43 @@
   transform: rotate(5deg);
 }
 
+/* Mobile-specific hover effects */
+@media (max-width: 768px) {
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+  
+  .hover-rotate:hover {
+    transform: rotate(2deg);
+  }
+}
+
+/* Touch-friendly animations */
+.touch-scale {
+  transition: transform 0.1s ease-out;
+}
+
+.touch-scale:active {
+  transform: scale(0.98);
+}
+
 /* Loading states */
 .loading-shimmer {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  .loading-shimmer {
+    animation-duration: 2s;
+  }
 }
 
 /* Responsive animations */
@@ -126,5 +178,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .hover-lift,
+  .hover-scale,
+  .hover-rotate,
+  .touch-scale {
+    transition: none;
+  }
+  
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .hover-rotate:hover,
+  .touch-scale:active {
+    transform: none;
   }
 }
