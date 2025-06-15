@@ -97,7 +97,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             asChild 
             className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-400 hover:to-purple-400 border-0 rounded-xl py-2 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-sm"
           >
-            <Link to="/order" className="flex items-center justify-center gap-2">
+            <Link to={`/order/${service.slug}`} className="flex items-center justify-center gap-2">
               <Zap className="w-3 h-3" />
               Заказать
             </Link>
