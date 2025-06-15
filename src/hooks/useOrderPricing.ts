@@ -30,7 +30,16 @@ export function useOrderPricing() {
     // Competitor analysis
     const competitorAnalysisPrice = (form as any).competitorDomains?.length > 0 ? 3000 : 0;
 
-    return Math.round(basePrice + additionalPrice + competitorAnalysisPrice);
+    // LSI keywords bonus
+    const lsiPrice = (form as any).lsiKeywords?.length > 0 ? 1500 : 0;
+
+    // Meta data optimization
+    const metaDataPrice = (form as any).metaData?.metaTitle || (form as any).metaData?.metaDescription ? 1000 : 0;
+
+    // Content structure bonus
+    const contentStructurePrice = (form as any).contentQuestions?.length > 0 ? 800 : 0;
+
+    return Math.round(basePrice + additionalPrice + competitorAnalysisPrice + lsiPrice + metaDataPrice + contentStructurePrice);
   };
 
   const getPricePerThousandCharacters = (service: string): number => {
@@ -46,9 +55,13 @@ export function useOrderPricing() {
       case 'seo-article':
         return 400;
       case 'product-description':
-        return 300;
+        return 350;
       case 'social-media':
-        return 1000; // Higher rate for short-form content
+        return 1200; // Higher rate for short-form content
+      case 'blog-post':
+        return 450;
+      case 'press-release':
+        return 550;
       default:
         return 500;
     }
@@ -70,6 +83,10 @@ export function useOrderPricing() {
         return 1000;
       case 'social-media':
         return 500;
+      case 'blog-post':
+        return 2500;
+      case 'press-release':
+        return 2000;
       default:
         return 2000;
     }
@@ -86,6 +103,16 @@ export function useOrderPricing() {
     
     // Competitor analysis adds time
     if ((form as any).competitorDomains?.length > 0) {
+      baseDays += 1;
+    }
+
+    // LSI keywords research time
+    if ((form as any).lsiKeywords?.length > 0 && (form as any).lsiKeywordMode === 'auto') {
+      baseDays += 1;
+    }
+
+    // Content structure development time
+    if ((form as any).contentQuestions?.length > 5) {
       baseDays += 1;
     }
 

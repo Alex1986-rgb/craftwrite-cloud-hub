@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Slider } from '@/components/ui/slider';
 import { Info, Calculator } from 'lucide-react';
 
 interface CharacterCalculatorProps {
@@ -13,13 +14,16 @@ interface CharacterCalculatorProps {
 }
 
 const SERVICE_RECOMMENDATIONS = {
-  'seo-article': { min: 3000, max: 8000, optimal: 5000 },
-  'product-description': { min: 500, max: 1500, optimal: 800 },
-  'landing-page': { min: 8000, max: 20000, optimal: 12000 },
-  'social-media': { min: 100, max: 500, optimal: 280 },
-  'email-campaign': { min: 1000, max: 3000, optimal: 1500 },
-  'chatbot-scripts': { min: 2000, max: 6000, optimal: 3500 },
-  'default': { min: 1000, max: 5000, optimal: 2500 }
+  'seo-article': { min: 5000, max: 15000, optimal: 8000 },
+  'product-description': { min: 800, max: 2500, optimal: 1500 },
+  'landing-page': { min: 12000, max: 35000, optimal: 20000 },
+  'social-media': { min: 280, max: 1000, optimal: 500 },
+  'email-campaign': { min: 2000, max: 6000, optimal: 3500 },
+  'chatbot-scripts': { min: 3000, max: 10000, optimal: 6000 },
+  'sales-letter': { min: 8000, max: 25000, optimal: 15000 },
+  'press-release': { min: 2500, max: 5000, optimal: 3500 },
+  'blog-post': { min: 4000, max: 12000, optimal: 7000 },
+  'default': { min: 2000, max: 10000, optimal: 5000 }
 };
 
 export default function CharacterCalculator({ 
@@ -29,10 +33,22 @@ export default function CharacterCalculator({
 }: CharacterCalculatorProps) {
   const recommendations = SERVICE_RECOMMENDATIONS[serviceType as keyof typeof SERVICE_RECOMMENDATIONS] || SERVICE_RECOMMENDATIONS.default;
   const [characterCount, setCharacterCount] = useState(initialCount || recommendations.optimal);
+  const [useSlider, setUseSlider] = useState(false);
 
   useEffect(() => {
     onCharacterCountChange(characterCount);
   }, [characterCount, onCharacterCountChange]);
+
+  const handleSliderChange = (value: number[]) => {
+    setCharacterCount(value[0]);
+  };
+
+  const handleInputChange = (value: string) => {
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 100 && numValue <= 100000) {
+      setCharacterCount(numValue);
+    }
+  };
 
   const handleRecommendationClick = (count: number) => {
     setCharacterCount(count);
@@ -56,6 +72,16 @@ export default function CharacterCalculator({
     }
   };
 
+  const getReadingTime = () => {
+    // Средняя скорость чтения: 1200-1500 символов в минуту (русский текст)
+    return Math.ceil(characterCount / 1300);
+  };
+
+  const getWordsEstimate = () => {
+    // Примерно 6-7 символов на слово в русском языке
+    return Math.round(characterCount / 6.5);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -65,26 +91,55 @@ export default function CharacterCalculator({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="character-count">Количество символов</Label>
-          <Input
-            id="character-count"
-            type="number"
-            min="100"
-            max="50000"
-            value={characterCount}
-            onChange={(e) => setCharacterCount(Number(e.target.value))}
-            className="text-lg font-semibold"
-          />
+        <div className="space-y-3">
+          <div className="flex items-center gap-4">
+            <Label htmlFor="character-count">Количество символов</Label>
+            <button
+              type="button"
+              onClick={() => setUseSlider(!useSlider)}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              {useSlider ? 'Ввести точно' : 'Использовать слайдер'}
+            </button>
+          </div>
+
+          {useSlider ? (
+            <div className="space-y-2">
+              <Slider
+                value={[characterCount]}
+                onValueChange={handleSliderChange}
+                min={recommendations.min}
+                max={recommendations.max}
+                step={500}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>{recommendations.min.toLocaleString()}</span>
+                <span className="font-semibold">{characterCount.toLocaleString()}</span>
+                <span>{recommendations.max.toLocaleString()}</span>
+              </div>
+            </div>
+          ) : (
+            <Input
+              id="character-count"
+              type="number"
+              min="100"
+              max="100000"
+              value={characterCount}
+              onChange={(e) => handleInputChange(e.target.value)}
+              className="text-lg font-semibold"
+            />
+          )}
         </div>
 
         <div className={`p-3 rounded-lg border ${getRecommendationColor()}`}>
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-3">
             <Info className="w-4 h-4" />
             <span className="font-medium">Рекомендации для {serviceType}:</span>
           </div>
           <div className="grid grid-cols-3 gap-2 text-sm">
             <button
+              type="button"
               onClick={() => handleRecommendationClick(recommendations.min)}
               className="p-2 bg-white rounded border hover:bg-gray-50 transition-colors"
             >
@@ -92,13 +147,15 @@ export default function CharacterCalculator({
               <div>{recommendations.min.toLocaleString()}</div>
             </button>
             <button
+              type="button"
               onClick={() => handleRecommendationClick(recommendations.optimal)}
-              className="p-2 bg-white rounded border hover:bg-gray-50 transition-colors"
+              className="p-2 bg-white rounded border hover:bg-gray-50 transition-colors ring-2 ring-blue-200"
             >
               <div className="font-medium">Оптимально</div>
               <div>{recommendations.optimal.toLocaleString()}</div>
             </button>
             <button
+              type="button"
               onClick={() => handleRecommendationClick(recommendations.max)}
               className="p-2 bg-white rounded border hover:bg-gray-50 transition-colors"
             >
@@ -108,11 +165,24 @@ export default function CharacterCalculator({
           </div>
         </div>
 
-        <div className="flex justify-between text-sm text-gray-600">
-          <span>Примерное время чтения:</span>
-          <Badge variant="secondary">
-            ~{Math.ceil(characterCount / 1200)} мин
-          </Badge>
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Примерно слов:</span>
+            <Badge variant="secondary">
+              ~{getWordsEstimate().toLocaleString()}
+            </Badge>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Время чтения:</span>
+            <Badge variant="secondary">
+              ~{getReadingTime()} мин
+            </Badge>
+          </div>
+        </div>
+
+        <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+          <strong>Совет:</strong> Оптимальный объем учитывает требования поисковых систем и 
+          удобство восприятия для читателей. Больше текста не всегда лучше для SEO.
         </div>
       </CardContent>
     </Card>

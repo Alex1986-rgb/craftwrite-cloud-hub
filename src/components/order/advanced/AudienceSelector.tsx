@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Users, Plus } from 'lucide-react';
 
 interface AudienceSelectorProps {
@@ -13,48 +14,109 @@ interface AudienceSelectorProps {
 }
 
 const PREDEFINED_AUDIENCES = {
-  'business': [
-    'Предприниматели 25-45 лет, малый и средний бизнес',
-    'Руководители компаний, принимающие решения о закупках',
-    'Стартаперы и основатели технологических компаний',
-    'Менеджеры по продажам и маркетингу',
-    'Владельцы интернет-магазинов и e-commerce проектов'
+  'business-b2b': [
+    'Руководители малого и среднего бизнеса (25-50 лет)',
+    'Топ-менеджеры крупных корпораций',
+    'Предприниматели в сфере IT и технологий',
+    'Владельцы производственных предприятий',
+    'Директора по маркетингу и продажам',
+    'Закупщики и снабженцы предприятий',
+    'Консультанты и бизнес-тренеры'
+  ],
+  'business-b2c': [
+    'Семьи с детьми (средний доход)',
+    'Молодые специалисты 25-35 лет',
+    'Активные пенсионеры 60+',
+    'Студенты и выпускники вузов',
+    'Фрилансеры и удаленные сотрудники',
+    'Домохозяйки 30-45 лет',
+    'Предприниматели-одиночки'
   ],
   'tech': [
-    'IT-специалисты и разработчики программного обеспечения',
-    'Системные администраторы и DevOps инженеры',
-    'Дизайнеры и UX/UI специалисты',
-    'Продуктовые менеджеры в IT-сфере',
-    'Студенты и выпускники технических вузов'
+    'Разработчики программного обеспечения',
+    'Системные администраторы',
+    'DevOps и инженеры автоматизации',
+    'UX/UI дизайнеры',
+    'Продуктовые менеджеры',
+    'CTO и технические директора',
+    'Студенты IT-специальностей',
+    'Стартаперы в технологической сфере'
   ],
   'education': [
     'Студенты высших учебных заведений',
-    'Преподаватели и научные сотрудники',
-    'Родители школьников и подростков',
+    'Школьники старших классов',
+    'Преподаватели и педагоги',
+    'Родители школьников',
     'Специалисты, повышающие квалификацию',
-    'Организаторы образовательных курсов и тренингов'
+    'Организаторы тренингов и курсов',
+    'HR-менеджеры, занимающиеся обучением',
+    'Методисты и разработчики курсов'
   ],
   'health': [
-    'Люди, заботящиеся о своем здоровье 30-55 лет',
-    'Родители с детьми, ищущие медицинские услуги',
+    'Люди, ведущие здоровый образ жизни (25-55 лет)',
+    'Родители с маленькими детьми',
     'Спортсмены и любители фитнеса',
-    'Пожилые люди, нуждающиеся в медицинской помощи',
-    'Медицинские работники и специалисты'
+    'Люди с хроническими заболеваниями',
+    'Пожилые люди, заботящиеся о здоровье',
+    'Медицинские работники',
+    'Диетологи и фитнес-тренеры',
+    'Психологи и терапевты'
   ],
   'retail': [
-    'Женщины 25-45 лет, активные покупатели онлайн',
-    'Семьи с детьми, покупающие товары для дома',
+    'Женщины 25-45 лет (активные покупательницы)',
+    'Семьи с детьми дошкольного возраста',
     'Молодежь 18-30 лет, следящая за трендами',
-    'Пенсионеры, ищущие качественные товары по доступным ценам',
-    'Коллекционеры и любители уникальных товаров'
+    'Коллекционеры и любители уникальных товаров',
+    'Пенсионеры, ищущие качество по доступной цене',
+    'Владельцы домашних животных',
+    'Любители рукоделия и творчества',
+    'Покупатели экологичных товаров'
+  ],
+  'finance': [
+    'Инвесторы-новички',
+    'Опытные трейдеры и инвесторы',
+    'Владельцы малого бизнеса',
+    'Семьи, планирующие крупные покупки',
+    'Люди предпенсионного возраста',
+    'Молодые специалисты с растущим доходом',
+    'Фрилансеры и самозанятые',
+    'Финансовые консультанты'
+  ],
+  'real-estate': [
+    'Семьи, планирующие покупку жилья',
+    'Инвесторы в недвижимость',
+    'Молодые семьи (первое жилье)',
+    'Люди, планирующие переезд',
+    'Владельцы коммерческой недвижимости',
+    'Арендодатели и управляющие',
+    'Риелторы и брокеры',
+    'Девелоперы и застройщики'
   ]
 };
+
+const DEMOGRAPHIC_CHARACTERISTICS = [
+  'Возраст 18-25 лет',
+  'Возраст 26-35 лет',
+  'Возраст 36-45 лет',
+  'Возраст 46-55 лет',
+  'Возраст 55+ лет',
+  'Преимущественно мужчины',
+  'Преимущественно женщины',
+  'Высшее образование',
+  'Средний доход',
+  'Высокий доход',
+  'Проживают в крупных городах',
+  'Проживают в малых городах/селах',
+  'Активные пользователи интернета',
+  'Консервативные в выборе'
+];
 
 export default function AudienceSelector({ onAudienceChange, initialAudience }: AudienceSelectorProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedAudience, setSelectedAudience] = useState<string>('');
   const [customAudience, setCustomAudience] = useState<string>(initialAudience || '');
-  const [mode, setMode] = useState<'predefined' | 'custom'>('predefined');
+  const [mode, setMode] = useState<'predefined' | 'constructor' | 'custom'>('predefined');
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState<string[]>([]);
 
   const handlePredefinedSelect = (audience: string) => {
     setSelectedAudience(audience);
@@ -67,6 +129,20 @@ export default function AudienceSelector({ onAudienceChange, initialAudience }: 
     onAudienceChange(value);
   };
 
+  const handleCharacteristicChange = (characteristic: string, checked: boolean) => {
+    let updatedCharacteristics;
+    if (checked) {
+      updatedCharacteristics = [...selectedCharacteristics, characteristic];
+    } else {
+      updatedCharacteristics = selectedCharacteristics.filter(c => c !== characteristic);
+    }
+    setSelectedCharacteristics(updatedCharacteristics);
+    
+    const constructedAudience = updatedCharacteristics.join(', ');
+    setCustomAudience(constructedAudience);
+    onAudienceChange(constructedAudience);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -76,14 +152,22 @@ export default function AudienceSelector({ onAudienceChange, initialAudience }: 
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Button
             type="button"
             variant={mode === 'predefined' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setMode('predefined')}
           >
-            Выбрать из списка
+            Готовые варианты
+          </Button>
+          <Button
+            type="button"
+            variant={mode === 'constructor' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setMode('constructor')}
+          >
+            Конструктор
           </Button>
           <Button
             type="button"
@@ -92,7 +176,7 @@ export default function AudienceSelector({ onAudienceChange, initialAudience }: 
             onClick={() => setMode('custom')}
           >
             <Plus className="w-4 h-4 mr-1" />
-            Ввести вручную
+            Свое описание
           </Button>
         </div>
 
@@ -105,11 +189,14 @@ export default function AudienceSelector({ onAudienceChange, initialAudience }: 
                   <SelectValue placeholder="Выберите сферу" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="business">Бизнес и предпринимательство</SelectItem>
+                  <SelectItem value="business-b2b">B2B бизнес</SelectItem>
+                  <SelectItem value="business-b2c">B2C бизнес</SelectItem>
                   <SelectItem value="tech">IT и технологии</SelectItem>
                   <SelectItem value="education">Образование</SelectItem>
                   <SelectItem value="health">Здоровье и медицина</SelectItem>
-                  <SelectItem value="retail">Ритейл и e-commerce</SelectItem>
+                  <SelectItem value="retail">Ритейл и товары</SelectItem>
+                  <SelectItem value="finance">Финансы и инвестиции</SelectItem>
+                  <SelectItem value="real-estate">Недвижимость</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -133,6 +220,28 @@ export default function AudienceSelector({ onAudienceChange, initialAudience }: 
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {mode === 'constructor' && (
+          <div className="space-y-3">
+            <Label>Выберите характеристики аудитории</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {DEMOGRAPHIC_CHARACTERISTICS.map((characteristic, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`char-${index}`}
+                    checked={selectedCharacteristics.includes(characteristic)}
+                    onCheckedChange={(checked) => 
+                      handleCharacteristicChange(characteristic, checked as boolean)
+                    }
+                  />
+                  <Label htmlFor={`char-${index}`} className="text-sm">
+                    {characteristic}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

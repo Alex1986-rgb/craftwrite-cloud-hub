@@ -12,10 +12,12 @@ import OrderFormDeadline from './OrderFormDeadline';
 import OrderFormAdvanced from './OrderFormAdvanced';
 import OrderFormSummary from './OrderFormSummary';
 
-// New modern components
+// Enhanced modern components
 import CharacterCalculator from './advanced/CharacterCalculator';
 import AudienceSelector from './advanced/AudienceSelector';
 import KeywordManager from './advanced/KeywordManager';
+import ContentStructure from './advanced/ContentStructure';
+import MetaDataManager from './advanced/MetaDataManager';
 
 interface OrderFormContentProps {
   variant?: 'public' | 'client';
@@ -37,10 +39,20 @@ export function OrderFormContent({ variant, onOrderCreated }: OrderFormContentPr
   const { calculateEstimatedPrice, getEstimatedDeliveryTime } = useOrderPricing();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // New state for modern features
+  // Enhanced state for modern features
   const [characterCount, setCharacterCount] = useState(5000);
   const [keywordMode, setKeywordMode] = useState<'client' | 'auto'>('client');
+  const [lsiKeywords, setLSIKeywords] = useState<string[]>([]);
+  const [lsiKeywordMode, setLSIKeywordMode] = useState<'client' | 'auto'>('client');
   const [competitorDomains, setCompetitorDomains] = useState<string[]>([]);
+  const [contentQuestions, setContentQuestions] = useState<string[]>([]);
+  const [metaData, setMetaData] = useState({
+    metaTitle: '',
+    metaDescription: '',
+    companyName: '',
+    includeLinks: false,
+    internalLinks: [] as string[]
+  });
 
   // Pre-fill user data if authenticated
   useState(() => {
@@ -73,12 +85,16 @@ export function OrderFormContent({ variant, onOrderCreated }: OrderFormContentPr
   const handleSubmit = async () => {
     setLoading(true);
     
-    // Enhanced order data with new features
+    // Enhanced order data with all new features
     const orderData = {
       ...form,
       characterCount,
       keywordMode,
+      lsiKeywords,
+      lsiKeywordMode,
       competitorDomains,
+      contentQuestions,
+      metaData,
       estimatedPrice,
       deliveryTime
     };
@@ -132,6 +148,11 @@ export function OrderFormContent({ variant, onOrderCreated }: OrderFormContentPr
               onAudienceChange={(audience) => updateForm({ targetAudience: audience })}
               initialAudience={form.targetAudience}
             />
+
+            <ContentStructure
+              onQuestionsChange={setContentQuestions}
+              initialQuestions={contentQuestions}
+            />
           </div>
         );
       case 4:
@@ -148,9 +169,19 @@ export function OrderFormContent({ variant, onOrderCreated }: OrderFormContentPr
                 setKeywordMode(mode);
                 updateForm({ seoKeywords: keywords.join(', ') });
               }}
+              onLSIKeywordsChange={(keywords, mode) => {
+                setLSIKeywords(keywords);
+                setLSIKeywordMode(mode);
+              }}
               onCompetitorAnalysisChange={setCompetitorDomains}
               initialKeywords={form.seoKeywords ? form.seoKeywords.split(', ') : []}
               initialMode={keywordMode}
+              initialLSIKeywords={lsiKeywords}
+            />
+
+            <MetaDataManager
+              onMetaDataChange={setMetaData}
+              initialMetaData={metaData}
             />
             
             <OrderFormAdvanced
