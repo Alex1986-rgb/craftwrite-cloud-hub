@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { X, Bot, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, Bot, ArrowRight, ArrowLeft, CheckCircle, Settings } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 // Import step components
@@ -74,6 +74,24 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
       internalLinks: [] as string[]
     }
   });
+
+  // Simplified validation
+  const isStepValid = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return contactData.name.trim() !== '' && contactData.email.trim() !== '' && projectData.description.trim() !== '';
+      case 2:
+        return projectData.platforms.length > 0;
+      case 3:
+        return projectData.audience.trim() !== '';
+      case 4:
+        return true; // Advanced step is optional
+      case 5:
+        return true; // Final step validation handled separately
+      default:
+        return false;
+    }
+  };
 
   const handleContactChange = (field: string, value: string) => {
     setContactData(prev => ({ ...prev, [field]: value }));
@@ -162,6 +180,7 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     const orderData = {
       ...contactData,
       ...projectData,
+      ...advancedOptions,
       ...pricing,
       selectedType
     };
@@ -184,7 +203,7 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
   };
 
   const nextStep = () => {
-    if (currentStep < 5) { // Updated to 5 steps
+    if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -193,6 +212,21 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
+  };
+
+  // Enhanced step navigation
+  const goToStep = (step: number) => {
+    // Allow forward navigation only if previous steps are valid
+    if (step <= currentStep || (step <= 5 && isStepsUpToValid(step - 1))) {
+      setCurrentStep(step);
+    }
+  };
+
+  const isStepsUpToValid = (upToStep: number): boolean => {
+    for (let i = 1; i <= upToStep; i++) {
+      if (!isStepValid(i)) return false;
+    }
+    return true;
   };
 
   const renderStepContent = () => {
@@ -282,6 +316,17 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     }
   };
 
+  const getStepTitle = (step: number): string => {
+    const titles = {
+      1: 'Контакты',
+      2: 'Платформы',
+      3: 'Аудитория',
+      4: 'Детальные настройки',
+      5: 'Завершение'
+    };
+    return titles[step as keyof typeof titles] || '';
+  };
+
   return (
     <Card className="max-w-6xl mx-auto shadow-2xl border-0 bg-white">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
@@ -298,22 +343,45 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
           </Button>
         </div>
         
-        {/* Updated progress indicator for 5 steps */}
-        <div className="flex items-center gap-2 mt-4">
-          {[1, 2, 3, 4, 5].map((step) => (
-            <div key={step} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                step <= currentStep ? 'bg-white text-blue-600' : 'bg-white/20 text-white/60'
-              }`}>
-                {step}
-              </div>
-              {step < 5 && (
-                <div className={`w-12 h-1 mx-2 ${
-                  step < currentStep ? 'bg-white' : 'bg-white/20'
-                }`} />
-              )}
-            </div>
-          ))}
+        {/* Enhanced progress indicator */}
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm opacity-90">Шаг {currentStep} из 5</span>
+            <span className="text-sm opacity-90">{Math.round((currentStep / 5) * 100)}% завершено</span>
+          </div>
+          
+          <div className="grid grid-cols-5 gap-2">
+            {[1, 2, 3, 4, 5].map((step) => (
+              <button
+                key={step}
+                onClick={() => goToStep(step)}
+                disabled={step > currentStep && !isStepsUpToValid(step - 1)}
+                className={`relative p-3 rounded-lg text-xs font-medium transition-all duration-300 ${
+                  step === currentStep
+                    ? 'bg-white text-blue-600 shadow-lg'
+                    : step < currentStep || isStepsUpToValid(step - 1)
+                      ? 'bg-white/20 text-white hover:bg-white/30 cursor-pointer'
+                      : 'bg-white/10 text-white/50 cursor-not-allowed'
+                }`}
+              >
+                <div className="flex items-center justify-center mb-1">
+                  {step === 4 ? (
+                    <Settings className="w-4 h-4" />
+                  ) : step < currentStep ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <span>{step}</span>
+                  )}
+                </div>
+                <div className="text-[10px] leading-tight">
+                  {getStepTitle(step)}
+                </div>
+                {step === 4 && (
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </CardHeader>
 
@@ -321,41 +389,88 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
         <form onSubmit={handleSubmit}>
           {renderStepContent()}
           
-          {/* Navigation buttons */}
-          <div className="flex justify-between mt-8">
+          {/* Enhanced navigation */}
+          <div className="flex justify-between items-center mt-8 pt-6 border-t">
             <Button
               type="button"
               variant="outline"
               onClick={prevStep}
               disabled={currentStep === 1}
+              className="flex items-center gap-2"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4" />
               Назад
             </Button>
             
+            <div className="flex items-center gap-2">
+              {/* Skip advanced step option */}
+              {currentStep === 3 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setCurrentStep(5)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Пропустить настройки
+                </Button>
+              )}
+              
+              {currentStep === 4 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setCurrentStep(5)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Пропустить
+                </Button>
+              )}
+            </div>
+
             {currentStep < 5 ? (
               <Button
                 type="button"
                 onClick={nextStep}
-                disabled={
-                  (currentStep === 1 && (!contactData.name || !contactData.email || !projectData.description)) ||
-                  (currentStep === 2 && projectData.platforms.length === 0) ||
-                  (currentStep === 3 && !projectData.audience)
-                }
+                disabled={!isStepValid(currentStep)}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600"
               >
-                {currentStep === 4 ? 'К финальному шагу' : 'Далее'}
-                <ArrowRight className="w-4 h-4 ml-2" />
+                {currentStep === 3 ? (
+                  <>
+                    <Settings className="w-4 h-4" />
+                    Детальные настройки
+                  </>
+                ) : currentStep === 4 ? (
+                  'К завершению'
+                ) : (
+                  'Далее'
+                )}
+                <ArrowRight className="w-4 h-4" />
               </Button>
             ) : (
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-gradient-to-r from-blue-600 to-purple-600"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 flex items-center gap-2"
               >
                 {loading ? 'Отправка...' : 'Отправить заказ'}
+                {!loading && <CheckCircle className="w-4 h-4" />}
               </Button>
             )}
           </div>
+
+          {/* Help text for advanced features */}
+          {currentStep === 3 && (
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 text-blue-800 font-medium mb-2">
+                <Settings className="w-4 h-4" />
+                Хотите больше возможностей?
+              </div>
+              <p className="text-sm text-blue-700">
+                На следующем шаге вы сможете настроить объем скриптов, управлять ключевыми словами, 
+                анализировать конкурентов и добавить мета-данные для лучшего результата.
+              </p>
+            </div>
+          )}
         </form>
       </CardContent>
     </Card>
