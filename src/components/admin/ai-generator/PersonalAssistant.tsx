@@ -146,7 +146,7 @@ export default function PersonalAssistant({ onProfileUpdate }: PersonalAssistant
         <CardTitle className="flex items-center gap-2">
           <User className="w-5 h-5 text-purple-600" />
           Персональный помощник
-          <Badge className={getExperienceBadgeColor(profile.experience)} className="ml-auto">
+          <Badge className={`ml-auto ${getExperienceBadgeColor(profile.experience)}`}>
             {profile.experience}
           </Badge>
         </CardTitle>
