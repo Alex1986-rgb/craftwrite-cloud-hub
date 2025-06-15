@@ -1,7 +1,7 @@
 
 // Main services export file
-export type { Service, ServiceCategory, ServiceDifficulty } from "./types/service";
-export { SERVICES } from "./services/serviceData";
+export type { Service, ServiceCategory, ServiceDifficulty, TextExample, SeoMetrics } from "./types/service";
+export { UNIFIED_SERVICES as SERVICES } from "./services/unifiedServiceData";
 export {
   getServiceBySlug,
   getServicesByCategory,

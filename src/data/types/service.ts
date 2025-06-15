@@ -1,4 +1,19 @@
 
+export interface TextExample {
+  title: string;
+  content: string;
+  metrics: {
+    [key: string]: string | number | boolean;
+  };
+}
+
+export interface SeoMetrics {
+  averageRanking: string;
+  trafficIncrease: string;
+  conversionRate: string;
+  organicGrowth: string;
+}
+
 export interface Service {
   slug: string;
   name: string;
@@ -23,6 +38,8 @@ export interface Service {
   recs: string[];
   seoText: string;
   format: string;
+  textExamples?: TextExample[];
+  seoMetrics?: SeoMetrics;
 }
 
 export type ServiceCategory = 
