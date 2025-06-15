@@ -12,6 +12,7 @@ import BatchGeneration from "./BatchGeneration";
 import TextRefiner from "./TextRefiner";
 import ExportManager from "./ExportManager";
 import EnhancedQualityAnalyzer from "./EnhancedQualityAnalyzer";
+import AIAssistantTab from "./AIAssistantTab";
 import { TabNavigationProps } from "./types/TabNavigationTypes";
 
 export default function TabNavigation({
@@ -83,6 +84,16 @@ export default function TabNavigation({
         <EnhancedQualityAnalyzer
           text={generatedText}
           keywords={formData.keywords}
+        />
+      </TabsContent>
+
+      <TabsContent value="assistant">
+        <AIAssistantTab
+          text={generatedText}
+          textType={formData.textType}
+          onApplyRecommendation={(id, suggestion) => {
+            console.log('Applying recommendation:', id, suggestion);
+          }}
         />
       </TabsContent>
 

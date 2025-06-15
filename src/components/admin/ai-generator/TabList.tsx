@@ -1,10 +1,10 @@
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download } from "lucide-react";
+import { Wand2, Library, Bookmark, MessageSquare, History, Zap, Edit3, BarChart3, Download, Brain } from "lucide-react";
 
 export default function TabList() {
   return (
-    <TabsList className="grid w-full grid-cols-9">
+    <TabsList className="grid w-full grid-cols-10">
       <TabsTrigger value="generator" className="flex items-center gap-2">
         <Wand2 className="w-4 h-4" />
         Генератор
@@ -20,6 +20,10 @@ export default function TabList() {
       <TabsTrigger value="analyzer" className="flex items-center gap-2">
         <BarChart3 className="w-4 h-4" />
         Анализ
+      </TabsTrigger>
+      <TabsTrigger value="assistant" className="flex items-center gap-2">
+        <Brain className="w-4 h-4" />
+        Ассистент
       </TabsTrigger>
       <TabsTrigger value="export" className="flex items-center gap-2">
         <Download className="w-4 h-4" />
