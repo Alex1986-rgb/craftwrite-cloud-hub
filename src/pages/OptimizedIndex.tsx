@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
@@ -18,6 +17,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import NewsletterSection from "@/components/landing/NewsletterSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
+import ModernSuccessSection from "@/components/landing/ModernSuccessSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import EnhancedSeo from "@/components/seo/EnhancedSeo";
@@ -117,6 +117,7 @@ export default function OptimizedIndex() {
         <ModernPricingSection />
         <ProcessSection />
         <CaseStudiesSection />
+        <ModernSuccessSection />
         <InnovativePortfolioSection />
         <ProfessionalStatsSection />
         <TestimonialsSection />
