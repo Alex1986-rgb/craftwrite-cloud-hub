@@ -29,15 +29,15 @@ export class SeoAnalyticsService {
       const metrics: CoreWebVitals = { lcp: 0, fid: 0, cls: 0 };
       
       return new Promise((resolve) => {
-        webVitals.getLCP((metric) => {
+        webVitals.onLCP((metric) => {
           metrics.lcp = metric.value;
         });
         
-        webVitals.getFID((metric) => {
+        webVitals.onFID((metric) => {
           metrics.fid = metric.value;
         });
         
-        webVitals.getCLS((metric) => {
+        webVitals.onCLS((metric) => {
           metrics.cls = metric.value;
           resolve(metrics);
         });

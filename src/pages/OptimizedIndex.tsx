@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
@@ -117,30 +116,6 @@ const structuredData = [
   createFAQStructuredData(faqData)
 ];
 
-// Локальные SEO данные
-const localSeoData = {
-  businessName: "CopyPro Cloud",
-  address: {
-    street: "Красная площадь, 1",
-    city: "Москва",
-    region: "Москва",
-    postalCode: "109012",
-    country: "RU"
-  },
-  phone: "+7-800-555-0199",
-  geo: {
-    latitude: 55.7558,
-    longitude: 37.6173
-  }
-};
-
-// Hreflang для международных версий
-const hreflangUrls = {
-  "ru": "https://copypro-cloud.lovable.app/",
-  "en": "https://copypro-cloud.lovable.app/en/",
-  "x-default": "https://copypro-cloud.lovable.app/"
-};
-
 export default function OptimizedIndex() {
   return (
     <>
@@ -149,15 +124,6 @@ export default function OptimizedIndex() {
         description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. Создаем SEO-тексты, продающие лендинги, email-кампании. Гарантия качества 100%. Заказать от 1000₽"
         keywords="копирайтинг, SEO-тексты, продающие тексты, контент-маркетинг, лендинги, email-маркетинг, тексты для сайта, копирайтер, Москва, Россия"
         structuredData={structuredData}
-        localSeo={localSeoData}
-        hreflang={hreflangUrls}
-        article={{
-          publishedTime: "2024-01-01T00:00:00Z",
-          modifiedTime: new Date().toISOString(),
-          author: "CopyPro Cloud Team",
-          section: "Копирайтинг",
-          tags: ["копирайтинг", "SEO", "контент-маркетинг", "digital marketing"]
-        }}
       />
       
       <main className="relative overflow-hidden">

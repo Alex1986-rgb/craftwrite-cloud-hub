@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
@@ -38,6 +37,7 @@ function OrderFormContent({ variant, onOrderCreated }: UnifiedOrderFormProps) {
   
   const { isCurrentStepValid, isFormValid } = useOrderValidation();
   const { calculateEstimatedPrice, getEstimatedDeliveryTime } = useOrderPricing();
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Pre-fill user data if authenticated
   useState(() => {
@@ -52,6 +52,20 @@ function OrderFormContent({ variant, onOrderCreated }: UnifiedOrderFormProps) {
 
   const estimatedPrice = calculateEstimatedPrice();
   const deliveryTime = getEstimatedDeliveryTime();
+
+  // Calculate form progress
+  const formProgress = React.useMemo(() => {
+    let completedFields = 0;
+    const totalFields = 5;
+    
+    if (form.name.trim()) completedFields++;
+    if (form.email.trim()) completedFields++;
+    if (form.service) completedFields++;
+    if (form.details.trim()) completedFields++;
+    if (form.deadline) completedFields++;
+    
+    return (completedFields / totalFields) * 100;
+  }, [form]);
 
   const handleNext = () => {
     if (isCurrentStepValid() && currentStep < 5) {
@@ -80,6 +94,8 @@ function OrderFormContent({ variant, onOrderCreated }: UnifiedOrderFormProps) {
           <OrderFormContact
             form={form}
             handleChange={(e) => updateForm({ [e.target.name]: e.target.value })}
+            nameInputRef={nameInputRef}
+            formProgress={formProgress}
             variant={variant}
             userPrefilled={Boolean(user && variant === 'client')}
           />
