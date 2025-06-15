@@ -1,7 +1,7 @@
 
 export interface TextBlock {
   type: 'heading' | 'subheading' | 'paragraph' | 'quote' | 'list' | 'table' | 'cta' | 'stats' | 'testimonial';
-  content: string;
+  content?: string; // Made optional since lists, tables, and stats might not need it
   level?: number; // для заголовков H1-H6
   items?: string[]; // для списков
   tableData?: {
