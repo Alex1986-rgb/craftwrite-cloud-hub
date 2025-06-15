@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,7 +15,7 @@ import {
   Pause,
   RefreshCw
 } from 'lucide-react';
-import { enhancedOpenAIService } from '@/services/enhancedOpenAIService';
+import { abTestingService } from '@/services/abTestingService';
 
 interface ABTest {
   id: string;
@@ -65,7 +64,7 @@ export default function ABTestManager() {
     if (!test) return;
 
     try {
-      const result = await enhancedOpenAIService.performABTest(test.variantA, test.variantB);
+      const result = await abTestingService.performABTest(test.variantA, test.variantB);
       
       const updatedTests = tests.map(t => 
         t.id === testId 

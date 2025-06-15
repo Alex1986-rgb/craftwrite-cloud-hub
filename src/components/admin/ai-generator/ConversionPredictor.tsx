@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +14,7 @@ import {
   BarChart3,
   Lightbulb
 } from 'lucide-react';
-import { enhancedOpenAIService } from '@/services/enhancedOpenAIService';
+import { conversionPredictionService } from '@/services/conversionPredictionService';
 
 interface PredictionResult {
   score: number;
@@ -36,7 +35,7 @@ export default function ConversionPredictor() {
     setIsAnalyzing(true);
     
     try {
-      const result = await enhancedOpenAIService.predictConversion(text, audience);
+      const result = await conversionPredictionService.predictConversion(text, audience);
       
       // Enhance with additional analysis
       const enhancedResult: PredictionResult = {

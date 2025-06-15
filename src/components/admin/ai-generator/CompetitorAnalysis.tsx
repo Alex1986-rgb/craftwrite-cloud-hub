@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +14,7 @@ import {
   Eye,
   Target
 } from 'lucide-react';
-import { enhancedOpenAIService } from '@/services/enhancedOpenAIService';
+import { competitorAnalysisService } from '@/services/competitorAnalysisService';
 
 interface CompetitorData {
   domain: string;
@@ -39,7 +38,7 @@ export default function CompetitorAnalysis() {
     
     try {
       const keywordList = keywords.split(',').map(k => k.trim());
-      const analysis = await enhancedOpenAIService.analyzeCompetitors(keywordList, industry);
+      const analysis = await competitorAnalysisService.analyzeCompetitors(keywordList, industry);
       
       // Transform analysis into competitor data
       const competitorData: CompetitorData[] = analysis.competitors.map((domain, index) => ({
