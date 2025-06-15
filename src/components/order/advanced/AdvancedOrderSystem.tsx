@@ -170,7 +170,7 @@ export default function AdvancedOrderSystem({
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <Car d className="flex items-center gap-2 text-xl font-bold mb-2">
+              <CardTitle className="flex items-center gap-2 text-xl font-bold mb-2">
                 <Package className="w-6 h-6" />
                 Заказ: {selectedService.name}
               </CardTitle>
