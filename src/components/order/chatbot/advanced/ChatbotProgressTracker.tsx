@@ -5,369 +5,220 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
+  ArrowLeft, 
+  Bot, 
   CheckCircle, 
   Clock, 
-  AlertCircle, 
-  ArrowLeft,
-  MessageSquare,
-  Bot,
-  Users,
-  Zap,
-  TestTube,
+  MessageSquare, 
+  Settings,
   FileText,
+  TestTube,
   Rocket
 } from 'lucide-react';
-
-interface ProgressStep {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  status: 'pending' | 'in-progress' | 'completed' | 'blocked';
-  estimatedHours: number;
-  actualHours?: number;
-  details?: string[];
-}
-
-const CHATBOT_PROGRESS_STEPS: ProgressStep[] = [
-  {
-    id: 'analysis',
-    name: 'Анализ требований',
-    description: 'Изучение ТЗ, целевой аудитории и платформ',
-    icon: <Users className="w-5 h-5" />,
-    status: 'completed',
-    estimatedHours: 4,
-    actualHours: 3,
-    details: [
-      'Анализ целевой аудитории',
-      'Определение ключевых сценариев',
-      'Выбор тональности общения',
-      'Планирование структуры диалогов'
-    ]
-  },
-  {
-    id: 'platform-setup',
-    name: 'Настройка платформ',
-    description: 'Подготовка технической части для выбранных платформ',
-    icon: <Bot className="w-5 h-5" />,
-    status: 'in-progress',
-    estimatedHours: 6,
-    actualHours: 4,
-    details: [
-      'Создание бота в Telegram',
-      'Настройка Webhook',
-      'Подключение дополнительных платформ',
-      'Базовая конфигурация'
-    ]
-  },
-  {
-    id: 'script-writing',
-    name: 'Написание сценариев',
-    description: 'Создание диалогов и логики общения',
-    icon: <MessageSquare className="w-5 h-5" />,
-    status: 'pending',
-    estimatedHours: 12,
-    details: [
-      'Приветственные сообщения',
-      'Основные диалоговые ветки',
-      'Обработка исключений',
-      'Финальные сообщения'
-    ]
-  },
-  {
-    id: 'flow-testing',
-    name: 'Тестирование логики',
-    description: 'Проверка всех сценариев и исправление ошибок',
-    icon: <TestTube className="w-5 h-5" />,
-    status: 'pending',
-    estimatedHours: 8,
-    details: [
-      'Тестирование всех сценариев',
-      'Проверка граничных случаев',
-      'Оптимизация ответов',
-      'Исправление найденных ошибок'
-    ]
-  },
-  {
-    id: 'optimization',
-    name: 'Оптимизация конверсий',
-    description: 'Настройка для максимальной эффективности',
-    icon: <Zap className="w-5 h-5" />,
-    status: 'pending',
-    estimatedHours: 6,
-    details: [
-      'Анализ узких мест',
-      'A/B тестирование сообщений',
-      'Настройка CTA кнопок',
-      'Улучшение конверсии'
-    ]
-  },
-  {
-    id: 'documentation',
-    name: 'Документация',
-    description: 'Создание инструкций и передача проекта',
-    icon: <FileText className="w-5 h-5" />,
-    status: 'pending',
-    estimatedHours: 4,
-    details: [
-      'Техническая документация',
-      'Инструкция для администраторов',
-      'Руководство по модерации',
-      'Рекомендации по развитию'
-    ]
-  },
-  {
-    id: 'deployment',
-    name: 'Запуск и передача',
-    description: 'Финальный запуск и обучение команды',
-    icon: <Rocket className="w-5 h-5" />,
-    status: 'pending',
-    estimatedHours: 2,
-    details: [
-      'Финальная проверка',
-      'Запуск в продакшн',
-      'Обучение команды клиента',
-      'Постановка на поддержку'
-    ]
-  }
-];
 
 interface ChatbotProgressTrackerProps {
   orderData: any;
   onBack: () => void;
 }
 
+const ORDER_STAGES = [
+  {
+    id: 'analysis',
+    title: 'Анализ требований',
+    description: 'Изучаем ваши потребности и аудиторию',
+    icon: Settings,
+    duration: '1-2 дня',
+    status: 'completed'
+  },
+  {
+    id: 'architecture',
+    title: 'Проектирование архитектуры',
+    description: 'Создаем структуру диалогов и сценариев',
+    icon: FileText,
+    duration: '2-3 дня',
+    status: 'current'
+  },
+  {
+    id: 'development',
+    title: 'Разработка сценариев',
+    description: 'Пишем и настраиваем диалоги бота',
+    icon: MessageSquare,
+    duration: '3-5 дней',
+    status: 'pending'
+  },
+  {
+    id: 'testing',
+    title: 'Тестирование',
+    description: 'Проверяем работу всех сценариев',
+    icon: TestTube,
+    duration: '1-2 дня',
+    status: 'pending'
+  },
+  {
+    id: 'deployment',
+    title: 'Запуск и настройка',
+    description: 'Развертываем бота на выбранных платформах',
+    icon: Rocket,
+    duration: '1 день',
+    status: 'pending'
+  }
+];
+
 export default function ChatbotProgressTracker({ orderData, onBack }: ChatbotProgressTrackerProps) {
-  const [steps, setSteps] = useState<ProgressStep[]>(CHATBOT_PROGRESS_STEPS);
-  const [currentStepIndex, setCurrentStepIndex] = useState(1);
+  const [currentProgress, setCurrentProgress] = useState(35);
+  const [timeRemaining, setTimeRemaining] = useState('5-7 дней');
 
   useEffect(() => {
-    // Simulate progress updates
+    // Симуляция обновления прогресса
     const interval = setInterval(() => {
-      setSteps(prevSteps => {
-        const newSteps = [...prevSteps];
-        const currentStep = newSteps[currentStepIndex];
-        
-        if (currentStep && currentStep.status === 'in-progress') {
-          if (currentStep.actualHours && currentStep.actualHours < currentStep.estimatedHours) {
-            currentStep.actualHours += 0.5;
-          } else {
-            currentStep.status = 'completed';
-            currentStep.actualHours = currentStep.estimatedHours;
-            
-            if (currentStepIndex < newSteps.length - 1) {
-              newSteps[currentStepIndex + 1].status = 'in-progress';
-              newSteps[currentStepIndex + 1].actualHours = 0;
-              setCurrentStepIndex(currentStepIndex + 1);
-            }
-          }
+      setCurrentProgress(prev => {
+        if (prev < 100) {
+          return prev + Math.random() * 2;
         }
-        
-        return newSteps;
+        return prev;
       });
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [currentStepIndex]);
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="w-5 h-5 text-green-600" />;
-      case 'in-progress':
-        return <Clock className="w-5 h-5 text-blue-600 animate-pulse" />;
-      case 'blocked':
-        return <AlertCircle className="w-5 h-5 text-red-600" />;
-      default:
-        return <Clock className="w-5 h-5 text-gray-400" />;
-    }
-  };
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'bg-green-100 border-green-300';
-      case 'in-progress':
-        return 'bg-blue-100 border-blue-300';
-      case 'blocked':
-        return 'bg-red-100 border-red-300';
-      default:
-        return 'bg-gray-50 border-gray-200';
+      case 'completed': return 'text-green-600 bg-green-100';
+      case 'current': return 'text-blue-600 bg-blue-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
-  const totalHours = steps.reduce((sum, step) => sum + step.estimatedHours, 0);
-  const completedHours = steps.reduce((sum, step) => {
-    return sum + (step.status === 'completed' ? step.estimatedHours : (step.actualHours || 0));
-  }, 0);
-  const progressPercentage = (completedHours / totalHours) * 100;
-
-  const completedSteps = steps.filter(step => step.status === 'completed').length;
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed': return CheckCircle;
+      case 'current': return Clock;
+      default: return Clock;
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm" onClick={onBack}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Назад
-            </Button>
-            <div className="flex-1">
-              <CardTitle className="flex items-center gap-2">
-                <Bot className="w-6 h-6" />
-                Создание чат-бота: {orderData?.service || 'Скрипты для чат-ботов'}
-              </CardTitle>
-              <p className="text-gray-600">
-                Отслеживание прогресса разработки • Заказ от {orderData?.name || 'Клиент'}
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="sm" onClick={onBack}>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Назад
+              </Button>
+              <div className="flex items-center gap-2">
+                <Bot className="w-6 h-6 text-blue-600" />
+                <CardTitle>Отслеживание заказа чат-бота</CardTitle>
+              </div>
             </div>
+            <Badge className="bg-blue-100 text-blue-800">
+              В работе
+            </Badge>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="text-2xl font-bold text-blue-600">
-                  {completedSteps}/{steps.length} этапов
-                </div>
-                <div className="text-sm text-gray-600">
-                  {completedHours.toFixed(1)}/{totalHours} часов
-                </div>
-              </div>
-              <Badge variant={progressPercentage === 100 ? 'default' : 'secondary'} className="text-lg px-4 py-2">
-                {Math.round(progressPercentage)}% готово
-              </Badge>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div>
+              <h3 className="font-medium mb-2">Тип проекта</h3>
+              <p className="text-gray-600">{orderData.selectedType || 'Продающие скрипты'}</p>
             </div>
-            <Progress value={progressPercentage} className="h-3" />
+            <div>
+              <h3 className="font-medium mb-2">Платформы</h3>
+              <p className="text-gray-600">{orderData.platforms?.join(', ') || 'Telegram'}</p>
+            </div>
+            <div>
+              <h3 className="font-medium mb-2">Сложность</h3>
+              <p className="text-gray-600">{orderData.complexity || 'Средний'}</p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Progress Steps */}
-      <div className="space-y-4">
-        {steps.map((step, index) => (
-          <Card key={step.id} className={`${getStatusColor(step.status)} transition-all`}>
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-lg border">
-                    {step.icon}
-                  </div>
-                  {getStatusIcon(step.status)}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold">{step.name}</h3>
-                    <Badge variant="outline" className="text-xs">
-                      Этап {index + 1}
-                    </Badge>
-                    {step.status === 'in-progress' && (
-                      <Badge variant="default" className="text-xs animate-pulse">
-                        В работе
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <p className="text-gray-600 mb-3">{step.description}</p>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <div className="text-sm font-medium mb-2">Что включает:</div>
-                      <ul className="space-y-1">
-                        {step.details?.map((detail, detailIndex) => (
-                          <li key={detailIndex} className="flex items-center gap-2 text-sm text-gray-600">
-                            <div className={`w-2 h-2 rounded-full ${
-                              step.status === 'completed' ? 'bg-green-500' : 
-                              step.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-300'
-                            }`} />
-                            {detail}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Прогресс:</span>
-                        <span>
-                          {step.status === 'completed' ? step.estimatedHours : (step.actualHours || 0).toFixed(1)}/
-                          {step.estimatedHours} ч
-                        </span>
-                      </div>
-                      <Progress 
-                        value={
-                          step.status === 'completed' ? 100 : 
-                          step.status === 'in-progress' ? ((step.actualHours || 0) / step.estimatedHours) * 100 : 0
-                        } 
-                        className="h-2"
-                      />
-                      
-                      {step.status === 'in-progress' && (
-                        <div className="text-xs text-blue-600">
-                          Примерное время завершения: {Math.ceil(step.estimatedHours - (step.actualHours || 0))} часов
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Project Summary */}
+      {/* Progress Overview */}
       <Card>
         <CardHeader>
-          <CardTitle>Параметры проекта</CardTitle>
+          <CardTitle>Общий прогресс</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <div>
-                <div className="font-medium">Платформы:</div>
-                <div className="text-sm text-gray-600">
-                  {orderData?.platform || 'Telegram, WhatsApp Business'}
-                </div>
-              </div>
-              <div>
-                <div className="font-medium">Сложность:</div>
-                <div className="text-sm text-gray-600">
-                  {orderData?.complexity || 'Средние сценарии (10-25 диалогов)'}
-                </div>
-              </div>
-              <div>
-                <div className="font-medium">Целевая аудитория:</div>
-                <div className="text-sm text-gray-600">
-                  {orderData?.targetAudience || 'Покупатели интернет-магазинов'}
-                </div>
-              </div>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium">Готовность: {Math.round(currentProgress)}%</span>
+              <span className="text-sm text-gray-600">Осталось: {timeRemaining}</span>
             </div>
-            <div className="space-y-3">
-              <div>
-                <div className="font-medium">Дополнительные услуги:</div>
-                <div className="text-sm text-gray-600">
-                  {orderData?.additionalServices?.length > 0 
-                    ? orderData.additionalServices.join(', ')
-                    : 'AI-интеграция, Аналитика диалогов'
-                  }
+            <Progress value={currentProgress} className="h-3" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Stages */}
+      <div className="space-y-4">
+        {ORDER_STAGES.map((stage, index) => {
+          const StatusIcon = getStatusIcon(stage.status);
+          
+          return (
+            <Card 
+              key={stage.id} 
+              className={`transition-all ${
+                stage.status === 'current' ? 'ring-2 ring-blue-200 bg-blue-50/30' : ''
+              }`}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className={`p-3 rounded-full ${getStatusColor(stage.status)}`}>
+                    <stage.icon className="w-6 h-6" />
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-semibold">{stage.title}</h3>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{stage.duration}</Badge>
+                        <StatusIcon className={`w-5 h-5 ${
+                          stage.status === 'completed' ? 'text-green-600' : 
+                          stage.status === 'current' ? 'text-blue-600' : 'text-gray-400'
+                        }`} />
+                      </div>
+                    </div>
+                    <p className="text-gray-600">{stage.description}</p>
+                    
+                    {stage.status === 'current' && (
+                      <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="flex items-center gap-2 text-blue-800">
+                          <Clock className="w-4 h-4" />
+                          <span className="text-sm font-medium">Текущий этап в работе</span>
+                        </div>
+                        <p className="text-sm text-blue-700 mt-1">
+                          Наши специалисты создают архитектуру диалогов на основе ваших требований
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className="font-medium">Срок выполнения:</div>
-                <div className="text-sm text-gray-600">
-                  {orderData?.deadline || '1-2 недели'}
-                </div>
-              </div>
-              <div>
-                <div className="font-medium">Стоимость:</div>
-                <div className="text-lg font-bold text-blue-600">
-                  {orderData?.estimatedPrice?.toLocaleString() || '15,000'}₽
-                </div>
-              </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Contact Information */}
+      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+        <CardContent className="p-6">
+          <div className="text-center">
+            <h3 className="font-semibold mb-2">Есть вопросы по заказу?</h3>
+            <p className="text-gray-600 mb-4">
+              Свяжитесь с нашим менеджером для получения актуальной информации
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button variant="outline">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Написать в чат
+              </Button>
+              <Button>
+                Связаться с менеджером
+              </Button>
             </div>
           </div>
         </CardContent>

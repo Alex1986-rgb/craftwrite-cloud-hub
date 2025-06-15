@@ -1,200 +1,151 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Calculator, Info, Lightbulb } from 'lucide-react';
-
-interface ComplexityLevel {
-  id: string;
-  name: string;
-  scenarioRange: { min: number; max: number };
-  pricePerScenario: number;
-  features: string[];
-  examples: string[];
-  recommended?: boolean;
-}
-
-const COMPLEXITY_LEVELS: ComplexityLevel[] = [
-  {
-    id: 'simple',
-    name: 'Простые сценарии',
-    scenarioRange: { min: 3, max: 10 },
-    pricePerScenario: 250,
-    features: ['Линейные диалоги', 'Простые условия', 'Базовые ответы'],
-    examples: ['FAQ бот', 'Простая поддержка', 'Информационный бот']
-  },
-  {
-    id: 'medium',
-    name: 'Средние сценарии',
-    scenarioRange: { min: 10, max: 25 },
-    pricePerScenario: 200,
-    features: ['Ветвления', 'Условная логика', 'Сбор данных', 'Интеграции'],
-    examples: ['Лидогенерация', 'Заказ услуг', 'Квиз-бот'],
-    recommended: true
-  },
-  {
-    id: 'complex',
-    name: 'Сложные сценарии',
-    scenarioRange: { min: 25, max: 50 },
-    pricePerScenario: 180,
-    features: ['Многоуровневые диалоги', 'CRM интеграция', 'Персонализация', 'Аналитика'],
-    examples: ['Продажи', 'Техподдержка', 'Консультант']
-  },
-  {
-    id: 'enterprise',
-    name: 'Корпоративные',
-    scenarioRange: { min: 50, max: 100 },
-    pricePerScenario: 150,
-    features: ['AI интеграция', 'Сложная логика', 'Мультиплатформенность', 'API'],
-    examples: ['Умный ассистент', 'Комплексные продажи', 'HR бот']
-  }
-];
+import { Brain, Zap, Target } from 'lucide-react';
 
 interface ScriptComplexityCalculatorProps {
-  onComplexityChange: (scenarios: number, totalPrice: number, level: string) => void;
+  onComplexityChange: (scenarios: number, price: number, level: string) => void;
   initialScenarios?: number;
 }
 
-export default function ScriptComplexityCalculator({
-  onComplexityChange,
-  initialScenarios = 15
+const COMPLEXITY_LEVELS = {
+  simple: {
+    label: 'Простой',
+    scenarios: [5, 15],
+    pricePerScenario: 200,
+    description: 'Базовые сценарии: приветствие, FAQ, контакты',
+    features: ['Линейные диалоги', 'Простые условия', 'Базовые команды'],
+    color: 'bg-green-100 text-green-800 border-green-300'
+  },
+  medium: {
+    label: 'Средний',
+    scenarios: [16, 40],
+    pricePerScenario: 350,
+    description: 'Продвинутые сценарии с условиями и ветвлениями',
+    features: ['Условная логика', 'Сбор данных', 'Интеграции'],
+    color: 'bg-blue-100 text-blue-800 border-blue-300'
+  },
+  complex: {
+    label: 'Сложный',
+    scenarios: [41, 100],
+    pricePerScenario: 500,
+    description: 'Многоуровневые сценарии с AI и внешними API',
+    features: ['AI-интеграция', 'Сложная логика', 'CRM интеграция'],
+    color: 'bg-purple-100 text-purple-800 border-purple-300'
+  }
+};
+
+export default function ScriptComplexityCalculator({ 
+  onComplexityChange, 
+  initialScenarios = 15 
 }: ScriptComplexityCalculatorProps) {
   const [scenarios, setScenarios] = useState(initialScenarios);
-  const [selectedLevel, setSelectedLevel] = useState<string>('');
 
-  useEffect(() => {
-    // Determine complexity level based on scenario count
-    const level = COMPLEXITY_LEVELS.find(
-      l => scenarios >= l.scenarioRange.min && scenarios <= l.scenarioRange.max
-    ) || COMPLEXITY_LEVELS[1];
-    
-    setSelectedLevel(level.id);
-    
-    const totalPrice = scenarios * level.pricePerScenario;
-    onComplexityChange(scenarios, totalPrice, level.id);
-  }, [scenarios, onComplexityChange]);
-
-  const handleScenarioChange = (value: number) => {
-    setScenarios(Math.max(1, Math.min(100, value)));
+  const getComplexityLevel = (scenarioCount: number) => {
+    if (scenarioCount <= 15) return 'simple';
+    if (scenarioCount <= 40) return 'medium';
+    return 'complex';
   };
 
-  const handleLevelSelect = (levelId: string) => {
-    const level = COMPLEXITY_LEVELS.find(l => l.id === levelId);
-    if (level) {
-      setScenarios(Math.floor((level.scenarioRange.min + level.scenarioRange.max) / 2));
-    }
+  const handleScenariosChange = (value: number[]) => {
+    const newScenarios = value[0];
+    setScenarios(newScenarios);
+    
+    const level = getComplexityLevel(newScenarios);
+    const complexity = COMPLEXITY_LEVELS[level as keyof typeof COMPLEXITY_LEVELS];
+    const price = newScenarios * complexity.pricePerScenario;
+    
+    onComplexityChange(newScenarios, price, complexity.label);
   };
 
-  const currentLevel = COMPLEXITY_LEVELS.find(l => l.id === selectedLevel) || COMPLEXITY_LEVELS[1];
-  const estimatedPrice = scenarios * currentLevel.pricePerScenario;
+  const currentLevel = getComplexityLevel(scenarios);
+  const currentComplexity = COMPLEXITY_LEVELS[currentLevel as keyof typeof COMPLEXITY_LEVELS];
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Calculator className="w-5 h-5" />
-          Калькулятор сложности скриптов
+          <Brain className="w-5 h-5" />
+          Сложность сценариев
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="scenarios">Количество сценариев</Label>
-          <Input
-            id="scenarios"
-            type="number"
-            min="1"
-            max="100"
-            value={scenarios}
-            onChange={(e) => handleScenarioChange(Number(e.target.value))}
-            className="text-lg font-semibold"
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Количество сценариев</span>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-lg font-bold">
+                {scenarios}
+              </Badge>
+              <Badge className={currentComplexity.color}>
+                {currentComplexity.label}
+              </Badge>
+            </div>
+          </div>
+          
+          <Slider
+            value={[scenarios]}
+            onValueChange={handleScenariosChange}
+            min={5}
+            max={100}
+            step={5}
+            className="w-full"
           />
-          <p className="text-sm text-gray-600">
-            Один сценарий = завершенный диалоговый поток (например, "Оформление заказа")
-          </p>
+          
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>5 (минимум)</span>
+            <span>100 (максимум)</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {COMPLEXITY_LEVELS.map((level) => (
+        <div className={`p-4 rounded-lg border ${currentComplexity.color}`}>
+          <div className="flex items-center gap-2 mb-2">
+            <Target className="w-4 h-4" />
+            <span className="font-medium">{currentComplexity.label} уровень</span>
+          </div>
+          <p className="text-sm mb-3">{currentComplexity.description}</p>
+          
+          <div className="space-y-1">
+            {currentComplexity.features.map((feature, index) => (
+              <div key={index} className="text-sm flex items-center gap-1">
+                <Zap className="w-3 h-3" />
+                {feature}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 text-center">
+          {Object.entries(COMPLEXITY_LEVELS).map(([key, level]) => (
             <button
-              key={level.id}
+              key={key}
               type="button"
-              onClick={() => handleLevelSelect(level.id)}
-              className={`p-4 border rounded-lg text-left transition-all ${
-                selectedLevel === level.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+              onClick={() => handleScenariosChange([level.scenarios[0]])}
+              className={`p-3 rounded-lg border transition-all hover:shadow-md ${
+                key === currentLevel ? level.color : 'bg-gray-50 border-gray-200'
               }`}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="font-semibold">{level.name}</h4>
-                {level.recommended && (
-                  <Badge variant="outline" className="text-xs">Популярный</Badge>
-                )}
+              <div className="font-medium text-sm">{level.label}</div>
+              <div className="text-xs text-gray-600">
+                {level.scenarios[0]}-{level.scenarios[1]} сценариев
               </div>
-              <div className="text-sm text-gray-600 mb-2">
-                {level.scenarioRange.min}-{level.scenarioRange.max} сценариев
-              </div>
-              <div className="text-lg font-bold text-blue-600 mb-2">
-                {level.pricePerScenario}₽ за сценарий
-              </div>
-              <div className="space-y-1">
-                {level.features.slice(0, 2).map((feature, index) => (
-                  <div key={index} className="text-xs text-gray-500">• {feature}</div>
-                ))}
+              <div className="text-xs font-medium mt-1">
+                {level.pricePerScenario}₽/сценарий
               </div>
             </button>
           ))}
         </div>
 
-        {currentLevel && (
-          <div className="space-y-4">
-            <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Info className="w-4 h-4 text-blue-600" />
-                <span className="font-medium text-blue-800">Текущий уровень: {currentLevel.name}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <div className="font-medium">Возможности:</div>
-                  {currentLevel.features.map((feature, index) => (
-                    <div key={index} className="text-gray-600">• {feature}</div>
-                  ))}
-                </div>
-                <div>
-                  <div className="font-medium">Примеры использования:</div>
-                  {currentLevel.examples.map((example, index) => (
-                    <div key={index} className="text-gray-600">• {example}</div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg border border-green-200">
-              <div>
-                <div className="font-semibold text-green-800">Расчет стоимости:</div>
-                <div className="text-sm text-green-700">
-                  {scenarios} сценариев × {currentLevel.pricePerScenario}₽
-                </div>
-              </div>
-              <div className="text-2xl font-bold text-green-600">
-                {estimatedPrice.toLocaleString()}₽
-              </div>
-            </div>
-
-            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-              <div className="flex items-center gap-2 mb-1">
-                <Lightbulb className="w-4 h-4 text-yellow-600" />
-                <span className="font-medium text-yellow-800">Рекомендация</span>
-              </div>
-              <p className="text-sm text-yellow-700">
-                Для оптимального соотношения цена-качество рекомендуем начинать с {COMPLEXITY_LEVELS[1].scenarioRange.min}-{COMPLEXITY_LEVELS[1].scenarioRange.max} сценариев
-              </p>
-            </div>
+        <div className="text-center p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+          <div className="text-lg font-bold text-blue-600">
+            Стоимость: {(scenarios * currentComplexity.pricePerScenario).toLocaleString()}₽
           </div>
-        )}
+          <div className="text-sm text-gray-600">
+            {scenarios} сценариев × {currentComplexity.pricePerScenario}₽
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
