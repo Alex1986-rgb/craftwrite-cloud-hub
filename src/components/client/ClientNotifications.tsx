@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ import {
   CreditCard,
   Settings,
   Trash2,
-  MarkAsUnread
+  Mail
 } from 'lucide-react';
 
 interface Notification {
@@ -171,7 +170,7 @@ export default function ClientNotifications() {
                                 variant="ghost"
                                 onClick={() => markAsUnread(notification.id)}
                               >
-                                <MarkAsUnread className="w-4 h-4" />
+                                <Mail className="w-4 h-4" />
                               </Button>
                             )}
                             <Button
