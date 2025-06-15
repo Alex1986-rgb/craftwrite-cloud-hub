@@ -8,6 +8,7 @@ import { UnifiedAuthProvider } from "@/contexts/UnifiedAuthContext";
 import OptimizedIndex from "@/pages/OptimizedIndex";
 import About from "@/pages/About";
 import Order from "@/pages/Order";
+import AdvancedOrder from "@/pages/AdvancedOrder";
 import Prices from "@/pages/Prices";
 import Portfolio from "@/pages/Portfolio";
 import PortfolioDetail from "@/pages/PortfolioDetail";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/" element={<OptimizedIndex />} />
               <Route path="/about" element={<About />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/order/:slug" element={<AdvancedOrder />} />
               <Route path="/prices" element={<Prices />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/portfolio/:id" element={<PortfolioDetail />} />
