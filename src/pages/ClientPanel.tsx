@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ClientAuthProvider } from '@/contexts/ClientAuthContext';
@@ -12,7 +13,9 @@ import ClientPayments from '@/components/client/ClientPayments';
 import ClientAnalytics from '@/components/client/ClientAnalytics';
 import ClientNotifications from '@/components/client/ClientNotifications';
 import ClientSidebar from '@/components/client/ClientSidebar';
+import { MobileHeader } from '@/components/client/mobile/MobileHeader';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
@@ -24,6 +27,7 @@ import { EnhancedWorkspace } from '@/components/client/enhanced/EnhancedWorkspac
 function ClientContent() {
   const { isAuthenticated, loading, client } = useClientAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   if (loading) {
     return (
@@ -51,6 +55,7 @@ function ClientContent() {
   const getBreadcrumbs = () => {
     const path = window.location.pathname;
     if (path === '/client' || path === '/client/') return [];
+    if (path.includes('/workspace')) return [{ label: 'Рабочее пространство' }];
     if (path.includes('/orders')) return [{ label: 'Заказы' }];
     if (path.includes('/new-order')) return [{ label: 'Новый заказ' }];
     if (path.includes('/documents')) return [{ label: 'Документы' }];
@@ -61,6 +66,36 @@ function ClientContent() {
     if (path.includes('/profile')) return [{ label: 'Профиль' }];
     return [];
   };
+
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Routes>
+          <Route path="/" element={<ClientDashboard />} />
+          <Route path="/workspace" element={<EnhancedWorkspace />} />
+          <Route path="/orders" element={<ClientOrders />} />
+          <Route path="/new-order" element={<ClientNewOrder />} />
+          <Route path="/documents" element={<ClientDocuments />} />
+          <Route path="/payments" element={<ClientPayments />} />
+          <Route path="/support" element={<ClientSupport />} />
+          <Route path="/analytics" element={<ClientAnalytics />} />
+          <Route path="/notifications" element={<ClientNotifications />} />
+          <Route path="/profile" element={<ClientProfile />} />
+          <Route path="/help" element={
+            <div className="p-4">
+              <MobileHeader />
+              <div className="glass-card p-8 text-center mt-4">
+                <h2 className="text-2xl font-bold text-gradient mb-4">Помощь</h2>
+                <p className="text-slate-600 dark:text-slate-400">Раздел помощи в разработке</p>
+              </div>
+            </div>
+          } />
+          <Route path="*" element={<Navigate to="/client" replace />} />
+        </Routes>
+        <RealTimeNotifications />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex">

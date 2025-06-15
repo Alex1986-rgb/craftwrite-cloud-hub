@@ -35,12 +35,74 @@
   .text-responsive-3xl {
     @apply text-3xl md:text-4xl;
   }
+  
+  /* Mobile-specific layouts */
+  .mobile-stack {
+    @apply flex-col space-y-4;
+  }
+  
+  .mobile-grid {
+    @apply grid-cols-1;
+  }
+  
+  .mobile-padding {
+    @apply p-3;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+  
+  /* Hide on mobile */
+  .desktop-only {
+    @apply hidden md:block;
+  }
+  
+  /* Show only on mobile */
+  .mobile-only {
+    @apply block md:hidden;
+  }
+  
+  /* Improved card spacing */
+  .mobile-card {
+    @apply mx-2 mb-4;
+  }
+  
+  /* Better form layouts */
+  .mobile-form {
+    @apply space-y-4 p-4;
+  }
+  
+  /* Optimized buttons */
+  .mobile-button {
+    @apply w-full py-3 text-base;
+  }
+  
+  /* Enhanced touch areas */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .tablet-grid {
+    @apply grid-cols-2;
+  }
+  
+  .tablet-spacing {
+    @apply p-6;
+  }
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .bg-gradient-to-r {
     background: solid;
+  }
+  
+  .glass-card {
+    @apply border-2 border-slate-800 dark:border-slate-200;
   }
 }
 
@@ -49,7 +111,11 @@
   .animate-fade-in,
   .animate-slide-up,
   .animate-scale-in,
-  .animate-float {
+  .animate-float,
+  .animate-bounce-in,
+  .animate-slide-in-up,
+  .animate-slide-in-right,
+  .animate-scale-in-center {
     animation: none;
   }
   
@@ -57,5 +123,38 @@
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* Dark theme enhancements */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    @apply bg-slate-900 text-slate-100;
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-compact {
+    @apply py-2;
+  }
+  
+  .landscape-hide {
+    @apply hidden;
+  }
+}
+
+/* Print styles */
+@media print {
+  .print-hidden {
+    @apply hidden;
+  }
+  
+  .print-visible {
+    @apply block;
+  }
+  
+  * {
+    @apply text-black bg-white;
   }
 }
