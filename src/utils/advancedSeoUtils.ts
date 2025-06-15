@@ -1,5 +1,6 @@
 
 import { generateSitemap, generateRobotsTxt } from './enhancedSitemap';
+import { generateCanonicalUrl } from './seoUtils';
 
 export interface SeoAnalytics {
   pageViews: number;
@@ -52,7 +53,7 @@ export const generateRssFeed = (posts: any[]): string => {
 
   posts.forEach(post => {
     const postUrl = `${baseUrl}/blog/${post.slug}`;
-    const pubDate = new Date(post.publishedAt).toUTCString();
+    const pubDate = new Date(post.publishedAt || post.date).toUTCString();
     
     rss += `
     <item>
@@ -75,9 +76,9 @@ export const generateRssFeed = (posts: any[]): string => {
       });
     }
     
-    if (post.coverImage) {
+    if (post.coverImage || post.image) {
       rss += `
-      <enclosure url="${post.coverImage}" type="image/jpeg"/>`;
+      <enclosure url="${post.coverImage || post.image}" type="image/jpeg"/>`;
     }
     
     rss += `
@@ -114,9 +115,9 @@ export const createArticleStructuredData = (article: any) => {
     "@type": "Article",
     "headline": article.title,
     "description": article.description || article.excerpt,
-    "image": article.coverImage || `${baseUrl}/og-image.jpg`,
-    "datePublished": article.publishedAt,
-    "dateModified": article.modifiedAt || article.publishedAt,
+    "image": article.coverImage || article.image || `${baseUrl}/og-image.jpg`,
+    "datePublished": article.publishedAt || article.date,
+    "dateModified": article.modifiedAt || article.publishedAt || article.date,
     "author": {
       "@type": "Person",
       "name": article.author || "CopyPro Cloud Team",
@@ -132,7 +133,7 @@ export const createArticleStructuredData = (article: any) => {
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${baseUrl}/blog/${article.slug}`
+      "@id": `${baseUrl}/blog/${article.slug || article.id}`
     },
     "articleSection": article.category || "Копирайтинг",
     "keywords": article.tags ? article.tags.join(", ") : "копирайтинг, SEO, контент-маркетинг",
@@ -279,7 +280,7 @@ export const initializeSeo = () => {
   if (import.meta.env.VITE_YANDEX_METRIKA) {
     // @ts-ignore
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    m[i].l=1*Number(new Date());k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
     
     // @ts-ignore
@@ -291,5 +292,3 @@ export const initializeSeo = () => {
     });
   }
 };
-
-export { generateCanonicalUrl } from './seoUtils';

@@ -75,13 +75,13 @@ export const generateSitemap = (): string => {
   // Add blog posts
   expandedBlogPosts.forEach(post => {
     urls.push({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastmod: post.publishedAt,
+      url: `${baseUrl}/blog/${post.id}`,
+      lastmod: post.date,
       changefreq: 'monthly',
       priority: 0.7,
-      images: post.coverImage ? [
+      images: post.image ? [
         {
-          url: post.coverImage,
+          url: post.image,
           caption: post.title,
           title: post.title
         }
