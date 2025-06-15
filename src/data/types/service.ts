@@ -40,6 +40,7 @@ export interface Service {
   format: string;
   textExamples?: TextExample[];
   seoMetrics?: SeoMetrics;
+  hasEnhancedExamples?: boolean; // Новое поле для определения наличия расширенных примеров
 }
 
 export type ServiceCategory = 

@@ -1,6 +1,7 @@
-
 import { useParams, Link } from "react-router-dom";
 import { SERVICES } from "@/data/services";
+import { ENHANCED_TEXT_EXAMPLES } from "@/data/services/enhancedTextExamples";
+import { EnhancedTextExample } from "@/components/examples/EnhancedTextExample";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,9 @@ function EnhancedServiceDetailPage() {
       default: return "bg-gray-100 text-gray-800";
     }
   };
+
+  // Получаем расширенные примеры текстов
+  const enhancedExamples = ENHANCED_TEXT_EXAMPLES[service.slug] || [];
 
   return (
     <section className="max-w-6xl mx-auto py-10 px-4">
@@ -177,14 +181,57 @@ function EnhancedServiceDetailPage() {
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
+      <Tabs defaultValue="examples" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
+          <TabsTrigger value="examples">Примеры</TabsTrigger>
           <TabsTrigger value="overview">Обзор</TabsTrigger>
           <TabsTrigger value="rules">Правила</TabsTrigger>
-          <TabsTrigger value="examples">Примеры</TabsTrigger>
           <TabsTrigger value="metrics">Метрики</TabsTrigger>
           <TabsTrigger value="recommendations">Советы</TabsTrigger>
         </TabsList>
+
+        {/* Enhanced Examples Tab */}
+        <TabsContent value="examples" className="space-y-6">
+          {enhancedExamples.length > 0 ? (
+            <div className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  🎯 Примеры профессиональных текстов
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Изучите реальные примеры успешных текстов, созданных нашими экспертами. 
+                  Каждый пример содержит структурированный контент с заголовками, цитатами, 
+                  таблицами и метриками эффективности.
+                </p>
+              </div>
+              
+              {enhancedExamples.map((example, index) => (
+                <EnhancedTextExample 
+                  key={index} 
+                  example={example} 
+                  serviceSlug={service.slug} 
+                />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  Примеры готовятся
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  Профессиональные примеры текстов для этой услуги будут добавлены в ближайшее время
+                </p>
+                <Button asChild>
+                  <Link to="/order">
+                    Заказать индивидуальный пример
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
@@ -282,45 +329,6 @@ function EnhancedServiceDetailPage() {
               </ol>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* Examples Tab */}
-        <TabsContent value="examples" className="space-y-6">
-          {service.textExamples && service.textExamples.length > 0 ? (
-            service.textExamples.map((example, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-green-500" />
-                    {example.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono">
-                      {example.content}
-                    </pre>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {Object.entries(example.metrics).map(([key, value]) => (
-                      <div key={key} className="text-center">
-                        <div className="text-lg font-bold text-blue-600">{value}</div>
-                        <div className="text-sm text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">Примеры текстов будут добавлены в ближайшее время</p>
-              </CardContent>
-            </Card>
-          )}
         </TabsContent>
 
         {/* Metrics Tab */}
