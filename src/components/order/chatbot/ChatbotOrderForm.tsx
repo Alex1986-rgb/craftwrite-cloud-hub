@@ -1,18 +1,14 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { X, Bot, ArrowRight, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-// Import new modern components
-import PlatformSelector from './advanced/PlatformSelector';
-import ScriptComplexityCalculator from './advanced/ScriptComplexityCalculator';
-import ChatbotAudienceSelector from './advanced/ChatbotAudienceSelector';
-import DialogFlowBuilder from './advanced/DialogFlowBuilder';
+// Import step components
+import ContactStep from './form-steps/ContactStep';
+import PlatformStep from './form-steps/PlatformStep';
+import AudienceStep from './form-steps/AudienceStep';
+import FinalStep from './form-steps/FinalStep';
 
 interface ChatbotOrderFormProps {
   selectedType?: string;
@@ -57,6 +53,10 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
 
   const handleContactChange = (field: string, value: string) => {
     setContactData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleProjectChange = (field: string, value: string) => {
+    setProjectData(prev => ({ ...prev, [field]: value }));
   };
 
   const handlePlatformsChange = (platforms: string[]) => {
@@ -142,181 +142,49 @@ export default function ChatbotOrderForm({ selectedType, onClose }: ChatbotOrder
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2">Контактная информация</h3>
-              <p className="text-gray-600">Расскажите о себе и вашем проекте</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">Имя *</Label>
-                <Input
-                  id="name"
-                  required
-                  value={contactData.name}
-                  onChange={(e) => handleContactChange('name', e.target.value)}
-                  placeholder="Ваше имя"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={contactData.email}
-                  onChange={(e) => handleContactChange('email', e.target.value)}
-                  placeholder="email@example.com"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="phone">Телефон</Label>
-                <Input
-                  id="phone"
-                  value={contactData.phone}
-                  onChange={(e) => handleContactChange('phone', e.target.value)}
-                  placeholder="+7 (999) 123-45-67"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="company">Компания</Label>
-                <Input
-                  id="company"
-                  value={contactData.company}
-                  onChange={(e) => handleContactChange('company', e.target.value)}
-                  placeholder="Название компании"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="description">Описание проекта *</Label>
-              <Textarea
-                id="description"
-                required
-                rows={4}
-                value={projectData.description}
-                onChange={(e) => setProjectData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Опишите ваш проект, задачи бота, основные функции..."
-              />
-            </div>
-          </div>
+          <ContactStep
+            contactData={contactData}
+            projectData={projectData}
+            onContactChange={handleContactChange}
+            onProjectChange={handleProjectChange}
+          />
         );
 
       case 2:
         return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2">Платформы и сложность</h3>
-              <p className="text-gray-600">Выберите где будет работать бот и его сложность</p>
-            </div>
-            
-            <PlatformSelector
-              onPlatformsChange={handlePlatformsChange}
-              onPriceChange={handlePlatformsPriceChange}
-              initialPlatforms={projectData.platforms}
-            />
-            
-            <ScriptComplexityCalculator
-              onComplexityChange={handleComplexityChange}
-              initialScenarios={projectData.scenarios}
-            />
-          </div>
+          <PlatformStep
+            platforms={projectData.platforms}
+            scenarios={projectData.scenarios}
+            onPlatformsChange={handlePlatformsChange}
+            onPlatformsPriceChange={handlePlatformsPriceChange}
+            onComplexityChange={handleComplexityChange}
+          />
         );
 
       case 3:
         return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2">Аудитория и диалоги</h3>
-              <p className="text-gray-600">Настройте общение под вашу аудиторию</p>
-            </div>
-            
-            <ChatbotAudienceSelector
-              onAudienceChange={handleAudienceChange}
-              initialAudience={projectData.audience}
-            />
-            
-            <DialogFlowBuilder
-              onDialogTypesChange={handleDialogTypesChange}
-              onCustomScenariosChange={(scenarios) => 
-                setProjectData(prev => ({ ...prev, customScenarios: scenarios }))
-              }
-              initialTypes={projectData.dialogTypes}
-            />
-          </div>
+          <AudienceStep
+            audience={projectData.audience}
+            dialogTypes={projectData.dialogTypes}
+            onAudienceChange={handleAudienceChange}
+            onDialogTypesChange={handleDialogTypesChange}
+            onCustomScenariosChange={(scenarios) => 
+              setProjectData(prev => ({ ...prev, customScenarios: scenarios }))
+            }
+          />
         );
 
       case 4:
         return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2">Финальные детали</h3>
-              <p className="text-gray-600">Последние настройки и подтверждение заказа</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <Label htmlFor="goals">Цели и KPI</Label>
-                <Textarea
-                  id="goals"
-                  rows={3}
-                  value={projectData.goals}
-                  onChange={(e) => setProjectData(prev => ({ ...prev, goals: e.target.value }))}
-                  placeholder="Чего хотите достичь с помощью бота?"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="deadline">Срок выполнения</Label>
-                <Input
-                  id="deadline"
-                  value={projectData.deadline}
-                  onChange={(e) => setProjectData(prev => ({ ...prev, deadline: e.target.value }))}
-                  placeholder="Например: 2 недели"
-                />
-              </div>
-            </div>
-
-            {/* Order Summary */}
-            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">Итоговая стоимость</h4>
-                <div className="space-y-2">
-                  {projectData.platforms.length > 0 && (
-                    <div className="flex justify-between">
-                      <span>Дополнительные платформы:</span>
-                      <span>{pricing.platformsPrice.toLocaleString()}₽</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span>Сценарии ({projectData.scenarios} шт.):</span>
-                    <span>{pricing.scenariosPrice.toLocaleString()}₽</span>
-                  </div>
-                  {projectData.dialogTypes.length > 0 && (
-                    <div className="flex justify-between">
-                      <span>Типы диалогов:</span>
-                      <span>{pricing.dialogTypesPrice.toLocaleString()}₽</span>
-                    </div>
-                  )}
-                  <div className="border-t pt-2 flex justify-between font-bold text-lg">
-                    <span>Итого:</span>
-                    <span className="text-blue-600">{pricing.totalPrice.toLocaleString()}₽</span>
-                  </div>
-                </div>
-                
-                <div className="mt-4 text-sm text-gray-600">
-                  <div><strong>Платформы:</strong> {projectData.platforms.join(', ') || 'Telegram'}</div>
-                  <div><strong>Сложность:</strong> {projectData.complexity}</div>
-                  <div><strong>Аудитория:</strong> {projectData.audience}</div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <FinalStep
+            projectData={{ goals: projectData.goals, deadline: projectData.deadline }}
+            pricing={pricing}
+            platforms={projectData.platforms}
+            scenarios={projectData.scenarios}
+            complexity={projectData.complexity}
+            audience={projectData.audience}
+            onProjectChange={handleProjectChange}
+          />
         );
 
       default:
