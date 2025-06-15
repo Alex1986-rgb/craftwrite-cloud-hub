@@ -10,8 +10,6 @@ import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
@@ -104,10 +102,8 @@ export default function OptimizedIndex() {
       
       <main className="relative overflow-hidden">
         <HeroSection />
-        <SocialProofSection />
         <InteractiveGuaranteesSection />
         <BenefitsSection />
-        <ExpertiseShowcaseSection />
         <ServicesCatalogSection />
         <ModernPricingSection />
         <ProcessSection />
