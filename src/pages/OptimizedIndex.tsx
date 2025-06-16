@@ -1,27 +1,20 @@
-
-import React from 'react';
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
 import TeamSection from "@/components/landing/TeamSection";
 import TrustSection from "@/components/landing/TrustSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
-import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
-import NewsletterSection from "@/components/landing/NewsletterSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
-import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
+import ComprehensiveSeo from "@/components/seo/ComprehensiveSeo";
+import { createOrganizationStructuredData, createWebsiteStructuredData, createFAQStructuredData } from "@/utils/seoUtils";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 
 const seoText = `
@@ -92,27 +85,58 @@ E-commerce и маркетплейсы:
 Закажите профессиональный копирайтинг на CopyPro Cloud уже сегодня и получите результат мирового уровня с гарантией качества!
 `;
 
+// FAQ данные для структурированной разметки
+const faqData = [
+  {
+    question: "Сколько времени занимает создание SEO-статьи?",
+    answer: "Стандартная SEO-статья объемом 2000-4000 слов создается за 2-3 рабочих дня. Экспресс-заказы выполняются за 24 часа с доплатой 50%."
+  },
+  {
+    question: "Какие гарантии качества вы предоставляете?",
+    answer: "Мы гарантируем 100% уникальность текста, соответствие техническому заданию, бесплатные правки в течение 30 дней и возврат средств при несоответствии качества."
+  },
+  {
+    question: "Работаете ли вы с узкоспециализированными тематиками?",
+    answer: "Да, у нас есть эксперты по медицине, юриспруденции, IT, финансам, промышленности и другим специализированным областям с профильным образованием."
+  },
+  {
+    question: "Можно ли заказать контент-план на несколько месяцев?",
+    answer: "Конечно! Мы создаем контент-планы на 3, 6 и 12 месяцев с учетом сезонности, конкурентного анализа и ваших бизнес-целей."
+  },
+  {
+    question: "Какие форматы контента вы создаете?",
+    answer: "Мы создаем SEO-статьи, лендинги, email-рассылки, посты для соцсетей, описания товаров, технические тексты, презентации и многое другое."
+  }
+];
+
+// Структурированные данные для главной страницы
+const structuredData = [
+  createOrganizationStructuredData(),
+  createWebsiteStructuredData(),
+  createFAQStructuredData(faqData)
+];
+
 export default function OptimizedIndex() {
   return (
     <>
-      <Header />
+      <ComprehensiveSeo
+        title="Профессиональный копирайтинг CopyPro Cloud | SEO-тексты, лендинги, контент-маркетинг"
+        description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. Создаем SEO-тексты, продающие лендинги, email-кампании. Гарантия качества 100%. Заказать от 1000₽"
+        keywords="копирайтинг, SEO-тексты, продающие тексты, контент-маркетинг, лендинги, email-маркетинг, тексты для сайта, копирайтер, Москва, Россия"
+        structuredData={structuredData}
+      />
+      
       <main className="relative overflow-hidden">
         <ModernHeroSection />
-        <SocialProofSection />
         <InteractiveGuaranteesSection />
         <BenefitsSection />
-        <ExpertiseShowcaseSection />
         <ServicesCatalogSection />
         <ModernPricingSection />
         <ProcessSection />
-        <CaseStudiesSection />
-        <InnovativePortfolioSection />
-        <ProfessionalStatsSection />
         <TestimonialsSection />
         <TeamSection />
         <TrustSection />
         <FaqSection />
-        <NewsletterSection />
         <ContactSection />
         
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
