@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronUp, HelpCircle, Sparkles } from "lucide-react";
 
 const faqs = [

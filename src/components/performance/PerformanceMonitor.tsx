@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { initWebVitals, preloadCriticalResources, optimizeRendering } from '@/utils/webVitals';
 
 interface PerformanceMonitorProps {
