@@ -1,4 +1,3 @@
-
 import { SmartFilter, DynamicQuestion } from '@/types/advancedOrder';
 
 export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
@@ -192,55 +191,62 @@ export const SERVICE_SPECIFIC_QUESTIONS: Record<string, DynamicQuestion[]> = {
   ]
 };
 
-export const COMMON_FILTERS: Record<string, SmartFilter[]> = {
-  content: [
-    {
-      id: 'word_count',
-      name: 'Объем текста',
-      type: 'select',
-      required: true,
-      options: [
-        { value: 'short', label: 'Короткий (до 500 слов)', priceMultiplier: 1 },
-        { value: 'medium', label: 'Средний (500-1500 слов)', priceMultiplier: 1.5 },
-        { value: 'long', label: 'Длинный (1500+ слов)', priceMultiplier: 2.5 }
-      ],
-      description: 'Выберите примерный объем текста'
-    },
-    {
-      id: 'urgency',
-      name: 'Срочность выполнения',
-      type: 'select',
-      required: true,
-      options: [
-        { value: 'standard', label: 'Стандартный срок (5-7 дней)', priceMultiplier: 1 },
-        { value: 'fast', label: 'Быстро (2-3 дня)', priceMultiplier: 1.5 },
-        { value: 'express', label: 'Экспресс (1 день)', priceMultiplier: 2.5 }
-      ],
-      description: 'Когда нужен готовый текст?'
-    }
-  ],
-  quality: [
-    {
-      id: 'research_depth',
-      name: 'Глубина исследования',
-      type: 'select',
-      options: [
-        { value: 'basic', label: 'Базовое исследование', priceMultiplier: 1 },
-        { value: 'detailed', label: 'Детальный анализ', priceMultiplier: 1.3 },
-        { value: 'expert', label: 'Экспертный уровень', priceMultiplier: 1.8 }
-      ],
-      description: 'Насколько глубоко изучить тему?'
-    },
-    {
-      id: 'revisions',
-      name: 'Количество правок',
-      type: 'select',
-      options: [
-        { value: '1', label: '1 правка включена', priceMultiplier: 1 },
-        { value: '3', label: '3 правки включены', priceMultiplier: 1.2 },
-        { value: 'unlimited', label: 'Неограниченные правки', priceMultiplier: 1.5 }
-      ],
-      description: 'Сколько итераций доработки нужно?'
-    }
-  ]
+export const COMMON_FILTERS: SmartFilter[] = [
+  {
+    id: 'word_count',
+    name: 'Объем текста',
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'short', label: 'Короткий (до 500 слов)', priceMultiplier: 1 },
+      { value: 'medium', label: 'Средний (500-1500 слов)', priceMultiplier: 1.5 },
+      { value: 'long', label: 'Длинный (1500+ слов)', priceMultiplier: 2.5 }
+    ],
+    description: 'Выберите примерный объем текста'
+  },
+  {
+    id: 'tone_style',
+    name: 'Тон и стиль',
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'friendly', label: 'Дружелюбный', priceMultiplier: 1 },
+      { value: 'professional', label: 'Профессиональный', priceMultiplier: 1 },
+      { value: 'expert', label: 'Экспертный', priceMultiplier: 1.2 },
+      { value: 'casual', label: 'Неформальный', priceMultiplier: 1 }
+    ],
+    description: 'Каким тоном писать текст?'
+  },
+  {
+    id: 'target_audience',
+    name: 'Целевая аудитория',
+    type: 'select',
+    options: [
+      { value: 'b2b', label: 'Бизнес (B2B)', priceMultiplier: 1.3 },
+      { value: 'b2c', label: 'Потребители (B2C)', priceMultiplier: 1 },
+      { value: 'mixed', label: 'Смешанная аудитория', priceMultiplier: 1.1 }
+    ],
+    description: 'Для кого предназначен текст?'
+  },
+  {
+    id: 'keywords',
+    name: 'SEO-ключевые слова',
+    type: 'textarea',
+    placeholder: 'Введите ключевые слова через запятую',
+    description: 'Ключевые слова для поискового продвижения'
+  }
+];
+
+export const getServiceSpecificFilters = (serviceSlug: string): SmartFilter[] => {
+  const questions = SERVICE_SPECIFIC_QUESTIONS[serviceSlug] || [];
+  
+  return questions.map(question => ({
+    id: question.id,
+    name: question.label,
+    type: question.type,
+    description: question.description,
+    placeholder: question.placeholder,
+    options: question.options?.map(opt => ({ value: opt, label: opt, priceMultiplier: 1 })),
+    required: question.required
+  }));
 };

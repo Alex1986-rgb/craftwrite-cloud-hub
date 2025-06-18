@@ -1,9 +1,9 @@
 
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UnifiedAuthProvider } from '@/contexts/UnifiedAuthContext';
 import { Toaster } from '@/components/ui/sonner';
-import { lazy, Suspense } from 'react';
 import { toast } from 'sonner';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import PublicLayout from '@/layouts/PublicLayout';
