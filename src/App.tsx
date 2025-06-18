@@ -27,6 +27,10 @@ import EmailVerificationPage from '@/pages/EmailVerificationPage';
 import ClientDashboard from '@/pages/ClientDashboard';
 import OrderPage from '@/pages/OrderPage';
 import ChatbotScriptsOrder from '@/pages/ChatbotScriptsOrder';
+import SeoArticleOrder from '@/pages/SeoArticleOrder';
+import LandingPageOrder from '@/pages/LandingPageOrder';
+import EmailCampaignsOrder from '@/pages/EmailCampaignsOrder';
+import TelegramContentOrder from '@/pages/TelegramContentOrder';
 import SpecializedOrderPage from '@/pages/order/SpecializedOrderPage';
 import ModernFooter from '@/components/common/ModernFooter';
 
@@ -54,11 +58,11 @@ function App() {
             <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
             <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />
             
-            {/* Специализированные страницы заказа для всех услуг */}
-            <Route path="/order/seo-article" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/landing-page" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/email-campaigns" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/telegram-content" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
+            {/* Specialized order pages */}
+            <Route path="/order/seo-article" element={<PublicLayout><SeoArticleOrder /></PublicLayout>} />
+            <Route path="/order/landing-page" element={<PublicLayout><LandingPageOrder /></PublicLayout>} />
+            <Route path="/order/email-campaigns" element={<PublicLayout><EmailCampaignsOrder /></PublicLayout>} />
+            <Route path="/order/telegram-content" element={<PublicLayout><TelegramContentOrder /></PublicLayout>} />
             <Route path="/order/instagram-posts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
             <Route path="/order/wildberries-cards" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
             <Route path="/order/ozon-cards" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
@@ -75,7 +79,7 @@ function App() {
             <Route path="/order/white-papers" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
             <Route path="/order/speech-scripts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
             
-            {/* Общий маршрут для других услуг */}
+            {/* General service route */}
             <Route path="/order/:serviceId" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
             
             <Route path="/terms" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
