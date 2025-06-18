@@ -60,7 +60,7 @@ const MOCK_USERS = {
   }
 };
 
-export function UnifiedAuthProvider({ children }: { children: ReactNode }) {
+export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [currentRole, setCurrentRole] = useState<UserRole>('guest');
   const [loading, setLoading] = useState(true);
@@ -177,7 +177,7 @@ export function UnifiedAuthProvider({ children }: { children: ReactNode }) {
       {children}
     </UnifiedAuthContext.Provider>
   );
-}
+};
 
 export function useUnifiedAuth(): UnifiedAuthContextType {
   const context = useContext(UnifiedAuthContext);
