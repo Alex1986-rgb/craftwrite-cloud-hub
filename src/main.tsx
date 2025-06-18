@@ -9,7 +9,12 @@ import { initializeSeo } from "./utils/advancedSeoUtils";
 // Инициализация SEO при загрузке приложения
 initializeSeo();
 
-createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter>
       <App />
