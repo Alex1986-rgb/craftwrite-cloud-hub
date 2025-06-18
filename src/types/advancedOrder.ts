@@ -22,6 +22,7 @@ export interface SmartFilter {
   type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'checkbox_with_options' | 'number';
   description?: string;
   placeholder?: string;
+  defaultValue?: any;
   options?: Array<{
     value: string;
     label: string;
