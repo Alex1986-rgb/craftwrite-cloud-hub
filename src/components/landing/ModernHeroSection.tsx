@@ -1,8 +1,7 @@
-
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Star, Users, Clock, TrendingUp, Shield, Award, Zap, Target, CheckCircle, PlayCircle } from "lucide-react";
-import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const ModernHeroSection = () => {
