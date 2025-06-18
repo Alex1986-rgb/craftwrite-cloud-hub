@@ -1,83 +1,237 @@
 
-import { OrderFormProvider, useOrderForm } from '@/contexts/OrderFormContext';
-import { OrderFormLayout } from './OrderFormLayout';
-import OrderFormHeader from './OrderFormHeader';
-import OrderFormSteps from './OrderFormSteps';
-import OrderSelectedService from './OrderSelectedService';
-import { OrderFormContent } from './OrderFormContent';
-import { OrderFormNavigation } from './OrderFormNavigation';
-import { OrderFormSidebar } from './OrderFormSidebar';
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, CheckCircle, User, Mail, Phone, FileText } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface UnifiedOrderFormProps {
   variant?: 'public' | 'client';
   onOrderCreated?: () => void;
 }
 
-function OrderFormContentWrapper({ variant, onOrderCreated }: UnifiedOrderFormProps) {
-  const { form, currentStep, completedSteps } = useOrderForm();
-  
-  const {
-    renderStepContent,
-    handleSubmit,
-    estimatedPrice,
-    deliveryTime,
-    loading,
-    isFormValid
-  } = OrderFormContent({ variant, onOrderCreated });
+export default function UnifiedOrderForm({ variant = 'public', onOrderCreated }: UnifiedOrderFormProps) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    details: '',
+    additionalRequirements: ''
+  });
+  const [loading, setLoading] = useState(false);
 
-  const navigation = (
-    <OrderFormNavigation
-      variant={variant}
-      loading={loading}
-      isFormValid={isFormValid()}
-      onSubmit={handleSubmit}
-    />
-  );
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
-  const sidebar = (
-    <OrderFormSidebar
-      variant={variant}
-      estimatedPrice={estimatedPrice}
-      deliveryTime={deliveryTime}
-    />
-  );
+  const handleSubmit = async () => {
+    setLoading(true);
+    
+    // Симуляция отправки заказа
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    toast.success('Заказ успешно создан! Мы свяжемся с вами в течение часа.');
+    setLoading(false);
+    onOrderCreated?.();
+  };
+
+  const isStepValid = (step: number) => {
+    switch (step) {
+      case 1:
+        return formData.name && formData.email && formData.phone;
+      case 2:
+        return formData.service;
+      case 3:
+        return formData.details;
+      default:
+        return true;
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <User className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold">Контактная информация</h3>
+            </div>
+            <div>
+              <Label htmlFor="name">Ваше имя *</Label>
+              <Input
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Введите ваше имя"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email *</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="your@email.com"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="phone">Телефон *</Label>
+              <Input
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="+7 (999) 123-45-67"
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold">Выберите услугу</h3>
+            </div>
+            <div className="grid gap-3">
+              {[
+                'SEO-статья',
+                'Лендинг',
+                'Email-рассылка',
+                'Контент для Telegram',
+                'Скрипты для чат-бота',
+                'Тексты для сайта',
+                'Посты для Instagram',
+                'Карточки Wildberries',
+                'Карточки Ozon',
+                'Скрипты для YouTube',
+                'Посты для LinkedIn'
+              ].map((service) => (
+                <Card 
+                  key={service}
+                  className={`cursor-pointer transition-all ${
+                    formData.service === service ? 'border-blue-500 bg-blue-50' : 'hover:border-blue-200'
+                  }`}
+                  onClick={() => setFormData(prev => ({ ...prev, service }))}
+                >
+                  <CardContent className="p-4 flex items-center justify-between">
+                    <span>{service}</span>
+                    {formData.service === service && (
+                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold">Детали заказа</h3>
+            </div>
+            <div>
+              <Label htmlFor="details">Описание задачи *</Label>
+              <Textarea
+                id="details"
+                name="details"
+                value={formData.details}
+                onChange={handleInputChange}
+                placeholder="Опишите подробно, что вам нужно..."
+                rows={5}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="additionalRequirements">Дополнительные требования</Label>
+              <Textarea
+                id="additionalRequirements"
+                name="additionalRequirements"
+                value={formData.additionalRequirements}
+                onChange={handleInputChange}
+                placeholder="Особые пожелания, примеры, ссылки..."
+                rows={3}
+              />
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <>
-      {variant === 'public' && <OrderFormHeader />}
-      
-      {variant === 'client' && (
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gradient mb-4">Новый заказ</h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Создайте заказ на написание текстов с предзаполненными данными
-          </p>
+    <Card className="max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-center">
+          Оформление заказа
+        </CardTitle>
+        <div className="flex justify-center gap-2 mt-4">
+          {[1, 2, 3].map((step) => (
+            <Badge 
+              key={step}
+              variant={currentStep >= step ? "default" : "outline"}
+              className={currentStep === step ? "bg-blue-600" : ""}
+            >
+              {step}
+            </Badge>
+          ))}
         </div>
-      )}
-      
-      <OrderFormSteps currentStep={currentStep} completedSteps={completedSteps} />
-
-      {form.service && currentStep > 2 && (
-        <OrderSelectedService 
-          serviceName={form.service}
-        />
-      )}
-
-      <OrderFormLayout
-        variant={variant}
-        sidebar={sidebar}
-        navigation={navigation}
-      >
-        {renderStepContent()}
-      </OrderFormLayout>
-    </>
-  );
-}
-
-export default function UnifiedOrderForm(props: UnifiedOrderFormProps) {
-  return (
-    <OrderFormProvider>
-      <OrderFormContentWrapper {...props} />
-    </OrderFormProvider>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {renderStep()}
+        
+        <div className="flex justify-between">
+          {currentStep > 1 && (
+            <Button 
+              variant="outline" 
+              onClick={() => setCurrentStep(prev => prev - 1)}
+            >
+              Назад
+            </Button>
+          )}
+          
+          {currentStep < 3 ? (
+            <Button 
+              onClick={() => setCurrentStep(prev => prev + 1)}
+              disabled={!isStepValid(currentStep)}
+              className="ml-auto"
+            >
+              Далее
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button 
+              onClick={handleSubmit}
+              disabled={!isStepValid(currentStep) || loading}
+              className="ml-auto"
+            >
+              {loading ? 'Отправка...' : 'Отправить заказ'}
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

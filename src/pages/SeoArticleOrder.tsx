@@ -7,203 +7,288 @@ import ComprehensiveSeo from '@/components/seo/ComprehensiveSeo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { 
   CheckCircle, 
   ArrowRight,
   Search,
   Target,
   TrendingUp,
-  FileText
+  FileText,
+  Users,
+  BarChart3
 } from 'lucide-react';
 import UnifiedOrderForm from '@/components/order/UnifiedOrderForm';
 
-const SEO_PACKAGES = [
-  {
-    title: 'Базовая SEO-статья',
-    price: 'от 2 000₽',
-    wordCount: '2000-3000 слов',
-    features: ['Анализ ключевых слов', 'SEO-оптимизация', 'Уникальность 95%+', 'Техническое задание'],
-    deliveryTime: '2-3 дня',
-    popular: false
-  },
-  {
-    title: 'Экспертная статья',
-    price: 'от 3 500₽',
-    wordCount: '3000-5000 слов',
-    features: ['Глубокий анализ конкурентов', 'LSI-оптимизация', 'Экспертные интервью', 'Инфографика', 'Мета-теги'],
-    deliveryTime: '3-5 дней',
-    popular: true
-  },
-  {
-    title: 'Лонгрид премиум',
-    price: 'от 5 000₽',
-    wordCount: '5000+ слов',
-    features: ['Кластер статей', 'Интерактивные элементы', 'Видео-материалы', 'A/B тестирование', 'Аналитика'],
-    deliveryTime: '5-7 дней',
-    popular: false
-  }
-];
-
 export default function SeoArticleOrder() {
-  const [selectedPackage, setSelectedPackage] = useState<string>('');
   const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    articleTopic: '',
+    keywords: '',
+    wordCount: '',
+    targetAudience: '',
+    competitorUrls: '',
+    includeImages: false,
+    includeInfographics: false,
+    metaDescription: '',
+    callToAction: '',
+    contentStyle: '',
+    expertQuotes: false,
+    statistics: false
+  });
+  
   const navigate = useNavigate();
 
-  const handlePackageSelect = (packageTitle: string) => {
-    setSelectedPackage(packageTitle);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (name: string, checked: boolean) => {
+    setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+
+  const handleSubmit = () => {
+    console.log('SEO Article Order Data:', formData);
     setShowForm(true);
   };
 
   return (
     <>
       <ComprehensiveSeo
-        title="Заказать SEO-статью | CopyPro Cloud - Продвижение в поисковых системах"
-        description="Закажите SEO-оптимизированные статьи для продвижения сайта. Экспертный анализ ключевых слов, уникальность 95%+, гарантия результата. От 2000₽"
-        keywords="SEO статьи, продвижение сайта, поисковая оптимизация, контент-маркетинг, написание SEO текстов"
+        title="Заказать SEO-статью | CopyPro Cloud - Оптимизированный контент для продвижения"
+        description="Создание SEO-статей для топ-позиций в поиске. Глубокий анализ конкурентов, LSI-ключи, техническая оптимизация. Рост трафика до 300%. От 2500₽"
+        keywords="seo статья, сео текст, оптимизированная статья, продвижение сайта, контент маркетинг"
       />
       
       <Header />
       
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30">
                 <Search className="w-4 h-4 mr-2" />
-                SEO-оптимизация
+                SEO-статьи
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                SEO-статьи для топа поисковых систем
+                SEO-статьи для топ-позиций в поиске
               </h1>
               <p className="text-xl opacity-90 mb-8 leading-relaxed">
-                Профессиональные SEO-тексты, которые выводят ваш сайт в ТОП Google и Яндекс. 
-                Экспертный анализ ключевых слов, LSI-оптимизация и гарантия уникальности 95%+
+                Создаем оптимизированный контент, который выводит сайты в топ поисковых систем. 
+                Глубокий анализ конкурентов, семантическое ядро, техническая SEO-оптимизация
               </p>
-              <div className="flex flex-wrap justify-center gap-6 text-lg">
-                <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  <span>Точное попадание в ТОП</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  <span>Рост трафика на 150%</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  <span>95%+ уникальность</span>
-                </div>
-              </div>
-              <Button 
-                size="lg" 
-                className="mt-8 bg-white text-blue-600 hover:bg-gray-100"
-                onClick={() => setShowForm(true)}
-              >
-                Заказать SEO-статью
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Detailed Form Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Что делает наши SEO-статьи эффективными</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="text-center p-6">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="font-semibold mb-3">Анализ конкурентов</h3>
-                <p className="text-gray-600">Изучаем ТОП-10 конкурентов, анализируем их стратегии и создаем контент, который превосходит их по всем параметрам</p>
-              </Card>
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-12">Детали для создания SEO-статьи</h2>
               
-              <Card className="text-center p-6">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-6 h-6 text-green-600" />
-                </div>
-                <h3 className="font-semibold mb-3">LSI-оптимизация</h3>
-                <p className="text-gray-600">Используем семантически связанные ключевые слова для естественного восприятия текста поисковыми системами</p>
-              </Card>
-              
-              <Card className="text-center p-6">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="font-semibold mb-3">Структурированность</h3>
-                <p className="text-gray-600">Правильная структура с H1-H6, списками, таблицами и схемами для максимального ранжирования</p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Выберите пакет SEO-статей
-              </h2>
-              <p className="text-slate-600 max-w-2xl mx-auto">
-                От базовых статей до премиум-лонгридов с интерактивными элементами
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              {SEO_PACKAGES.map((pkg, index) => (
-                <Card 
-                  key={index} 
-                  className={`relative hover:shadow-xl transition-all duration-300 cursor-pointer border-2 ${
-                    pkg.popular 
-                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 transform hover:scale-105' 
-                      : 'border-transparent bg-white hover:border-blue-200'
-                  }`}
-                  onClick={() => handlePackageSelect(pkg.title)}
-                >
-                  {pkg.popular && (
-                    <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-blue-600">
-                      🔥 Популярный
-                    </Badge>
-                  )}
-                  
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-lg mb-2">{pkg.title}</CardTitle>
-                    <div className="text-3xl font-bold text-blue-600 mb-2">{pkg.price}</div>
-                    <div className="text-sm text-gray-500">{pkg.wordCount}</div>
-                    <div className="text-sm text-green-600 font-medium">Срок: {pkg.deliveryTime}</div>
+              <div className="grid gap-8">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="w-5 h-5" />
+                      Основная информация
+                    </CardTitle>
                   </CardHeader>
-                  
-                  <CardContent>
-                    <ul className="space-y-3 mb-6">
-                      {pkg.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <Label htmlFor="articleTopic">Тема статьи *</Label>
+                      <Input
+                        id="articleTopic"
+                        name="articleTopic"
+                        value={formData.articleTopic}
+                        onChange={handleInputChange}
+                        placeholder="О чем должна быть статья?"
+                        required
+                      />
+                    </div>
                     
-                    <Button 
-                      className="w-full"
-                      variant={pkg.popular ? "default" : "outline"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePackageSelect(pkg.title);
-                      }}
-                    >
-                      Выбрать пакет
-                    </Button>
+                    <div>
+                      <Label htmlFor="keywords">Ключевые слова *</Label>
+                      <Textarea
+                        id="keywords"
+                        name="keywords"
+                        value={formData.keywords}
+                        onChange={handleInputChange}
+                        placeholder="Перечислите основные ключевые слова через запятую"
+                        rows={3}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="wordCount">Объем статьи</Label>
+                        <Select onValueChange={(value) => setFormData(prev => ({ ...prev, wordCount: value }))}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Выберите объем" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1000-2000">1000-2000 слов</SelectItem>
+                            <SelectItem value="2000-3000">2000-3000 слов</SelectItem>
+                            <SelectItem value="3000-5000">3000-5000 слов</SelectItem>
+                            <SelectItem value="5000+">Более 5000 слов</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="contentStyle">Стиль подачи</Label>
+                        <Select onValueChange={(value) => setFormData(prev => ({ ...prev, contentStyle: value }))}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Выберите стиль" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="informational">Информационный</SelectItem>
+                            <SelectItem value="expert">Экспертный</SelectItem>
+                            <SelectItem value="friendly">Дружелюбный</SelectItem>
+                            <SelectItem value="formal">Официальный</SelectItem>
+                            <SelectItem value="engaging">Вовлекающий</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
-              ))}
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="w-5 h-5" />
+                      Целевая аудитория и конкуренты
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <Label htmlFor="targetAudience">Целевая аудитория</Label>
+                      <Textarea
+                        id="targetAudience"
+                        name="targetAudience"
+                        value={formData.targetAudience}
+                        onChange={handleInputChange}
+                        placeholder="Опишите вашу целевую аудиторию: возраст, интересы, боли..."
+                        rows={3}
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="competitorUrls">Ссылки на статьи конкурентов</Label>
+                      <Textarea
+                        id="competitorUrls"
+                        name="competitorUrls"
+                        value={formData.competitorUrls}
+                        onChange={handleInputChange}
+                        placeholder="Укажите URL статей конкурентов для анализа (по одной ссылке на строку)"
+                        rows={4}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="w-5 h-5" />
+                      Дополнительные опции
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="includeImages"
+                            checked={formData.includeImages}
+                            onCheckedChange={(checked) => handleCheckboxChange('includeImages', !!checked)}
+                          />
+                          <Label htmlFor="includeImages">Подобрать изображения</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="includeInfographics"
+                            checked={formData.includeInfographics}
+                            onCheckedChange={(checked) => handleCheckboxChange('includeInfographics', !!checked)}
+                          />
+                          <Label htmlFor="includeInfographics">Создать инфографику</Label>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="expertQuotes"
+                            checked={formData.expertQuotes}
+                            onCheckedChange={(checked) => handleCheckboxChange('expertQuotes', !!checked)}
+                          />
+                          <Label htmlFor="expertQuotes">Добавить экспертные мнения</Label>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="statistics"
+                            checked={formData.statistics}
+                            onCheckedChange={(checked) => handleCheckboxChange('statistics', !!checked)}
+                          />
+                          <Label htmlFor="statistics">Включить актуальную статистику</Label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="metaDescription">Meta описание</Label>
+                      <Textarea
+                        id="metaDescription"
+                        name="metaDescription"
+                        value={formData.metaDescription}
+                        onChange={handleInputChange}
+                        placeholder="Желаемое описание для поисковых систем (150-160 символов)"
+                        rows={2}
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="callToAction">Призыв к действию</Label>
+                      <Input
+                        id="callToAction"
+                        name="callToAction"
+                        value={formData.callToAction}
+                        onChange={handleInputChange}
+                        placeholder="Что должен сделать читатель после прочтения?"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="text-center">
+                  <Button 
+                    onClick={handleSubmit}
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    Создать SEO-статью
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Order Form Section */}
         {showForm && (
-          <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+          <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
             <div className="container mx-auto px-4">
               <UnifiedOrderForm 
                 variant="public"
@@ -215,26 +300,6 @@ export default function SeoArticleOrder() {
             </div>
           </section>
         )}
-
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Выведите ваш сайт в ТОП поисковых систем
-            </h2>
-            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-              Закажите профессиональные SEO-статьи и получите стабильный рост органического трафика уже через месяц
-            </p>
-            <Button 
-              size="lg" 
-              variant="secondary"
-              onClick={() => setShowForm(true)}
-            >
-              Начать продвижение
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
-        </section>
       </main>
       
       <Footer />
