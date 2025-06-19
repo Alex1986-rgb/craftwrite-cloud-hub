@@ -3,7 +3,6 @@ import type { Service } from "@/data/types/service";
 
 export const EXPANDED_SERVICES: Service[] = [
   {
-    id: "seo-articles",
     slug: "seo-articles",
     name: "SEO-статьи",
     category: "SEO-контент",
@@ -39,7 +38,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "SEO-статьи от экспертов с опытом 7+ лет. Гарантируем рост позиций в поисковой выдаче и увеличение органического трафика на 150-300%. Полный цикл: от анализа конкурентов до технической оптимизации."
   },
   {
-    id: "landing-pages",
     slug: "landing-pages", 
     name: "Продающие лендинги",
     category: "Коммерческий контент",
@@ -75,7 +73,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Продающие лендинги с конверсией до 25%. Команда экспертов по UX-копирайтингу создает страницы, которые продают 24/7. Полный цикл разработки с гарантией результата."
   },
   {
-    id: "email-campaigns",
     slug: "email-campaigns",
     name: "Email-кампании",
     category: "Email-маркетинг",
@@ -111,7 +108,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Email-маркетинг с открываемостью 35%+. Создаем автоматические воронки продаж, которые работают без вашего участия. Полная настройка автоматизации и аналитики."
   },
   {
-    id: "social-media-content",
     slug: "social-media-content",
     name: "Контент для соцсетей",
     category: "SMM-контент",
@@ -147,7 +143,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "SMM-контент с вовлечением 8%+. Создаем вирусные посты и контент-планы для всех социальных платформ. Полная адаптация под специфику каждой соцсети."
   },
   {
-    id: "product-descriptions",
     slug: "product-descriptions", 
     name: "Описания товаров",
     category: "E-commerce",
@@ -183,7 +178,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Описания товаров с конверсией до 18%. Оптимизируем под все популярные маркетплейсы. Увеличиваем продажи за счет правильного позиционирования товара."
   },
   {
-    id: "technical-texts",
     slug: "technical-texts",
     name: "Технические тексты",
     category: "B2B контент",
@@ -219,7 +213,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Технические тексты экспертного уровня. Команда специалистов с профильным образованием создает документы любой сложности с соблюдением отраслевых стандартов."
   },
   {
-    id: "press-releases",
     slug: "press-releases",
     name: "Пресс-релизы", 
     category: "PR-контент",
@@ -255,7 +248,6 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Пресс-релизы для федеральных СМИ. Повышаем медийность вашего бренда через качественные новостные материалы. Гарантируем публикацию в авторитетных изданиях."
   },
   {
-    id: "scripts-videos",
     slug: "scripts-videos",
     name: "Сценарии для видео",
     category: "Видео-контент", 
