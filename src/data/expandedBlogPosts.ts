@@ -3,6 +3,7 @@ import type { BlogPost } from "@/data/blog/types";
 
 export const EXPANDED_BLOG_POSTS: BlogPost[] = [
   {
+    slug: "copywriting-psychology-2024",
     title: "Психология продающих текстов: 15 триггеров, которые заставляют покупать",
     excerpt: "Разбираем научно доказанные психологические триггеры, которые увеличивают конверсию текстов на 200%+. Примеры из реальных кейсов.",
     content: `
@@ -33,12 +34,13 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
     author: "Анна Копейкина",
     category: "Копирайтинг",
     tags: ["психология", "конверсия", "триггеры", "продажи"],
-    date: "2024-01-15",
+    publishedAt: new Date("2024-01-15"),
     readTime: "8 мин",
     image: "/api/placeholder/800/400",
     featured: true
   },
   {
+    slug: "seo-copywriting-2024-guide", 
     title: "SEO-копирайтинг в 2024: полное руководство от экспертов",
     excerpt: "Актуальные алгоритмы поисковиков, новые факторы ранжирования и практические кейсы продвижения текстами.",
     content: `
@@ -69,7 +71,7 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
     author: "Сергей Текстов",
     category: "SEO",
     tags: ["seo", "поисковое продвижение", "алгоритмы", "ранжирование"],
-    date: "2024-01-20",
+    publishedAt: new Date("2024-01-20"),
     readTime: "12 мин",
     image: "/api/placeholder/800/400",
     featured: true
