@@ -13,6 +13,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 2500, max: 8000, currency: "₽" },
     deliveryTime: { min: 2, max: 4, unit: "дня" },
     popularity: 5,
+    tags: ["seo", "статьи", "контент", "продвижение"],
     features: [
       "Анализ ТОП-10 конкурентов",
       "Семантическое ядро 50+ ключей",
@@ -48,6 +49,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 15000, max: 45000, currency: "₽" },
     deliveryTime: { min: 5, max: 10, unit: "дней" },
     popularity: 5,
+    tags: ["лендинги", "конверсия", "продажи", "ux"],
     features: [
       "Формула AIDA/PAS",
       "A/B тестирование заголовков",
@@ -83,6 +85,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 8000, max: 25000, currency: "₽" },
     deliveryTime: { min: 3, max: 7, unit: "дней" },
     popularity: 4,
+    tags: ["email", "автоматизация", "воронки", "рассылки"],
     features: [
       "Персонализация контента",
       "Сегментация аудитории",
@@ -118,6 +121,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 5000, max: 15000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     popularity: 5,
+    tags: ["соцсети", "контент", "smm", "вовлечение"],
     features: [
       "Контент-план на месяц",
       "30+ готовых постов",
@@ -153,6 +157,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 500, max: 2000, currency: "₽" },
     deliveryTime: { min: 1, max: 2, unit: "дня" },
     popularity: 4,
+    tags: ["товары", "описания", "ecommerce", "маркетплейсы"],
     features: [
       "SEO-оптимизация",
       "Эмоциональные триггеры",
@@ -188,6 +193,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 10000, max: 50000, currency: "₽" },
     deliveryTime: { min: 7, max: 14, unit: "дней" },
     popularity: 3,
+    tags: ["техническое", "b2b", "экспертность", "документация"],
     features: [
       "Консультации экспертов",
       "Техническая терминология",
@@ -223,6 +229,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 5000, max: 15000, currency: "₽" },
     deliveryTime: { min: 2, max: 4, unit: "дня" },
     popularity: 3,
+    tags: ["pr", "сми", "новости", "медиа"],
     features: [
       "Новостной формат",
       "Медиа-контакты",
@@ -258,6 +265,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 3000, max: 12000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     popularity: 4,
+    tags: ["видео", "сценарии", "youtube", "реклама"],
     features: [
       "Хуки для удержания",
       "Тайминг и ритм",

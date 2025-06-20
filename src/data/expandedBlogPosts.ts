@@ -35,7 +35,7 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
     category: "Копирайтинг",
     tags: ["психология", "конверсия", "триггеры", "продажи"],
     publishedAt: new Date("2024-01-15"),
-    readTime: 8,
+    readTime: "8 мин",
     image: "/api/placeholder/800/400",
     featured: true
   },
@@ -72,7 +72,7 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
     category: "SEO",
     tags: ["seo", "поисковое продвижение", "алгоритмы", "ранжирование"],
     publishedAt: new Date("2024-01-20"),
-    readTime: 12,
+    readTime: "12 мин",
     image: "/api/placeholder/800/400",
     featured: true
   }
