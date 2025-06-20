@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { createStripeCheckoutSession } from "@/api/payments";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/sonner";
 
 type CheckoutResult = {
   loading: boolean;
@@ -26,13 +26,11 @@ export function useStripeCheckout(): CheckoutResult {
     });
 
     if (url) {
-      // Open Stripe checkout in a new tab
-      window.open(url, '_blank');
+      window.location.href = url;
     } else {
       toast.error(apiError || "Ошибка при создании платежа. Попробуйте позже.");
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return { loading, handleStripeCheckout };

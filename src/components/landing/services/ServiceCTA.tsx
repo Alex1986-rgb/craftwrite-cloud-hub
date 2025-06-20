@@ -1,34 +1,31 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Phone, MessageCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowRight, Target } from "lucide-react";
 
-const ServiceCTA: React.FC = () => {
+const ServiceCTA = () => {
   return (
-    <div className="mt-16 text-center">
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 md:p-12">
-        <h3 className="text-2xl md:text-3xl font-bold mb-4">
-          Не нашли подходящую услугу?
-        </h3>
-        <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Мы создаем индивидуальные решения для любых задач. 
-          Расскажите о вашем проекте, и мы предложим оптимальный вариант.
-        </p>
+    <div className="text-center">
+      <div className="bg-gradient-to-br from-white/80 via-blue-50/50 to-purple-50/30 backdrop-blur-lg rounded-2xl md:rounded-3xl p-8 md:p-12 shadow-2xl border border-blue-200/30 relative overflow-hidden max-w-4xl mx-auto">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 via-transparent to-purple-400/5"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-2xl"></div>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" asChild>
-            <Link to="/contact" className="flex items-center gap-2">
-              <MessageCircle className="w-5 h-5" />
+        <div className="relative z-10">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Нужен другой тип текста?
+          </h3>
+          <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+            Создаем тексты любой сложности и тематики. Обсудим ваш уникальный проект!
+          </p>
+          <Button 
+            asChild 
+            size="lg"
+            className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-400 hover:to-purple-400 border-0 rounded-full px-8 py-4 text-lg font-semibold shadow-2xl hover:scale-105 transition-all duration-300"
+          >
+            <Link to="/order" className="flex items-center gap-3">
+              <Target className="w-5 h-5" />
               Обсудить проект
               <ArrowRight className="w-5 h-5" />
-            </Link>
-          </Button>
-          
-          <Button variant="outline" size="lg" asChild>
-            <Link to="tel:+7-800-123-45-67" className="flex items-center gap-2">
-              <Phone className="w-5 h-5" />
-              Позвонить нам
             </Link>
           </Button>
         </div>
