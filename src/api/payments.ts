@@ -1,4 +1,6 @@
 
+import { supabase } from "@/integrations/supabase/client";
+
 /**
  * API helpers for payment-related functions.
  */
@@ -12,21 +14,22 @@ export async function createStripeCheckoutSession({
   cancelUrl: string;
 }): Promise<{ url?: string; error?: string }> {
   try {
-    const res = await fetch("/functions/v1/create-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    const { data, error } = await supabase.functions.invoke("create-payment", {
+      body: {
         priceId,
         successUrl,
         cancelUrl,
-      }),
+      },
     });
-    if (!res.ok) {
-      const error = await res.text();
-      return { error };
+
+    if (error) {
+      console.error("Supabase function error:", error);
+      return { error: error.message };
     }
-    return await res.json();
+
+    return data;
   } catch (error: any) {
+    console.error("Network error:", error);
     return { error: error?.message || "Network error" };
   }
 }

@@ -31,6 +31,8 @@ import LandingPageOrder from '@/pages/LandingPageOrder';
 import EmailCampaignsOrder from '@/pages/EmailCampaignsOrder';
 import TelegramContentOrder from '@/pages/TelegramContentOrder';
 import SpecializedOrderPage from '@/pages/order/SpecializedOrderPage';
+import PaymentSuccess from '@/pages/PaymentSuccess';
+import PaymentCancelled from '@/pages/PaymentCancelled';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +59,10 @@ function App() {
               <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
               <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
               <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />
+              
+              {/* Payment pages */}
+              <Route path="/payment-success" element={<PublicLayout><PaymentSuccess /></PublicLayout>} />
+              <Route path="/payment-cancelled" element={<PublicLayout><PaymentCancelled /></PublicLayout>} />
               
               {/* Specialized order pages */}
               <Route path="/order/seo-article" element={<PublicLayout><SeoArticleOrder /></PublicLayout>} />
