@@ -10,7 +10,10 @@ import ComprehensiveSeo from "@/components/seo/ComprehensiveSeo";
 export default function Index() {
   return (
     <>
-      <ComprehensiveSeo />
+      <ComprehensiveSeo 
+        title="Профессиональный копирайтинг CopyPro Cloud | SEO-тексты, лендинги, контент-маркетинг"
+        description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. Создаем SEO-тексты, продающие лендинги, email-кампании. Гарантия качества 100%. Заказать от 1000₽"
+      />
       <Header />
       <main className="min-h-screen">
         <ModernHeroSection />
