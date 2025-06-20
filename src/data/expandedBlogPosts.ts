@@ -3,7 +3,7 @@ import type { BlogPost } from "@/data/blog/types";
 
 export const EXPANDED_BLOG_POSTS: BlogPost[] = [
   {
-    slug: "copywriting-psychology-2024",
+    id: "copywriting-psychology-2024",
     title: "Психология продающих текстов: 15 триггеров, которые заставляют покупать",
     excerpt: "Разбираем научно доказанные психологические триггеры, которые увеличивают конверсию текстов на 200%+. Примеры из реальных кейсов.",
     content: `
@@ -31,16 +31,22 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
 
 Правильное использование психологических триггеров — это ключ к созданию текстов, которые продают сами себя.
     `,
-    author: "Анна Копейкина",
+    author: {
+      name: "Анна Копейкина",
+      avatar: "/api/placeholder/64/64",
+      bio: "Ведущий копирайтер с 8-летним опытом"
+    },
     category: "Копирайтинг",
     tags: ["психология", "конверсия", "триггеры", "продажи"],
     publishedAt: new Date("2024-01-15"),
-    readTime: "8 мин",
+    readTime: 8,
     image: "/api/placeholder/800/400",
-    featured: true
+    featured: true,
+    views: 15420,
+    likes: 342
   },
   {
-    slug: "seo-copywriting-2024-guide", 
+    id: "seo-copywriting-2024-guide", 
     title: "SEO-копирайтинг в 2024: полное руководство от экспертов",
     excerpt: "Актуальные алгоритмы поисковиков, новые факторы ранжирования и практические кейсы продвижения текстами.",
     content: `
@@ -68,12 +74,18 @@ export const EXPANDED_BLOG_POSTS: BlogPost[] = [
 
 Список актуальных сервисов для анализа и оптимизации SEO-текстов.
     `,
-    author: "Сергей Текстов",
+    author: {
+      name: "Сергей Текстов",
+      avatar: "/api/placeholder/64/64", 
+      bio: "SEO-эксперт, автор 200+ статей в ТОП-10"
+    },
     category: "SEO",
     tags: ["seo", "поисковое продвижение", "алгоритмы", "ранжирование"],
     publishedAt: new Date("2024-01-20"),
-    readTime: "12 мин",
+    readTime: 12,
     image: "/api/placeholder/800/400",
-    featured: true
+    featured: true,
+    views: 23180,
+    likes: 587
   }
 ];
