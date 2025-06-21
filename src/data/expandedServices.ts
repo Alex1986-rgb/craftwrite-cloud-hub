@@ -1,4 +1,5 @@
 
+
 import type { Service } from "@/data/types/service";
 
 export const EXPANDED_SERVICES: Service[] = [
@@ -13,6 +14,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 2500, max: 8000, currency: "₽" },
     deliveryTime: { min: 2, max: 4, unit: "дня" },
     popularity: 5,
+    tags: ["seo", "статьи", "поисковое продвижение", "контент-маркетинг", "органический трафик"],
     features: [
       "Анализ ТОП-10 конкурентов",
       "Семантическое ядро 50+ ключей",
@@ -48,6 +50,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 15000, max: 45000, currency: "₽" },
     deliveryTime: { min: 5, max: 10, unit: "дней" },
     popularity: 5,
+    tags: ["лендинг", "продажи", "конверсия", "ux-копирайтинг", "психология продаж"],
     features: [
       "Формула AIDA/PAS",
       "A/B тестирование заголовков",
@@ -83,6 +86,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 8000, max: 25000, currency: "₽" },
     deliveryTime: { min: 3, max: 7, unit: "дней" },
     popularity: 4,
+    tags: ["email-маркетинг", "автоматизация", "воронки продаж", "персонализация", "рассылки"],
     features: [
       "Персонализация контента",
       "Сегментация аудитории",
@@ -118,6 +122,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 5000, max: 15000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     popularity: 5,
+    tags: ["smm", "социальные сети", "контент-план", "вовлечение", "вирусный контент"],
     features: [
       "Контент-план на месяц",
       "30+ готовых постов",
@@ -153,6 +158,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 500, max: 2000, currency: "₽" },
     deliveryTime: { min: 1, max: 2, unit: "дня" },
     popularity: 4,
+    tags: ["e-commerce", "описания товаров", "маркетплейсы", "wildberries", "ozon"],
     features: [
       "SEO-оптимизация",
       "Эмоциональные триггеры",
@@ -188,6 +194,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 10000, max: 50000, currency: "₽" },
     deliveryTime: { min: 7, max: 14, unit: "дней" },
     popularity: 3,
+    tags: ["b2b", "технические тексты", "экспертный контент", "документация", "white papers"],
     features: [
       "Консультации экспертов",
       "Техническая терминология",
@@ -223,6 +230,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 5000, max: 15000, currency: "₽" },
     deliveryTime: { min: 2, max: 4, unit: "дней" },
     popularity: 3,
+    tags: ["pr", "пресс-релизы", "сми", "медийность", "новости"],
     features: [
       "Новостной формат",
       "Медиа-контакты",
@@ -258,6 +266,7 @@ export const EXPANDED_SERVICES: Service[] = [
     price: { min: 3000, max: 12000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     popularity: 4,
+    tags: ["видео", "сценарии", "youtube", "обучающий контент", "реклама"],
     features: [
       "Хуки для удержания",
       "Тайминг и ритм",
@@ -283,3 +292,4 @@ export const EXPANDED_SERVICES: Service[] = [
     seoText: "Сценарии для видео с удержанием 70%+. Создаем контент для YouTube, рекламы и обучающих роликов. Полный цикл от идеи до монтажных листов."
   }
 ];
+
