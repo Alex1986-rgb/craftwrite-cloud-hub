@@ -9,6 +9,174 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      orders: {
+        Row: {
+          additional_requirements: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          deadline: string | null
+          details: string
+          estimated_price: number | null
+          files_urls: string[] | null
+          final_price: number | null
+          id: string
+          service_name: string
+          service_options: Json | null
+          service_slug: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          additional_requirements?: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string
+          deadline?: string | null
+          details: string
+          estimated_price?: number | null
+          files_urls?: string[] | null
+          final_price?: number | null
+          id?: string
+          service_name: string
+          service_options?: Json | null
+          service_slug: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          additional_requirements?: string | null
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          deadline?: string | null
+          details?: string
+          estimated_price?: number | null
+          files_urls?: string[] | null
+          final_price?: number | null
+          id?: string
+          service_name?: string
+          service_options?: Json | null
+          service_slug?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      portfolio_items: {
+        Row: {
+          after_text: string | null
+          before_text: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          metrics: Json | null
+          service_slug: string
+          tags: string[] | null
+          title: string
+        }
+        Insert: {
+          after_text?: string | null
+          before_text?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          metrics?: Json | null
+          service_slug: string
+          tags?: string[] | null
+          title: string
+        }
+        Update: {
+          after_text?: string | null
+          before_text?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          metrics?: Json | null
+          service_slug?: string
+          tags?: string[] | null
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          client_avatar_url: string | null
+          client_company: string | null
+          client_name: string
+          created_at: string
+          id: string
+          project_details: string | null
+          rating: number | null
+          results_achieved: string | null
+          review_text: string
+          service_slug: string | null
+        }
+        Insert: {
+          client_avatar_url?: string | null
+          client_company?: string | null
+          client_name: string
+          created_at?: string
+          id?: string
+          project_details?: string | null
+          rating?: number | null
+          results_achieved?: string | null
+          review_text: string
+          service_slug?: string | null
+        }
+        Update: {
+          client_avatar_url?: string | null
+          client_company?: string | null
+          client_name?: string
+          created_at?: string
+          id?: string
+          project_details?: string | null
+          rating?: number | null
+          results_achieved?: string | null
+          review_text?: string
+          service_slug?: string | null
+        }
+        Relationships: []
+      }
       текста: {
         Row: {
           created_at: string
