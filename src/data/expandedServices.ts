@@ -1,4 +1,3 @@
-
 import type { Service } from "@/data/types/service";
 
 export const EXPANDED_SERVICES: Service[] = [
