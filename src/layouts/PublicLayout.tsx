@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import { UnifiedHeader } from '@/components/navigation';
+import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 
 interface PublicLayoutProps {
   children: ReactNode;
