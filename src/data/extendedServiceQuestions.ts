@@ -90,7 +90,9 @@ export const EXTENDED_SERVICE_QUESTIONS: Record<string, DynamicQuestion[]> = {
       label: 'Социальные доказательства',
       type: 'multiselect',
       required: false,
-      options: ['Отзывы клиентов', 'Логотипы компаний', 'Сертификаты', 'Награды', 'Статистика клиентов'],
+      options: ['Отзывы клиентов', 'Логотип
+
+ы компаний', 'Сертификаты', 'Награды', 'Статистика клиентов'],
       description: 'Элементы доверия для включения'
     },
     {
