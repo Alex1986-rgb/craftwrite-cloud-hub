@@ -1,3 +1,4 @@
+
 import Hero from '@/components/landing/Hero';
 import Services from '@/components/landing/Services';
 import WhyChooseUs from '@/components/landing/WhyChooseUs';
@@ -12,26 +13,19 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <Hero />
-
       <Services />
-
       <WhyChooseUs />
-
       <HowItWorks />
-
       <Pricing />
-
       <ContactForm />
-
       <FAQ />
       
-      {/* Добавляем новые секции */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <PortfolioShowcase maxItems={6} />
         </div>
       </section>
-
+      
       <TestimonialsSection />
     </div>
   );
