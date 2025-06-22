@@ -1,29 +1,30 @@
-import Hero from '@/components/landing/Hero';
-import Services from '@/components/landing/Services';
-import WhyChooseUs from '@/components/landing/WhyChooseUs';
-import HowItWorks from '@/components/landing/HowItWorks';
-import Pricing from '@/components/landing/Pricing';
-import ContactForm from '@/components/landing/ContactForm';
-import FAQ from '@/components/landing/FAQ';
+
+import HeroSection from '@/components/landing/HeroSection';
+import BenefitsSection from '@/components/landing/BenefitsSection';
+import ServicesCatalogSection from '@/components/landing/ServicesCatalogSection';
+import ProcessSection from '@/components/landing/ProcessSection';
+import ModernPricingSection from '@/components/landing/ModernPricingSection';
+import ContactSection from '@/components/landing/ContactSection';
+import FaqSection from '@/components/landing/FaqSection';
 import PortfolioShowcase from '@/components/portfolio/PortfolioShowcase';
 import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <Hero />
+      <HeroSection />
 
-      <Services />
+      <ServicesCatalogSection />
 
-      <WhyChooseUs />
+      <BenefitsSection />
 
-      <HowItWorks />
+      <ProcessSection />
 
-      <Pricing />
+      <ModernPricingSection />
 
-      <ContactForm />
+      <ContactSection />
 
-      <FAQ />
+      <FaqSection />
       
       {/* Добавляем новые секции */}
       <section className="py-16">
