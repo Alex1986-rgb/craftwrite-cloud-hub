@@ -15,7 +15,7 @@ export default function UserMenu({ isAuthenticated, user, logout }: UserMenuProp
     return (
       <div className="flex items-center gap-3">
         <Button asChild variant="ghost" size="sm">
-          <Link to="/client">Вход</Link>
+          <Link to="/auth">Вход</Link>
         </Button>
         <Button 
           asChild 

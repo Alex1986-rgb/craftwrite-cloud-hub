@@ -16,6 +16,7 @@ import ContactPage from '@/pages/ContactPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegistrationPage from '@/pages/RegistrationPage';
+import AuthPage from '@/pages/AuthPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import OrderTrackingPage from '@/pages/OrderTrackingPage';
 import TermsOfServicePage from '@/pages/TermsOfServicePage';
@@ -52,6 +53,7 @@ function App() {
             <Route path="/blog" element={<PublicLayout><BlogPage /></PublicLayout>} />
             <Route path="/service/:slug" element={<PublicLayout><ServicePage /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+            <Route path="/auth" element={<AuthPage />} />
             <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
             <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />

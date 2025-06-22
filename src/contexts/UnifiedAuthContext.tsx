@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser, Session } from "@supabase/supabase-js";
 
 export type UserRole = 'guest' | 'client' | 'admin';
 
@@ -27,106 +28,185 @@ interface UnifiedAuthContextType {
   logout: () => void;
   switchRole: (role: UserRole) => void;
   canAccessRole: (role: UserRole) => boolean;
+  register: (email: string, password: string, name: string, phone?: string, company?: string) => Promise<boolean>;
 }
 
 const UnifiedAuthContext = createContext<UnifiedAuthContextType | null>(null);
-
-// Временные учетные данные (позже заменить на Supabase)
-const MOCK_USERS = {
-  "admin@copypro.com": {
-    password: "admin123",
-    user: {
-      id: "1",
-      name: "Александр Админов",
-      email: "admin@copypro.com",
-      role: 'admin' as UserRole,
-      createdAt: "2024-01-01",
-      lastLogin: new Date().toISOString(),
-      isVerified: true
-    }
-  },
-  "client@example.com": {
-    password: "password",
-    user: {
-      id: "2", 
-      name: "Иван Петров",
-      email: "client@example.com",
-      role: 'client' as UserRole,
-      phone: "+7 (999) 123-45-67",
-      company: "ООО \"Инновации\"",
-      createdAt: "2024-01-15",
-      lastLogin: new Date().toISOString(),
-      isVerified: true
-    }
-  }
-};
 
 export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [currentRole, setCurrentRole] = useState<UserRole>('guest');
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
+
+  // Fetch user profile and role from database
+  const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
+    try {
+      // Get user profile
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', supabaseUser.id)
+        .single();
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Error fetching profile:', profileError);
+        return null;
+      }
+
+      // Get user role
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', supabaseUser.id)
+        .single();
+
+      if (roleError && roleError.code !== 'PGRST116') {
+        console.error('Error fetching role:', roleError);
+      }
+
+      const userRole = roleData?.role || 'client';
+
+      const userData: User = {
+        id: supabaseUser.id,
+        name: profile?.full_name || supabaseUser.email?.split('@')[0] || 'User',
+        email: supabaseUser.email || '',
+        role: userRole as UserRole,
+        phone: profile?.phone,
+        company: profile?.company,
+        createdAt: profile?.created_at || supabaseUser.created_at,
+        lastLogin: new Date().toISOString(),
+        isVerified: supabaseUser.email_confirmed_at ? true : false
+      };
+
+      return userData;
+    } catch (error) {
+      console.error('Error in fetchUserProfile:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    // Проверка сохраненной сессии
-    try {
-      const savedAuth = localStorage.getItem("unified_auth");
-      if (savedAuth) {
-        const authData = JSON.parse(savedAuth);
-        const sessionTime = new Date(authData.timestamp);
-        const now = new Date();
-        const hoursPasssed = (now.getTime() - sessionTime.getTime()) / (1000 * 60 * 60);
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
+        setSession(session);
         
-        if (hoursPasssed < 24) {
-          setUser(authData.user);
-          setCurrentRole(authData.currentRole || authData.user.role);
+        if (session?.user) {
+          const userData = await fetchUserProfile(session.user);
+          if (userData) {
+            setUser(userData);
+            setCurrentRole(userData.role);
+          }
         } else {
-          localStorage.removeItem("unified_auth");
+          setUser(null);
+          setCurrentRole('guest');
         }
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading auth data:", error);
-      localStorage.removeItem("unified_auth");
-    }
-    setLoading(false);
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        fetchUserProfile(session.user).then(userData => {
+          if (userData) {
+            setUser(userData);
+            setCurrentRole(userData.role);
+          }
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string, role?: UserRole): Promise<boolean> => {
+  const register = async (email: string, password: string, name: string, phone?: string, company?: string): Promise<boolean> => {
     setLoading(true);
     
     try {
-      const userData = MOCK_USERS[email as keyof typeof MOCK_USERS];
+      const redirectUrl = `${window.location.origin}/`;
       
-      if (!userData || userData.password !== password) {
-        throw new Error("Неверные данные для входа");
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: name,
+            phone: phone,
+            company: company
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // If user is created but not confirmed, show appropriate message
+      if (data.user && !data.session) {
+        toast.success("Аккаунт создан! Проверьте email для подтверждения регистрации.");
+        return true;
       }
 
-      const loginRole = role || userData.user.role;
-      const authData = {
-        user: userData.user,
-        currentRole: loginRole,
-        timestamp: new Date().toISOString()
-      };
-
-      localStorage.setItem("unified_auth", JSON.stringify(authData));
-      setUser(userData.user);
-      setCurrentRole(loginRole);
-      
-      toast.success(`Добро пожаловать! Вы вошли как ${loginRole === 'admin' ? 'администратор' : 'клиент'}`);
+      toast.success("Регистрация успешна! Добро пожаловать!");
       return true;
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Ошибка входа: " + (error as Error).message);
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      toast.error("Ошибка регистрации: " + error.message);
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("unified_auth");
-    setUser(null);
-    setCurrentRole('guest');
-    toast.success("Вы вышли из системы");
+  const login = async (email: string, password: string, role?: UserRole): Promise<boolean> => {
+    setLoading(true);
+    
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        const userData = await fetchUserProfile(data.user);
+        if (userData) {
+          setUser(userData);
+          setCurrentRole(role || userData.role);
+          toast.success(`Добро пожаловать! Вы вошли как ${userData.role === 'admin' ? 'администратор' : 'клиент'}`);
+          return true;
+        }
+      }
+
+      return false;
+    } catch (error: any) {
+      console.error("Login error:", error);
+      toast.error("Ошибка входа: " + error.message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      setUser(null);
+      setCurrentRole('guest');
+      setSession(null);
+      toast.success("Вы вышли из системы");
+    } catch (error: any) {
+      console.error("Logout error:", error);
+      toast.error("Ошибка выхода: " + error.message);
+    }
   };
 
   const switchRole = (role: UserRole) => {
@@ -136,17 +216,7 @@ export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
 
     setCurrentRole(role);
-    
-    if (user) {
-      const authData = {
-        user,
-        currentRole: role,
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem("unified_auth", JSON.stringify(authData));
-    }
-
-    toast.success(`Переключено в режим: ${role === 'admin' ? 'администратор' : role === 'client' ? 'клиент' : 'гость'}`);
+    toast.success(`Переключено в режim: ${role === 'admin' ? 'администратор' : role === 'client' ? 'клиент' : 'гость'}`);
   };
 
   const canAccessRole = (role: UserRole): boolean => {
@@ -170,7 +240,8 @@ export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ childre
     login,
     logout,
     switchRole,
-    canAccessRole
+    canAccessRole,
+    register
   };
 
   return (

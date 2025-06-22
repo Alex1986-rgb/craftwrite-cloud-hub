@@ -18,7 +18,7 @@ interface OrderData {
 }
 
 export function useSupabaseOrders() {
-  const { user } = useUnifiedAuth();
+  const { user, isAuthenticated } = useUnifiedAuth();
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<any[]>([]);
 
@@ -30,7 +30,7 @@ export function useSupabaseOrders() {
         .insert({
           ...orderData,
           user_id: user?.id || null,
-          estimated_price: orderData.estimated_price ? orderData.estimated_price * 100 : null, // конвертируем в копейки
+          estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null, // конвертируем в копейки
         });
 
       if (error) throw error;
@@ -38,6 +38,11 @@ export function useSupabaseOrders() {
       toast.success('Заказ успешно создан!', {
         description: 'Мы свяжемся с вами в течение 1 рабочего дня'
       });
+
+      // Обновляем список заказов если пользователь авторизован
+      if (isAuthenticated) {
+        await fetchUserOrders();
+      }
 
       return true;
     } catch (error: any) {
@@ -52,7 +57,7 @@ export function useSupabaseOrders() {
   };
 
   const fetchUserOrders = async () => {
-    if (!user) return;
+    if (!user || !isAuthenticated) return;
 
     setLoading(true);
     try {
@@ -74,10 +79,12 @@ export function useSupabaseOrders() {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && isAuthenticated) {
       fetchUserOrders();
+    } else {
+      setOrders([]);
     }
-  }, [user]);
+  }, [user, isAuthenticated]);
 
   return {
     createOrder,
