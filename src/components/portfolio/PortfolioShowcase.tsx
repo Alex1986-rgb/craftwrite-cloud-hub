@@ -1,12 +1,12 @@
 
-import { portfolioExamples } from '@/data/portfolioExamples';
+import { PORTFOLIO_EXAMPLES } from '@/data/portfolioExamples';
 
 interface PortfolioShowcaseProps {
   maxItems?: number;
 }
 
 const PortfolioShowcase = ({ maxItems = 6 }: PortfolioShowcaseProps) => {
-  const displayItems = portfolioExamples.slice(0, maxItems);
+  const displayItems = PORTFOLIO_EXAMPLES.slice(0, maxItems);
 
   return (
     <section className="py-16 bg-slate-50">
@@ -23,7 +23,7 @@ const PortfolioShowcase = ({ maxItems = 6 }: PortfolioShowcaseProps) => {
             <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm rounded-full mb-2">
-                  {item.category}
+                  {item.service_slug}
                 </span>
                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-600 text-sm mb-4">{item.description}</p>
@@ -32,10 +32,10 @@ const PortfolioShowcase = ({ maxItems = 6 }: PortfolioShowcaseProps) => {
               <div className="border-t pt-4">
                 <div className="flex justify-between items-center">
                   <div className="text-sm text-gray-500">
-                    {item.client}
+                    {item.tags?.[0] || 'Проект'}
                   </div>
                   <div className="text-sm font-semibold text-green-600">
-                    +{item.result}
+                    +{Object.values(item.metrics)[0] || '100%'}
                   </div>
                 </div>
               </div>

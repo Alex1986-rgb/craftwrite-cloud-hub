@@ -1,5 +1,5 @@
 
-import { testimonials } from '@/data/testimonials';
+import { TESTIMONIALS } from '@/data/testimonials';
 
 const TestimonialsSection = () => {
   return (
@@ -13,33 +13,33 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {TESTIMONIALS.map((testimonial, index) => (
             <div key={index} className="bg-white p-6 rounded-xl shadow-sm border">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                   <span className="text-primary font-bold">
-                    {testimonial.name.charAt(0)}
+                    {testimonial.client_name.charAt(0)}
                   </span>
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-semibold">{testimonial.name}</h3>
-                  <p className="text-sm text-gray-600">{testimonial.company}</p>
+                  <h3 className="font-semibold">{testimonial.client_name}</h3>
+                  <p className="text-sm text-gray-600">{testimonial.client_company || 'Клиент'}</p>
                 </div>
               </div>
               
               <div className="mb-4">
                 <div className="flex text-yellow-400 mb-2">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {[...Array(testimonial.rating || 5)].map((_, i) => (
                     <span key={i}>★</span>
                   ))}
                 </div>
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  "{testimonial.text}"
+                  "{testimonial.review_text}"
                 </p>
               </div>
               
               <div className="text-xs text-gray-500 border-t pt-3">
-                Проект: {testimonial.project}
+                Проект: {testimonial.project_details || 'Копирайтинг'}
               </div>
             </div>
           ))}
