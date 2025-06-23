@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -22,7 +23,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ActivityLogsPage } from "@/pages/ActivityLogsPage";
-import BulkSeoOptimization from "./pages/BulkSeoOptimization";
 
 const queryClient = new QueryClient();
 
@@ -47,9 +47,6 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="/activity-logs" element={<ActivityLogsPage />} />
-              
-              <Route path="/bulk-seo" element={<BulkSeoOptimization />} />
-              
             </Routes>
           </div>
         </TooltipProvider>
