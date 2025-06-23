@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -216,7 +215,7 @@ export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
 
     setCurrentRole(role);
-    toast.success(`Переключено в режim: ${role === 'admin' ? 'администратор' : role === 'client' ? 'клиент' : 'гость'}`);
+    toast.success(`Переключено в режим: ${role === 'admin' ? 'администратор' : role === 'client' ? 'клиент' : 'гость'}`);
   };
 
   const canAccessRole = (role: UserRole): boolean => {
