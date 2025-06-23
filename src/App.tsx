@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Outlet,
 } from "react-router-dom";
 import PublicLayout from "./layouts/PublicLayout";
 import Home from "./pages/HomePage";
@@ -26,23 +27,15 @@ import WildberriesOrder from "./pages/order/WildberriesOrder";
 import OzonOrder from "./pages/order/OzonOrder";
 import YouTubeOrder from "./pages/order/YouTubeOrder";
 import LinkedInOrder from "./pages/order/LinkedInOrder";
-import SpecializedOrderPage from "./pages/SpecializedOrderPage";
+import SpecializedOrderPage from "./pages/order/SpecializedOrderPage";
 import ClientNewOrder from "./components/client/ClientNewOrder";
-import AIGenerator from "./pages/AIGenerator";
-import TextGenerator from "./pages/TextGenerator";
-import ImageGenerator from "./pages/ImageGenerator";
-import VideoGenerator from "./pages/VideoGenerator";
-import RewriteGenerator from "./pages/RewriteGenerator";
-import CopywritingGenerator from "./pages/CopywritingGenerator";
-import EmailGenerator from "./pages/EmailGenerator";
-import SocialGenerator from "./pages/SocialGenerator";
 import BulkSeoOptimization from './pages/BulkSeoOptimization';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PublicLayout />}>
+        <Route path="/" element={<PublicLayout><Outlet /></PublicLayout>}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
           <Route path="about" element={<About />} />
@@ -67,14 +60,6 @@ function App() {
           <Route path="order/linkedin" element={<LinkedInOrder />} />
           <Route path="order/specialized/:serviceId" element={<SpecializedOrderPage />} />
           <Route path="client/new-order" element={<ClientNewOrder />} />
-          <Route path="ai-generator" element={<AIGenerator />} />
-          <Route path="ai-generator/text" element={<TextGenerator />} />
-          <Route path="ai-generator/image" element={<ImageGenerator />} />
-          <Route path="ai-generator/video" element={<VideoGenerator />} />
-          <Route path="ai-generator/rewrite" element={<RewriteGenerator />} />
-          <Route path="ai-generator/copywriting" element={<CopywritingGenerator />} />
-          <Route path="ai-generator/email" element={<EmailGenerator />} />
-          <Route path="ai-generator/social" element={<SocialGenerator />} />
         </Route>
 
         <Route path="/admin" element={<p>Admin Layout</p>} />

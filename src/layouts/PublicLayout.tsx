@@ -1,10 +1,11 @@
 
 import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 import Footer from '@/components/common/Footer';
 
 interface PublicLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
@@ -12,7 +13,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     <div className="min-h-screen bg-white">
       <UnifiedHeader />
       <main>
-        {children}
+        {children || <Outlet />}
       </main>
       <Footer />
     </div>
