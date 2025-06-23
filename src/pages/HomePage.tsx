@@ -1,4 +1,6 @@
 
+import { useTranslation } from 'react-i18next';
+import { useI18nTranslations } from '@/hooks/useI18nTranslations';
 import HeroSection from '@/components/landing/HeroSection';
 import BenefitsSection from '@/components/landing/BenefitsSection';
 import ServicesCatalogSection from '@/components/landing/ServicesCatalogSection';
@@ -85,6 +87,11 @@ E-commerce и маркетплейсы:
 `;
 
 export default function HomePage() {
+  const { t } = useTranslation();
+  
+  // Загружаем переводы из базы данных
+  useI18nTranslations();
+
   return (
     <div className="min-h-screen">
       <ModernHeroSection />

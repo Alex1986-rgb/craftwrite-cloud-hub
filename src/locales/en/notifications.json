@@ -1,0 +1,11 @@
+
+{
+  "orderCreated": "Order created successfully",
+  "orderUpdated": "Order updated",
+  "paymentSuccess": "Payment successful", 
+  "paymentFailed": "Payment failed",
+  "profileUpdated": "Profile updated",
+  "settingsSaved": "Settings saved",
+  "error": "An error occurred",
+  "success": "Operation completed successfully"
+}

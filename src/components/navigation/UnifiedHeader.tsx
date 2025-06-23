@@ -1,16 +1,19 @@
 
 import { useState } from "react";
 import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
+import { useTranslation } from 'react-i18next';
 import Logo from "./Logo";
 import DesktopNavigation from "./DesktopNavigation";
 import UserMenu from "./UserMenu";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
+import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
 export default function UnifiedHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useUnifiedAuth();
+  const { t } = useTranslation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -32,6 +35,7 @@ export default function UnifiedHeader() {
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
           {isAuthenticated && <NotificationCenter />}
+          <LanguageSwitcher />
           <UserMenu 
             isAuthenticated={isAuthenticated} 
             user={user} 

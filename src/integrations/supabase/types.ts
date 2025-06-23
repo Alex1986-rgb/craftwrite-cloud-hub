@@ -45,6 +45,45 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_settings: {
+        Row: {
+          created_at: string | null
+          email_notifications: boolean | null
+          id: string
+          marketing_notifications: boolean | null
+          order_status_updates: boolean | null
+          payment_notifications: boolean | null
+          push_notifications: boolean | null
+          telegram_notifications: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          marketing_notifications?: boolean | null
+          order_status_updates?: boolean | null
+          payment_notifications?: boolean | null
+          push_notifications?: boolean | null
+          telegram_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          marketing_notifications?: boolean | null
+          order_status_updates?: boolean | null
+          payment_notifications?: boolean | null
+          push_notifications?: boolean | null
+          telegram_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string | null
@@ -144,6 +183,39 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      payment_integrations: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          provider: string
+          public_key: string | null
+          supported_currencies: string[] | null
+          updated_at: string | null
+          webhook_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          provider: string
+          public_key?: string | null
+          supported_currencies?: string[] | null
+          updated_at?: string | null
+          webhook_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          provider?: string
+          public_key?: string | null
+          supported_currencies?: string[] | null
+          updated_at?: string | null
+          webhook_url?: string | null
         }
         Relationships: []
       }
@@ -284,6 +356,36 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_integrations: {
+        Row: {
+          bot_token: string | null
+          chat_id: number
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          bot_token?: string | null
+          chat_id: number
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          bot_token?: string | null
+          chat_id?: number
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           client_avatar_url: string | null
@@ -320,6 +422,36 @@ export type Database = {
           results_achieved?: string | null
           review_text?: string
           service_slug?: string | null
+        }
+        Relationships: []
+      }
+      translations: {
+        Row: {
+          created_at: string | null
+          id: string
+          key: string
+          locale: string
+          namespace: string | null
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          key: string
+          locale: string
+          namespace?: string | null
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          key?: string
+          locale?: string
+          namespace?: string | null
+          updated_at?: string | null
+          value?: string
         }
         Relationships: []
       }

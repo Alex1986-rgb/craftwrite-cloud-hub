@@ -1,0 +1,11 @@
+
+{
+  "orderCreated": "Заказ создан успешно",
+  "orderUpdated": "Заказ обновлен",
+  "paymentSuccess": "Платеж прошел успешно",
+  "paymentFailed": "Ошибка платежа",
+  "profileUpdated": "Профиль обновлен",
+  "settingsSaved": "Настройки сохранены",
+  "error": "Произошла ошибка",
+  "success": "Операция выполнена успешно"
+}

@@ -1,0 +1,55 @@
+
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "prices": "Prices", 
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "profile": "Profile", 
+    "orders": "Orders",
+    "logout": "Logout"
+  },
+  "button": {
+    "order": "Order",
+    "login": "Login",
+    "register": "Register", 
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close"
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "message": "Message",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "required": "Required field",
+    "invalidEmail": "Invalid email format",
+    "passwordMismatch": "Passwords don't match"
+  },
+  "hero": {
+    "title": "Professional copywriting for your business",
+    "subtitle": "We create texts that sell. Our team of experts is ready to turn your ideas into compelling words.",
+    "cta": "Order texts"
+  },
+  "footer": {
+    "company": "About company",
+    "services": "Services",
+    "support": "Support", 
+    "legal": "Legal information",
+    "allRights": "All rights reserved"
+  }
+}

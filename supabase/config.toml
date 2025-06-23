@@ -1,0 +1,23 @@
+
+project_id = "yotunjzgomkuuwpyftqr"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[functions.ai-text-generation]
+verify_jwt = true
+
+[functions.telegram-notifications]
+verify_jwt = false
+
+[functions.yukassa-payment]
+verify_jwt = false
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
