@@ -1,5 +1,7 @@
 
-import { Menu, X } from "lucide-react";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 
 interface MobileMenuButtonProps {
   isOpen: boolean;
@@ -8,16 +10,14 @@ interface MobileMenuButtonProps {
 
 export default function MobileMenuButton({ isOpen, onToggle }: MobileMenuButtonProps) {
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
+      className="lg:hidden"
       onClick={onToggle}
-      className="lg:hidden p-2 rounded-lg hover:glass-unified transition-colors duration-200"
       aria-label="Toggle mobile menu"
     >
-      {isOpen ? (
-        <X className="w-6 h-6 text-neutral-600" />
-      ) : (
-        <Menu className="w-6 h-6 text-neutral-600" />
-      )}
-    </button>
+      {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+    </Button>
   );
 }
