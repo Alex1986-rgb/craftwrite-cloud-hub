@@ -1,88 +1,145 @@
 
-import { openAIService } from './openai';
-
 export interface PersonalizationData {
   userId: string;
-  successfulTexts: string[];
-  preferredPatterns: string[];
-  conversionRates: { [key: string]: number };
-  learningHistory: { topic: string; performance: number }[];
+  preferences: {
+    tone: string;
+    style: string;
+    length: number;
+    topics: string[];
+  };
+  history: {
+    textId: string;
+    content: string;
+    rating: number;
+    feedback: string;
+    timestamp: Date;
+  }[];
+  performance: {
+    averageRating: number;
+    totalTexts: number;
+    preferredKeywords: string[];
+  };
 }
 
 class PersonalizationService {
-  private personalizationData: Map<string, PersonalizationData> = new Map();
+  private userProfiles: Map<string, PersonalizationData> = new Map();
 
   async generateWithPersonalization(params: any, userId: string): Promise<string> {
-    const userProfile = this.personalizationData.get(userId);
+    const profile = this.getUserProfile(userId);
     
-    if (userProfile) {
-      // Enhance prompt with user's successful patterns
-      const enhancedParams = {
+    if (profile) {
+      // Адаптируем параметры под предпочтения пользователя
+      const adaptedParams = {
         ...params,
-        prompt: this.enhancePromptWithPersonalization(params.prompt, userProfile)
+        tone: profile.preferences.tone || params.tone,
+        length: profile.preferences.length || params.length,
+        keywords: this.enhanceKeywords(params.keywords, profile.performance.preferredKeywords)
       };
       
-      return await openAIService.generateText(enhancedParams);
+      console.log('Generating with personalization for user:', userId);
+      // Здесь должен быть вызов к основному генератору
+      return `Персонализированный текст для пользователя ${userId}`;
     }
     
-    return await openAIService.generateText(params);
+    return `Стандартный текст без персонализации`;
   }
 
-  private enhancePromptWithPersonalization(prompt: string, profile: PersonalizationData): string {
-    let enhancedPrompt = prompt;
+  updatePersonalizationData(userId: string, text: string, performance: number): void {
+    let profile = this.userProfiles.get(userId);
     
-    if (profile.preferredPatterns.length > 0) {
-      enhancedPrompt += `\n\nПреференции пользователя: ${profile.preferredPatterns.join(', ')}`;
+    if (!profile) {
+      profile = this.createDefaultProfile(userId);
     }
     
-    if (profile.successfulTexts.length > 0) {
-      const bestPattern = this.extractSuccessfulPattern(profile.successfulTexts);
-      enhancedPrompt += `\n\nИспользуй стиль похожий на: ${bestPattern}`;
-    }
-    
-    return enhancedPrompt;
-  }
-
-  private extractSuccessfulPattern(texts: string[]): string {
-    // Simplified pattern extraction - in real implementation would use ML
-    const commonWords = this.findCommonWords(texts);
-    return `Структура с акцентом на: ${commonWords.slice(0, 3).join(', ')}`;
-  }
-
-  private findCommonWords(texts: string[]): string[] {
-    const wordCount = new Map<string, number>();
-    
-    texts.forEach(text => {
-      const words = text.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-      words.forEach(word => {
-        wordCount.set(word, (wordCount.get(word) || 0) + 1);
-      });
+    // Обновляем историю
+    profile.history.push({
+      textId: `text_${Date.now()}`,
+      content: text.substring(0, 100) + '...',
+      rating: performance,
+      feedback: '',
+      timestamp: new Date()
     });
     
-    return Array.from(wordCount.entries())
-      .sort(([,a], [,b]) => b - a)
-      .map(([word]) => word);
-  }
-
-  updatePersonalizationData(userId: string, text: string, performance: number) {
-    const existing = this.personalizationData.get(userId) || {
-      userId,
-      successfulTexts: [],
-      preferredPatterns: [],
-      conversionRates: {},
-      learningHistory: []
-    };
-
-    if (performance > 0.7) { // Good performance threshold
-      existing.successfulTexts.push(text);
-      existing.learningHistory.push({ topic: 'generated_text', performance });
-    }
-
-    this.personalizationData.set(userId, existing);
+    // Обновляем метрики производительности
+    profile.performance.totalTexts++;
+    profile.performance.averageRating = 
+      (profile.performance.averageRating * (profile.performance.totalTexts - 1) + performance) / 
+      profile.performance.totalTexts;
+    
+    // Сохраняем профиль
+    this.userProfiles.set(userId, profile);
+    
+    console.log(`Updated personalization for user ${userId}, avg rating: ${profile.performance.averageRating}`);
   }
 
   getUserProfile(userId: string): PersonalizationData | undefined {
-    return this.personalizationData.get(userId);
+    return this.userProfiles.get(userId);
+  }
+
+  private createDefaultProfile(userId: string): PersonalizationData {
+    return {
+      userId,
+      preferences: {
+        tone: 'professional',
+        style: 'informative',
+        length: 500,
+        topics: []
+      },
+      history: [],
+      performance: {
+        averageRating: 0,
+        totalTexts: 0,
+        preferredKeywords: []
+      }
+    };
+  }
+
+  private enhanceKeywords(originalKeywords: string, preferredKeywords: string[]): string {
+    if (!preferredKeywords.length) return originalKeywords;
+    
+    const enhanced = originalKeywords + ', ' + preferredKeywords.slice(0, 3).join(', ');
+    return enhanced;
+  }
+
+  async getPersonalizationInsights(userId: string): Promise<{
+    strengths: string[];
+    recommendations: string[];
+    trends: any;
+  }> {
+    const profile = this.getUserProfile(userId);
+    
+    if (!profile) {
+      return {
+        strengths: [],
+        recommendations: ['Создайте больше текстов для анализа'],
+        trends: {}
+      };
+    }
+    
+    const strengths = [];
+    const recommendations = [];
+    
+    if (profile.performance.averageRating > 4) {
+      strengths.push('Высокое качество генерируемых текстов');
+    }
+    
+    if (profile.performance.totalTexts > 10) {
+      strengths.push('Активное использование платформы');
+    }
+    
+    if (profile.performance.averageRating < 3) {
+      recommendations.push('Попробуйте изменить стиль или тональность');
+    }
+    
+    return {
+      strengths,
+      recommendations,
+      trends: {
+        textsThisMonth: profile.history.filter(h => 
+          h.timestamp > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        ).length
+      }
+    };
   }
 }
 

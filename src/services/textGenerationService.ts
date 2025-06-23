@@ -1,4 +1,8 @@
 
+import { openAIService } from './openai';
+import { textRuService } from './textRuService';
+import { seoOptimizer } from './seoOptimizer';
+
 interface GenerationParams {
   prompt: string;
   textType: string;
@@ -11,6 +15,17 @@ interface GenerationParams {
   seoOptimized: boolean;
 }
 
+interface BatchGenerationParams extends GenerationParams {
+  variants: number;
+  temperature: number;
+}
+
+interface RefineParams {
+  originalText: string;
+  instruction: string;
+  preserveLength: boolean;
+}
+
 interface QualityAnalysis {
   readabilityScore: number;
   seoScore: number;
@@ -20,79 +35,54 @@ interface QualityAnalysis {
 }
 
 class TextGenerationService {
-  private apiKey: string | null = null;
-
-  setApiKey(key: string) {
-    this.apiKey = key;
-    localStorage.setItem('openai_api_key', key);
-  }
-
-  getApiKey(): string | null {
-    if (!this.apiKey) {
-      this.apiKey = localStorage.getItem('openai_api_key');
-    }
-    return this.apiKey;
-  }
-
-  async validateApiKey(key: string): Promise<boolean> {
-    try {
-      // Mock validation - replace with actual OpenAI API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return key.startsWith('sk-') && key.length > 20;
-    } catch (error) {
-      return false;
-    }
-  }
-
   async generateText(params: GenerationParams): Promise<string> {
-    if (!this.getApiKey()) {
-      throw new Error('API ключ не установлен');
-    }
-
-    // Mock generation - replace with actual OpenAI API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('Генерация текста с параметрами:', params);
     
-    return `Сгенерированный текст для типа "${params.textType}" с тоном "${params.tone}".\n\nЭто пример сгенерированного контента, который будет заменен реальным вызовом OpenAI API. Длина текста: ${params.length} символов. Аудитория: ${params.audience}.\n\n${params.keywords ? `Ключевые слова: ${params.keywords}` : ''}`;
+    let generatedText = await openAIService.generateText(params);
+    
+    // Если включена SEO-оптимизация
+    if (params.seoOptimized && params.keywords) {
+      generatedText = await seoOptimizer.optimizeContent(generatedText, {
+        keywords: params.keywords,
+        keywordDensity: 2,
+        addHeadings: true,
+        addInternalLinks: false
+      });
+    }
+    
+    return generatedText;
   }
 
-  async generateBatch(params: GenerationParams & { variants: number; temperature: number }): Promise<string[]> {
-    if (!this.getApiKey()) {
-      throw new Error('API ключ не установлен');
-    }
-
-    const results = [];
-    for (let i = 0; i < params.variants; i++) {
-      const result = await this.generateText(params);
-      results.push(`${result} (Вариант ${i + 1})`);
-    }
-    
-    return results;
+  async generateBatch(params: BatchGenerationParams): Promise<string[]> {
+    console.log('Пакетная генерация текстов:', params.variants);
+    return await openAIService.generateBatch(params);
   }
 
-  async refineText(params: { originalText: string; instruction: string; preserveLength: boolean }): Promise<string> {
-    if (!this.getApiKey()) {
-      throw new Error('API ключ не установлен');
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    return `Улучшенный текст на основе инструкции: "${params.instruction}"\n\n${params.originalText}\n\n[Текст был улучшен согласно указаниям]`;
+  async refineText(params: RefineParams): Promise<string> {
+    console.log('Улучшение текста');
+    return await openAIService.refineText(params);
   }
 
   async analyzeQuality(text: string, keywords?: string): Promise<QualityAnalysis> {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    return {
-      readabilityScore: Math.floor(Math.random() * 40) + 60,
-      seoScore: Math.floor(Math.random() * 30) + 70,
-      toneConsistency: Math.floor(Math.random() * 20) + 80,
-      keywordDensity: Math.floor(Math.random() * 15) + 5,
-      suggestions: [
-        "Увеличьте количество подзаголовков",
-        "Добавьте больше ключевых слов",
-        "Сократите длину предложений"
-      ]
-    };
+    console.log('Анализ качества текста');
+    return await openAIService.analyzeQuality(text, keywords);
+  }
+
+  async checkUniqueness(text: string) {
+    console.log('Проверка уникальности текста');
+    return await textRuService.checkUniqueness(text);
+  }
+
+  setApiKey(key: string): void {
+    openAIService.setApiKey(key);
+  }
+
+  getApiKey(): string | null {
+    return openAIService.getApiKey();
+  }
+
+  async validateApiKey(key: string): Promise<boolean> {
+    return await openAIService.validateApiKey(key);
   }
 }
 
