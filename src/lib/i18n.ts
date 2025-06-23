@@ -22,7 +22,7 @@ const resources = {
 // Получаем язык из localStorage или используем русский по умолчанию
 const getStoredLanguage = () => {
   try {
-    return localStorage.getItem('language') || 'ru';
+    return localStorage?.getItem('language') || 'ru';
   } catch {
     return 'ru';
   }
@@ -42,7 +42,15 @@ i18n
     defaultNS: 'common',
     
     // Дебаг только в development
-    debug: process.env.NODE_ENV === 'development',
+    debug: false, // Отключаем дебаг для избежания проблем
+    
+    // Добавляем настройки для предотвращения ошибок загрузки
+    load: 'languageOnly',
+    cleanCode: true,
+    
+    react: {
+      useSuspense: false, // Отключаем Suspense для предотвращения белого экрана
+    }
   });
 
 export default i18n;

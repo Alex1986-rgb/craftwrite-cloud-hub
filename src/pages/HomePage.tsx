@@ -1,21 +1,27 @@
 
-import { useTranslation } from 'react-i18next';
-import { useI18nTranslations } from '@/hooks/useI18nTranslations';
-import MainLayout from '@/layouts/MainLayout';
-import OptimizedHeroSection from '@/components/landing/OptimizedHeroSection';
-import QuickOrderSection from '@/components/landing/QuickOrderSection';
-import CompactSocialProofSection from '@/components/landing/CompactSocialProofSection';
-import InteractiveGuaranteesSection from '@/components/landing/InteractiveGuaranteesSection';
-import BenefitsSection from '@/components/landing/BenefitsSection';
-import ExpertiseShowcaseSection from '@/components/landing/ExpertiseShowcaseSection';
-import ServicesCatalogSection from '@/components/landing/ServicesCatalogSection';
-import TestimonialsSection from '@/components/landing/TestimonialsSection';
-import ProcessSection from '@/components/landing/ProcessSection';
-import FaqSection from '@/components/landing/FaqSection';
-import ContactSection from '@/components/landing/ContactSection';
-import { SeoTextExpandable } from '@/components/landing/SeoTextExpandable';
-import SupportWidget from '@/components/common/SupportWidget';
-import HumanLikeAiAssistant from '@/components/ai/HumanLikeAiAssistant';
+import HeroSection from "@/components/landing/HeroSection";
+import BenefitsSection from "@/components/landing/BenefitsSection";
+import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
+import ProcessSection from "@/components/landing/ProcessSection";
+import TestimonialsSection from "@/components/landing/TestimonialsSection";
+import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
+import FaqSection from "@/components/landing/FaqSection";
+import TeamSection from "@/components/landing/TeamSection";
+import TrustSection from "@/components/landing/TrustSection";
+import ContactSection from "@/components/landing/ContactSection";
+import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import ModernPricingSection from "@/components/landing/ModernPricingSection";
+import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
+import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
+import SocialProofSection from "@/components/landing/SocialProofSection";
+import NewsletterSection from "@/components/landing/NewsletterSection";
+import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
+import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
+import SupportWidget from "@/components/common/SupportWidget";
+import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import UnifiedHeader from "@/components/navigation/UnifiedHeader";
+import Footer from "@/components/common/Footer";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -86,58 +92,36 @@ E-commerce и маркетплейсы:
 `;
 
 export default function HomePage() {
-  const { t } = useTranslation();
-  
-  // Загружаем переводы из базы данных
-  useI18nTranslations();
-
   return (
-    <MainLayout>
-      <div className="w-full">
-        {/* Optimized Hero with enhanced conversion elements */}
-        <OptimizedHeroSection />
-        
-        {/* Compact Social Proof - immediately builds trust */}
-        <CompactSocialProofSection />
-        
-        {/* Quick Order - новая секция для быстрого заказа */}
-        <section id="quick-order">
-          <QuickOrderSection />
-        </section>
-        
-        {/* Services with pricing focus */}
-        <ServicesCatalogSection />
-        
-        {/* Interactive Guarantees - компактная версия */}
+    <div className="min-h-screen bg-background">
+      <UnifiedHeader />
+      <main className="relative overflow-hidden">
+        <ModernHeroSection />
+        <SocialProofSection />
         <InteractiveGuaranteesSection />
-        
-        {/* Benefits - сокращенная версия */}
         <BenefitsSection />
-        
-        {/* Expertise Showcase */}
         <ExpertiseShowcaseSection />
-        
-        {/* Testimonials with video focus */}
-        <TestimonialsSection />
-        
-        {/* Simplified Process */}
+        <ServicesCatalogSection />
+        <ModernPricingSection />
         <ProcessSection />
-        
-        {/* Top 5 FAQ only */}
+        <CaseStudiesSection />
+        <InnovativePortfolioSection />
+        <ProfessionalStatsSection />
+        <TestimonialsSection />
+        <TeamSection />
+        <TrustSection />
         <FaqSection />
-        
-        {/* Contact Section */}
+        <NewsletterSection />
         <ContactSection />
         
-        {/* SEO Text (lazy loaded) */}
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
           <SeoTextExpandable text={seoText} />
         </div>
         
-        {/* Support widgets */}
         <SupportWidget />
         <HumanLikeAiAssistant />
-      </div>
-    </MainLayout>
+      </main>
+      <Footer />
+    </div>
   );
 }
