@@ -297,7 +297,6 @@ export default function AutolinksManager() {
                   <Switch
                     checked={autolink.is_active}
                     onCheckedChange={(checked) => toggleAutolink(autolink.id, checked)}
-                    size="sm"
                   />
                   <Button variant="ghost" size="sm">
                     <Edit className="w-4 h-4" />
