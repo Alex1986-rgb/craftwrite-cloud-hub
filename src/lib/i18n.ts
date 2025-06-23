@@ -36,20 +36,23 @@ i18n
     fallbackLng: 'ru',
     
     interpolation: {
-      escapeValue: false, // react already does escaping
+      escapeValue: false,
     },
 
     defaultNS: 'common',
     
-    // Дебаг только в development
-    debug: false, // Отключаем дебаг для избежания проблем
+    debug: false,
     
-    // Добавляем настройки для предотвращения ошибок загрузки
     load: 'languageOnly',
     cleanCode: true,
     
     react: {
-      useSuspense: false, // Отключаем Suspense для предотвращения белого экрана
+      useSuspense: false,
+      bindI18n: 'languageChanged',
+      bindI18nStore: false,
+      transEmptyNodeValue: '',
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
     }
   });
 
