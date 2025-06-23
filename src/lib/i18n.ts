@@ -19,11 +19,20 @@ const resources = {
   },
 };
 
+// Получаем язык из localStorage или используем русский по умолчанию
+const getStoredLanguage = () => {
+  try {
+    return localStorage.getItem('language') || 'ru';
+  } catch {
+    return 'ru';
+  }
+};
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: localStorage.getItem('language') || 'ru', // default language
+    lng: getStoredLanguage(),
     fallbackLng: 'ru',
     
     interpolation: {
@@ -31,6 +40,9 @@ i18n
     },
 
     defaultNS: 'common',
+    
+    // Дебаг только в development
+    debug: process.env.NODE_ENV === 'development',
   });
 
 export default i18n;

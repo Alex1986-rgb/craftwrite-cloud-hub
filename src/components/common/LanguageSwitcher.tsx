@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,12 +21,24 @@ export default function LanguageSwitcher() {
     languages.find(lang => lang.code === i18n.language) || languages[0]
   );
 
-  const changeLanguage = (langCode: string) => {
-    i18n.changeLanguage(langCode);
-    localStorage.setItem('language', langCode);
-    const newLang = languages.find(lang => lang.code === langCode);
+  // Обновляем текущий язык при изменении в i18n
+  useEffect(() => {
+    const newLang = languages.find(lang => lang.code === i18n.language);
     if (newLang) {
       setCurrentLang(newLang);
+    }
+  }, [i18n.language]);
+
+  const changeLanguage = async (langCode: string) => {
+    try {
+      await i18n.changeLanguage(langCode);
+      localStorage.setItem('language', langCode);
+      const newLang = languages.find(lang => lang.code === langCode);
+      if (newLang) {
+        setCurrentLang(newLang);
+      }
+    } catch (error) {
+      console.error('Error changing language:', error);
     }
   };
 

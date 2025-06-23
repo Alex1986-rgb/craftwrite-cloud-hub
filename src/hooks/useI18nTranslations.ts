@@ -36,7 +36,7 @@ export function useI18nTranslations() {
         
         // Создаем вложенную структуру для ключей типа "nav.home"
         const keys = translation.key.split('.');
-        let current = translationsByLang[translation.locale][translation.namespace];
+        let current: Record<string, any> = translationsByLang[translation.locale][translation.namespace];
         
         for (let i = 0; i < keys.length - 1; i++) {
           if (!current[keys[i]]) {
