@@ -1,6 +1,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { useI18nTranslations } from '@/hooks/useI18nTranslations';
+import MainLayout from '@/layouts/MainLayout';
 import OptimizedHeroSection from '@/components/landing/OptimizedHeroSection';
 import QuickOrderSection from '@/components/landing/QuickOrderSection';
 import CompactSocialProofSection from '@/components/landing/CompactSocialProofSection';
@@ -91,50 +92,52 @@ export default function HomePage() {
   useI18nTranslations();
 
   return (
-    <div className="min-h-screen">
-      {/* Optimized Hero with enhanced conversion elements */}
-      <OptimizedHeroSection />
-      
-      {/* Compact Social Proof - immediately builds trust */}
-      <CompactSocialProofSection />
-      
-      {/* Quick Order - новая секция для быстрого заказа */}
-      <div id="quick-order">
-        <QuickOrderSection />
+    <MainLayout>
+      <div className="w-full">
+        {/* Optimized Hero with enhanced conversion elements */}
+        <OptimizedHeroSection />
+        
+        {/* Compact Social Proof - immediately builds trust */}
+        <CompactSocialProofSection />
+        
+        {/* Quick Order - новая секция для быстрого заказа */}
+        <section id="quick-order">
+          <QuickOrderSection />
+        </section>
+        
+        {/* Services with pricing focus */}
+        <ServicesCatalogSection />
+        
+        {/* Interactive Guarantees - компактная версия */}
+        <InteractiveGuaranteesSection />
+        
+        {/* Benefits - сокращенная версия */}
+        <BenefitsSection />
+        
+        {/* Expertise Showcase */}
+        <ExpertiseShowcaseSection />
+        
+        {/* Testimonials with video focus */}
+        <TestimonialsSection />
+        
+        {/* Simplified Process */}
+        <ProcessSection />
+        
+        {/* Top 5 FAQ only */}
+        <FaqSection />
+        
+        {/* Contact Section */}
+        <ContactSection />
+        
+        {/* SEO Text (lazy loaded) */}
+        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+          <SeoTextExpandable text={seoText} />
+        </div>
+        
+        {/* Support widgets */}
+        <SupportWidget />
+        <HumanLikeAiAssistant />
       </div>
-      
-      {/* Services with pricing focus */}
-      <ServicesCatalogSection />
-      
-      {/* Interactive Guarantees - компактная версия */}
-      <InteractiveGuaranteesSection />
-      
-      {/* Benefits - сокращенная версия */}
-      <BenefitsSection />
-      
-      {/* Expertise Showcase */}
-      <ExpertiseShowcaseSection />
-      
-      {/* Testimonials with video focus */}
-      <TestimonialsSection />
-      
-      {/* Simplified Process */}
-      <ProcessSection />
-      
-      {/* Top 5 FAQ only */}
-      <FaqSection />
-      
-      {/* Contact Section */}
-      <ContactSection />
-      
-      {/* SEO Text (lazy loaded) */}
-      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
-        <SeoTextExpandable text={seoText} />
-      </div>
-      
-      {/* Support widgets */}
-      <SupportWidget />
-      <HumanLikeAiAssistant />
-    </div>
+    </MainLayout>
   );
 }
