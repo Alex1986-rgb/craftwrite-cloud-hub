@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
@@ -7,7 +6,6 @@ import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
 import TeamSection from "@/components/landing/TeamSection";
-import TrustSection from "@/components/landing/TrustSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
@@ -109,7 +107,6 @@ export default function HomePage() {
         <ProfessionalStatsSection />
         <TestimonialsSection />
         <TeamSection />
-        <TrustSection />
         <FaqSection />
         <NewsletterSection />
         <ContactSection />
