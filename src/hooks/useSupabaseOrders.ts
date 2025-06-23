@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
@@ -24,32 +25,43 @@ export function useSupabaseOrders() {
   const createOrder = async (orderData: OrderData) => {
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('orders')
         .insert({
           ...orderData,
           user_id: user?.id || null,
-          estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null, // конвертируем в копейки
-        });
+          estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null,
+        })
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // Создаем уведомление для пользователя
+      if (user) {
+        await supabase.rpc('create_notification', {
+          p_user_id: user.id,
+          p_title: 'Заказ создан',
+          p_message: `Ваш заказ "${orderData.service_name}" успешно создан и принят в работу.`,
+          p_type: 'success'
+        });
+      }
 
       toast.success('Заказ успешно создан!', {
         description: 'Мы свяжемся с вами в течение 1 рабочего дня'
       });
 
-      // Обновляем список заказов если пользователь авторизован
       if (isAuthenticated) {
         await fetchUserOrders();
       }
 
-      return true;
+      return { success: true, order: data };
     } catch (error: any) {
       console.error('Error creating order:', error);
       toast.error('Ошибка при создании заказа', {
         description: error.message || 'Попробуйте еще раз'
       });
-      return false;
+      return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
@@ -77,6 +89,25 @@ export function useSupabaseOrders() {
     }
   };
 
+  const updateOrder = async (orderId: string, updates: Partial<OrderData>) => {
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update(updates)
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      toast.success('Заказ обновлен');
+      await fetchUserOrders();
+      return true;
+    } catch (error: any) {
+      console.error('Error updating order:', error);
+      toast.error('Ошибка обновления заказа');
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (user && isAuthenticated) {
       fetchUserOrders();
@@ -88,6 +119,7 @@ export function useSupabaseOrders() {
   return {
     createOrder,
     fetchUserOrders,
+    updateOrder,
     orders,
     loading
   };

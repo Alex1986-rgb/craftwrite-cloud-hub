@@ -6,6 +6,7 @@ import DesktopNavigation from "./DesktopNavigation";
 import UserMenu from "./UserMenu";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
+import NotificationCenter from "@/components/notifications/NotificationCenter";
 
 export default function UnifiedHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,6 +31,7 @@ export default function UnifiedHeader() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
+          {isAuthenticated && <NotificationCenter />}
           <UserMenu 
             isAuthenticated={isAuthenticated} 
             user={user} 

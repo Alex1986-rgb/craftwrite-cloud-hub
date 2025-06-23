@@ -9,9 +9,77 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          details: Json | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          ip_address: unknown | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          title: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          title: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          title?: string
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           additional_requirements: string | null
+          assigned_admin_id: string | null
+          completed_at: string | null
           contact_email: string
           contact_name: string
           contact_phone: string | null
@@ -22,6 +90,8 @@ export type Database = {
           files_urls: string[] | null
           final_price: number | null
           id: string
+          notes: string | null
+          priority: string | null
           service_name: string
           service_options: Json | null
           service_slug: string
@@ -31,6 +101,8 @@ export type Database = {
         }
         Insert: {
           additional_requirements?: string | null
+          assigned_admin_id?: string | null
+          completed_at?: string | null
           contact_email: string
           contact_name: string
           contact_phone?: string | null
@@ -41,6 +113,8 @@ export type Database = {
           files_urls?: string[] | null
           final_price?: number | null
           id?: string
+          notes?: string | null
+          priority?: string | null
           service_name: string
           service_options?: Json | null
           service_slug: string
@@ -50,6 +124,8 @@ export type Database = {
         }
         Update: {
           additional_requirements?: string | null
+          assigned_admin_id?: string | null
+          completed_at?: string | null
           contact_email?: string
           contact_name?: string
           contact_phone?: string | null
@@ -60,6 +136,8 @@ export type Database = {
           files_urls?: string[] | null
           final_price?: number | null
           id?: string
+          notes?: string | null
+          priority?: string | null
           service_name?: string
           service_options?: Json | null
           service_slug?: string
@@ -135,6 +213,74 @@ export type Database = {
           id?: string
           phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      project_files: {
+        Row: {
+          created_at: string | null
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          mime_type: string | null
+          order_id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          mime_type?: string | null
+          order_id: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          mime_type?: string | null
+          order_id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_files_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      system_settings: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          key: string
+          updated_at: string | null
+          value: Json
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string | null
+          value: Json
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string | null
+          value?: Json
         }
         Relationships: []
       }
@@ -218,6 +364,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_notification: {
+        Args: {
+          p_user_id: string
+          p_title: string
+          p_message: string
+          p_type?: string
+        }
+        Returns: string
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
@@ -228,6 +383,15 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
         }
         Returns: boolean
+      }
+      log_activity: {
+        Args: {
+          p_action: string
+          p_entity_type?: string
+          p_entity_id?: string
+          p_details?: Json
+        }
+        Returns: undefined
       }
     }
     Enums: {

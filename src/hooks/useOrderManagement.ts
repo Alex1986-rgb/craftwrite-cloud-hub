@@ -1,132 +1,50 @@
 
 import { useState, useCallback } from 'react';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
-import { toast } from '@/components/ui/sonner';
-
-interface Order {
-  id: string;
-  clientName: string;
-  clientEmail: string;
-  service: string;
-  status: 'new' | 'in_progress' | 'review' | 'completed' | 'cancelled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  amount: number;
-  deadline: string;
-  createdAt: string;
-  description: string;
-  aiGenerated: boolean;
-}
+import { useEnhancedOrders, EnhancedOrder } from '@/hooks/useEnhancedOrders';
+import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
 
 export function useOrderManagement() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { currentRole } = useUnifiedAuth();
+  const { orders, loading: ordersLoading, updateOrderStatus, assignOrderToAdmin, updateOrderPriority } = useEnhancedOrders();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<EnhancedOrder | null>(null);
   const { handleAsync } = useErrorHandler();
-
-  // Временные данные для демонстрации
-  const mockOrders: Order[] = [
-    {
-      id: "ORD-001",
-      clientName: "ООО 'Инновационные технологии'",
-      clientEmail: "tech@company.ru",
-      service: "SEO-статья",
-      status: "in_progress",
-      priority: "high",
-      amount: 8500,
-      deadline: "2024-12-20",
-      createdAt: "2024-12-14",
-      description: "Статья о внедрении AI в бизнес-процессы, 3000 знаков",
-      aiGenerated: false
-    },
-    {
-      id: "ORD-002",
-      clientName: "ИП Петров Алексей",
-      clientEmail: "petrov@business.ru",
-      service: "Продающий лендинг",
-      status: "completed",
-      priority: "medium",
-      amount: 25000,
-      deadline: "2024-12-15",
-      createdAt: "2024-12-10",
-      description: "Лендинг для курсов по маркетингу",
-      aiGenerated: true
-    },
-    {
-      id: "ORD-003",
-      clientName: "Старт-ап XYZ",
-      clientEmail: "hello@startupxyz.com",
-      service: "Email-кампания",
-      status: "new",
-      priority: "urgent",
-      amount: 12000,
-      deadline: "2024-12-18",
-      createdAt: "2024-12-14",
-      description: "Серия из 5 писем для email-рассылки",
-      aiGenerated: false
-    },
-    {
-      id: "ORD-004",
-      clientName: "Мария Сидорова",
-      clientEmail: "maria@startup.com",
-      service: "Контент-стратегия",
-      status: "review",
-      priority: "medium",
-      amount: 15000,
-      deadline: "2024-12-22",
-      createdAt: "2024-12-12",
-      description: "Разработка контент-стратегии на 3 месяца",
-      aiGenerated: true
-    },
-    {
-      id: "ORD-005",
-      clientName: "ООО 'Цифровые решения'",
-      clientEmail: "digital@solutions.ru",
-      service: "SMM-тексты",
-      status: "cancelled",
-      priority: "low",
-      amount: 6000,
-      deadline: "2024-12-16",
-      createdAt: "2024-12-08",
-      description: "Тексты для социальных сетей на месяц",
-      aiGenerated: false
-    }
-  ];
-
-  const loadOrders = useCallback(async () => {
-    await handleAsync(async () => {
-      setLoading(true);
-      // TODO: Заменить на реальный API вызов
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setOrders(mockOrders);
-      setLoading(false);
-    }, 'Ошибка загрузки заказов');
-  }, [handleAsync]);
 
   const searchOrders = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
 
-  const updateOrderStatus = useCallback(async (orderId: string, newStatus: string) => {
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
     await handleAsync(async () => {
-      // TODO: Заменить на реальный API вызов
-      setOrders(prev => prev.map(order => 
-        order.id === orderId 
-          ? { ...order, status: newStatus as Order['status'] }
-          : order
-      ));
-      toast.success(`Статус заказа ${orderId} изменен`);
+      await updateOrderStatus(orderId, newStatus);
     }, 'Ошибка обновления статуса заказа');
-  }, [handleAsync]);
+  };
+
+  const handleAssignOrder = async (orderId: string, adminId: string) => {
+    if (currentRole !== 'admin') return;
+    
+    await handleAsync(async () => {
+      await assignOrderToAdmin(orderId, adminId);
+    }, 'Ошибка назначения заказа');
+  };
+
+  const handlePriorityChange = async (orderId: string, priority: string) => {
+    if (currentRole !== 'admin') return;
+    
+    await handleAsync(async () => {
+      await updateOrderPriority(orderId, priority);
+    }, 'Ошибка обновления приоритета');
+  };
 
   // Фильтрация заказов
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = order.contact_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         order.service_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.clientEmail.toLowerCase().includes(searchQuery.toLowerCase());
+                         order.contact_email.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesStatus = statusFilter === "all" || order.status === statusFilter;
     const matchesPriority = priorityFilter === "all" || order.priority === priorityFilter;
@@ -136,16 +54,17 @@ export function useOrderManagement() {
 
   return {
     orders: filteredOrders,
-    loading,
+    loading: ordersLoading,
     searchQuery,
     statusFilter,
     priorityFilter,
     selectedOrder,
-    loadOrders,
     searchOrders,
     setStatusFilter,
     setPriorityFilter,
     setSelectedOrder,
-    updateOrderStatus
+    updateOrderStatus: handleStatusChange,
+    assignOrderToAdmin: handleAssignOrder,
+    updateOrderPriority: handlePriorityChange
   };
 }
