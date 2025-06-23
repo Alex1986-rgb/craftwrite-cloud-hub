@@ -1,7 +1,6 @@
 
 import { ReactNode } from 'react';
-import { UnifiedHeader } from '@/components/navigation';
-import Footer from '@/components/common/Footer';
+import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 
 interface PublicLayoutProps {
   children: ReactNode;
@@ -14,7 +13,6 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
       <main>
         {children}
       </main>
-      <Footer />
     </div>
   );
 }
