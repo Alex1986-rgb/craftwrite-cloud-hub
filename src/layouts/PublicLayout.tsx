@@ -1,5 +1,5 @@
 
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 import Footer from '@/components/common/Footer';
 
