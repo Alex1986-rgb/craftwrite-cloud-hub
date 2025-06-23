@@ -86,12 +86,12 @@ export class ContentGenerationPipeline {
       this.updateOrderStatus(order.id, 'optimizing', 70, 'SEO-оптимизация...');
       
       // 6. SEO-оптимизация
-      if (servicePrompt.seoParameters.headingStructure) {
+      if (Boolean(servicePrompt.seoParameters.headingStructure)) {
         generatedText = await seoOptimizer.optimizeContent(generatedText, {
           keywords: order.parameters.keywords,
           keywordDensity: servicePrompt.seoParameters.keywordDensity,
-          addHeadings: servicePrompt.seoParameters.headingStructure,
-          addInternalLinks: servicePrompt.seoParameters.internalLinks
+          addHeadings: Boolean(servicePrompt.seoParameters.headingStructure),
+          addInternalLinks: Boolean(servicePrompt.seoParameters.internalLinks)
         });
       }
 
@@ -99,9 +99,12 @@ export class ContentGenerationPipeline {
       
       // 7. Анти-AI обработка
       if (servicePrompt.antiAiSettings.enabled) {
+        const humanizationLevel = servicePrompt.antiAiSettings.humanizationLevel;
+        const level = humanizationLevel === 'high' ? 'aggressive' : 
+                     humanizationLevel === 'low' ? 'light' : 'medium';
+        
         generatedText = await antiAiProcessor.humanizeText(generatedText, {
-          level: servicePrompt.antiAiSettings.humanizationLevel === 'high' ? 'aggressive' : 
-                servicePrompt.antiAiSettings.humanizationLevel === 'low' ? 'light' : 'medium', // Fix type conversion
+          level: level,
           variability: servicePrompt.antiAiSettings.variabilityFactor
         });
       }
