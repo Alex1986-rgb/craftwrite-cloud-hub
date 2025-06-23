@@ -274,6 +274,7 @@ export default function SeoTemplatesManager() {
                   <Switch
                     checked={template.is_active}
                     onCheckedChange={(checked) => toggleTemplate(template.id, checked)}
+                    size="sm"
                   />
                   <Button variant="ghost" size="sm">
                     <Edit className="w-4 h-4" />
