@@ -58,20 +58,20 @@ export function useUnifiedOrderForm({
     onSuccess?.();
   };
 
-  const isStepValid = (step: number) => {
+  const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return formData.name && formData.email && formData.phone;
+        return Boolean(formData.name.trim() && formData.email.trim() && formData.phone.trim());
       case 2:
-        return formData.service;
+        return Boolean(formData.service.trim());
       case 3:
-        return formData.details;
+        return Boolean(formData.details.trim());
       default:
         return true;
     }
   };
 
-  const isCurrentStepValid = () => isStepValid(currentStep);
+  const isCurrentStepValid = (): boolean => isStepValid(currentStep);
 
   const goToNextStep = () => {
     if (isCurrentStepValid() && currentStep < 3) {
