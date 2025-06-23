@@ -94,6 +94,10 @@ export default function SeoArticleOrder() {
     console.log('Payment data:', formData);
   };
 
+  const handleEdit = () => {
+    setCurrentStep(1);
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -364,7 +368,7 @@ export default function SeoArticleOrder() {
         return (
           <OrderEstimate 
             formData={formData}
-            onEdit={() => setCurrentStep(1)}
+            onEdit={handleEdit}
             onPayment={handlePayment}
           />
         );
@@ -428,7 +432,11 @@ export default function SeoArticleOrder() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <OrderEstimate formData={formData} />
+              <OrderEstimate 
+                formData={formData}
+                onEdit={handleEdit}
+                onPayment={handlePayment}
+              />
             </div>
           </div>
         </div>
