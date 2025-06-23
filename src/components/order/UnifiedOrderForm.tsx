@@ -11,16 +11,25 @@ import { toast } from 'sonner';
 
 interface UnifiedOrderFormProps {
   variant?: 'public' | 'client';
+  serviceTitle?: string;
+  selectedPackage?: string;
   onOrderCreated?: () => void;
+  onSuccess?: () => void;
 }
 
-export default function UnifiedOrderForm({ variant = 'public', onOrderCreated }: UnifiedOrderFormProps) {
+export default function UnifiedOrderForm({ 
+  variant = 'public', 
+  serviceTitle = '',
+  selectedPackage = '',
+  onOrderCreated,
+  onSuccess 
+}: UnifiedOrderFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    service: '',
+    service: serviceTitle || selectedPackage || '',
     details: '',
     additionalRequirements: ''
   });
@@ -42,6 +51,7 @@ export default function UnifiedOrderForm({ variant = 'public', onOrderCreated }:
     toast.success('Заказ успешно создан! Мы свяжемся с вами в течение часа.');
     setLoading(false);
     onOrderCreated?.();
+    onSuccess?.();
   };
 
   const isStepValid = (step: number) => {
@@ -110,36 +120,43 @@ export default function UnifiedOrderForm({ variant = 'public', onOrderCreated }:
               <FileText className="w-5 h-5 text-blue-600" />
               <h3 className="text-lg font-semibold">Выберите услугу</h3>
             </div>
-            <div className="grid gap-3">
-              {[
-                'SEO-статья',
-                'Лендинг',
-                'Email-рассылка',
-                'Контент для Telegram',
-                'Скрипты для чат-бота',
-                'Тексты для сайта',
-                'Посты для Instagram',
-                'Карточки Wildberries',
-                'Карточки Ozon',
-                'Скрипты для YouTube',
-                'Посты для LinkedIn'
-              ].map((service) => (
-                <Card 
-                  key={service}
-                  className={`cursor-pointer transition-all ${
-                    formData.service === service ? 'border-blue-500 bg-blue-50' : 'hover:border-blue-200'
-                  }`}
-                  onClick={() => setFormData(prev => ({ ...prev, service }))}
-                >
-                  <CardContent className="p-4 flex items-center justify-between">
-                    <span>{service}</span>
-                    {formData.service === service && (
-                      <CheckCircle className="w-5 h-5 text-blue-600" />
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {serviceTitle || selectedPackage ? (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="font-medium text-blue-900">Выбранная услуга:</p>
+                <p className="text-blue-700">{serviceTitle || selectedPackage}</p>
+              </div>
+            ) : (
+              <div className="grid gap-3">
+                {[
+                  'SEO-статья',
+                  'Лендинг',
+                  'Email-рассылка',
+                  'Контент для Telegram',
+                  'Скрипты для чат-бота',
+                  'Тексты для сайта',
+                  'Посты для Instagram',
+                  'Карточки Wildberries',
+                  'Карточки Ozon',
+                  'Скрипты для YouTube',
+                  'Посты для LinkedIn'
+                ].map((service) => (
+                  <Card 
+                    key={service}
+                    className={`cursor-pointer transition-all ${
+                      formData.service === service ? 'border-blue-500 bg-blue-50' : 'hover:border-blue-200'
+                    }`}
+                    onClick={() => setFormData(prev => ({ ...prev, service }))}
+                  >
+                    <CardContent className="p-4 flex items-center justify-between">
+                      <span>{service}</span>
+                      {formData.service === service && (
+                        <CheckCircle className="w-5 h-5 text-blue-600" />
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         );
 
@@ -185,7 +202,7 @@ export default function UnifiedOrderForm({ variant = 'public', onOrderCreated }:
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle className="text-center">
-          Оформление заказа
+          {serviceTitle ? `Заказ: ${serviceTitle}` : 'Оформление заказа'}
         </CardTitle>
         <div className="flex justify-center gap-2 mt-4">
           {[1, 2, 3].map((step) => (
