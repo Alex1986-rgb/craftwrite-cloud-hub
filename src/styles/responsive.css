@@ -1,5 +1,9 @@
 
-/* Enhanced Mobile optimizations */
+/* Enhanced Mobile optimizations - Modularized for better maintainability */
+
+/* ======================
+   CORE MOBILE STYLES  
+   ====================== */
 @media (max-width: 768px) {
   .container {
     @apply px-4;
@@ -12,83 +16,35 @@
     @apply flex items-center justify-center;
   }
   
-  /* Better text sizes with smooth progression */
-  .text-responsive-xs {
-    @apply text-xs sm:text-sm;
-  }
+  /* Responsive typography system */
+  .text-responsive-xs { @apply text-xs sm:text-sm; }
+  .text-responsive-sm { @apply text-sm sm:text-base; }
+  .text-responsive-base { @apply text-base sm:text-lg; }
+  .text-responsive-lg { @apply text-lg sm:text-xl; }
+  .text-responsive-xl { @apply text-xl sm:text-2xl; }
+  .text-responsive-2xl { @apply text-2xl sm:text-3xl; }
+  .text-responsive-3xl { @apply text-3xl sm:text-4xl; }
   
-  .text-responsive-sm {
-    @apply text-sm sm:text-base;
-  }
+  /* Layout utilities */
+  .mobile-stack { @apply flex-col space-y-4; }
+  .mobile-grid { @apply grid-cols-1; }
+  .mobile-grid-2x2 { @apply grid-cols-2; }
+  .mobile-padding { @apply p-3 sm:p-4; }
+  .mobile-text { @apply text-sm leading-relaxed; }
   
-  .text-responsive-base {
-    @apply text-base sm:text-lg;
-  }
+  /* Visibility utilities */
+  .desktop-only { @apply hidden md:block; }
+  .mobile-only { @apply block md:hidden; }
   
-  .text-responsive-lg {
-    @apply text-lg sm:text-xl;
-  }
-  
-  .text-responsive-xl {
-    @apply text-xl sm:text-2xl;
-  }
-  
-  .text-responsive-2xl {
-    @apply text-2xl sm:text-3xl;
-  }
-  
-  .text-responsive-3xl {
-    @apply text-3xl sm:text-4xl;
-  }
-  
-  /* Mobile-specific layouts */
-  .mobile-stack {
-    @apply flex-col space-y-4;
-  }
-  
-  .mobile-grid {
-    @apply grid-cols-1;
-  }
-  
-  .mobile-grid-2x2 {
-    @apply grid-cols-2;
-  }
-  
-  .mobile-padding {
-    @apply p-3 sm:p-4;
-  }
-  
-  .mobile-text {
-    @apply text-sm leading-relaxed;
-  }
-  
-  /* Hide on mobile */
-  .desktop-only {
-    @apply hidden md:block;
-  }
-  
-  /* Show only on mobile */
-  .mobile-only {
-    @apply block md:hidden;
-  }
-  
-  /* Improved card spacing */
-  .mobile-card {
-    @apply mx-2 mb-4 rounded-lg;
-  }
-  
-  /* Better form layouts */
-  .mobile-form {
-    @apply space-y-4 p-4;
-  }
-  
-  /* Optimized buttons */
-  .mobile-button {
+  /* Component-specific mobile styles */
+  .mobile-card { @apply mx-2 mb-4 rounded-lg; }
+  .mobile-form { @apply space-y-4 p-4; }
+  .mobile-button { 
     @apply w-full py-4 text-base font-semibold;
     min-height: 52px;
   }
   
-  /* Enhanced touch areas */
+  /* Enhanced touch interactions */
   .touch-target {
     @apply min-h-[44px] min-w-[44px] flex items-center justify-center relative;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
@@ -98,7 +54,7 @@
     transform: scale(0.98);
   }
   
-  /* Mobile typography improvements */
+  /* Hero section mobile optimization */
   .mobile-heading-xl {
     @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
     line-height: 1.1;
@@ -109,29 +65,21 @@
     line-height: 1.2;
   }
   
-  /* Better spacing for mobile */
-  .mobile-spacing-tight {
-    @apply space-y-3 sm:space-y-4;
-  }
+  /* Spacing system */
+  .mobile-spacing-tight { @apply space-y-3 sm:space-y-4; }
+  .mobile-spacing-normal { @apply space-y-4 sm:space-y-6; }
+  .mobile-spacing-loose { @apply space-y-6 sm:space-y-8; }
   
-  .mobile-spacing-normal {
-    @apply space-y-4 sm:space-y-6;
-  }
-  
-  .mobile-spacing-loose {
-    @apply space-y-6 sm:space-y-8;
-  }
-  
-  /* Mobile-optimized animations */
+  /* Performance optimized animations */
   .mobile-animate-soft {
-    transition: all 0.2s ease-out;
+    transition: transform 0.2s ease-out;
   }
   
   .mobile-animate-soft:hover {
     transform: scale(1.02);
   }
   
-  /* Safe area support for mobile devices */
+  /* Safe area support */
   .mobile-safe-area {
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
@@ -140,76 +88,45 @@
   }
 }
 
+/* ======================
+   BREAKPOINT SPECIFIC  
+   ====================== */
+
 /* Extra small devices */
 @media (max-width: 375px) {
-  .container {
-    @apply px-3;
-  }
-  
-  .xs-text-sm {
-    @apply text-sm;
-  }
-  
-  .xs-grid-1 {
-    @apply grid-cols-1;
-  }
-  
-  .xs-spacing-tight {
-    @apply space-y-2;
-  }
+  .container { @apply px-3; }
+  .xs-text-sm { @apply text-sm; }
+  .xs-grid-1 { @apply grid-cols-1; }
+  .xs-spacing-tight { @apply space-y-2; }
 }
 
-/* Large mobile devices and small tablets */
+/* Large mobile and small tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .tablet-grid {
-    @apply grid-cols-2 lg:grid-cols-3;
-  }
-  
-  .tablet-spacing {
-    @apply p-6;
-  }
-  
-  .tablet-text {
-    @apply text-base;
-  }
+  .tablet-grid { @apply grid-cols-2 lg:grid-cols-3; }
+  .tablet-spacing { @apply p-6; }
+  .tablet-text { @apply text-base; }
 }
 
-/* Landscape mobile optimizations */
+/* Landscape mobile optimization */
 @media (max-height: 500px) and (orientation: landscape) {
-  .landscape-compact {
-    @apply py-2;
-  }
-  
-  .landscape-hide {
-    @apply hidden;
-  }
-  
-  .landscape-flex-row {
-    @apply flex-row items-center;
-  }
-  
-  /* Optimize hero for landscape mobile */
-  .landscape-hero {
-    @apply min-h-[70vh] py-8;
-  }
+  .landscape-compact { @apply py-2; }
+  .landscape-hide { @apply hidden; }
+  .landscape-flex-row { @apply flex-row items-center; }
+  .landscape-hero { @apply min-h-[70vh] py-8; }
 }
 
-/* High contrast mode support */
+/* ======================
+   ACCESSIBILITY & A11Y  
+   ====================== */
+
+/* High contrast mode */
 @media (prefers-contrast: high) {
-  .bg-gradient-to-r {
-    background: solid;
-  }
-  
-  .glass-card {
-    @apply border-2 border-slate-800 dark:border-slate-200;
-  }
-  
-  .touch-target {
-    @apply border border-slate-400;
-  }
+  .bg-gradient-to-r { background: solid; }
+  .glass-card { @apply border-2 border-slate-800 dark:border-slate-200; }
+  .touch-target { @apply border border-slate-400; }
 }
 
-/* Reduced motion support with performance optimization */
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
   .animate-slide-up,
@@ -231,78 +148,59 @@
     animation-iteration-count: 1 !important;
   }
   
-  .mobile-animate-soft {
-    transition: none;
-  }
+  .mobile-animate-soft { transition: none; }
 }
+
+/* ======================
+   THEME & PLATFORM     
+   ====================== */
 
 /* Dark theme enhancements */
 @media (prefers-color-scheme: dark) {
-  .auto-dark {
-    @apply bg-slate-900 text-slate-100;
-  }
-  
-  .touch-target {
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-  }
+  .auto-dark { @apply bg-slate-900 text-slate-100; }
+  .touch-target { -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1); }
 }
 
-/* Print styles */
-@media print {
-  .print-hidden,
-  .mobile-only,
-  .desktop-only {
-    @apply hidden;
-  }
-  
-  .print-visible {
-    @apply block;
-  }
-  
-  * {
-    @apply text-black bg-white;
-  }
-  
-  .touch-target {
-    min-height: auto;
-    min-width: auto;
-  }
-}
-
-/* PWA and iOS Safari specific fixes */
+/* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
   .ios-fix {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
   }
   
-  .touch-target {
-    -webkit-tap-highlight-color: transparent;
-  }
+  .touch-target { -webkit-tap-highlight-color: transparent; }
 }
+
+/* ======================
+   PERFORMANCE & PRINT   
+   ====================== */
 
 /* Performance optimizations for mobile */
 @media (max-width: 768px) {
-  /* Reduce complexity for mobile animations */
   .animate-float {
     animation: none;
     transform: translateY(0);
   }
   
-  .animate-shimmer {
-    animation-duration: 3s;
-  }
+  .animate-shimmer { animation-duration: 3s; }
   
-  /* Optimize backdrop filters for mobile performance */
-  .backdrop-blur-xl {
-    backdrop-filter: blur(8px);
-  }
+  /* Optimize backdrop filters */
+  .backdrop-blur-xl { backdrop-filter: blur(8px); }
+  .backdrop-blur-lg { backdrop-filter: blur(6px); }
+  .backdrop-blur-md { backdrop-filter: blur(4px); }
+}
+
+/* Print styles */
+@media print {
+  .print-hidden,
+  .mobile-only,
+  .desktop-only { @apply hidden; }
   
-  .backdrop-blur-lg {
-    backdrop-filter: blur(6px);
-  }
+  .print-visible { @apply block; }
+  * { @apply text-black bg-white; }
   
-  .backdrop-blur-md {
-    backdrop-filter: blur(4px);
+  .touch-target {
+    min-height: auto;
+    min-width: auto;
   }
 }

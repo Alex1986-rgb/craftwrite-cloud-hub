@@ -1,22 +1,20 @@
 
 import { useTranslation } from 'react-i18next';
 import { useI18nTranslations } from '@/hooks/useI18nTranslations';
-import HeroSection from '@/components/landing/HeroSection';
+import OptimizedHeroSection from '@/components/landing/OptimizedHeroSection';
+import QuickOrderSection from '@/components/landing/QuickOrderSection';
+import CompactSocialProofSection from '@/components/landing/CompactSocialProofSection';
+import InteractiveGuaranteesSection from '@/components/landing/InteractiveGuaranteesSection';
 import BenefitsSection from '@/components/landing/BenefitsSection';
+import ExpertiseShowcaseSection from '@/components/landing/ExpertiseShowcaseSection';
 import ServicesCatalogSection from '@/components/landing/ServicesCatalogSection';
-import ProcessSection from '@/components/landing/ProcessSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
+import ProcessSection from '@/components/landing/ProcessSection';
 import FaqSection from '@/components/landing/FaqSection';
-import TeamSection from '@/components/landing/TeamSection';
-import TrustSection from '@/components/landing/TrustSection';
 import ContactSection from '@/components/landing/ContactSection';
 import { SeoTextExpandable } from '@/components/landing/SeoTextExpandable';
-import ExpertiseShowcaseSection from '@/components/landing/ExpertiseShowcaseSection';
-import SocialProofSection from '@/components/landing/SocialProofSection';
-import InteractiveGuaranteesSection from '@/components/landing/InteractiveGuaranteesSection';
 import SupportWidget from '@/components/common/SupportWidget';
 import HumanLikeAiAssistant from '@/components/ai/HumanLikeAiAssistant';
-import ModernHeroSection from '@/components/landing/ModernHeroSection';
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -94,23 +92,47 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <ModernHeroSection />
-      <SocialProofSection />
-      <InteractiveGuaranteesSection />
-      <BenefitsSection />
-      <ExpertiseShowcaseSection />
+      {/* Optimized Hero with enhanced conversion elements */}
+      <OptimizedHeroSection />
+      
+      {/* Compact Social Proof - immediately builds trust */}
+      <CompactSocialProofSection />
+      
+      {/* Quick Order - новая секция для быстрого заказа */}
+      <div id="quick-order">
+        <QuickOrderSection />
+      </div>
+      
+      {/* Services with pricing focus */}
       <ServicesCatalogSection />
-      <ProcessSection />
+      
+      {/* Interactive Guarantees - компактная версия */}
+      <InteractiveGuaranteesSection />
+      
+      {/* Benefits - сокращенная версия */}
+      <BenefitsSection />
+      
+      {/* Expertise Showcase */}
+      <ExpertiseShowcaseSection />
+      
+      {/* Testimonials with video focus */}
       <TestimonialsSection />
-      <TeamSection />
-      <TrustSection />
+      
+      {/* Simplified Process */}
+      <ProcessSection />
+      
+      {/* Top 5 FAQ only */}
       <FaqSection />
+      
+      {/* Contact Section */}
       <ContactSection />
       
+      {/* SEO Text (lazy loaded) */}
       <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
         <SeoTextExpandable text={seoText} />
       </div>
       
+      {/* Support widgets */}
       <SupportWidget />
       <HumanLikeAiAssistant />
     </div>
