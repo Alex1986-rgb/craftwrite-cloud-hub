@@ -1,8 +1,6 @@
 
 import { useState } from "react";
 import { expandedBlogPosts } from "@/data/blog";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import BlogHeader from "@/components/blog/BlogHeader";
 import BlogCategories from "@/components/blog/BlogCategories";
 import BlogPostGrid from "@/components/blog/BlogPostGrid";
@@ -34,40 +32,36 @@ export default function Blog() {
   const featuredPosts = expandedBlogPosts.slice(0, 3);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
-        <div className="container mx-auto px-4 py-8 md:py-16">
-          <BlogHeader 
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-          
-          {searchQuery === "" && selectedCategory === "all" && (
-            <BlogFeaturedPosts posts={featuredPosts} />
-          )}
-          
-          <BlogCategories
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        <BlogHeader 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+        
+        {searchQuery === "" && selectedCategory === "all" && (
+          <BlogFeaturedPosts posts={featuredPosts} />
+        )}
+        
+        <BlogCategories
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
-          {filteredPosts.length > 0 ? (
-            <BlogPostGrid posts={filteredPosts} />
-          ) : (
-            <BlogEmptyState 
-              onReset={() => {
-                setSelectedCategory("all");
-                setSearchQuery("");
-              }}
-            />
-          )}
-          
-          <BlogCTA />
-        </div>
-      </main>
-      <Footer />
-    </>
+        {filteredPosts.length > 0 ? (
+          <BlogPostGrid posts={filteredPosts} />
+        ) : (
+          <BlogEmptyState 
+            onReset={() => {
+              setSelectedCategory("all");
+              setSearchQuery("");
+            }}
+          />
+        )}
+        
+        <BlogCTA />
+      </div>
+    </main>
   );
 }

@@ -8,7 +8,6 @@ import TeamSection from "@/components/landing/TeamSection";
 import TrustSection from "@/components/landing/TrustSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SupportWidget from "@/components/common/SupportWidget";
@@ -118,7 +117,7 @@ const structuredData = [
 
 export default function OptimizedIndex() {
   return (
-    <>
+    <main className="relative overflow-hidden">
       <ComprehensiveSeo
         title="Профессиональный копирайтинг CopyPro Cloud | SEO-тексты, лендинги, контент-маркетинг"
         description="CopyPro Cloud — ведущая платформа копирайтинга с командой 50+ экспертов. Создаем SEO-тексты, продающие лендинги, email-кампании. Гарантия качества 100%. Заказать от 1000₽"
@@ -126,27 +125,24 @@ export default function OptimizedIndex() {
         structuredData={structuredData}
       />
       
-      <main className="relative overflow-hidden">
-        <ModernHeroSection />
-        <InteractiveGuaranteesSection />
-        <BenefitsSection />
-        <ServicesCatalogSection />
-        <ModernPricingSection />
-        <ProcessSection />
-        <TestimonialsSection />
-        <TeamSection />
-        <TrustSection />
-        <FaqSection />
-        <ContactSection />
-        
-        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
-          <SeoTextExpandable text={seoText} />
-        </div>
-      </main>
-      <Footer />
+      <ModernHeroSection />
+      <InteractiveGuaranteesSection />
+      <BenefitsSection />
+      <ServicesCatalogSection />
+      <ModernPricingSection />
+      <ProcessSection />
+      <TestimonialsSection />
+      <TeamSection />
+      <TrustSection />
+      <FaqSection />
+      <ContactSection />
+      
+      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+        <SeoTextExpandable text={seoText} />
+      </div>
       
       <SupportWidget />
       <HumanLikeAiAssistant />
-    </>
+    </main>
   );
 }

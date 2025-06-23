@@ -1,6 +1,4 @@
 
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import AboutHeroSection from "@/components/about/AboutHeroSection";
 import MissionSection from "@/components/about/MissionSection";
 import TeamExpertiseSection from "@/components/about/TeamExpertiseSection";
@@ -12,19 +10,15 @@ import OfficeSection from "@/components/about/OfficeSection";
 
 export default function About() {
   return (
-    <>
-      <Header />
-      <main className="relative overflow-hidden">
-        <AboutHeroSection />
-        <MissionSection />
-        <TeamExpertiseSection />
-        <CompanyTimelineSection />
-        <ValuesSection />
-        <AchievementsSection />
-        <CertificationsSection />
-        <OfficeSection />
-      </main>
-      <Footer />
-    </>
+    <main className="relative overflow-hidden">
+      <AboutHeroSection />
+      <MissionSection />
+      <TeamExpertiseSection />
+      <CompanyTimelineSection />
+      <ValuesSection />
+      <AchievementsSection />
+      <CertificationsSection />
+      <OfficeSection />
+    </main>
   );
 }

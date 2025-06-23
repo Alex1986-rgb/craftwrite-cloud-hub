@@ -92,35 +92,31 @@ E-commerce и маркетплейсы:
 
 export default function Index() {
   return (
-    <>
-      <Header />
-      <main className="relative overflow-hidden">
-        <ModernHeroSection />
-        <SocialProofSection />
-        <InteractiveGuaranteesSection />
-        <BenefitsSection />
-        <ExpertiseShowcaseSection />
-        <ServicesCatalogSection />
-        <ModernPricingSection />
-        <ProcessSection />
-        <CaseStudiesSection />
-        <InnovativePortfolioSection />
-        <ProfessionalStatsSection />
-        <TestimonialsSection />
-        <TeamSection />
-        <TrustSection />
-        <FaqSection />
-        <NewsletterSection />
-        <ContactSection />
-        
-        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
-          <SeoTextExpandable text={seoText} />
-        </div>
-      </main>
-      <Footer />
+    <main className="relative overflow-hidden">
+      <ModernHeroSection />
+      <SocialProofSection />
+      <InteractiveGuaranteesSection />
+      <BenefitsSection />
+      <ExpertiseShowcaseSection />
+      <ServicesCatalogSection />
+      <ModernPricingSection />
+      <ProcessSection />
+      <CaseStudiesSection />
+      <InnovativePortfolioSection />
+      <ProfessionalStatsSection />
+      <TestimonialsSection />
+      <TeamSection />
+      <TrustSection />
+      <FaqSection />
+      <NewsletterSection />
+      <ContactSection />
+      
+      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+        <SeoTextExpandable text={seoText} />
+      </div>
       
       <SupportWidget />
       <HumanLikeAiAssistant />
-    </>
+    </main>
   );
 }

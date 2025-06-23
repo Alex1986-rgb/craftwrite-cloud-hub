@@ -1,8 +1,6 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import ChatbotProgressTracker from '@/components/order/chatbot/advanced/ChatbotProgressTracker';
 
 export default function ChatbotOrderTracking() {
@@ -28,31 +26,23 @@ export default function ChatbotOrderTracking() {
 
   if (!orderData) {
     return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Загрузка данных заказа...</h2>
-            <p className="text-gray-600">Пожалуйста, подождите</p>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Загрузка данных заказа...</h2>
+          <p className="text-gray-600">Пожалуйста, подождите</p>
         </div>
-        <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 py-8">
-        <div className="container mx-auto px-4">
-          <ChatbotProgressTracker 
-            orderData={orderData}
-            onBack={handleBackToOrders}
-          />
-        </div>
-      </main>
-      <Footer />
-    </>
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 py-8">
+      <div className="container mx-auto px-4">
+        <ChatbotProgressTracker 
+          orderData={orderData}
+          onBack={handleBackToOrders}
+        />
+      </div>
+    </main>
   );
 }

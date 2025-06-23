@@ -1,8 +1,6 @@
 
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import BlogDetailHero from "@/components/blog/BlogDetailHero";
 import BlogDetailContent from "@/components/blog/BlogDetailContent";
 import BlogDetailAuthor from "@/components/blog/BlogDetailAuthor";
@@ -17,19 +15,15 @@ export default function BlogDetail() {
 
   if (!post) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50 py-20">
-          <div className="container max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold mb-4">Статья не найдена</h1>
-            <p className="text-muted-foreground mb-8">Извините, запрашиваемая статья не существует.</p>
-            <Button asChild>
-              <Link to="/blog">Вернуться к блогу</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </>
+      <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50 py-20">
+        <div className="container max-w-4xl mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold mb-4">Статья не найдена</h1>
+          <p className="text-muted-foreground mb-8">Извините, запрашиваемая статья не существует.</p>
+          <Button asChild>
+            <Link to="/blog">Вернуться к блогу</Link>
+          </Button>
+        </div>
+      </main>
     );
   }
 
@@ -38,16 +32,12 @@ export default function BlogDetail() {
     .filter(Boolean);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50">
-        <BlogDetailHero post={post} />
-        <BlogDetailContent post={post} />
-        <BlogDetailAuthor post={post} />
-        <BlogDetailRelated relatedPosts={relatedPosts} />
-        <BlogDetailCTA />
-      </main>
-      <Footer />
-    </>
+    <main className="min-h-screen bg-gradient-to-b from-background to-slate-50/50">
+      <BlogDetailHero post={post} />
+      <BlogDetailContent post={post} />
+      <BlogDetailAuthor post={post} />
+      <BlogDetailRelated relatedPosts={relatedPosts} />
+      <BlogDetailCTA />
+    </main>
   );
 }
