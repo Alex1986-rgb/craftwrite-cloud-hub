@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Eye, ShoppingCart, Clock, DollarSign, Star } from 'lucide-react';
 import { ALL_SERVICES } from '@/data/allServices';
-import EnhancedOrderForm from '@/components/order/EnhancedOrderForm';
+import UnifiedOrderForm from '@/components/order/UnifiedOrderForm';
 
 export default function SpecializedOrderPage() {
   const { serviceId } = useParams<{ serviceId: string }>();
@@ -200,7 +200,15 @@ export default function SpecializedOrderPage() {
 
         {/* Order form */}
         <div id="order-form">
-          <EnhancedOrderForm />
+          <UnifiedOrderForm
+            serviceTitle={service.name}
+            onOrderCreated={() => {
+              console.log('Order created successfully');
+            }}
+            onSuccess={() => {
+              console.log('Order completed successfully');
+            }}
+          />
         </div>
       </div>
     </div>
