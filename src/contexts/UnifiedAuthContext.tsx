@@ -32,7 +32,7 @@ interface UnifiedAuthContextType {
 
 const UnifiedAuthContext = createContext<UnifiedAuthContextType | null>(null);
 
-export const UnifiedAuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const UnifiedAuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [currentRole, setCurrentRole] = useState<UserRole>('guest');
   const [loading, setLoading] = useState(true);
