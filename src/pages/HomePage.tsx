@@ -1,4 +1,5 @@
-import HeroSection from "@/components/landing/HeroSection";
+
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
@@ -9,15 +10,9 @@ import TeamSection from "@/components/landing/TeamSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
-import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
-import NewsletterSection from "@/components/landing/NewsletterSection";
-import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import Footer from "@/components/common/Footer";
 
@@ -94,27 +89,45 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <UnifiedHeader />
       <main className="relative overflow-hidden">
+        {/* 1. Главный экран с призывом к действию */}
         <ModernHeroSection />
-        <SocialProofSection />
-        <InteractiveGuaranteesSection />
+        
+        {/* 2. Преимущества и выгоды */}
         <BenefitsSection />
-        <ExpertiseShowcaseSection />
+        
+        {/* 3. Каталог услуг */}
         <ServicesCatalogSection />
+        
+        {/* 4. Цены */}
         <ModernPricingSection />
+        
+        {/* 5. Процесс работы */}
         <ProcessSection />
+        
+        {/* 6. Кейсы и результаты */}
         <CaseStudiesSection />
-        <InnovativePortfolioSection />
+        
+        {/* 7. Статистика */}
         <ProfessionalStatsSection />
+        
+        {/* 8. Отзывы клиентов */}
         <TestimonialsSection />
+        
+        {/* 9. Команда */}
         <TeamSection />
+        
+        {/* 10. Частые вопросы */}
         <FaqSection />
-        <NewsletterSection />
+        
+        {/* 11. Контакты */}
         <ContactSection />
         
+        {/* 12. SEO-текст */}
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
           <SeoTextExpandable text={seoText} />
         </div>
         
+        {/* Виджеты поддержки */}
         <SupportWidget />
         <HumanLikeAiAssistant />
       </main>
