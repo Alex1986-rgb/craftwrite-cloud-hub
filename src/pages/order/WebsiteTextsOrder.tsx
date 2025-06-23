@@ -104,40 +104,44 @@ export default function WebsiteTextsOrder() {
     
     if (!selectedWebsiteType || !selectedPageCount) return null;
     
-    const breakdown = {
+    const baseServicePrice = selectedWebsiteType.basePrice;
+    const volumeMultiplierPrice = Math.round(baseServicePrice * (selectedPageCount.multiplier - 1));
+    const additionalServicesData = formData.selectedServices.map(serviceId => {
+      const service = additionalServices.find(s => s.id === serviceId);
+      return service ? {
+        name: service.name,
+        price: service.price,
+        description: service.description
+      } : null;
+    }).filter(Boolean);
+
+    const deadlineMultiplierData = formData.deadline === 'urgent' ? {
+      name: 'Срочное выполнение',
+      multiplier: 1.5,
+      price: Math.round(baseServicePrice * selectedPageCount.multiplier * 0.5),
+      description: 'Доплата за срочность (+50%)'
+    } : formData.deadline === 'express' ? {
+      name: 'Экспресс выполнение',
+      multiplier: 1.3,
+      price: Math.round(baseServicePrice * selectedPageCount.multiplier * 0.3),
+      description: 'Доплата за ускоренную работу (+30%)'
+    } : null;
+    
+    return {
       baseService: {
         name: selectedWebsiteType.name,
-        price: selectedWebsiteType.basePrice,
+        price: baseServicePrice,
         description: `Базовая стоимость за ${selectedWebsiteType.name.toLowerCase()}`
       },
-      pageMultiplier: {
+      pageMultiplier: volumeMultiplierPrice > 0 ? {
         name: `Множитель за объем (${formData.pageCount} страниц)`,
         multiplier: selectedPageCount.multiplier,
-        price: Math.round(selectedWebsiteType.basePrice * (selectedPageCount.multiplier - 1)),
+        price: volumeMultiplierPrice,
         description: `Коэффициент: ×${selectedPageCount.multiplier}`
-      },
-      additionalServices: formData.selectedServices.map(serviceId => {
-        const service = additionalServices.find(s => s.id === serviceId);
-        return service ? {
-          name: service.name,
-          price: service.price,
-          description: service.description
-        } : null;
-      }).filter(Boolean),
-      deadlineMultiplier: formData.deadline === 'urgent' ? {
-        name: 'Срочное выполнение',
-        multiplier: 1.5,
-        price: Math.round(selectedWebsiteType.basePrice * selectedPageCount.multiplier * 0.5),
-        description: 'Доплата за срочность (+50%)'
-      } : formData.deadline === 'express' ? {
-        name: 'Экспресс выполнение',
-        multiplier: 1.3,
-        price: Math.round(selectedWebsiteType.basePrice * selectedPageCount.multiplier * 0.3),
-        description: 'Доплата за ускоренную работу (+30%)'
-      } : null
+      } : null,
+      additionalServices: additionalServicesData,
+      deadlineMultiplier: deadlineMultiplierData
     };
-    
-    return breakdown;
   };
 
   const handleInputChange = (field: string, value: any) => {
@@ -158,7 +162,7 @@ export default function WebsiteTextsOrder() {
       const selectedWebsiteType = websiteTypes.find(t => t.id === formData.websiteType);
       const selectedServices = additionalServices.filter(s => formData.selectedServices.includes(s.id));
       
-      // Вычисляем дату дедлайна вместо строки
+      // Вычисляем дату дедлайна
       const baseDeliveryDays = formData.deadline === 'urgent' ? 2 : 
                               formData.deadline === 'express' ? 4 : 7;
       const deadlineDate = new Date();
@@ -172,16 +176,16 @@ export default function WebsiteTextsOrder() {
         contact_phone: formData.phone,
         details: `Тип сайта: ${selectedWebsiteType?.name}
 Количество страниц: ${formData.pageCount}
-URL сайта: ${formData.websiteUrl}
+URL сайта: ${formData.websiteUrl || 'Не указан'}
 Описание бизнеса: ${formData.businessDescription}
-Целевая аудитория: ${formData.targetAudience}
-Список страниц: ${formData.pagesList}
-Ключевые слова: ${formData.keywords}
-Конкуренты: ${formData.competitorUrls}
+Целевая аудитория: ${formData.targetAudience || 'Не указана'}
+Список страниц: ${formData.pagesList || 'Не указан'}
+Ключевые слова: ${formData.keywords || 'Не указаны'}
+Конкуренты: ${formData.competitorUrls || 'Не указаны'}
 Стиль текста: ${formData.toneOfVoice}`,
-        additional_requirements: formData.specialRequirements,
+        additional_requirements: formData.specialRequirements || '',
         estimated_price: calculatePrice(),
-        deadline: deadlineDate.toISOString().split('T')[0], // Передаем дату в формате YYYY-MM-DD
+        deadline: deadlineDate.toISOString().split('T')[0],
         status: 'new',
         priority: formData.deadline === 'urgent' ? 'high' : 'medium',
         service_options: {
@@ -194,22 +198,30 @@ URL сайта: ${formData.websiteUrl}
         }
       };
 
+      console.log('Создаем заказ с данными:', orderData);
       const createdOrder = await createOrder(orderData);
       
       if (createdOrder) {
+        console.log('Заказ создан, отправляем уведомление в Telegram');
         // Отправляем уведомление в Telegram
         await sendOrderNotification(createdOrder.id, orderData);
         
-        // Переходим к оплате (можно добавить редирект на страницу оплаты)
-        toast.success('Заказ создан! Переходим к оплате...', {
+        // Показываем успешное сообщение с кнопкой оплаты
+        toast.success('Заказ создан успешно!', {
+          description: 'Переходим к оплате...',
           action: {
             label: 'Оплатить',
             onClick: () => {
-              // Здесь можно добавить переход к форме оплаты
+              // Перенаправляем на страницу оплаты
               window.location.href = `/payment/${createdOrder.id}`;
             }
           }
         });
+
+        // Автоматический переход через 3 секунды
+        setTimeout(() => {
+          window.location.href = `/payment/${createdOrder.id}`;
+        }, 3000);
       }
       
       // Сброс формы
@@ -223,6 +235,7 @@ URL сайта: ${formData.websiteUrl}
       
     } catch (error) {
       console.error('Ошибка создания заказа:', error);
+      toast.error('Произошла ошибка при создании заказа. Попробуйте еще раз.');
     }
   };
 
@@ -570,6 +583,18 @@ URL сайта: ${formData.websiteUrl}
         )}
 
         <Separator />
+
+        <div>
+          <h4 className="font-semibold mb-3">Детали заказа:</h4>
+          <div className="space-y-2 text-sm">
+            <p><strong>Тип сайта:</strong> {selectedWebsiteType?.name}</p>
+            <p><strong>Количество страниц:</strong> {formData.pageCount}</p>
+            <p><strong>Стиль текста:</strong> {formData.toneOfVoice}</p>
+            {selectedServices.length > 0 && (
+              <p><strong>Дополнительные услуги:</strong> {selectedServices.map(s => s.name).join(', ')}</p>
+            )}
+          </div>
+        </div>
 
         <div>
           <h4 className="font-semibold mb-3">Контактная информация:</h4>
