@@ -7,7 +7,6 @@ import FaqSection from "@/components/landing/FaqSection";
 import TeamSection from "@/components/landing/TeamSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
@@ -93,31 +92,28 @@ export default function HomePage() {
         {/* 2. Каталог услуг */}
         <ServicesCatalogSection />
         
-        {/* 3. Цены */}
-        <ModernPricingSection />
-        
-        {/* 4. Процесс работы */}
+        {/* 3. Процесс работы */}
         <ProcessSection />
         
-        {/* 5. Кейсы и результаты */}
+        {/* 4. Кейсы и результаты */}
         <CaseStudiesSection />
         
-        {/* 6. Статистика */}
+        {/* 5. Статистика */}
         <ProfessionalStatsSection />
         
-        {/* 7. Отзывы клиентов */}
+        {/* 6. Отзывы клиентов */}
         <TestimonialsSection />
         
-        {/* 8. Команда */}
+        {/* 7. Команда */}
         <TeamSection />
         
-        {/* 9. Частые вопросы */}
+        {/* 8. Частые вопросы */}
         <FaqSection />
         
-        {/* 10. Контакты */}
+        {/* 9. Контакты */}
         <ContactSection />
         
-        {/* 11. SEO-текст */}
+        {/* 10. SEO-текст */}
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
           <SeoTextExpandable text={seoText} />
         </div>
