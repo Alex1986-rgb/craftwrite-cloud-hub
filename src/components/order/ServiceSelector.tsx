@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Search } from "lucide-react";
-import OrderServiceCard from "./OrderServiceCard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Search, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ServiceSelectorProps {
@@ -11,6 +12,38 @@ interface ServiceSelectorProps {
   selectedService: string;
   onServiceSelect: (service: string) => void;
   className?: string;
+}
+
+interface ServiceCardProps {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
+
+function ServiceCard({ label, active, onClick }: ServiceCardProps) {
+  return (
+    <Card 
+      className={cn(
+        "cursor-pointer transition-all duration-200 hover:shadow-md border-2",
+        active ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-blue-300"
+      )}
+      onClick={onClick}
+    >
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between">
+          <span className={cn(
+            "font-medium",
+            active ? "text-blue-700" : "text-gray-700"
+          )}>
+            {label}
+          </span>
+          {active && (
+            <Check className="w-5 h-5 text-blue-600" />
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default function ServiceSelector({ 
@@ -52,7 +85,7 @@ export default function ServiceSelector({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {displayedServices.map((service) => (
-          <OrderServiceCard
+          <ServiceCard
             key={service}
             label={service}
             active={selectedService === service}
@@ -63,13 +96,14 @@ export default function ServiceSelector({
 
       {hasMoreServices && !showAll && (
         <div className="text-center">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => setShowAll(true)}
-            className="text-primary hover:text-primary/80 text-sm font-medium underline-offset-4 hover:underline"
+            className="text-primary hover:text-primary/80"
           >
             Показать все услуги ({filteredServices.length - 6} еще)
-          </button>
+          </Button>
         </div>
       )}
 
