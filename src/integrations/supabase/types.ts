@@ -45,6 +45,36 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_telegram_settings: {
+        Row: {
+          chat_id: number
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          updated_at: string | null
+          user_id: string | null
+          username: string | null
+        }
+        Insert: {
+          chat_id: number
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Update: {
+          chat_id?: number
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
       autolinks: {
         Row: {
           anchor: string
@@ -323,9 +353,11 @@ export type Database = {
           created_at: string
           deadline: string | null
           details: string
+          estimated_completion_time: unknown | null
           estimated_price: number | null
           files_urls: string[] | null
           final_price: number | null
+          generated_prompt: string | null
           id: string
           notes: string | null
           priority: string | null
@@ -333,6 +365,8 @@ export type Database = {
           service_options: Json | null
           service_slug: string
           status: string
+          technical_specification: Json | null
+          telegram_sent_at: string | null
           updated_at: string
           user_id: string | null
         }
@@ -346,9 +380,11 @@ export type Database = {
           created_at?: string
           deadline?: string | null
           details: string
+          estimated_completion_time?: unknown | null
           estimated_price?: number | null
           files_urls?: string[] | null
           final_price?: number | null
+          generated_prompt?: string | null
           id?: string
           notes?: string | null
           priority?: string | null
@@ -356,6 +392,8 @@ export type Database = {
           service_options?: Json | null
           service_slug: string
           status?: string
+          technical_specification?: Json | null
+          telegram_sent_at?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -369,9 +407,11 @@ export type Database = {
           created_at?: string
           deadline?: string | null
           details?: string
+          estimated_completion_time?: unknown | null
           estimated_price?: number | null
           files_urls?: string[] | null
           final_price?: number | null
+          generated_prompt?: string | null
           id?: string
           notes?: string | null
           priority?: string | null
@@ -379,6 +419,8 @@ export type Database = {
           service_options?: Json | null
           service_slug?: string
           status?: string
+          technical_specification?: Json | null
+          telegram_sent_at?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -565,6 +607,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      prompt_templates: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          prompt_template: string
+          service_type: string
+          template_name: string
+          updated_at: string | null
+          variables: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          prompt_template: string
+          service_type: string
+          template_name: string
+          updated_at?: string | null
+          variables?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          prompt_template?: string
+          service_type?: string
+          template_name?: string
+          updated_at?: string | null
+          variables?: Json | null
+        }
+        Relationships: []
       }
       seo_generation_tasks: {
         Row: {
@@ -928,6 +1003,10 @@ export type Database = {
           p_message: string
           p_type?: string
         }
+        Returns: string
+      }
+      generate_order_prompt: {
+        Args: { order_data: Json }
         Returns: string
       }
       get_user_role: {
