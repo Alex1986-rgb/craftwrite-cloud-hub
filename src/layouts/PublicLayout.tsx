@@ -13,7 +13,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     <div className="min-h-screen bg-white">
       <UnifiedHeader />
       <main>
-        {children || <Outlet />}
+        <Outlet />
       </main>
       <Footer />
     </div>

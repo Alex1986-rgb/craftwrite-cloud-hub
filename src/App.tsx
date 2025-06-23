@@ -3,7 +3,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Outlet,
 } from "react-router-dom";
 import PublicLayout from "./layouts/PublicLayout";
 import Home from "./pages/HomePage";
@@ -35,7 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PublicLayout><Outlet /></PublicLayout>}>
+        <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
           <Route path="about" element={<About />} />
