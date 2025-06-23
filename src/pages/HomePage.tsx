@@ -4,19 +4,14 @@ import BenefitsSection from '@/components/landing/BenefitsSection';
 import ServicesCatalogSection from '@/components/landing/ServicesCatalogSection';
 import ProcessSection from '@/components/landing/ProcessSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
-import ProfessionalStatsSection from '@/components/landing/ProfessionalStatsSection';
 import FaqSection from '@/components/landing/FaqSection';
 import TeamSection from '@/components/landing/TeamSection';
 import TrustSection from '@/components/landing/TrustSection';
 import ContactSection from '@/components/landing/ContactSection';
 import { SeoTextExpandable } from '@/components/landing/SeoTextExpandable';
-import ModernPricingSection from '@/components/landing/ModernPricingSection';
-import InnovativePortfolioSection from '@/components/landing/InnovativePortfolioSection';
 import ExpertiseShowcaseSection from '@/components/landing/ExpertiseShowcaseSection';
 import SocialProofSection from '@/components/landing/SocialProofSection';
-import NewsletterSection from '@/components/landing/NewsletterSection';
 import InteractiveGuaranteesSection from '@/components/landing/InteractiveGuaranteesSection';
-import CaseStudiesSection from '@/components/landing/CaseStudiesSection';
 import SupportWidget from '@/components/common/SupportWidget';
 import HumanLikeAiAssistant from '@/components/ai/HumanLikeAiAssistant';
 import ModernHeroSection from '@/components/landing/ModernHeroSection';
@@ -98,16 +93,11 @@ export default function HomePage() {
       <BenefitsSection />
       <ExpertiseShowcaseSection />
       <ServicesCatalogSection />
-      <ModernPricingSection />
       <ProcessSection />
-      <CaseStudiesSection />
-      <InnovativePortfolioSection />
-      <ProfessionalStatsSection />
       <TestimonialsSection />
       <TeamSection />
       <TrustSection />
       <FaqSection />
-      <NewsletterSection />
       <ContactSection />
       
       <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
