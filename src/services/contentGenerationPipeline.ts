@@ -101,7 +101,8 @@ export class ContentGenerationPipeline {
       // 7. Анти-AI обработка
       if (servicePrompt.antiAiSettings.enabled) {
         generatedText = await antiAiProcessor.humanizeText(generatedText, {
-          level: servicePrompt.antiAiSettings.humanizationLevel,
+          level: servicePrompt.antiAiSettings.humanizationLevel === 'high' ? 'aggressive' : 
+                servicePrompt.antiAiSettings.humanizationLevel === 'low' ? 'light' : 'medium', // Fix type conversion
           variability: servicePrompt.antiAiSettings.variabilityFactor
         });
       }

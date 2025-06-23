@@ -19,6 +19,7 @@ export interface ABTestResult {
       conversion: number;
     };
   };
+  performance: { a: number; b: number }; // Add this property
   winner: 'A' | 'B' | 'tie';
   confidence: number;
   recommendations: string[];
@@ -56,6 +57,7 @@ class ABTestingService {
       testId,
       variantA,
       variantB,
+      performance: { a: variantA.score, b: variantB.score }, // Add performance data
       winner,
       confidence,
       recommendations

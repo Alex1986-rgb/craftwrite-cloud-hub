@@ -1,6 +1,7 @@
 
 export interface APIConfig {
   openaiKey?: string;
+  openai?: string; // Add this for backward compatibility
   textruKey?: string;
   anthropicKey?: string;
   geminiKey?: string;

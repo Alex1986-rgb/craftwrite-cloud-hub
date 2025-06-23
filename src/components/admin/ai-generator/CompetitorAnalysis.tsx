@@ -41,8 +41,8 @@ export default function CompetitorAnalysis() {
       const analysis = await competitorAnalysisService.analyzeCompetitors(keywordList, industry);
       
       // Transform analysis into competitor data
-      const competitorData: CompetitorData[] = analysis.competitors.map((domain, index) => ({
-        domain,
+      const competitorData: CompetitorData[] = analysis.competitors.map((competitor, index) => ({
+        domain: competitor.domain, // Fix: use competitor.domain instead of entire competitor object
         contentScore: Math.floor(Math.random() * 30) + 70,
         keywordOverlap: analysis.commonKeywords.slice(index, index + 3),
         contentGaps: analysis.contentGaps.slice(index, index + 2),

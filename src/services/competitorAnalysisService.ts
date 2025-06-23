@@ -10,6 +10,8 @@ export interface CompetitorAnalysis {
   gaps: string[];
   opportunities: string[];
   recommendations: string[];
+  commonKeywords: string[]; // Add this property
+  contentGaps: string[]; // Add this property
 }
 
 class CompetitorAnalysisService {
@@ -50,12 +52,17 @@ class CompetitorAnalysisService {
       'Используйте более длинные ключевые фразы',
       'Добавьте больше внутренних ссылок'
     ];
+
+    const commonKeywords = keywords.slice(0, 5); // Add common keywords
+    const contentGaps = gaps; // Use gaps as content gaps
     
     return {
       competitors: mockCompetitors,
       gaps,
       opportunities,
-      recommendations
+      recommendations,
+      commonKeywords,
+      contentGaps
     };
   }
 
