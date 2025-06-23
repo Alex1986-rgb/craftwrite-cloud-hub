@@ -1,6 +1,6 @@
 
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UnifiedAuthProvider } from '@/contexts/UnifiedAuthContext';
 import { Toaster } from '@/components/ui/sonner';
@@ -41,6 +41,7 @@ import PaymentCancelled from '@/pages/PaymentCancelled';
 import ChatbotOrderTracking from '@/pages/ChatbotOrderTracking';
 import FormatDetailPage from '@/pages/FormatDetailPage';
 import AdvancedOrder from '@/pages/AdvancedOrder';
+import Order from '@/pages/Order';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,6 +63,7 @@ function App() {
             {/* Основные публичные страницы */}
             <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
             <Route path="/pricing" element={<PublicLayout><PricingPage /></PublicLayout>} />
+            <Route path="/prices" element={<Navigate to="/pricing" replace />} />
             <Route path="/blog" element={<PublicLayout><BlogPage /></PublicLayout>} />
             <Route path="/blog/:id" element={<PublicLayout><BlogDetail /></PublicLayout>} />
             <Route path="/portfolio" element={<PublicLayout><Portfolio /></PublicLayout>} />
@@ -70,6 +72,9 @@ function App() {
             <Route path="/service/:slug" element={<PublicLayout><ServicePage /></PublicLayout>} />
             <Route path="/format/:slug" element={<PublicLayout><FormatDetailPage /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+            
+            {/* Основная страница заказов */}
+            <Route path="/order" element={<PublicLayout><Order /></PublicLayout>} />
             
             {/* Аутентификация */}
             <Route path="/auth" element={<AuthPage />} />

@@ -120,7 +120,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, user, log
                   className="btn-unified-primary w-full"
                   onClick={onClose}
                 >
-                  <Link to="/services">
+                  <Link to="/order">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Заказать тексты
                   </Link>
