@@ -16,7 +16,6 @@ export default function OrderManagement() {
     statusFilter, 
     priorityFilter,
     selectedOrder,
-    loadOrders, 
     searchOrders, 
     setStatusFilter,
     setPriorityFilter,
@@ -25,10 +24,6 @@ export default function OrderManagement() {
   } = useOrderManagement();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    loadOrders();
-  }, [loadOrders]);
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     await updateOrderStatus(orderId, newStatus);
@@ -49,7 +44,7 @@ export default function OrderManagement() {
     new: orders.filter(o => o.status === 'new').length,
     inProgress: orders.filter(o => o.status === 'in_progress').length,
     completed: orders.filter(o => o.status === 'completed').length,
-    totalValue: orders.reduce((sum, o) => sum + o.amount, 0)
+    totalValue: orders.reduce((sum, o) => sum + (o.estimated_price || o.final_price || 0) / 100, 0)
   };
 
   return (
