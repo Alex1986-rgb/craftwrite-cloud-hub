@@ -1,66 +1,107 @@
 
-import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield } from "lucide-react";
-import { GuaranteeCard } from "./guarantees/GuaranteeCard";
-import { GuaranteeDetails } from "./guarantees/GuaranteeDetails";
-import { TrustIndicators } from "./guarantees/TrustIndicators";
-import { guarantees } from "./guarantees/guaranteesData";
+import { Users, Shield, Clock, CheckCircle, Search, FileCheck, Percent } from "lucide-react";
+
+const guarantees = [
+  {
+    icon: Users,
+    title: "30+ экспертов",
+    description: "Дипломированные SEO-копирайтеры",
+    color: "from-blue-500/20 to-cyan-500/20",
+    iconColor: "text-blue-600"
+  },
+  {
+    icon: Shield,
+    title: "Антиплагиат Text.ru",
+    description: "Бесплатные ссылки на проверки",
+    color: "from-green-500/20 to-emerald-500/20",
+    iconColor: "text-green-600"
+  },
+  {
+    icon: Clock,
+    title: "Сроки от 24ч",
+    description: "Оперативная работа без компромиссов",
+    color: "from-orange-500/20 to-yellow-500/20",
+    iconColor: "text-orange-600"
+  },
+  {
+    icon: Search,
+    title: "SEO-оптимизация",
+    description: "Работа по ключам + LSI анализ",
+    color: "from-purple-500/20 to-pink-500/20",
+    iconColor: "text-purple-600"
+  },
+  {
+    icon: FileCheck,
+    title: "Опыт 5+ лет",
+    description: "Средний стаж наших специалистов",
+    color: "from-indigo-500/20 to-blue-500/20",
+    iconColor: "text-indigo-600"
+  },
+  {
+    icon: CheckCircle,
+    title: "Гарантия правок",
+    description: "Корректировки в течение 7 дней",
+    color: "from-teal-500/20 to-green-500/20",
+    iconColor: "text-teal-600"
+  }
+];
 
 export default function InteractiveGuaranteesSection() {
-  const [activeGuarantee, setActiveGuarantee] = useState(guarantees[0].id);
-
-  const activeItem = guarantees.find(g => g.id === activeGuarantee) || guarantees[0];
-
-  const getColorClasses = (color: string, isActive = false) => {
-    const colors = {
-      blue: isActive ? "border-blue-500 bg-blue-50 text-blue-700" : "border-blue-200 hover:border-blue-300 text-blue-600",
-      green: isActive ? "border-green-500 bg-green-50 text-green-700" : "border-green-200 hover:border-green-300 text-green-600",
-      purple: isActive ? "border-purple-500 bg-purple-50 text-purple-700" : "border-purple-200 hover:border-purple-300 text-purple-600",
-      orange: isActive ? "border-orange-500 bg-orange-50 text-orange-700" : "border-orange-200 hover:border-orange-300 text-orange-600"
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-4 px-4 py-2">
+    <section className="py-12 bg-gradient-to-b from-white to-slate-50/50">
+      <div className="container max-w-6xl mx-auto px-4">
+        {/* Компактный заголовок */}
+        <div className="text-center mb-10">
+          <Badge variant="secondary" className="mb-3 px-3 py-1 bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/20">
             <Shield className="w-4 h-4 mr-2" />
-            Гарантии качества
+            Профессионализм & Прозрачность
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900">
-            Наши обязательства перед клиентами
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
+            Экспертный SEO-контент под ключ
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-            Мы берем на себя полную ответственность за качество, сроки и результат. 
-            Ваша уверенность в сотрудничестве - наш главный приоритет.
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Каждая статья сопровождается отчетом по уникальности на Text.ru
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Guarantee Tabs */}
-            <div className="space-y-4">
-              {guarantees.map((guarantee) => (
-                <GuaranteeCard
-                  key={guarantee.id}
-                  guarantee={guarantee}
-                  isActive={activeGuarantee === guarantee.id}
-                  onClick={() => setActiveGuarantee(guarantee.id)}
-                  getColorClasses={getColorClasses}
-                />
-              ))}
-            </div>
+        {/* Компактная сетка гарантий */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+          {guarantees.map((guarantee, index) => (
+            <Card key={guarantee.title} className="p-3 hover:shadow-md transition-all duration-300 border-0 bg-white/80 hover:scale-105">
+              <div className="flex items-start gap-3">
+                <div className={`inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br ${guarantee.color} rounded-lg shrink-0`}>
+                  <guarantee.icon className={`w-5 h-5 ${guarantee.iconColor}`} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-sm text-foreground leading-tight">
+                    {guarantee.title}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1 leading-tight">
+                    {guarantee.description}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
 
-            {/* Active Guarantee Details */}
-            <div className="lg:col-span-2">
-              <GuaranteeDetails activeItem={activeItem} />
+        {/* Информация об оплате */}
+        <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl p-4 border border-emerald-100">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-lg">
+              <Percent className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-foreground">
+                Заказываете текст — 50% предоплата
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Остальное после проверки вами текста
+              </p>
             </div>
           </div>
-
-          <TrustIndicators />
         </div>
       </div>
     </section>
