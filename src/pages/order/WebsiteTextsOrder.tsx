@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,8 +6,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, Globe, FileText, Clock, Star } from 'lucide-react';
+import { CheckCircle, Globe, FileText, Clock, Star, Calculator, CreditCard } from 'lucide-react';
 import { useEnhancedOrders } from '@/hooks/useEnhancedOrders';
+import { useTelegramNotifications } from '@/hooks/useTelegramNotifications';
 import { toast } from 'sonner';
 
 const websiteTypes = [
@@ -38,7 +38,9 @@ const pageCountOptions = [
 
 export default function WebsiteTextsOrder() {
   const { createOrder, loading } = useEnhancedOrders();
+  const { sendOrderNotification } = useTelegramNotifications();
   const [currentStep, setCurrentStep] = useState(1);
+  const [showDetailedEstimate, setShowDetailedEstimate] = useState(false);
   const [formData, setFormData] = useState({
     // Контактная информация
     name: '',
@@ -96,6 +98,48 @@ export default function WebsiteTextsOrder() {
     return baseTime;
   };
 
+  const getDetailedPriceBreakdown = () => {
+    const selectedWebsiteType = websiteTypes.find(t => t.id === formData.websiteType);
+    const selectedPageCount = pageCountOptions.find(p => p.count === formData.pageCount);
+    
+    if (!selectedWebsiteType || !selectedPageCount) return null;
+    
+    const breakdown = {
+      baseService: {
+        name: selectedWebsiteType.name,
+        price: selectedWebsiteType.basePrice,
+        description: `Базовая стоимость за ${selectedWebsiteType.name.toLowerCase()}`
+      },
+      pageMultiplier: {
+        name: `Множитель за объем (${formData.pageCount} страниц)`,
+        multiplier: selectedPageCount.multiplier,
+        price: Math.round(selectedWebsiteType.basePrice * (selectedPageCount.multiplier - 1)),
+        description: `Коэффициент: ×${selectedPageCount.multiplier}`
+      },
+      additionalServices: formData.selectedServices.map(serviceId => {
+        const service = additionalServices.find(s => s.id === serviceId);
+        return service ? {
+          name: service.name,
+          price: service.price,
+          description: service.description
+        } : null;
+      }).filter(Boolean),
+      deadlineMultiplier: formData.deadline === 'urgent' ? {
+        name: 'Срочное выполнение',
+        multiplier: 1.5,
+        price: Math.round(selectedWebsiteType.basePrice * selectedPageCount.multiplier * 0.5),
+        description: 'Доплата за срочность (+50%)'
+      } : formData.deadline === 'express' ? {
+        name: 'Экспресс выполнение',
+        multiplier: 1.3,
+        price: Math.round(selectedWebsiteType.basePrice * selectedPageCount.multiplier * 0.3),
+        description: 'Доплата за ускоренную работу (+30%)'
+      } : null
+    };
+    
+    return breakdown;
+  };
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -114,6 +158,12 @@ export default function WebsiteTextsOrder() {
       const selectedWebsiteType = websiteTypes.find(t => t.id === formData.websiteType);
       const selectedServices = additionalServices.filter(s => formData.selectedServices.includes(s.id));
       
+      // Вычисляем дату дедлайна вместо строки
+      const baseDeliveryDays = formData.deadline === 'urgent' ? 2 : 
+                              formData.deadline === 'express' ? 4 : 7;
+      const deadlineDate = new Date();
+      deadlineDate.setDate(deadlineDate.getDate() + baseDeliveryDays);
+      
       const orderData = {
         service_slug: 'website-texts',
         service_name: 'Тексты для сайта',
@@ -130,8 +180,8 @@ URL сайта: ${formData.websiteUrl}
 Конкуренты: ${formData.competitorUrls}
 Стиль текста: ${formData.toneOfVoice}`,
         additional_requirements: formData.specialRequirements,
-        estimated_price: calculatePrice() * 100, // в копейках
-        deadline: getDeliveryTime(),
+        estimated_price: calculatePrice(),
+        deadline: deadlineDate.toISOString().split('T')[0], // Передаем дату в формате YYYY-MM-DD
         status: 'new',
         priority: formData.deadline === 'urgent' ? 'high' : 'medium',
         service_options: {
@@ -139,11 +189,28 @@ URL сайта: ${formData.websiteUrl}
           pageCount: formData.pageCount,
           selectedServices: selectedServices.map(s => s.name),
           toneOfVoice: formData.toneOfVoice,
-          deadline: formData.deadline
+          deadline: formData.deadline,
+          detailedBreakdown: getDetailedPriceBreakdown()
         }
       };
 
-      await createOrder(orderData);
+      const createdOrder = await createOrder(orderData);
+      
+      if (createdOrder) {
+        // Отправляем уведомление в Telegram
+        await sendOrderNotification(createdOrder.id, orderData);
+        
+        // Переходим к оплате (можно добавить редирект на страницу оплаты)
+        toast.success('Заказ создан! Переходим к оплате...', {
+          action: {
+            label: 'Оплатить',
+            onClick: () => {
+              // Здесь можно добавить переход к форме оплаты
+              window.location.href = `/payment/${createdOrder.id}`;
+            }
+          }
+        });
+      }
       
       // Сброс формы
       setFormData({
@@ -422,6 +489,7 @@ URL сайта: ${formData.websiteUrl}
     const deliveryTime = getDeliveryTime();
     const selectedWebsiteType = websiteTypes.find(t => t.id === formData.websiteType);
     const selectedServices = additionalServices.filter(s => formData.selectedServices.includes(s.id));
+    const breakdown = getDetailedPriceBreakdown();
 
     return (
       <div className="space-y-6">
@@ -431,42 +499,75 @@ URL сайта: ${formData.websiteUrl}
           <p className="text-gray-600">Срок выполнения: {deliveryTime}</p>
         </div>
 
-        <Separator />
-
-        <div>
-          <h4 className="font-semibold mb-3">Детали заказа:</h4>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span>Тип сайта:</span>
-              <span className="font-medium">{selectedWebsiteType?.name}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Количество страниц:</span>
-              <span className="font-medium">{formData.pageCount} страниц</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Стиль текста:</span>
-              <span className="font-medium">{
-                formData.toneOfVoice === 'professional' ? 'Деловой' :
-                formData.toneOfVoice === 'friendly' ? 'Дружелюбный' :
-                formData.toneOfVoice === 'creative' ? 'Креативный' : 'Технический'
-              }</span>
-            </div>
-            {selectedServices.length > 0 && (
-              <div>
-                <span>Дополнительные услуги:</span>
-                <ul className="mt-1 ml-4">
-                  {selectedServices.map(service => (
-                    <li key={service.id} className="flex justify-between">
-                      <span>• {service.name}</span>
-                      <span>+{service.price}₽</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+        <div className="flex justify-center">
+          <Button
+            variant="outline"
+            onClick={() => setShowDetailedEstimate(!showDetailedEstimate)}
+            className="flex items-center gap-2"
+          >
+            <Calculator className="w-4 h-4" />
+            {showDetailedEstimate ? 'Скрыть' : 'Показать'} детальную смету
+          </Button>
         </div>
+
+        {showDetailedEstimate && breakdown && (
+          <Card className="bg-slate-50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calculator className="w-5 h-5" />
+                Детальная смета
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="font-medium">{breakdown.baseService.name}</div>
+                    <div className="text-sm text-gray-600">{breakdown.baseService.description}</div>
+                  </div>
+                  <div className="font-medium">{breakdown.baseService.price.toLocaleString()}₽</div>
+                </div>
+
+                {breakdown.pageMultiplier.price > 0 && (
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">{breakdown.pageMultiplier.name}</div>
+                      <div className="text-sm text-gray-600">{breakdown.pageMultiplier.description}</div>
+                    </div>
+                    <div className="font-medium">+{breakdown.pageMultiplier.price.toLocaleString()}₽</div>
+                  </div>
+                )}
+
+                {breakdown.additionalServices.map((service, index) => (
+                  <div key={index} className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">{service.name}</div>
+                      <div className="text-sm text-gray-600">{service.description}</div>
+                    </div>
+                    <div className="font-medium">+{service.price.toLocaleString()}₽</div>
+                  </div>
+                ))}
+
+                {breakdown.deadlineMultiplier && (
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">{breakdown.deadlineMultiplier.name}</div>
+                      <div className="text-sm text-gray-600">{breakdown.deadlineMultiplier.description}</div>
+                    </div>
+                    <div className="font-medium">+{breakdown.deadlineMultiplier.price.toLocaleString()}₽</div>
+                  </div>
+                )}
+
+                <Separator />
+                
+                <div className="flex justify-between items-center text-lg font-bold">
+                  <span>Итого к оплате:</span>
+                  <span className="text-blue-600">{estimatedPrice.toLocaleString()}₽</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <Separator />
 
@@ -490,6 +591,21 @@ URL сайта: ${formData.websiteUrl}
                 <li>• Проверка на уникальность</li>
                 <li>• Бесплатные правки в течение 7 дней</li>
                 <li>• Техническое задание и отчет</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start gap-2">
+            <CreditCard className="w-5 h-5 text-green-600 mt-0.5" />
+            <div className="text-sm text-green-800">
+              <div className="font-medium mb-1">Что происходит после оформления заказа:</div>
+              <ul className="space-y-1 text-green-700">
+                <li>• Вы будете перенаправлены на страницу оплаты</li>
+                <li>• Уведомление о заказе придет в Telegram нашим менеджерам</li>
+                <li>• После оплаты мы свяжемся с вами в течение 2 часов</li>
+                <li>• Работа начнется немедленно после согласования деталей</li>
               </ul>
             </div>
           </div>
@@ -579,9 +695,10 @@ URL сайта: ${formData.websiteUrl}
                   <Button 
                     onClick={handleSubmit}
                     disabled={!canSubmit() || loading}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
                   >
-                    {loading ? 'Отправка...' : 'Оформить заказ'}
+                    <CreditCard className="w-4 h-4" />
+                    {loading ? 'Отправка...' : 'Оформить заказ и перейти к оплате'}
                   </Button>
                 )}
               </div>
