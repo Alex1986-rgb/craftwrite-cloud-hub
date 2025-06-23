@@ -1,140 +1,84 @@
-
-import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { UnifiedAuthProvider } from '@/contexts/UnifiedAuthContext';
-import { Toaster } from '@/components/ui/sonner';
-import ErrorBoundary from '@/components/common/ErrorBoundary';
-import PublicLayout from '@/layouts/PublicLayout';
-import ClientLayout from '@/layouts/ClientLayout';
-import AdminPanel from '@/pages/AdminPanel';
-import PricingPage from '@/pages/PricingPage';
-import BlogPage from '@/pages/BlogPage';
-import ServicePage from '@/pages/ServicePage';
-import ServicesPage from '@/pages/ServicesPage';
-import ContactPage from '@/pages/ContactPage';
-import HomePage from '@/pages/HomePage';
-import LoginPage from '@/pages/LoginPage';
-import RegistrationPage from '@/pages/RegistrationPage';
-import AuthPage from '@/pages/AuthPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import OrderTrackingPage from '@/pages/OrderTrackingPage';
-import TermsOfServicePage from '@/pages/TermsOfServicePage';
-import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
-import PasswordResetPage from '@/pages/PasswordResetPage';
-import PasswordUpdatePage from '@/pages/PasswordUpdatePage';
-import EmailVerificationPage from '@/pages/EmailVerificationPage';
-import ClientDashboard from '@/pages/ClientDashboard';
-import OrderPage from '@/pages/OrderPage';
-import ChatbotScriptsOrder from '@/pages/ChatbotScriptsOrder';
-import SeoArticleOrder from '@/pages/SeoArticleOrder';
-import LandingPageOrder from '@/pages/LandingPageOrder';
-import EmailCampaignsOrder from '@/pages/EmailCampaignsOrder';
-import TelegramContentOrder from '@/pages/TelegramContentOrder';
-import SpecializedOrderPage from '@/pages/order/SpecializedOrderPage';
-import About from '@/pages/About';
-import Portfolio from '@/pages/Portfolio';
-import BlogDetail from '@/pages/BlogDetail';
-import PortfolioDetail from '@/pages/PortfolioDetail';
-import PaymentSuccess from '@/pages/PaymentSuccess';
-import PaymentCancelled from '@/pages/PaymentCancelled';
-import ChatbotOrderTracking from '@/pages/ChatbotOrderTracking';
-import FormatDetailPage from '@/pages/FormatDetailPage';
-import AdvancedOrder from '@/pages/AdvancedOrder';
-import Order from '@/pages/Order';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // 1 minute
-    },
-  },
-});
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import PublicLayout from "./layouts/PublicLayout";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Prices from "./pages/Prices";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Order from "./pages/Order";
+import SeoArticleOrder from "./pages/SeoArticleOrder";
+import LandingOrder from "./pages/LandingOrder";
+import EmailOrder from "./pages/EmailOrder";
+import TelegramOrder from "./pages/TelegramOrder";
+import BotScriptsOrder from "./pages/BotScriptsOrder";
+import WebsiteTextsOrder from "./pages/WebsiteTextsOrder";
+import InstagramOrder from "./pages/InstagramOrder";
+import WildberriesOrder from "./pages/WildberriesOrder";
+import OzonOrder from "./pages/OzonOrder";
+import YouTubeOrder from "./pages/YouTubeOrder";
+import LinkedInOrder from "./pages/LinkedInOrder";
+import SpecializedOrderPage from "./pages/SpecializedOrderPage";
+import ClientNewOrder from "./components/client/ClientNewOrder";
+import AIGenerator from "./pages/AIGenerator";
+import TextGenerator from "./pages/TextGenerator";
+import ImageGenerator from "./pages/ImageGenerator";
+import VideoGenerator from "./pages/VideoGenerator";
+import RewriteGenerator from "./pages/RewriteGenerator";
+import CopywritingGenerator from "./pages/CopywritingGenerator";
+import EmailGenerator from "./pages/EmailGenerator";
+import SocialGenerator from "./pages/SocialGenerator";
+import BulkSeoOptimization from './pages/BulkSeoOptimization';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <UnifiedAuthProvider>
-        <div className="min-h-screen bg-white">
-          <Routes>
-            {/* Главная страница */}
-            <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
-            
-            {/* Основные публичные страницы */}
-            <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
-            <Route path="/pricing" element={<PublicLayout><PricingPage /></PublicLayout>} />
-            <Route path="/prices" element={<Navigate to="/pricing" replace />} />
-            <Route path="/blog" element={<PublicLayout><BlogPage /></PublicLayout>} />
-            <Route path="/blog/:id" element={<PublicLayout><BlogDetail /></PublicLayout>} />
-            <Route path="/portfolio" element={<PublicLayout><Portfolio /></PublicLayout>} />
-            <Route path="/portfolio/:id" element={<PublicLayout><PortfolioDetail /></PublicLayout>} />
-            <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-            <Route path="/service/:slug" element={<PublicLayout><ServicePage /></PublicLayout>} />
-            <Route path="/format/:slug" element={<PublicLayout><FormatDetailPage /></PublicLayout>} />
-            <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
-            
-            {/* Основная страница заказов */}
-            <Route path="/order" element={<PublicLayout><Order /></PublicLayout>} />
-            
-            {/* Аутентификация */}
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
-            <Route path="/register" element={<PublicLayout><RegistrationPage /></PublicLayout>} />
-            <Route path="/password-reset" element={<PublicLayout><PasswordResetPage /></PublicLayout>} />
-            <Route path="/password-update/:token" element={<PublicLayout><PasswordUpdatePage /></PublicLayout>} />
-            <Route path="/email-verification/:token" element={<PublicLayout><EmailVerificationPage /></PublicLayout>} />
-            
-            {/* Отслеживание заказов */}
-            <Route path="/order-tracking" element={<PublicLayout><OrderTrackingPage /></PublicLayout>} />
-            <Route path="/chatbot-order-tracking" element={<PublicLayout><ChatbotOrderTracking /></PublicLayout>} />
-            
-            {/* Специализированные страницы заказов */}
-            <Route path="/order/seo-article" element={<PublicLayout><SeoArticleOrder /></PublicLayout>} />
-            <Route path="/order/landing-page" element={<PublicLayout><LandingPageOrder /></PublicLayout>} />
-            <Route path="/order/email-campaigns" element={<PublicLayout><EmailCampaignsOrder /></PublicLayout>} />
-            <Route path="/order/telegram-content" element={<PublicLayout><TelegramContentOrder /></PublicLayout>} />
-            <Route path="/order/chatbot-scripts" element={<PublicLayout><ChatbotScriptsOrder /></PublicLayout>} />
-            <Route path="/order/instagram-posts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/wildberries-cards" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/ozon-cards" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/youtube-scripts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/linkedin-posts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/website-texts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/avito-ads" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/press-releases" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/survey-questionnaires" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/product-descriptions" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/business-proposals" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/case-studies" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/white-papers" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/speech-scripts" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            <Route path="/order/advanced/:slug" element={<PublicLayout><AdvancedOrder /></PublicLayout>} />
-            
-            {/* Общий роут для заказов */}
-            <Route path="/order/:serviceId" element={<PublicLayout><SpecializedOrderPage /></PublicLayout>} />
-            
-            {/* Платежи */}
-            <Route path="/payment/success" element={<PublicLayout><PaymentSuccess /></PublicLayout>} />
-            <Route path="/payment/cancelled" element={<PublicLayout><PaymentCancelled /></PublicLayout>} />
-            
-            {/* Юридические страницы */}
-            <Route path="/terms" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
-            <Route path="/privacy" element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<Home />} />
+          <Route path="services" element={<Services />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="prices" element={<Prices />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogPost />} />
+          <Route path="order" element={<Order />} />
+          <Route path="order/seo-article" element={<SeoArticleOrder />} />
+          <Route path="order/bulk-seo" element={<BulkSeoOptimization />} />
+          <Route path="order/landing" element={<LandingOrder />} />
+          <Route path="order/email" element={<EmailOrder />} />
+          <Route path="order/telegram" element={<TelegramOrder />} />
+          <Route path="order/bot-scripts" element={<BotScriptsOrder />} />
+          <Route path="order/website-texts" element={<WebsiteTextsOrder />} />
+          <Route path="order/instagram" element={<InstagramOrder />} />
+          <Route path="order/wildberries" element={<WildberriesOrder />} />
+          <Route path="order/ozon" element={<OzonOrder />} />
+          <Route path="order/youtube" element={<YouTubeOrder />} />
+          <Route path="order/linkedin" element={<LinkedInOrder />} />
+          <Route path="order/specialized/:serviceId" element={<SpecializedOrderPage />} />
+          <Route path="client/new-order" element={<ClientNewOrder />} />
+          <Route path="ai-generator" element={<AIGenerator />} />
+          <Route path="ai-generator/text" element={<TextGenerator />} />
+          <Route path="ai-generator/image" element={<ImageGenerator />} />
+          <Route path="ai-generator/video" element={<VideoGenerator />} />
+          <Route path="ai-generator/rewrite" element={<RewriteGenerator />} />
+          <Route path="ai-generator/copywriting" element={<CopywritingGenerator />} />
+          <Route path="ai-generator/email" element={<EmailGenerator />} />
+          <Route path="ai-generator/social" element={<SocialGenerator />} />
+        </Route>
 
-            {/* Клиентская панель */}
-            <Route path="/client" element={<ClientLayout><ClientDashboard /></ClientLayout>} />
-            <Route path="/client/order/:id" element={<ClientLayout><OrderPage /></ClientLayout>} />
-
-            {/* Админ панель */}
-            <Route path="/admin/*" element={<AdminPanel />} />
-
-            {/* 404 */}
-            <Route path="*" element={<PublicLayout><NotFoundPage /></PublicLayout>} />
-          </Routes>
-          <Toaster />
-        </div>
-      </UnifiedAuthProvider>
-    </QueryClientProvider>
+        <Route path="/admin" element={<p>Admin Layout</p>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
