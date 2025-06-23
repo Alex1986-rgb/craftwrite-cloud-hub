@@ -8,7 +8,7 @@ import { Menu, X, Sparkles } from "lucide-react";
 const navLinks = [
   { label: "Главная", to: "/" },
   { label: "Услуги", to: "/services" },
-  { label: "Цены", to: "/pricing" },
+  { label: "Цены", to: "/prices" },
   { label: "Портфолио", to: "/portfolio" },
   { label: "Блог", to: "/blog" },
   { label: "О нас", to: "/about" },

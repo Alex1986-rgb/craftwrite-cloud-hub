@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -5,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
 
 const mainNavLinks = [
-  { label: "Услуги", to: "/#services" },
+  { label: "Услуги", to: "/services" },
   { label: "Портфолио", to: "/portfolio" },
   { label: "Цены", to: "/prices" },
   { label: "Блог", to: "/blog" },

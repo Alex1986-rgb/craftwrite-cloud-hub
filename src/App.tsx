@@ -10,6 +10,7 @@ import Services from "./pages/Services";
 import About from "./pages/About";
 import Contact from "./pages/ContactPage";
 import Prices from "./pages/Prices";
+import Portfolio from "./pages/Portfolio";
 import Login from "./pages/LoginPage";
 import Register from "./pages/RegistrationPage";
 import Blog from "./pages/Blog";
@@ -40,6 +41,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="prices" element={<Prices />} />
+          <Route path="portfolio" element={<Portfolio />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="blog" element={<Blog />} />
