@@ -40,6 +40,7 @@ import InstagramOrder from "@/pages/order/InstagramOrder";
 import YouTubeOrder from "@/pages/order/YouTubeOrder";
 import WildberriesOrder from "@/pages/order/WildberriesOrder";
 import WebsiteTextsOrder from "@/pages/order/WebsiteTextsOrder";
+import UnifiedOrderPage from "@/pages/order/UnifiedOrderPage";
 
 const queryClient = new QueryClient();
 
@@ -75,18 +76,23 @@ function App() {
                   <Route path="/terms" element={<PageLayout><TermsOfServicePage /></PageLayout>} />
                   <Route path="/privacy" element={<PageLayout><PrivacyPolicyPage /></PageLayout>} />
                   <Route path="/order" element={<PageLayout><OrderPage /></PageLayout>} />
-                  <Route path="/order/:serviceId" element={<PageLayout><SpecializedOrderPage /></PageLayout>} />
-                  <Route path="/order/seo-article" element={<PageLayout><SeoArticleOrder /></PageLayout>} />
-                  <Route path="/order/landing-page" element={<PageLayout><LandingPageOrder /></PageLayout>} />
-                  <Route path="/order/email-campaigns" element={<PageLayout><EmailCampaignsOrder /></PageLayout>} />
-                  <Route path="/order/telegram-content" element={<PageLayout><TelegramContentOrder /></PageLayout>} />
-                  <Route path="/order/chatbot-scripts" element={<PageLayout><ChatbotScriptsOrder /></PageLayout>} />
-                  <Route path="/order/ozon" element={<PageLayout><OzonOrder /></PageLayout>} />
-                  <Route path="/order/linkedin" element={<PageLayout><LinkedInOrder /></PageLayout>} />
-                  <Route path="/order/instagram" element={<PageLayout><InstagramOrder /></PageLayout>} />
-                  <Route path="/order/youtube" element={<PageLayout><YouTubeOrder /></PageLayout>} />
-                  <Route path="/order/wildberries" element={<PageLayout><WildberriesOrder /></PageLayout>} />
-                  <Route path="/order/website-texts" element={<PageLayout><WebsiteTextsOrder /></PageLayout>} />
+                  
+                  {/* Новая унифицированная система заказов */}
+                  <Route path="/order/:serviceId" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  
+                  {/* Старые маршруты для обратной совместимости - все ведут к унифицированной форме */}
+                  <Route path="/order/seo-article" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/landing-page" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/email-campaigns" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/telegram-content" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/chatbot-scripts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/ozon" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/linkedin" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/instagram" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/youtube" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/wildberries" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  <Route path="/order/website-texts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                  
                   <Route path="/portfolio" element={<PageLayout><Portfolio /></PageLayout>} />
                   <Route path="/portfolio/:id" element={<PageLayout><PortfolioDetail /></PageLayout>} />
                   <Route path="/prices" element={<PageLayout><Prices /></PageLayout>} />
