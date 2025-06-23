@@ -1,4 +1,5 @@
 
+
 export interface APIConfig {
   openaiKey?: string;
   openai?: string; // Add this for backward compatibility
@@ -51,6 +52,7 @@ class APIConfigService {
   private getStorageKey(service: keyof APIConfig): string | null {
     const keyMap: Record<keyof APIConfig, string> = {
       openaiKey: 'openai_api_key',
+      openai: 'openai_api_key', // Add mapping for backward compatibility
       textruKey: 'textru_api_key',
       anthropicKey: 'anthropic_api_key',
       geminiKey: 'gemini_api_key'
@@ -71,3 +73,4 @@ class APIConfigService {
 }
 
 export const apiConfigService = new APIConfigService();
+
