@@ -6,12 +6,12 @@ import RoleBasedNavigation from "./RoleBasedNavigation";
 
 const navLinks = [
   { label: "Главная", to: "/" },
-  { label: "Услуги", to: "/#services" },
-  { label: "Цены", to: "/prices" },
+  { label: "Услуги", to: "/services" },
+  { label: "Цены", to: "/pricing" },
   { label: "Портфолио", to: "/portfolio" },
   { label: "Блог", to: "/blog" },
   { label: "О нас", to: "/about" },
-  { label: "Политика", to: "/privacy" },
+  { label: "Контакты", to: "/contact" },
 ];
 
 interface DesktopNavigationProps {

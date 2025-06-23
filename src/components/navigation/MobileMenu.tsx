@@ -8,12 +8,12 @@ import RoleSwitcher from "./RoleSwitcher";
 
 const navLinks = [
   { label: "Главная", to: "/" },
-  { label: "Услуги", to: "/#services" },
-  { label: "Цены", to: "/prices" },
+  { label: "Услуги", to: "/services" },
+  { label: "Цены", to: "/pricing" },
   { label: "Портфолио", to: "/portfolio" },
   { label: "Блог", to: "/blog" },
   { label: "О нас", to: "/about" },
-  { label: "Политика", to: "/privacy" },
+  { label: "Контакты", to: "/contact" },
 ];
 
 interface MobileMenuProps {
@@ -113,14 +113,14 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, user, log
                   className="w-full"
                   onClick={onClose}
                 >
-                  <Link to="/client">Войти</Link>
+                  <Link to="/login">Войти</Link>
                 </Button>
                 <Button 
                   asChild 
                   className="btn-unified-primary w-full"
                   onClick={onClose}
                 >
-                  <Link to="/order">
+                  <Link to="/services">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Заказать тексты
                   </Link>
@@ -139,6 +139,22 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, user, log
               <p>Телефон: +7 (925) 733-86-48</p>
               <p>Работаем 24/7</p>
             </div>
+          </div>
+
+          {/* Additional Links */}
+          <div className="pt-6 border-t border-white/20 space-y-2">
+            <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">
+              Дополнительно
+            </h3>
+            <Button asChild variant="ghost" size="sm" className="w-full justify-start" onClick={onClose}>
+              <Link to="/order-tracking">Отследить заказ</Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="w-full justify-start" onClick={onClose}>
+              <Link to="/terms">Условия использования</Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="w-full justify-start" onClick={onClose}>
+              <Link to="/privacy">Политика конфиденциальности</Link>
+            </Button>
           </div>
         </div>
       </div>
