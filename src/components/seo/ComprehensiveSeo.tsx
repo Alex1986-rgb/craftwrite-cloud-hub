@@ -1,9 +1,10 @@
 
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSeoMeta } from '@/hooks/useSeoMeta';
 import { useSocialMeta } from '@/hooks/useSocialMeta';
 import { StructuredData } from './StructuredData';
 import { generateCanonicalUrl } from '@/utils/seoUtils';
-import { useLocation } from 'react-router-dom';
 import { SEO_CONFIG } from '@/config/seoConfig';
 
 interface ComprehensiveSeoProps {

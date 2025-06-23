@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
 import Logo from "./Logo";
 import DesktopNavigation from "./DesktopNavigation";
