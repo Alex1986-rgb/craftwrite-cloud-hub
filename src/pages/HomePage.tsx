@@ -1,5 +1,6 @@
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
+import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
@@ -91,25 +92,28 @@ export default function HomePage() {
         {/* 2. Каталог услуг */}
         <ServicesCatalogSection />
         
-        {/* 3. Кейсы и результаты */}
+        {/* 3. Процесс работы */}
+        <ProcessSection />
+        
+        {/* 4. Кейсы и результаты */}
         <CaseStudiesSection />
         
-        {/* 4. Статистика */}
+        {/* 5. Статистика */}
         <ProfessionalStatsSection />
         
-        {/* 5. Отзывы клиентов */}
+        {/* 6. Отзывы клиентов */}
         <TestimonialsSection />
         
-        {/* 6. Команда */}
+        {/* 7. Команда */}
         <TeamSection />
         
-        {/* 7. Частые вопросы */}
+        {/* 8. Частые вопросы */}
         <FaqSection />
         
-        {/* 8. Контакты */}
+        {/* 9. Контакты */}
         <ContactSection />
         
-        {/* 9. SEO-текст */}
+        {/* 10. SEO-текст */}
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
           <SeoTextExpandable text={seoText} />
         </div>
