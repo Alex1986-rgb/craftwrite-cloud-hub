@@ -45,6 +45,39 @@ export type Database = {
         }
         Relationships: []
       }
+      autolinks: {
+        Row: {
+          anchor: string
+          category: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          max_inserts: number | null
+          slot_type: string | null
+          url: string
+        }
+        Insert: {
+          anchor: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          max_inserts?: number | null
+          slot_type?: string | null
+          url: string
+        }
+        Update: {
+          anchor?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          max_inserts?: number | null
+          slot_type?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       bulk_seo_pages: {
         Row: {
           created_at: string
@@ -159,6 +192,53 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      generation_logs: {
+        Row: {
+          batch_id: string | null
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          product_id: string | null
+          progress_percent: number | null
+          started_at: string | null
+          status: string
+          text_type: string
+        }
+        Insert: {
+          batch_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          product_id?: string | null
+          progress_percent?: number | null
+          started_at?: string | null
+          status?: string
+          text_type: string
+        }
+        Update: {
+          batch_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          product_id?: string | null
+          progress_percent?: number | null
+          started_at?: string | null
+          status?: string
+          text_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generation_logs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product_pages"
             referencedColumns: ["id"]
           },
         ]
@@ -376,6 +456,45 @@ export type Database = {
         }
         Relationships: []
       }
+      product_pages: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          filters: Json | null
+          id: string
+          link_slots: Json | null
+          manufacturer: string | null
+          page_title: string
+          page_url: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          filters?: Json | null
+          id?: string
+          link_slots?: Json | null
+          manufacturer?: string | null
+          page_title: string
+          page_url: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          filters?: Json | null
+          id?: string
+          link_slots?: Json | null
+          manufacturer?: string | null
+          page_title?: string
+          page_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company: string | null
@@ -510,6 +629,39 @@ export type Database = {
           },
         ]
       }
+      seo_meta_templates: {
+        Row: {
+          category: string | null
+          created_at: string
+          description_template: string
+          id: string
+          is_active: boolean | null
+          name: string
+          title_template: string
+          variables: Json | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description_template: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          title_template: string
+          variables?: Json | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description_template?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          title_template?: string
+          variables?: Json | null
+        }
+        Relationships: []
+      }
       seo_templates: {
         Row: {
           created_at: string
@@ -548,6 +700,59 @@ export type Database = {
           variables?: Json | null
         }
         Relationships: []
+      }
+      seo_texts: {
+        Row: {
+          character_count: number | null
+          created_at: string
+          id: string
+          language: string
+          meta_description: string | null
+          meta_title: string | null
+          product_id: string
+          seo_text: string | null
+          status: string
+          type: string
+          uniqueness_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          character_count?: number | null
+          created_at?: string
+          id?: string
+          language?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          product_id: string
+          seo_text?: string | null
+          status?: string
+          type: string
+          uniqueness_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          character_count?: number | null
+          created_at?: string
+          id?: string
+          language?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          product_id?: string
+          seo_text?: string | null
+          status?: string
+          type?: string
+          uniqueness_score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_texts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product_pages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_settings: {
         Row: {

@@ -1,74 +1,60 @@
-
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
+import { SiteHeader } from "@/components/site/SiteHeader"
+import { SiteFooter } from "@/components/site/SiteFooter"
+import { HomePage } from "@/pages/HomePage"
+import { AboutPage } from "@/pages/AboutPage";
+import { ServicesPage } from "@/pages/ServicesPage";
+import { ContactPage } from "@/pages/ContactPage";
+import { PortfolioPage } from "@/pages/PortfolioPage";
+import { BlogPage } from "@/pages/BlogPage";
+import { TermsOfServicePage } from "@/pages/TermsOfServicePage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
+import { OrderPage } from "@/pages/OrderPage";
+import { ProfilePage } from "@/pages/ProfilePage";
+import { DashboardPage } from "@/pages/DashboardPage";
+import { AdminDashboardPage } from "@/pages/AdminDashboardPage";
 import { UnifiedAuthProvider } from "./contexts/UnifiedAuthContext";
-import PublicLayout from "./layouts/PublicLayout";
-import Home from "./pages/HomePage";
-import Services from "./pages/Services";
-import About from "./pages/About";
-import Contact from "./pages/ContactPage";
-import Prices from "./pages/Prices";
-import Portfolio from "./pages/Portfolio";
-import Login from "./pages/LoginPage";
-import Register from "./pages/RegistrationPage";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogDetail";
-import Order from "./pages/Order";
-import SeoArticleOrder from "./pages/SeoArticleOrder";
-import LandingOrder from "./pages/LandingPageOrder";
-import EmailOrder from "./pages/EmailCampaignsOrder";
-import TelegramOrder from "./pages/TelegramContentOrder";
-import BotScriptsOrder from "./pages/ChatbotScriptsOrder";
-import WebsiteTextsOrder from "./pages/order/WebsiteTextsOrder";
-import InstagramOrder from "./pages/order/InstagramOrder";
-import WildberriesOrder from "./pages/order/WildberriesOrder";
-import OzonOrder from "./pages/order/OzonOrder";
-import YouTubeOrder from "./pages/order/YouTubeOrder";
-import LinkedInOrder from "./pages/order/LinkedInOrder";
-import SpecializedOrderPage from "./pages/order/SpecializedOrderPage";
-import ClientNewOrder from "./components/client/ClientNewOrder";
-import BulkSeoOptimization from './pages/BulkSeoOptimization';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { ActivityLogsPage } from "@/pages/ActivityLogsPage";
+import BulkSeoOptimization from "./pages/BulkSeoOptimization";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <UnifiedAuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<PublicLayout />}>
-            <Route index element={<Home />} />
-            <Route path="services" element={<Services />} />
-            <Route path="about" element={<About />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="prices" element={<Prices />} />
-            <Route path="portfolio" element={<Portfolio />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="blog/:slug" element={<BlogPost />} />
-            <Route path="order" element={<Order />} />
-            <Route path="order/seo-article" element={<SeoArticleOrder />} />
-            <Route path="order/bulk-seo" element={<BulkSeoOptimization />} />
-            <Route path="order/landing" element={<LandingOrder />} />
-            <Route path="order/email" element={<EmailOrder />} />
-            <Route path="order/telegram" element={<TelegramOrder />} />
-            <Route path="order/bot-scripts" element={<BotScriptsOrder />} />
-            <Route path="order/website-texts" element={<WebsiteTextsOrder />} />
-            <Route path="order/instagram" element={<InstagramOrder />} />
-            <Route path="order/wildberries" element={<WildberriesOrder />} />
-            <Route path="order/ozon" element={<OzonOrder />} />
-            <Route path="order/youtube" element={<YouTubeOrder />} />
-            <Route path="order/linkedin" element={<LinkedInOrder />} />
-            <Route path="order/specialized/:serviceId" element={<SpecializedOrderPage />} />
-            <Route path="client/new-order" element={<ClientNewOrder />} />
-          </Route>
-
-          <Route path="/admin" element={<p>Admin Layout</p>} />
-        </Routes>
-      </BrowserRouter>
-    </UnifiedAuthProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="min-h-screen bg-background">
+            <Toaster />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/portfolio" element={<PortfolioPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/terms" element={<TermsOfServicePage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/order" element={<OrderPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/admin" element={<AdminDashboardPage />} />
+              <Route path="/activity-logs" element={<ActivityLogsPage />} />
+              
+              <Route path="/bulk-seo" element={<BulkSeoOptimization />} />
+              
+            </Routes>
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 }
 
