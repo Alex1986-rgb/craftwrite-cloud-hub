@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -274,7 +273,6 @@ export default function SeoTemplatesManager() {
                   <Switch
                     checked={template.is_active}
                     onCheckedChange={(checked) => toggleTemplate(template.id, checked)}
-                    size="sm"
                   />
                   <Button variant="ghost" size="sm">
                     <Edit className="w-4 h-4" />

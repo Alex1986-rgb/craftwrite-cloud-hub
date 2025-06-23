@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -297,7 +296,6 @@ export default function AutolinksManager() {
                   <Switch
                     checked={autolink.is_active}
                     onCheckedChange={(checked) => toggleAutolink(autolink.id, checked)}
-                    size="sm"
                   />
                   <Button variant="ghost" size="sm">
                     <Edit className="w-4 h-4" />
