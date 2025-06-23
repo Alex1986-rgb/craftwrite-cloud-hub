@@ -1,7 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Trophy, Users, Clock, CheckCircle, Award } from "lucide-react";
+import { Star, Users, Trophy, Clock, ThumbsUp, CheckCircle, Shield, Percent } from "lucide-react";
 
 const achievements = [
   {
@@ -23,102 +23,79 @@ const achievements = [
     description: "От заказа до готовности"
   },
   {
-    icon: Award,
+    icon: ThumbsUp,
     number: "99%",
     label: "Положительных отзывов",
     description: "От наших клиентов"
   }
 ];
 
-const certifications = [
-  "Google Analytics сертификация",
-  "Яндекс.Метрика эксперт",
-  "SEMrush Academy",
-  "Высшее филологическое образование"
-];
-
 export default function SocialProofSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-slate-50/50 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-primary/5 to-purple-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-blue-500/5 to-emerald-500/5 rounded-full blur-2xl"></div>
-      </div>
-
-      <div className="container max-w-7xl mx-auto px-4 relative z-10">
-        {/* Заголовок секции */}
-        <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-6 px-6 py-3 text-lg font-semibold bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/20">
-            <CheckCircle className="w-5 h-5 mr-2" />
+    <section className="py-16 bg-gradient-to-b from-background to-slate-50/50 relative">
+      <div className="container max-w-6xl mx-auto px-4 relative">
+        {/* Компактный заголовок */}
+        <div className="text-center mb-12">
+          <Badge variant="secondary" className="mb-4 px-4 py-2 bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/20">
+            <CheckCircle className="w-4 h-4 mr-2" />
             Проверенное качество
           </Badge>
-          <h2 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
             Нам доверяют профессионалы
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Более 500 компаний выбрали CopyPro Cloud для создания продающего контента
           </p>
         </div>
 
-        {/* Статистика достижений */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        {/* Компактная статистика */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {achievements.map((achievement, index) => (
-            <Card key={achievement.label} className="group p-6 md:p-8 text-center hover:shadow-2xl transition-all duration-500 border-0 bg-gradient-to-br from-white to-slate-50/50 hover:scale-105 hover:-translate-y-2">
-              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-2xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
-                <achievement.icon className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <Card key={achievement.label} className="p-4 text-center hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-white to-slate-50/50 hover:scale-105">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-xl mb-3">
+                <achievement.icon className="w-6 h-6 text-primary" />
               </div>
-              <div className="text-2xl md:text-4xl font-bold text-primary mb-2 group-hover:scale-105 transition-transform duration-300">
+              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
                 {achievement.number}
               </div>
-              <div className="font-semibold text-foreground mb-1 text-sm md:text-base">
+              <div className="font-semibold text-foreground mb-1 text-sm">
                 {achievement.label}
               </div>
-              <div className="text-xs md:text-sm text-muted-foreground">
+              <div className="text-xs text-muted-foreground">
                 {achievement.description}
               </div>
             </Card>
           ))}
         </div>
 
-        {/* Сертификации команды */}
-        <div className="bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 rounded-3xl p-8 md:p-12 border border-primary/10">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">
-              Профессиональные сертификации нашей команды
-            </h3>
-            <p className="text-muted-foreground text-lg">
-              Наши специалисты постоянно повышают квалификацию
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {certifications.map((cert, index) => (
-              <div key={cert} className="group flex items-center gap-3 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-primary/10 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                  <Star className="w-5 h-5 text-primary fill-current" />
-                </div>
-                <span className="font-medium text-sm text-foreground leading-tight">
-                  {cert}
-                </span>
-              </div>
-            ))}
+        {/* Информация об оплате */}
+        <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl p-6 border border-emerald-100">
+          <div className="flex items-start gap-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-xl">
+              <Shield className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold mb-2 text-foreground flex items-center gap-2">
+                <Percent className="w-5 h-5 text-emerald-600" />
+                Заказываете текст - 50% предоплата
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Остальное после проверки вами текста. Гарантируем качество и соблюдение всех требований.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Call to action */}
-        <div className="text-center mt-16">
-          <p className="text-lg text-muted-foreground mb-6">
-            Присоединяйтесь к сотням довольных клиентов
-          </p>
-          <div className="flex items-center justify-center gap-1">
+        {/* Рейтинг */}
+        <div className="text-center mt-8">
+          <div className="flex items-center justify-center gap-1 mb-2">
             {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} className="w-6 h-6 text-yellow-400 fill-current" />
+              <Star key={star} className="w-5 h-5 text-yellow-400 fill-current" />
             ))}
-            <span className="ml-3 text-lg font-semibold text-foreground">
-              4.9/5 средняя оценка
-            </span>
           </div>
+          <span className="text-lg font-semibold text-foreground">
+            4.9/5 средняя оценка клиентов
+          </span>
         </div>
       </div>
     </section>
