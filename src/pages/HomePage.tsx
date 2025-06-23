@@ -1,6 +1,4 @@
-
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
-import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
@@ -92,37 +90,34 @@ export default function HomePage() {
         {/* 1. Главный экран с призывом к действию */}
         <ModernHeroSection />
         
-        {/* 2. Преимущества и выгоды */}
-        <BenefitsSection />
-        
-        {/* 3. Каталог услуг */}
+        {/* 2. Каталог услуг */}
         <ServicesCatalogSection />
         
-        {/* 4. Цены */}
+        {/* 3. Цены */}
         <ModernPricingSection />
         
-        {/* 5. Процесс работы */}
+        {/* 4. Процесс работы */}
         <ProcessSection />
         
-        {/* 6. Кейсы и результаты */}
+        {/* 5. Кейсы и результаты */}
         <CaseStudiesSection />
         
-        {/* 7. Статистика */}
+        {/* 6. Статистика */}
         <ProfessionalStatsSection />
         
-        {/* 8. Отзывы клиентов */}
+        {/* 7. Отзывы клиентов */}
         <TestimonialsSection />
         
-        {/* 9. Команда */}
+        {/* 8. Команда */}
         <TeamSection />
         
-        {/* 10. Частые вопросы */}
+        {/* 9. Частые вопросы */}
         <FaqSection />
         
-        {/* 11. Контакты */}
+        {/* 10. Контакты */}
         <ContactSection />
         
-        {/* 12. SEO-текст */}
+        {/* 11. SEO-текст */}
         <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
           <SeoTextExpandable text={seoText} />
         </div>
