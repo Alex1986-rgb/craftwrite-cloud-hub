@@ -22,6 +22,7 @@ export default function FormNavigation({
   onSubmit
 }: FormNavigationProps) {
   const isLastStep = currentStep === totalSteps;
+  const isPaymentStep = currentStep === 4;
 
   return (
     <div className="flex justify-between">
@@ -37,7 +38,7 @@ export default function FormNavigation({
           disabled={!isCurrentStepValid}
           className="ml-auto"
         >
-          Далее
+          {isPaymentStep ? 'К оплате' : 'Далее'}
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       ) : (
@@ -46,7 +47,7 @@ export default function FormNavigation({
           disabled={!isCurrentStepValid || loading}
           className="ml-auto"
         >
-          {loading ? 'Отправка...' : 'Отправить заказ'}
+          {loading ? 'Обработка...' : 'Завершить заказ'}
         </Button>
       )}
     </div>

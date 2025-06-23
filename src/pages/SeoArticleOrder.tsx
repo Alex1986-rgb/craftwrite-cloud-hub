@@ -1,8 +1,5 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import ComprehensiveSeo from '@/components/seo/ComprehensiveSeo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -192,23 +189,11 @@ export default function SeoArticleOrder() {
                     </Select>
                   </div>
                 </div>
-                
-                <div>
-                  <Label htmlFor="targetAudience">Целевая аудитория</Label>
-                  <Textarea
-                    id="targetAudience"
-                    name="targetAudience"
-                    value={formData.targetAudience}
-                    onChange={handleInputChange}
-                    placeholder="Опишите вашу целевую аудиторию: возраст, интересы, боли..."
-                    rows={3}
-                  />
-                </div>
               </CardContent>
             </Card>
           </div>
         );
-
+      // ... keep existing code (остальные шаги)
       case 2:
         return (
           <div className="space-y-6">
@@ -390,84 +375,64 @@ export default function SeoArticleOrder() {
   };
 
   return (
-    <>
-      <ComprehensiveSeo
-        title="Заказать SEO-статью | CopyPro Cloud - Оптимизированный контент для продвижения"
-        description="Создание SEO-статей для топ-позиций в поиске. Глубокий анализ конкурентов, LSI-ключи, техническая оптимизация. Рост трафика до 300%. От 2500₽"
-        keywords="seo статья, сео текст, оптимизированная статья, продвижение сайта, контент маркетинг"
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-purple-50/30">
+      <ComprehensiveSeo 
+        title="Заказать SEO-статью | Профессиональное написание SEO-текстов"
+        description="Закажите SEO-оптимизированную статью от профессиональных копирайтеров. Гарантия уникальности, быстрые сроки, доступные цены."
       />
-      
-      <Header />
-      
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
-        {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-6 bg-white/20 text-white hover:bg-white/30">
-                <Search className="w-4 h-4 mr-2" />
-                SEO-статьи
-              </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                SEO-статьи для топ-позиций в поиске
-              </h1>
-              <p className="text-xl opacity-90 mb-8 leading-relaxed">
-                Создаем оптимизированный контент, который выводит сайты в топ поисковых систем. 
-                Глубокий анализ конкурентов, семантическое ядро, техническая SEO-оптимизация
-              </p>
-            </div>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Заказать SEO-статью
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Профессиональное написание SEO-оптимизированных статей для вашего сайта
+            </p>
           </div>
-        </section>
 
-        {/* Form Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              {/* Progress */}
-              <div className="flex justify-center gap-2 mb-8">
-                {[1, 2, 3].map((step) => (
-                  <Badge 
-                    key={step}
-                    variant={currentStep >= step ? "default" : "outline"}
-                    className={`${currentStep === step ? "bg-blue-600" : ""} px-4 py-2`}
-                  >
-                    {step === 1 && "Основное"}
-                    {step === 2 && "Настройки"}
-                    {step === 3 && "Смета"}
-                  </Badge>
-                ))}
-              </div>
-
+          {/* Form */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
               {renderStep()}
               
               {/* Navigation */}
-              {currentStep < 3 && (
-                <div className="flex justify-between mt-8">
-                  {currentStep > 1 && (
-                    <Button 
-                      variant="outline" 
-                      onClick={handleBack}
-                    >
-                      Назад
-                    </Button>
-                  )}
-                  
+              <div className="flex justify-between items-center mt-8">
+                {currentStep > 1 && (
+                  <Button variant="outline" onClick={handleBack}>
+                    Назад
+                  </Button>
+                )}
+                
+                {currentStep < 3 ? (
                   <Button 
                     onClick={handleNext}
                     disabled={!isStepValid(currentStep)}
-                    className={`${currentStep === 1 ? 'ml-auto' : ''} bg-blue-600 hover:bg-blue-700`}
+                    className="ml-auto"
                   >
-                    {currentStep === 2 ? 'Создать смету' : 'Далее'}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    Далее <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                </div>
-              )}
+                ) : (
+                  <Button 
+                    onClick={handlePayment}
+                    className="ml-auto bg-green-600 hover:bg-green-700"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Перейти к оплате
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <OrderEstimate formData={formData} />
             </div>
           </div>
-        </section>
-      </main>
-      
-      <Footer />
-    </>
+        </div>
+      </div>
+    </div>
   );
 }

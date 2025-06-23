@@ -66,6 +66,8 @@ export function useUnifiedOrderForm({
         return Boolean(formData.service.trim());
       case 3:
         return Boolean(formData.details.trim());
+      case 4:
+        return true; // Валидация оплаты происходит в самом компоненте
       default:
         return true;
     }
@@ -74,7 +76,7 @@ export function useUnifiedOrderForm({
   const isCurrentStepValid = (): boolean => isStepValid(currentStep);
 
   const goToNextStep = () => {
-    if (isCurrentStepValid() && currentStep < 3) {
+    if (isCurrentStepValid() && currentStep < 4) {
       setCurrentStep(prev => prev + 1);
     }
   };

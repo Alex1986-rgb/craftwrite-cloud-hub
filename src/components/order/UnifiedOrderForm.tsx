@@ -1,11 +1,15 @@
 
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ContactInfoStep from './form-steps/ContactInfoStep';
 import ServiceSelectionStep from './form-steps/ServiceSelectionStep';
 import OrderDetailsStep from './form-steps/OrderDetailsStep';
+import PaymentStep from './form-steps/PaymentStep';
 import FormNavigation from './form-navigation/FormNavigation';
 import StepIndicator from './form-navigation/StepIndicator';
+import PriceCalculator from './PriceCalculator';
 import { useUnifiedOrderForm } from '@/hooks/useUnifiedOrderForm';
+import { toast } from 'sonner';
 
 interface UnifiedOrderFormProps {
   variant?: 'public' | 'client';
@@ -39,6 +43,38 @@ export default function UnifiedOrderForm({
     onSuccess
   });
 
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [calculatedPrice, setCalculatedPrice] = useState(3000);
+  const [urgencyMultiplier, setUrgencyMultiplier] = useState(1);
+  const [complexityMultiplier, setComplexityMultiplier] = useState(1);
+  const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+
+  const handlePayment = async () => {
+    if (!paymentMethod) {
+      toast.error('Выберите способ оплаты');
+      return;
+    }
+
+    try {
+      // Здесь будет интеграция с платежной системой
+      toast.success('Переход к оплате...');
+      console.log('Payment initiated:', {
+        method: paymentMethod,
+        amount: calculatedPrice,
+        formData
+      });
+      
+      // Имитируем успешную оплату
+      setTimeout(() => {
+        toast.success('Оплата прошла успешно!');
+        onOrderCreated?.();
+        onSuccess?.();
+      }, 2000);
+    } catch (error) {
+      toast.error('Ошибка при обработке платежа');
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -61,9 +97,30 @@ export default function UnifiedOrderForm({
 
       case 3:
         return (
-          <OrderDetailsStep
-            formData={formData}
-            onInputChange={handleInputChange}
+          <div className="space-y-6">
+            <OrderDetailsStep
+              formData={formData}
+              onInputChange={handleInputChange}
+            />
+            
+            <PriceCalculator
+              basePrice={3000}
+              urgencyMultiplier={urgencyMultiplier}
+              complexityMultiplier={complexityMultiplier}
+              additionalServices={additionalServices}
+              onPriceChange={setCalculatedPrice}
+            />
+          </div>
+        );
+
+      case 4:
+        return (
+          <PaymentStep
+            selectedMethod={paymentMethod}
+            onMethodSelect={setPaymentMethod}
+            totalAmount={calculatedPrice}
+            onPayment={handlePayment}
+            loading={loading}
           />
         );
 
@@ -78,14 +135,14 @@ export default function UnifiedOrderForm({
         <CardTitle className="text-center">
           {serviceTitle ? `Заказ: ${serviceTitle}` : 'Оформление заказа'}
         </CardTitle>
-        <StepIndicator currentStep={currentStep} totalSteps={3} />
+        <StepIndicator currentStep={currentStep} totalSteps={4} />
       </CardHeader>
       <CardContent className="space-y-6">
         {renderStep()}
         
         <FormNavigation
           currentStep={currentStep}
-          totalSteps={3}
+          totalSteps={4}
           isCurrentStepValid={isCurrentStepValid()}
           loading={loading}
           onPrevious={goToPreviousStep}
