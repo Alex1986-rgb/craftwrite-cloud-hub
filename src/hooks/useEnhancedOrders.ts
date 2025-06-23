@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
@@ -21,12 +20,19 @@ export interface EnhancedOrder {
   priority: string;
   notes?: string;
   assigned_admin_id?: string;
+  assigned_manager_id?: string;
   completed_at?: string;
   user_id?: string;
   created_at: string;
   updated_at: string;
   service_options?: Record<string, any>;
   files_urls?: string[];
+  payment_status?: string;
+  quality_rating?: number;
+  client_feedback?: string;
+  revision_count?: number;
+  last_activity_at?: string;
+  technical_specification?: Record<string, any>;
 }
 
 export function useEnhancedOrders() {
