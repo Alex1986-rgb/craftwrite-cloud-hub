@@ -1,27 +1,32 @@
 
+import ContactSection from "@/components/landing/ContactSection";
+import ContactHero from "@/components/contact/ContactHero";
+import ContactFAQ from "@/components/contact/ContactFAQ";
+import ContactMap from "@/components/contact/ContactMap";
+import { useSeoMeta } from "@/hooks/useSeoMeta";
+import { useSocialMeta } from "@/hooks/useSocialMeta";
+
 export default function ContactPage() {
+  useSeoMeta({
+    title: "Свяжитесь с нами - CopyPro Cloud | Профессиональный копирайтинг",
+    description: "Свяжитесь с командой экспертов CopyPro Cloud. Получите консультацию по копирайтингу, SEO-текстам и контент-маркетингу. Работаем 24/7.",
+    keywords: "контакты копирайтинг, связаться копирайтер, консультация seo, заказать тексты",
+    canonical: "https://copyprocloud.ru/contact"
+  });
+
+  useSocialMeta({
+    title: "Свяжитесь с нами - CopyPro Cloud",
+    description: "Получите профессиональную консультацию по копирайтингу и контент-маркетингу от экспертов CopyPro Cloud",
+    image: "https://copyprocloud.ru/images/contact-og.jpg",
+    url: "https://copyprocloud.ru/contact"
+  });
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Свяжитесь с нами</h1>
-      <div className="max-w-2xl mx-auto">
-        <p className="text-gray-600 mb-8">
-          Готовы обсудить ваш проект? Мы всегда рады помочь с созданием качественного контента.
-        </p>
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-semibold">Телефон</h3>
-            <p>+7 (999) 123-45-67</p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Email</h3>
-            <p>hello@copypro.ru</p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Адрес</h3>
-            <p>Москва, ул. Примерная, 123</p>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      <ContactHero />
+      <ContactSection />
+      <ContactMap />
+      <ContactFAQ />
     </div>
   );
 }
