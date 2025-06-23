@@ -51,7 +51,8 @@ export function useSupabaseOrders() {
           user_id: user?.id || null,
           estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null,
           technical_specification: technicalSpecification,
-          status: 'new'
+          status: 'new',
+          payment_status: 'unpaid' // Новое поле
         })
         .select()
         .single();
