@@ -8,7 +8,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Профессиональное написание SEO-оптимизированных статей для вашего сайта с гарантией уникальности",
     category: "SEO и контент-маркетинг",
     difficulty: "Средняя",
-    price: { min: 1500, max: 5000 },
+    price: { min: 1500, max: 5000, currency: "₽" },
     deliveryTime: { min: 3, max: 7, unit: "дней" },
     features: [
       "100% уникальность текста",
@@ -27,7 +27,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Создание продающих лендинг-страниц с высокими конверсиями для вашего бизнеса",
     category: "Продающие тексты",
     difficulty: "Сложная",
-    price: { min: 3000, max: 15000 },
+    price: { min: 3000, max: 15000, currency: "₽" },
     deliveryTime: { min: 5, max: 10, unit: "дней" },
     features: [
       "Анализ целевой аудитории",
@@ -46,7 +46,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Разработка эффективных email-кампаний для увеличения продаж и лояльности клиентов",
     category: "Email-маркетинг",
     difficulty: "Средняя",
-    price: { min: 2000, max: 8000 },
+    price: { min: 2000, max: 8000, currency: "₽" },
     deliveryTime: { min: 3, max: 5, unit: "дней" },
     features: [
       "Персонализированные письма",
@@ -65,7 +65,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Создание вирусного контента для Telegram-каналов с высоким уровнем вовлеченности",
     category: "Социальные сети",
     difficulty: "Простая",
-    price: { min: 800, max: 3000 },
+    price: { min: 800, max: 3000, currency: "₽" },
     deliveryTime: { min: 1, max: 3, unit: "дней" },
     features: [
       "Вирусный контент",
@@ -84,7 +84,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Разработка диалоговых сценариев для чат-ботов с естественным общением",
     category: "Автоматизация",
     difficulty: "Сложная",
-    price: { min: 2500, max: 10000 },
+    price: { min: 2500, max: 10000, currency: "₽" },
     deliveryTime: { min: 5, max: 14, unit: "дней" },
     features: [
       "Естественные диалоги",
@@ -103,7 +103,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Создание привлекательного контента для Instagram с высоким уровнем вовлеченности",
     category: "Социальные сети",
     difficulty: "Простая",
-    price: { min: 500, max: 2000 },
+    price: { min: 500, max: 2000, currency: "₽" },
     deliveryTime: { min: 1, max: 3, unit: "дней" },
     features: [
       "Тренды Instagram",
@@ -122,7 +122,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Оптимизация карточек товаров на Wildberries для увеличения продаж",
     category: "Маркетплейсы",
     difficulty: "Средняя",
-    price: { min: 1200, max: 4000 },
+    price: { min: 1200, max: 4000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     features: [
       "SEO-оптимизация",
@@ -141,7 +141,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Профессиональное заполнение карточек товаров на Ozon с акцентом на продажи",
     category: "Маркетплейсы",
     difficulty: "Средняя",
-    price: { min: 1200, max: 4000 },
+    price: { min: 1200, max: 4000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     features: [
       "Оптимизация под Ozon",
@@ -160,7 +160,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Написание захватывающих сценариев для YouTube-роликов любой тематики",
     category: "Видеоконтент",
     difficulty: "Средняя",
-    price: { min: 1500, max: 6000 },
+    price: { min: 1500, max: 6000, currency: "₽" },
     deliveryTime: { min: 3, max: 7, unit: "дней" },
     features: [
       "Крючки и интриги",
@@ -179,7 +179,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Профессиональный контент для LinkedIn, повышающий экспертность и деловую репутацию",
     category: "B2B маркетинг",
     difficulty: "Средняя",
-    price: { min: 800, max: 3000 },
+    price: { min: 800, max: 3000, currency: "₽" },
     deliveryTime: { min: 2, max: 4, unit: "дней" },
     features: [
       "B2B аудитория",
@@ -198,7 +198,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Комплексное наполнение сайтов продающими и информационными текстами",
     category: "Веб-контент",
     difficulty: "Сложная",
-    price: { min: 2000, max: 12000 },
+    price: { min: 2000, max: 12000, currency: "₽" },
     deliveryTime: { min: 5, max: 12, unit: "дней" },
     features: [
       "Полное наполнение сайта",
@@ -217,7 +217,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Создание продающих объявлений на Avito с максимальной конверсией в звонки",
     category: "Объявления",
     difficulty: "Простая",
-    price: { min: 600, max: 2500 },
+    price: { min: 600, max: 2500, currency: "₽" },
     deliveryTime: { min: 1, max: 3, unit: "дней" },
     features: [
       "Цепляющие заголовки",
@@ -236,7 +236,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Профессиональные пресс-релизы для СМИ и информационных агентств",
     category: "PR и коммуникации",
     difficulty: "Сложная",
-    price: { min: 2500, max: 8000 },
+    price: { min: 2500, max: 8000, currency: "₽" },
     deliveryTime: { min: 3, max: 7, unit: "дней" },
     features: [
       "Журналистские стандарты",
@@ -255,7 +255,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Разработка эффективных опросов и анкет для исследований и маркетинга",
     category: "Исследования",
     difficulty: "Средняя",
-    price: { min: 1000, max: 4000 },
+    price: { min: 1000, max: 4000, currency: "₽" },
     deliveryTime: { min: 2, max: 5, unit: "дней" },
     features: [
       "Методология опросов",
@@ -274,7 +274,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Продающие описания товаров для интернет-магазинов и каталогов",
     category: "E-commerce",
     difficulty: "Простая",
-    price: { min: 300, max: 1500 },
+    price: { min: 300, max: 1500, currency: "₽" },
     deliveryTime: { min: 1, max: 3, unit: "дней" },
     features: [
       "Продающие описания",
@@ -293,7 +293,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Эффективные коммерческие предложения, которые приводят к заключению сделок",
     category: "B2B продажи",
     difficulty: "Сложная",
-    price: { min: 2000, max: 10000 },
+    price: { min: 2000, max: 10000, currency: "₽" },
     deliveryTime: { min: 3, max: 8, unit: "дней" },
     features: [
       "Анализ потребностей",
@@ -312,7 +312,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Детальные кейсы успешных проектов для демонстрации экспертности",
     category: "Экспертный контент",
     difficulty: "Сложная",
-    price: { min: 1800, max: 7000 },
+    price: { min: 1800, max: 7000, currency: "₽" },
     deliveryTime: { min: 4, max: 8, unit: "дней" },
     features: [
       "Структура кейса",
@@ -331,7 +331,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Экспертные материалы и подробные руководства для B2B аудитории",
     category: "Экспертный контент",
     difficulty: "Экспертная",
-    price: { min: 5000, max: 20000 },
+    price: { min: 5000, max: 20000, currency: "₽" },
     deliveryTime: { min: 7, max: 21, unit: "дней" },
     features: [
       "Экспертная аналитика",
@@ -350,7 +350,7 @@ export const ALL_SERVICES: Service[] = [
     desc: "Профессиональные тексты для публичных выступлений и презентаций",
     category: "Публичные выступления",
     difficulty: "Сложная",
-    price: { min: 3000, max: 12000 },
+    price: { min: 3000, max: 12000, currency: "₽" },
     deliveryTime: { min: 5, max: 10, unit: "дней" },
     features: [
       "Риторические приемы",
