@@ -2,151 +2,150 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { 
+  Search, 
   TrendingUp, 
   Target, 
-  Search, 
-  BarChart3, 
-  Users, 
   Globe, 
-  Zap, 
+  ShoppingCart, 
+  Monitor, 
+  Banknote, 
+  Home, 
+  Heart, 
+  GraduationCap,
   Shield,
-  ArrowRight,
-  CheckCircle 
+  Percent 
 } from "lucide-react";
 
 const expertiseAreas = [
   {
-    icon: TrendingUp,
+    icon: Search,
     title: "SEO-оптимизация",
-    description: "Глубокий анализ ключевых слов, конкурентов и создание контента для топ-позиций",
-    skills: ["Семантическое ядро", "LSI-анализ", "Техническое SEO", "Конкурентный анализ"],
-    gradient: "from-green-500 to-emerald-600"
+    description: "Глубокий анализ ключевых слов и конкурентов",
+    features: ["Семантическое ядро", "LSI-анализ", "Техническое SEO", "Конкурентный анализ"],
+    color: "from-blue-500/20 to-cyan-500/20",
+    iconColor: "text-blue-600"
+  },
+  {
+    icon: TrendingUp,
+    title: "Конверсионный копирайтинг",
+    description: "Тексты, которые продают",
+    features: ["Психология продаж", "A/B тестирование", "Воронки продаж", "CRO-оптимизация"],
+    color: "from-green-500/20 to-emerald-500/20",
+    iconColor: "text-green-600"
   },
   {
     icon: Target,
-    title: "Конверсионный копирайтинг",
-    description: "Тексты, которые продают: от email-рассылок до продающих лендингов",
-    skills: ["Психология продаж", "A/B тестирование", "Воронки продаж", "CRO-оптимизация"],
-    gradient: "from-blue-500 to-cyan-600"
-  },
-  {
-    icon: BarChart3,
     title: "Контент-маркетинг",
-    description: "Стратегический подход к созданию контента для различных каналов",
-    skills: ["Контент-стратегия", "Редакционный план", "SMM-тексты", "Аналитика"],
-    gradient: "from-purple-500 to-violet-600"
+    description: "Стратегический подход к созданию контента",
+    features: ["Контент-стратегия", "Редакционный план", "SMM-тексты", "Аналитика"],
+    color: "from-purple-500/20 to-pink-500/20",
+    iconColor: "text-purple-600"
   },
   {
     icon: Globe,
     title: "Мультиязычный контент",
-    description: "Создание качественного контента на русском и английском языках",
-    skills: ["Локализация", "Культурная адаптация", "Технический перевод", "Нейминг"],
-    gradient: "from-orange-500 to-red-600"
+    description: "Качественный контент на разных языках",
+    features: ["Локализация", "Культурная адаптация", "Технический перевод", "Нейминг"],
+    color: "from-orange-500/20 to-yellow-500/20",
+    iconColor: "text-orange-600"
   }
 ];
 
 const industries = [
-  { name: "E-commerce", percentage: 85 },
-  { name: "IT & Tech", percentage: 92 },
-  { name: "Финансы", percentage: 78 },
-  { name: "Недвижимость", percentage: 88 },
-  { name: "Медицина", percentage: 81 },
-  { name: "Образование", percentage: 90 }
+  { icon: ShoppingCart, name: "E-commerce", percentage: 85, color: "text-blue-600" },
+  { icon: Monitor, name: "IT & Tech", percentage: 92, color: "text-purple-600" },
+  { icon: Banknote, name: "Финансы", percentage: 78, color: "text-green-600" },
+  { icon: Home, name: "Недвижимость", percentage: 88, color: "text-orange-600" },
+  { icon: Heart, name: "Медицина", percentage: 81, color: "text-red-600" },
+  { icon: GraduationCap, name: "Образование", percentage: 90, color: "text-indigo-600" }
 ];
 
 export default function ExpertiseShowcaseSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-slate-50/50 to-background relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-primary/8 to-purple-500/6 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-gradient-to-r from-blue-500/8 to-emerald-500/6 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-      </div>
-
-      <div className="container max-w-7xl mx-auto px-4 relative z-10">
+    <section className="py-12 bg-gradient-to-b from-slate-50/50 to-white">
+      <div className="container max-w-6xl mx-auto px-4">
         {/* Заголовок */}
-        <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-6 px-6 py-3 text-lg font-semibold bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/20">
-            <Zap className="w-5 h-5 mr-2" />
+        <div className="text-center mb-10">
+          <Badge variant="secondary" className="mb-3 px-3 py-1 bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/20">
+            <Shield className="w-4 h-4 mr-2" />
             Наша экспертиза
           </Badge>
-          <h2 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent">
             Профессионалы в каждой нише
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            30+ экспертов с глубокими знаниями в различных отраслях создают контент мирового уровня
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            30+ экспертов с глубокими знаниями создают контент мирового уровня
           </p>
         </div>
 
-        {/* Области экспертизы */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+        {/* Компактная сетка экспертизы */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {expertiseAreas.map((area, index) => (
-            <Card key={area.title} className="group p-8 hover:shadow-2xl transition-all duration-700 border-0 bg-gradient-to-br from-white to-slate-50/30 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
-              <div className={`absolute inset-0 bg-gradient-to-br ${area.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-700`}></div>
-              <div className="relative z-10">
-                <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${area.gradient} rounded-2xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}>
-                  <area.icon className="w-8 h-8 text-white" />
+            <Card key={area.title} className="p-4 hover:shadow-md transition-all duration-300 border-0 bg-white/80">
+              <div className="flex items-start gap-3 mb-3">
+                <div className={`inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br ${area.color} rounded-lg shrink-0`}>
+                  <area.icon className={`w-5 h-5 ${area.iconColor}`} />
                 </div>
-                
-                <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors duration-300">
-                  {area.title}
-                </h3>
-                
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {area.description}
-                </p>
-                
-                <div className="space-y-2">
-                  {area.skills.map((skill) => (
-                    <div key={skill} className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm font-medium text-foreground">{skill}</span>
-                    </div>
-                  ))}
+                <div className="min-w-0">
+                  <h3 className="font-bold text-foreground text-sm mb-1">
+                    {area.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {area.description}
+                  </p>
                 </div>
+              </div>
+              <div className="grid grid-cols-2 gap-1">
+                {area.features.map((feature) => (
+                  <div key={feature} className="text-xs text-slate-600 px-2 py-1 bg-slate-50 rounded">
+                    {feature}
+                  </div>
+                ))}
               </div>
             </Card>
           ))}
         </div>
 
-        {/* Опыт работы с отраслями */}
-        <div className="bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 rounded-3xl p-8 md:p-12 border border-primary/10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
-                Экспертиза в ключевых отраслях
-              </h3>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Наша команда имеет глубокий опыт работы с различными бизнес-сферами, 
-                что позволяет создавать по-настоящему экспертный контент.
-              </p>
-              <Button asChild size="lg" className="group">
-                <Link to="/portfolio" className="flex items-center gap-2">
-                  Посмотреть примеры работ
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="space-y-4">
-              {industries.map((industry) => (
-                <div key={industry.name} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-foreground">{industry.name}</span>
-                    <span className="text-sm font-bold text-primary">{industry.percentage}%</span>
+        {/* Компактная статистика по отраслям */}
+        <Card className="p-4 mb-6 bg-gradient-to-r from-slate-50 to-white border-slate-200">
+          <h3 className="font-bold text-foreground mb-3 text-center">
+            Экспертиза в ключевых отраслях
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {industries.map((industry, index) => (
+              <div key={industry.name} className="flex items-center gap-2 p-2 bg-white rounded-lg">
+                <industry.icon className={`w-5 h-5 ${industry.color}`} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-foreground">
+                    {industry.name}
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-primary to-blue-500 rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: `${industry.percentage}%` }}
-                    ></div>
+                  <div className="text-xs text-muted-foreground">
+                    {industry.percentage}% успешных проектов
                   </div>
                 </div>
-              ))}
-              <p className="text-sm text-muted-foreground mt-4 italic">
-                * Процент успешных проектов в каждой отрасли
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <Button variant="outline" size="sm" className="text-xs">
+              Посмотреть примеры работ
+            </Button>
+          </div>
+        </Card>
+
+        {/* Информация об оплате */}
+        <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl p-4 border border-emerald-100">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-lg">
+              <Percent className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-foreground">
+                Заказываете текст — 50% предоплата
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Остальное после проверки вами текста
               </p>
             </div>
           </div>
