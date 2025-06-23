@@ -45,6 +45,124 @@ export type Database = {
         }
         Relationships: []
       }
+      bulk_seo_pages: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          html_content: string | null
+          id: string
+          keywords: Json | null
+          meta_description: string | null
+          meta_title: string | null
+          page_title: string | null
+          processed_at: string | null
+          project_id: string
+          status: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          html_content?: string | null
+          id?: string
+          keywords?: Json | null
+          meta_description?: string | null
+          meta_title?: string | null
+          page_title?: string | null
+          processed_at?: string | null
+          project_id: string
+          status?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          html_content?: string | null
+          id?: string
+          keywords?: Json | null
+          meta_description?: string | null
+          meta_title?: string | null
+          page_title?: string | null
+          processed_at?: string | null
+          project_id?: string
+          status?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bulk_seo_pages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "bulk_seo_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bulk_seo_projects: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          export_url: string | null
+          failed_pages: number
+          file_url: string | null
+          id: string
+          order_id: string | null
+          price_per_page: number
+          processed_pages: number
+          project_name: string
+          settings: Json
+          status: string
+          total_pages: number
+          total_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          export_url?: string | null
+          failed_pages?: number
+          file_url?: string | null
+          id?: string
+          order_id?: string | null
+          price_per_page?: number
+          processed_pages?: number
+          project_name: string
+          settings?: Json
+          status?: string
+          total_pages?: number
+          total_price?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          export_url?: string | null
+          failed_pages?: number
+          file_url?: string | null
+          id?: string
+          order_id?: string | null
+          price_per_page?: number
+          processed_pages?: number
+          project_name?: string
+          settings?: Json
+          status?: string
+          total_pages?: number
+          total_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bulk_seo_projects_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_settings: {
         Row: {
           created_at: string | null
@@ -328,6 +446,108 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      seo_generation_tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          max_retries: number
+          page_id: string
+          priority: number
+          project_id: string
+          result: Json | null
+          retry_count: number
+          started_at: string | null
+          status: string
+          task_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          max_retries?: number
+          page_id: string
+          priority?: number
+          project_id: string
+          result?: Json | null
+          retry_count?: number
+          started_at?: string | null
+          status?: string
+          task_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          max_retries?: number
+          page_id?: string
+          priority?: number
+          project_id?: string
+          result?: Json | null
+          retry_count?: number
+          started_at?: string | null
+          status?: string
+          task_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_generation_tasks_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "bulk_seo_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "seo_generation_tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "bulk_seo_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          template_content: string
+          template_type: string
+          updated_at: string
+          variables: Json | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          template_content: string
+          template_type: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          template_content?: string
+          template_type?: string
+          updated_at?: string
+          variables?: Json | null
+        }
+        Relationships: []
       }
       system_settings: {
         Row: {

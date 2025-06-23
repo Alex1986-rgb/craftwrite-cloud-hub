@@ -1,30 +1,31 @@
+
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 import PublicLayout from "./layouts/PublicLayout";
-import Home from "./pages/Home";
+import Home from "./pages/HomePage";
 import Services from "./pages/Services";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Contact from "./pages/ContactPage";
 import Prices from "./pages/Prices";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/LoginPage";
+import Register from "./pages/RegistrationPage";
 import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
+import BlogPost from "./pages/BlogDetail";
 import Order from "./pages/Order";
 import SeoArticleOrder from "./pages/SeoArticleOrder";
-import LandingOrder from "./pages/LandingOrder";
-import EmailOrder from "./pages/EmailOrder";
-import TelegramOrder from "./pages/TelegramOrder";
-import BotScriptsOrder from "./pages/BotScriptsOrder";
-import WebsiteTextsOrder from "./pages/WebsiteTextsOrder";
-import InstagramOrder from "./pages/InstagramOrder";
-import WildberriesOrder from "./pages/WildberriesOrder";
-import OzonOrder from "./pages/OzonOrder";
-import YouTubeOrder from "./pages/YouTubeOrder";
-import LinkedInOrder from "./pages/LinkedInOrder";
+import LandingOrder from "./pages/LandingPageOrder";
+import EmailOrder from "./pages/EmailCampaignsOrder";
+import TelegramOrder from "./pages/TelegramContentOrder";
+import BotScriptsOrder from "./pages/ChatbotScriptsOrder";
+import WebsiteTextsOrder from "./pages/order/WebsiteTextsOrder";
+import InstagramOrder from "./pages/order/InstagramOrder";
+import WildberriesOrder from "./pages/order/WildberriesOrder";
+import OzonOrder from "./pages/order/OzonOrder";
+import YouTubeOrder from "./pages/order/YouTubeOrder";
+import LinkedInOrder from "./pages/order/LinkedInOrder";
 import SpecializedOrderPage from "./pages/SpecializedOrderPage";
 import ClientNewOrder from "./components/client/ClientNewOrder";
 import AIGenerator from "./pages/AIGenerator";
