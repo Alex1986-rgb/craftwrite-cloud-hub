@@ -581,6 +581,957 @@ export const serviceFormConfigs: { [serviceId: string]: ServiceFormConfig } = {
         express: 1.3
       }
     }
+  },
+
+  // Маркетплейсы
+  'wildberries-cards': {
+    serviceId: 'wildberries-cards',
+    serviceName: 'Карточки товаров для Wildberries',
+    basePrice: 1500,
+    steps: {
+      2: {
+        title: 'Параметры товара',
+        fields: {
+          productCategory: {
+            type: 'select',
+            label: 'Категория товара',
+            required: true,
+            options: [
+              { value: 'clothing', label: 'Одежда' },
+              { value: 'shoes', label: 'Обувь' },
+              { value: 'accessories', label: 'Аксессуары' },
+              { value: 'electronics', label: 'Электроника' },
+              { value: 'beauty', label: 'Красота и здоровье' },
+              { value: 'home', label: 'Дом и сад' },
+              { value: 'children', label: 'Детские товары' },
+              { value: 'sports', label: 'Спорт и отдых' }
+            ]
+          },
+          productCount: {
+            type: 'select',
+            label: 'Количество карточек',
+            required: true,
+            options: [
+              { value: '1', label: '1 карточка', price: 1500 },
+              { value: '5', label: '5 карточек', price: 6000 },
+              { value: '10', label: '10 карточек', price: 10000 },
+              { value: '20', label: '20 карточек', price: 18000 },
+              { value: '50', label: '50 карточек', price: 40000 }
+            ]
+          },
+          productName: {
+            type: 'input',
+            label: 'Название товара',
+            placeholder: 'Основное название вашего товара',
+            required: true
+          },
+          brandName: {
+            type: 'input',
+            label: 'Название бренда',
+            placeholder: 'Ваш бренд или торговая марка'
+          }
+        }
+      },
+      3: {
+        title: 'Характеристики и описание',
+        fields: {
+          keyFeatures: {
+            type: 'textarea',
+            label: 'Ключевые характеристики',
+            placeholder: 'Размеры, материалы, цвета, особенности',
+            required: true
+          },
+          targetAudience: {
+            type: 'select',
+            label: 'Целевая аудитория',
+            options: [
+              { value: 'women', label: 'Женщины' },
+              { value: 'men', label: 'Мужчины' },
+              { value: 'children', label: 'Дети' },
+              { value: 'unisex', label: 'Унисекс' },
+              { value: 'elderly', label: 'Пожилые' }
+            ]
+          },
+          competitorAnalysis: {
+            type: 'textarea',
+            label: 'Конкуренты',
+            placeholder: 'Укажите похожие товары или бренды-конкуренты'
+          },
+          priceRange: {
+            type: 'select',
+            label: 'Ценовой сегмент',
+            options: [
+              { value: 'budget', label: 'Бюджетный (до 1000₽)' },
+              { value: 'middle', label: 'Средний (1000-5000₽)' },
+              { value: 'premium', label: 'Премиум (5000-15000₽)' },
+              { value: 'luxury', label: 'Люкс (от 15000₽)' }
+            ]
+          }
+        }
+      }
+    },
+    additionalServices: {
+      seo_optimization: {
+        type: 'checkbox',
+        label: 'SEO-оптимизация для поиска WB',
+        additionalPrice: 800
+      },
+      competitor_analysis: {
+        type: 'checkbox',
+        label: 'Анализ конкурентов на WB',
+        additionalPrice: 1200
+      },
+      keyword_research: {
+        type: 'checkbox',
+        label: 'Подбор ключевых слов',
+        additionalPrice: 600
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (2-3 дня)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (1 день)',
+        priceMultiplier: 1.5
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.5
+      }
+    }
+  },
+
+  'ozon-cards': {
+    serviceId: 'ozon-cards',
+    serviceName: 'Карточки товаров для Ozon',
+    basePrice: 1600,
+    steps: {
+      2: {
+        title: 'Параметры товара',
+        fields: {
+          productCategory: {
+            type: 'select',
+            label: 'Категория товара',
+            required: true,
+            options: [
+              { value: 'electronics', label: 'Электроника' },
+              { value: 'appliances', label: 'Бытовая техника' },
+              { value: 'clothing', label: 'Одежда и обувь' },
+              { value: 'beauty', label: 'Красота и здоровье' },
+              { value: 'home', label: 'Дом и сад' },
+              { value: 'books', label: 'Книги' },
+              { value: 'auto', label: 'Автотовары' },
+              { value: 'children', label: 'Детские товары' }
+            ]
+          },
+          productCount: {
+            type: 'select',
+            label: 'Количество карточек',
+            required: true,
+            options: [
+              { value: '1', label: '1 карточка', price: 1600 },
+              { value: '5', label: '5 карточек', price: 6500 },
+              { value: '10', label: '10 карточек', price: 11000 },
+              { value: '20', label: '20 карточек', price: 20000 },
+              { value: '50', label: '50 карточек', price: 45000 }
+            ]
+          },
+          productName: {
+            type: 'input',
+            label: 'Название товара',
+            placeholder: 'Полное название товара',
+            required: true
+          },
+          ozonCategory: {
+            type: 'input',
+            label: 'Категория на Ozon',
+            placeholder: 'Точная категория из каталога Ozon'
+          }
+        }
+      },
+      3: {
+        title: 'Описание и особенности',
+        fields: {
+          productFeatures: {
+            type: 'textarea',
+            label: 'Описание товара',
+            placeholder: 'Подробное описание, характеристики, преимущества',
+            required: true
+          },
+          technicalSpecs: {
+            type: 'textarea',
+            label: 'Технические характеристики',
+            placeholder: 'Размеры, вес, материалы, технические параметры'
+          },
+          usageScenarios: {
+            type: 'textarea',
+            label: 'Сценарии использования',
+            placeholder: 'Где и как используется товар?'
+          },
+          advantages: {
+            type: 'textarea',
+            label: 'Преимущества товара',
+            placeholder: 'Что выделяет ваш товар среди конкурентов?'
+          }
+        }
+      }
+    },
+    additionalServices: {
+      rich_content: {
+        type: 'checkbox',
+        label: 'Rich-контент для Ozon',
+        additionalPrice: 1500
+      },
+      a_plus_content: {
+        type: 'checkbox',
+        label: 'A+ контент',
+        additionalPrice: 2000
+      },
+      infographics: {
+        type: 'checkbox',
+        label: 'Инфографика',
+        additionalPrice: 1200
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (2-4 дня)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (1-2 дня)',
+        priceMultiplier: 1.4
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.4
+      }
+    }
+  },
+
+  // Социальные сети (детализированные)
+  'instagram-posts': {
+    serviceId: 'instagram-posts',
+    serviceName: 'Посты для Instagram',
+    basePrice: 1200,
+    steps: {
+      2: {
+        title: 'Параметры контента',
+        fields: {
+          contentType: {
+            type: 'checkbox',
+            label: 'Типы контента',
+            required: true,
+            options: [
+              { value: 'feed_posts', label: 'Посты в ленту' },
+              { value: 'stories', label: 'Истории' },
+              { value: 'reels', label: 'Reels' },
+              { value: 'igtv', label: 'IGTV описания' },
+              { value: 'captions', label: 'Подписи к фото' }
+            ]
+          },
+          postCount: {
+            type: 'select',
+            label: 'Количество постов',
+            required: true,
+            options: [
+              { value: '10', label: '10 постов', price: 1200 },
+              { value: '20', label: '20 постов', price: 2200 },
+              { value: '30', label: '30 постов', price: 3000 },
+              { value: '50', label: '50 постов', price: 4500 }
+            ]
+          },
+          niche: {
+            type: 'select',
+            label: 'Ниша/Тематика',
+            required: true,
+            options: [
+              { value: 'beauty', label: 'Красота и уход' },
+              { value: 'fashion', label: 'Мода и стиль' },
+              { value: 'food', label: 'Еда и рецепты' },
+              { value: 'travel', label: 'Путешествия' },
+              { value: 'fitness', label: 'Фитнес и спорт' },
+              { value: 'business', label: 'Бизнес' },
+              { value: 'lifestyle', label: 'Лайфстайл' },
+              { value: 'tech', label: 'Технологии' }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Стиль и цели',
+        fields: {
+          brandTone: {
+            type: 'radio',
+            label: 'Тон коммуникации',
+            options: [
+              { value: 'friendly', label: 'Дружелюбный' },
+              { value: 'professional', label: 'Профессиональный' },
+              { value: 'playful', label: 'Игривый' },
+              { value: 'inspiring', label: 'Вдохновляющий' },
+              { value: 'educational', label: 'Обучающий' }
+            ]
+          },
+          goals: {
+            type: 'checkbox',
+            label: 'Цели контента',
+            options: [
+              { value: 'engagement', label: 'Увеличение вовлеченности' },
+              { value: 'followers', label: 'Рост подписчиков' },
+              { value: 'sales', label: 'Продажи' },
+              { value: 'brand_awareness', label: 'Узнаваемость бренда' },
+              { value: 'traffic', label: 'Трафик на сайт' }
+            ]
+          },
+          callToActions: {
+            type: 'textarea',
+            label: 'Призывы к действию',
+            placeholder: 'Какие действия должны совершать подписчики?'
+          }
+        }
+      }
+    },
+    additionalServices: {
+      hashtag_research: {
+        type: 'checkbox',
+        label: 'Исследование хештегов',
+        additionalPrice: 500
+      },
+      stories_highlights: {
+        type: 'checkbox',
+        label: 'Тексты для актуальных историй',
+        additionalPrice: 800
+      },
+      content_calendar: {
+        type: 'checkbox',
+        label: 'Контент-календарь на месяц',
+        additionalPrice: 1000
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (3-5 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (1-2 дня)',
+        priceMultiplier: 1.5
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.5
+      }
+    }
+  },
+
+  'linkedin-content': {
+    serviceId: 'linkedin-content',
+    serviceName: 'Контент для LinkedIn',
+    basePrice: 2000,
+    steps: {
+      2: {
+        title: 'Тип контента',
+        fields: {
+          contentFormat: {
+            type: 'checkbox',
+            label: 'Форматы контента',
+            required: true,
+            options: [
+              { value: 'posts', label: 'Обычные посты' },
+              { value: 'articles', label: 'Статьи LinkedIn' },
+              { value: 'company_updates', label: 'Обновления компании' },
+              { value: 'thought_leadership', label: 'Экспертные мнения' },
+              { value: 'case_studies', label: 'Кейсы' }
+            ]
+          },
+          contentCount: {
+            type: 'select',
+            label: 'Количество материалов',
+            required: true,
+            options: [
+              { value: '5', label: '5 постов', price: 2000 },
+              { value: '10', label: '10 постов', price: 3500 },
+              { value: '15', label: '15 постов', price: 5000 },
+              { value: '20', label: '20 постов', price: 6000 }
+            ]
+          },
+          industry: {
+            type: 'select',
+            label: 'Отрасль',
+            required: true,
+            options: [
+              { value: 'tech', label: 'IT и технологии' },
+              { value: 'finance', label: 'Финансы' },
+              { value: 'marketing', label: 'Маркетинг' },
+              { value: 'consulting', label: 'Консалтинг' },
+              { value: 'manufacturing', label: 'Производство' },
+              { value: 'healthcare', label: 'Здравоохранение' },
+              { value: 'education', label: 'Образование' },
+              { value: 'real_estate', label: 'Недвижимость' }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Цели и аудитория',
+        fields: {
+          businessGoals: {
+            type: 'checkbox',
+            label: 'Бизнес-цели',
+            options: [
+              { value: 'lead_generation', label: 'Генерация лидов' },
+              { value: 'brand_awareness', label: 'Повышение узнаваемости' },
+              { value: 'thought_leadership', label: 'Экспертность' },
+              { value: 'recruitment', label: 'Привлечение кадров' },
+              { value: 'partnerships', label: 'Поиск партнеров' }
+            ]
+          },
+          targetAudience: {
+            type: 'textarea',
+            label: 'Целевая аудитория',
+            placeholder: 'Кто ваша целевая аудитория? Должности, индустрии, интересы',
+            required: true
+          },
+          keyMessages: {
+            type: 'textarea',
+            label: 'Ключевые сообщения',
+            placeholder: 'Что важно донести до аудитории?'
+          }
+        }
+      }
+    },
+    additionalServices: {
+      personal_branding: {
+        type: 'checkbox',
+        label: 'Стратегия личного бренда',
+        additionalPrice: 2500
+      },
+      engagement_strategy: {
+        type: 'checkbox',
+        label: 'Стратегия вовлечения',
+        additionalPrice: 1500
+      },
+      competitor_analysis: {
+        type: 'checkbox',
+        label: 'Анализ конкурентов в LinkedIn',
+        additionalPrice: 1800
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (5-7 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (2-3 дня)',
+        priceMultiplier: 1.3
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.3
+      }
+    }
+  },
+
+  // Специализированные услуги
+  'chatbot-scripts': {
+    serviceId: 'chatbot-scripts',
+    serviceName: 'Сценарии для чат-ботов',
+    basePrice: 3000,
+    steps: {
+      2: {
+        title: 'Параметры чат-бота',
+        fields: {
+          platform: {
+            type: 'select',
+            label: 'Платформа',
+            required: true,
+            options: [
+              { value: 'telegram', label: 'Telegram' },
+              { value: 'whatsapp', label: 'WhatsApp' },
+              { value: 'vk', label: 'ВКонтакте' },
+              { value: 'website', label: 'Сайт (веб-чат)' },
+              { value: 'facebook', label: 'Facebook Messenger' },
+              { value: 'viber', label: 'Viber' }
+            ]
+          },
+          botPurpose: {
+            type: 'select',
+            label: 'Назначение бота',
+            required: true,
+            options: [
+              { value: 'support', label: 'Техподдержка' },
+              { value: 'sales', label: 'Продажи' },
+              { value: 'booking', label: 'Бронирование' },
+              { value: 'info', label: 'Информационный' },
+              { value: 'survey', label: 'Опросы' },
+              { value: 'lead_generation', label: 'Сбор заявок' }
+            ]
+          },
+          complexity: {
+            type: 'select',
+            label: 'Сложность сценария',
+            options: [
+              { value: 'simple', label: 'Простой (до 10 веток диалога)', price: 3000 },
+              { value: 'medium', label: 'Средний (до 25 веток)', price: 5500 },
+              { value: 'complex', label: 'Сложный (до 50 веток)', price: 8500 },
+              { value: 'enterprise', label: 'Корпоративный (50+ веток)', price: 15000 }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Функционал и интеграции',
+        fields: {
+          features: {
+            type: 'checkbox',
+            label: 'Необходимый функционал',
+            options: [
+              { value: 'faq', label: 'База знаний (FAQ)' },
+              { value: 'human_handoff', label: 'Передача оператору' },
+              { value: 'payments', label: 'Прием платежей' },
+              { value: 'calendar', label: 'Запись на прием' },
+              { value: 'quiz', label: 'Квизы и опросы' },
+              { value: 'notifications', label: 'Push-уведомления' },
+              { value: 'crm_integration', label: 'Интеграция с CRM' }
+            ]
+          },
+          businessInfo: {
+            type: 'textarea',
+            label: 'Информация о бизнесе',
+            placeholder: 'Расскажите о вашей компании, продуктах/услугах',
+            required: true
+          },
+          mainScenarios: {
+            type: 'textarea',
+            label: 'Основные сценарии',
+            placeholder: 'Опишите основные задачи, которые должен решать бот'
+          },
+          toneOfVoice: {
+            type: 'radio',
+            label: 'Стиль общения',
+            options: [
+              { value: 'formal', label: 'Официальный' },
+              { value: 'friendly', label: 'Дружелюбный' },
+              { value: 'professional', label: 'Профессиональный' },
+              { value: 'casual', label: 'Неформальный' }
+            ]
+          }
+        }
+      }
+    },
+    additionalServices: {
+      voice_menu: {
+        type: 'checkbox',
+        label: 'Голосовое меню',
+        additionalPrice: 2000
+      },
+      multilingual: {
+        type: 'checkbox',
+        label: 'Многоязычность',
+        additionalPrice: 2500
+      },
+      analytics_setup: {
+        type: 'checkbox',
+        label: 'Настройка аналитики',
+        additionalPrice: 1500
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (5-7 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (2-3 дня)',
+        priceMultiplier: 1.4
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.4
+      }
+    }
+  },
+
+  'telegram-content': {
+    serviceId: 'telegram-content',
+    serviceName: 'Контент для Telegram-каналов',
+    basePrice: 1800,
+    steps: {
+      2: {
+        title: 'Параметры канала',
+        fields: {
+          channelType: {
+            type: 'select',
+            label: 'Тип канала',
+            required: true,
+            options: [
+              { value: 'news', label: 'Новостной' },
+              { value: 'business', label: 'Бизнес' },
+              { value: 'education', label: 'Образовательный' },
+              { value: 'entertainment', label: 'Развлекательный' },
+              { value: 'crypto', label: 'Криптовалюты' },
+              { value: 'tech', label: 'Технологии' },
+              { value: 'lifestyle', label: 'Лайфстайл' }
+            ]
+          },
+          postCount: {
+            type: 'select',
+            label: 'Количество постов',
+            required: true,
+            options: [
+              { value: '15', label: '15 постов', price: 1800 },
+              { value: '30', label: '30 постов', price: 3200 },
+              { value: '50', label: '50 постов', price: 5000 },
+              { value: '100', label: '100 постов', price: 8500 }
+            ]
+          },
+          postFormat: {
+            type: 'checkbox',
+            label: 'Форматы постов',
+            options: [
+              { value: 'text', label: 'Текстовые посты' },
+              { value: 'photo_caption', label: 'Подписи к фото' },
+              { value: 'video_caption', label: 'Подписи к видео' },
+              { value: 'polls', label: 'Опросы' },
+              { value: 'stories', label: 'Истории/кейсы' }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Контент-стратегия',
+        fields: {
+          contentThemes: {
+            type: 'textarea',
+            label: 'Основные темы',
+            placeholder: 'Какие темы должны освещаться в канале?',
+            required: true
+          },
+          targetAudience: {
+            type: 'textarea',
+            label: 'Целевая аудитория',
+            placeholder: 'Кто ваши подписчики? Возраст, интересы, потребности'
+          },
+          uniqueValue: {
+            type: 'textarea',
+            label: 'Уникальная ценность',
+            placeholder: 'Чем ваш канал отличается от конкурентов?'
+          },
+          engagementGoals: {
+            type: 'checkbox',
+            label: 'Цели по вовлечению',
+            options: [
+              { value: 'views', label: 'Увеличение просмотров' },
+              { value: 'shares', label: 'Больше репостов' },
+              { value: 'comments', label: 'Активные комментарии' },
+              { value: 'subscribers', label: 'Рост подписчиков' },
+              { value: 'traffic', label: 'Переходы на сайт' }
+            ]
+          }
+        }
+      }
+    },
+    additionalServices: {
+      content_calendar: {
+        type: 'checkbox',
+        label: 'Контент-календарь',
+        additionalPrice: 1200
+      },
+      viral_mechanics: {
+        type: 'checkbox',
+        label: 'Вирусные механики',
+        additionalPrice: 1500
+      },
+      cross_promotion: {
+        type: 'checkbox',
+        label: 'Кросс-промо стратегия',
+        additionalPrice: 1000
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (4-6 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (2-3 дня)',
+        priceMultiplier: 1.3
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.3
+      }
+    }
+  },
+
+  // Дополнительные услуги
+  'product-descriptions': {
+    serviceId: 'product-descriptions',
+    serviceName: 'Описания товаров',
+    basePrice: 800,
+    steps: {
+      2: {
+        title: 'Параметры товаров',
+        fields: {
+          productType: {
+            type: 'select',
+            label: 'Тип товаров',
+            required: true,
+            options: [
+              { value: 'electronics', label: 'Электроника' },
+              { value: 'clothing', label: 'Одежда' },
+              { value: 'home', label: 'Товары для дома' },
+              { value: 'beauty', label: 'Красота и здоровье' },
+              { value: 'food', label: 'Продукты питания' },
+              { value: 'books', label: 'Книги' },
+              { value: 'toys', label: 'Игрушки' },
+              { value: 'sports', label: 'Спорт и отдых' }
+            ]
+          },
+          productCount: {
+            type: 'select',
+            label: 'Количество описаний',
+            required: true,
+            options: [
+              { value: '1', label: '1 товар', price: 800 },
+              { value: '5', label: '5 товаров', price: 3500 },
+              { value: '10', label: '10 товаров', price: 6000 },
+              { value: '25', label: '25 товаров', price: 12000 },
+              { value: '50', label: '50 товаров', price: 20000 }
+            ]
+          },
+          descriptionLength: {
+            type: 'select',
+            label: 'Объем описания',
+            options: [
+              { value: 'short', label: 'Краткое (до 100 слов)', price: 1 },
+              { value: 'medium', label: 'Среднее (100-200 слов)', price: 1.3 },
+              { value: 'long', label: 'Подробное (200+ слов)', price: 1.6 }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Требования к описаниям',
+        fields: {
+          platform: {
+            type: 'checkbox',
+            label: 'Где будут использоваться',
+            options: [
+              { value: 'website', label: 'Сайт компании' },
+              { value: 'marketplace', label: 'Маркетплейсы' },
+              { value: 'social', label: 'Социальные сети' },
+              { value: 'catalog', label: 'Печатный каталог' },
+              { value: 'email', label: 'Email-рассылки' }
+            ]
+          },
+          keyFeatures: {
+            type: 'textarea',
+            label: 'Ключевые характеристики',
+            placeholder: 'Что важно выделить в товарах?',
+            required: true
+          },
+          targetAudience: {
+            type: 'input',
+            label: 'Целевая аудитория',
+            placeholder: 'Для кого предназначены товары?'
+          },
+          writingStyle: {
+            type: 'radio',
+            label: 'Стиль написания',
+            options: [
+              { value: 'selling', label: 'Продающий' },
+              { value: 'informative', label: 'Информативный' },
+              { value: 'emotional', label: 'Эмоциональный' },
+              { value: 'technical', label: 'Технический' }
+            ]
+          }
+        }
+      }
+    },
+    additionalServices: {
+      seo_optimization: {
+        type: 'checkbox',
+        label: 'SEO-оптимизация',
+        additionalPrice: 300
+      },
+      competitor_analysis: {
+        type: 'checkbox',
+        label: 'Анализ конкурентов',
+        additionalPrice: 500
+      },
+      ab_testing: {
+        type: 'checkbox',
+        label: 'A/B тестирование',
+        additionalPrice: 800
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (3-5 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (1-2 дня)',
+        priceMultiplier: 1.5
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.5
+      }
+    }
+  },
+
+  'youtube-scripts': {
+    serviceId: 'youtube-scripts',
+    serviceName: 'Сценарии для YouTube',
+    basePrice: 2500,
+    steps: {
+      2: {
+        title: 'Параметры видео',
+        fields: {
+          videoType: {
+            type: 'select',
+            label: 'Тип видео',
+            required: true,
+            options: [
+              { value: 'educational', label: 'Обучающее' },
+              { value: 'review', label: 'Обзор' },
+              { value: 'vlog', label: 'Влог' },
+              { value: 'tutorial', label: 'Туториал' },
+              { value: 'presentation', label: 'Презентация' },
+              { value: 'interview', label: 'Интервью' },
+              { value: 'entertainment', label: 'Развлекательное' }
+            ]
+          },
+          videoDuration: {
+            type: 'select',
+            label: 'Длительность видео',
+            options: [
+              { value: 'short', label: 'Короткое (до 5 минут)', price: 2500 },
+              { value: 'medium', label: 'Среднее (5-15 минут)', price: 4000 },
+              { value: 'long', label: 'Длинное (15-30 минут)', price: 6500 },
+              { value: 'extended', label: 'Расширенное (30+ минут)', price: 10000 }
+            ]
+          },
+          videoCount: {
+            type: 'select',
+            label: 'Количество сценариев',
+            options: [
+              { value: '1', label: '1 сценарий', price: 1 },
+              { value: '3', label: '3 сценария', price: 2.5 },
+              { value: '5', label: '5 сценариев', price: 4 },
+              { value: '10', label: '10 сценариев', price: 7 }
+            ]
+          }
+        }
+      },
+      3: {
+        title: 'Контент и структура',
+        fields: {
+          topic: {
+            type: 'input',
+            label: 'Основная тема',
+            placeholder: 'О чем будет видео?',
+            required: true
+          },
+          targetAudience: {
+            type: 'textarea',
+            label: 'Целевая аудитория',
+            placeholder: 'Кто будет смотреть ваши видео?',
+            required: true
+          },
+          keyPoints: {
+            type: 'textarea',
+            label: 'Ключевые моменты',
+            placeholder: 'Что важно донести до зрителей?'
+          },
+          callToAction: {
+            type: 'input',
+            label: 'Призыв к действию',
+            placeholder: 'Что должны сделать зрители после просмотра?'
+          },
+          scriptStructure: {
+            type: 'checkbox',
+            label: 'Элементы сценария',
+            options: [
+              { value: 'hook', label: 'Цепляющее начало' },
+              { value: 'intro', label: 'Представление' },
+              { value: 'main_content', label: 'Основной контент' },
+              { value: 'examples', label: 'Примеры/кейсы' },
+              { value: 'cta', label: 'Призыв к действию' },
+              { value: 'outro', label: 'Заключение' }
+            ]
+          }
+        }
+      }
+    },
+    additionalServices: {
+      title_optimization: {
+        type: 'checkbox',
+        label: 'Оптимизация заголовков',
+        additionalPrice: 800
+      },
+      description_seo: {
+        type: 'checkbox',
+        label: 'SEO-описания для видео',
+        additionalPrice: 1200
+      },
+      thumbnail_text: {
+        type: 'checkbox',
+        label: 'Тексты для превью',
+        additionalPrice: 600
+      }
+    },
+    deliveryOptions: {
+      standard: {
+        type: 'radio',
+        label: 'Стандартные сроки (4-6 дней)',
+        priceMultiplier: 1
+      },
+      express: {
+        type: 'radio',
+        label: 'Ускоренно (2-3 дня)',
+        priceMultiplier: 1.4
+      }
+    },
+    priceCalculation: {
+      urgencyMultipliers: {
+        standard: 1,
+        express: 1.4
+      }
+    }
   }
 };
 
