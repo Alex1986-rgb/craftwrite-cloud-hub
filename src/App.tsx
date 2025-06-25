@@ -17,6 +17,7 @@ import AdminDashboard from "@/components/admin/AdminDashboard";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import Footer from "@/components/common/Footer";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
+import ProviderErrorBoundary from "@/components/common/ProviderErrorBoundary";
 import { UnifiedAuthProvider } from "./contexts/UnifiedAuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
@@ -44,7 +45,14 @@ import UnifiedOrderPage from "@/pages/order/UnifiedOrderPage";
 import PaymentSuccess from "@/components/payment/PaymentSuccess";
 import PaymentFailed from "@/components/payment/PaymentFailed";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Layout wrapper for pages that need header/footer
 function PageLayout({ children }: { children: React.ReactNode }) {
@@ -61,57 +69,59 @@ function PageLayout({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <ErrorBoundary>
+    <ProviderErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <UnifiedAuthProvider>
-          <TooltipProvider>
-            <BrowserRouter>
-              <div className="min-h-screen bg-background">
-                <Toaster />
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
-                  <Route path="/service/:serviceId" element={<PageLayout><Services /></PageLayout>} />
-                  <Route path="/contact" element={<PageLayout><ContactPage /></PageLayout>} />
-                  <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
-                  <Route path="/blog/:slug" element={<PageLayout><BlogDetail /></PageLayout>} />
-                  <Route path="/terms" element={<PageLayout><TermsOfServicePage /></PageLayout>} />
-                  <Route path="/privacy" element={<PageLayout><PrivacyPolicyPage /></PageLayout>} />
-                  <Route path="/order" element={<PageLayout><OrderPage /></PageLayout>} />
-                  
-                  {/* Payment routes */}
-                  <Route path="/payment/success" element={<PaymentSuccess />} />
-                  <Route path="/payment/failed" element={<PaymentFailed />} />
-                  
-                  {/* Новая унифицированная система заказов */}
-                  <Route path="/order/:serviceId" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  
-                  {/* Старые маршруты для обратной совместимости - все ведут к унифицированной форме */}
-                  <Route path="/order/seo-article" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/landing-page" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/email-campaigns" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/telegram-content" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/chatbot-scripts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/ozon" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/linkedin" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/instagram" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/youtube" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/wildberries" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  <Route path="/order/website-texts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                  
-                  <Route path="/portfolio" element={<PageLayout><Portfolio /></PageLayout>} />
-                  <Route path="/portfolio/:id" element={<PageLayout><PortfolioDetail /></PageLayout>} />
-                  <Route path="/prices" element={<PageLayout><Prices /></PageLayout>} />
-                  <Route path="/auth" element={<PageLayout><AuthPage /></PageLayout>} />
-                  <Route path="/client" element={<ClientDashboard />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                </Routes>
-              </div>
-            </BrowserRouter>
-          </TooltipProvider>
+          <ErrorBoundary>
+            <TooltipProvider>
+              <BrowserRouter>
+                <div className="min-h-screen bg-background">
+                  <Toaster />
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
+                    <Route path="/service/:serviceId" element={<PageLayout><Services /></PageLayout>} />
+                    <Route path="/contact" element={<PageLayout><ContactPage /></PageLayout>} />
+                    <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
+                    <Route path="/blog/:slug" element={<PageLayout><BlogDetail /></PageLayout>} />
+                    <Route path="/terms" element={<PageLayout><TermsOfServicePage /></PageLayout>} />
+                    <Route path="/privacy" element={<PageLayout><PrivacyPolicyPage /></PageLayout>} />
+                    <Route path="/order" element={<PageLayout><OrderPage /></PageLayout>} />
+                    
+                    {/* Payment routes */}
+                    <Route path="/payment/success" element={<PaymentSuccess />} />
+                    <Route path="/payment/failed" element={<PaymentFailed />} />
+                    
+                    {/* Новая унифицированная система заказов */}
+                    <Route path="/order/:serviceId" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    
+                    {/* Старые маршруты для обратной совместимости - все ведут к унифицированной форме */}
+                    <Route path="/order/seo-article" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/landing-page" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/email-campaigns" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/telegram-content" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/chatbot-scripts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/ozon" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/linkedin" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/instagram" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/youtube" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/wildberries" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    <Route path="/order/website-texts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    
+                    <Route path="/portfolio" element={<PageLayout><Portfolio /></PageLayout>} />
+                    <Route path="/portfolio/:id" element={<PageLayout><PortfolioDetail /></PageLayout>} />
+                    <Route path="/prices" element={<PageLayout><Prices /></PageLayout>} />
+                    <Route path="/auth" element={<PageLayout><AuthPage /></PageLayout>} />
+                    <Route path="/client" element={<ClientDashboard />} />
+                    <Route path="/admin" element={<AdminDashboard />} />
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </TooltipProvider>
+          </ErrorBoundary>
         </UnifiedAuthProvider>
       </QueryClientProvider>
-    </ErrorBoundary>
+    </ProviderErrorBoundary>
   );
 }
 

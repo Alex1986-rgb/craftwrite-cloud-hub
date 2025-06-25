@@ -36,27 +36,28 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
 
   useEffect(() => {
     // Имитация проверки аутентификации
-    const checkAuth = async () => {
+    const checkAuth = () => {
       try {
         // Здесь должна быть логика проверки токена/сессии
-        setLoading(false);
+        console.log('Auth check completed');
       } catch (error) {
         console.error('Auth check failed:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    checkAuth();
+    // Используем setTimeout для предотвращения блокировки
+    const timeoutId = setTimeout(checkAuth, 0);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Устанавливаем роль пользователя при входе
   useEffect(() => {
-    if (user) {
-      if (user.role === 'admin') {
-        setCurrentRole('admin');
-      } else {
-        setCurrentRole('client');
-      }
+    if (user?.role === 'admin') {
+      setCurrentRole('admin');
+    } else if (user) {
+      setCurrentRole('client');
     } else {
       setCurrentRole('guest');
     }
