@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useSupabaseOrders } from './useSupabaseOrders';
 
 interface FormData {
   name: string;
@@ -25,7 +25,6 @@ export function useUnifiedOrderForm({
   onSuccess
 }: UseUnifiedOrderFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -34,6 +33,8 @@ export function useUnifiedOrderForm({
     details: '',
     additionalRequirements: ''
   });
+
+  const { createOrder, loading } = useSupabaseOrders();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -47,15 +48,37 @@ export function useUnifiedOrderForm({
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    
-    // Симуляция отправки заказа
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast.success('Заказ успешно создан! Мы свяжемся с вами в течение часа.');
-    setLoading(false);
-    onOrderCreated?.();
-    onSuccess?.();
+    if (!formData.name || !formData.email || !formData.service || !formData.details) {
+      throw new Error('Заполните все обязательные поля');
+    }
+
+    try {
+      const orderData = {
+        service_slug: formData.service.toLowerCase().replace(/\s+/g, '-'),
+        service_name: formData.service,
+        contact_name: formData.name,
+        contact_email: formData.email,
+        contact_phone: formData.phone,
+        details: formData.details,
+        additional_requirements: formData.additionalRequirements,
+        estimated_price: 3000, // Базовая цена, можно настроить динамически
+        service_options: {
+          package: selectedPackage
+        }
+      };
+
+      const result = await createOrder(orderData);
+      
+      if (result.success) {
+        onOrderCreated?.();
+        onSuccess?.();
+        return result;
+      } else {
+        throw new Error(result.error || 'Ошибка создания заказа');
+      }
+    } catch (error: any) {
+      throw new Error(error.message || 'Ошибка создания заказа');
+    }
   };
 
   const isStepValid = (step: number): boolean => {
@@ -67,7 +90,7 @@ export function useUnifiedOrderForm({
       case 3:
         return Boolean(formData.details.trim());
       case 4:
-        return true; // Валидация оплаты происходит в самом компоненте
+        return true;
       default:
         return true;
     }

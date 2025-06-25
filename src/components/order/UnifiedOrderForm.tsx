@@ -49,6 +49,19 @@ export default function UnifiedOrderForm({
   const [complexityMultiplier, setComplexityMultiplier] = useState(1);
   const [additionalServices, setAdditionalServices] = useState<string[]>([]);
 
+  const handleCreateOrder = async () => {
+    try {
+      await handleSubmit();
+      toast.success('Заказ успешно создан!', {
+        description: 'Мы свяжемся с вами в течение 1 рабочего дня'
+      });
+    } catch (error: any) {
+      toast.error('Ошибка создания заказа', {
+        description: error.message
+      });
+    }
+  };
+
   const handlePayment = async () => {
     if (!paymentMethod) {
       toast.error('Выберите способ оплаты');
@@ -56,22 +69,9 @@ export default function UnifiedOrderForm({
     }
 
     try {
-      // Здесь будет интеграция с платежной системой
-      toast.success('Переход к оплате...');
-      console.log('Payment initiated:', {
-        method: paymentMethod,
-        amount: calculatedPrice,
-        formData
-      });
-      
-      // Имитируем успешную оплату
-      setTimeout(() => {
-        toast.success('Оплата прошла успешно!');
-        onOrderCreated?.();
-        onSuccess?.();
-      }, 2000);
+      await handleCreateOrder();
     } catch (error) {
-      toast.error('Ошибка при обработке платежа');
+      console.error('Payment error:', error);
     }
   };
 
@@ -129,6 +129,14 @@ export default function UnifiedOrderForm({
     }
   };
 
+  const handleFormSubmit = () => {
+    if (currentStep === 4) {
+      handlePayment();
+    } else {
+      handleCreateOrder();
+    }
+  };
+
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
@@ -147,7 +155,7 @@ export default function UnifiedOrderForm({
           loading={loading}
           onPrevious={goToPreviousStep}
           onNext={goToNextStep}
-          onSubmit={handleSubmit}
+          onSubmit={handleFormSubmit}
         />
       </CardContent>
     </Card>

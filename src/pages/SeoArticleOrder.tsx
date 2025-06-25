@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ComprehensiveSeo from '@/components/seo/ComprehensiveSeo';
@@ -20,13 +21,21 @@ import {
   BarChart3,
   Filter,
   Settings,
-  DollarSign
+  DollarSign,
+  Loader2
 } from 'lucide-react';
 import OrderEstimate from '@/components/order/OrderEstimate';
+import { useSupabaseOrders } from '@/hooks/useSupabaseOrders';
 import { toast } from 'sonner';
 
 export default function SeoArticleOrder() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [contactInfo, setContactInfo] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: ''
+  });
   const [formData, setFormData] = useState({
     articleTopic: '',
     keywords: '',
@@ -40,7 +49,6 @@ export default function SeoArticleOrder() {
     contentStyle: '',
     expertQuotes: false,
     statistics: false,
-    // Дополнительные фильтры
     seoLevel: '',
     competitorAnalysis: '',
     urgency: '',
@@ -51,10 +59,16 @@ export default function SeoArticleOrder() {
   });
   
   const navigate = useNavigate();
+  const { createOrder, loading } = useSupabaseOrders();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setContactInfo(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -65,12 +79,50 @@ export default function SeoArticleOrder() {
     setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
+  const calculatePrice = () => {
+    let basePrice = 0;
+    
+    // Базовая цена по объему
+    switch (formData.wordCount) {
+      case '1000-2000':
+        basePrice = 2500;
+        break;
+      case '2000-3000':
+        basePrice = 4000;
+        break;
+      case '3000-5000':
+        basePrice = 6500;
+        break;
+      case '5000+':
+        basePrice = 9000;
+        break;
+      default:
+        basePrice = 2500;
+    }
+
+    // Дополнительные услуги
+    if (formData.includeImages) basePrice += 800;
+    if (formData.includeInfographics) basePrice += 1500;
+    if (formData.expertQuotes) basePrice += 1200;
+    if (formData.statistics) basePrice += 600;
+
+    // Множители за сложность
+    if (formData.seoLevel === 'advanced') basePrice *= 1.2;
+    if (formData.seoLevel === 'technical') basePrice *= 1.4;
+    if (formData.competitorAnalysis === 'basic') basePrice *= 1.1;
+    if (formData.competitorAnalysis === 'detailed') basePrice *= 1.25;
+
+    return Math.round(basePrice);
+  };
+
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.articleTopic && formData.keywords && formData.wordCount;
+        return contactInfo.name && contactInfo.email;
       case 2:
-        return true; // Дополнительные параметры не обязательны
+        return formData.articleTopic && formData.keywords && formData.wordCount;
+      case 3:
+        return true;
       default:
         return true;
     }
@@ -88,10 +140,45 @@ export default function SeoArticleOrder() {
     }
   };
 
-  const handlePayment = () => {
-    toast.success('Переход к оплате...');
-    // Здесь будет интеграция с платежной системой
-    console.log('Payment data:', formData);
+  const handlePayment = async () => {
+    if (!contactInfo.name || !contactInfo.email) {
+      toast.error('Заполните контактную информацию');
+      return;
+    }
+
+    if (!formData.articleTopic || !formData.keywords || !formData.wordCount) {
+      toast.error('Заполните основную информацию о статье');
+      return;
+    }
+
+    try {
+      const orderData = {
+        service_slug: 'seo-article',
+        service_name: 'SEO-статья',
+        contact_name: contactInfo.name,
+        contact_email: contactInfo.email,
+        contact_phone: contactInfo.phone,
+        details: `Тема: ${formData.articleTopic}\nКлючевые слова: ${formData.keywords}\nОбъем: ${formData.wordCount}`,
+        additional_requirements: `${formData.metaDescription ? `Meta описание: ${formData.metaDescription}\n` : ''}${formData.callToAction ? `Призыв к действию: ${formData.callToAction}\n` : ''}${formData.competitorUrls ? `Конкуренты: ${formData.competitorUrls}` : ''}`,
+        estimated_price: calculatePrice(),
+        service_options: {
+          ...formData,
+          company: contactInfo.company
+        }
+      };
+
+      const result = await createOrder(orderData);
+      
+      if (result.success) {
+        toast.success('Заказ успешно создан!', {
+          description: 'Мы свяжемся с вами в течение 1 рабочего дня'
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast.error('Ошибка при создании заказа');
+    }
   };
 
   const handleEdit = () => {
@@ -101,6 +188,71 @@ export default function SeoArticleOrder() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-600" />
+                  Контактная информация
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Имя *</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={contactInfo.name}
+                      onChange={handleContactChange}
+                      placeholder="Ваше имя"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={contactInfo.email}
+                      onChange={handleContactChange}
+                      placeholder="email@example.com"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="phone">Телефон</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={contactInfo.phone}
+                      onChange={handleContactChange}
+                      placeholder="+7 (999) 123-45-67"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="company">Компания</Label>
+                    <Input
+                      id="company"
+                      name="company"
+                      value={contactInfo.company}
+                      onChange={handleContactChange}
+                      placeholder="Название компании"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
+      case 2:
         return (
           <div className="space-y-6">
             <Card>
@@ -144,30 +296,10 @@ export default function SeoArticleOrder() {
                         <SelectValue placeholder="Выберите объем" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1000-2000">
-                          <div className="flex items-center justify-between w-full">
-                            <span>1000-2000 слов</span>
-                            <span className="text-sm text-green-600 ml-4">2500₽</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="2000-3000">
-                          <div className="flex items-center justify-between w-full">
-                            <span>2000-3000 слов</span>
-                            <span className="text-sm text-green-600 ml-4">4000₽</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="3000-5000">
-                          <div className="flex items-center justify-between w-full">
-                            <span>3000-5000 слов</span>
-                            <span className="text-sm text-green-600 ml-4">6500₽</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="5000+">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Более 5000 слов</span>
-                            <span className="text-sm text-green-600 ml-4">9000₽</span>
-                          </div>
-                        </SelectItem>
+                        <SelectItem value="1000-2000">1000-2000 слов (2500₽)</SelectItem>
+                        <SelectItem value="2000-3000">2000-3000 слов (4000₽)</SelectItem>
+                        <SelectItem value="3000-5000">3000-5000 слов (6500₽)</SelectItem>
+                        <SelectItem value="5000+">Более 5000 слов (9000₽)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -180,12 +312,7 @@ export default function SeoArticleOrder() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="informational">Информационный</SelectItem>
-                        <SelectItem value="expert">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Экспертный</span>
-                            <span className="text-xs text-orange-600 ml-2">+30%</span>
-                          </div>
-                        </SelectItem>
+                        <SelectItem value="expert">Экспертный (+30%)</SelectItem>
                         <SelectItem value="friendly">Дружелюбный</SelectItem>
                         <SelectItem value="formal">Официальный</SelectItem>
                         <SelectItem value="engaging">Вовлекающий</SelectItem>
@@ -197,65 +324,90 @@ export default function SeoArticleOrder() {
             </Card>
           </div>
         );
-      // ... keep existing code (остальные шаги)
-      case 2:
+
+      case 3:
         return (
           <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-purple-600" />
-                  Продвинутые настройки
+                  <Settings className="w-5 h-5 text-purple-600" />
+                  Дополнительные опции
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="includeImages"
+                        checked={formData.includeImages}
+                        onCheckedChange={(checked) => handleCheckboxChange('includeImages', !!checked)}
+                      />
+                      <Label htmlFor="includeImages">Подобрать изображения</Label>
+                    </div>
+                    <span className="text-sm text-green-600">+800₽</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="includeInfographics"
+                        checked={formData.includeInfographics}
+                        onCheckedChange={(checked) => handleCheckboxChange('includeInfographics', !!checked)}
+                      />
+                      <Label htmlFor="includeInfographics">Создать инфографику</Label>
+                    </div>
+                    <span className="text-sm text-green-600">+1500₽</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="expertQuotes"
+                        checked={formData.expertQuotes}
+                        onCheckedChange={(checked) => handleCheckboxChange('expertQuotes', !!checked)}
+                      />
+                      <Label htmlFor="expertQuotes">Добавить экспертные мнения</Label>
+                    </div>
+                    <span className="text-sm text-green-600">+1200₽</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="statistics"
+                        checked={formData.statistics}
+                        onCheckedChange={(checked) => handleCheckboxChange('statistics', !!checked)}
+                      />
+                      <Label htmlFor="statistics">Включить актуальную статистику</Label>
+                    </div>
+                    <span className="text-sm text-green-600">+600₽</span>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="seoLevel">Уровень SEO-оптимизации</Label>
-                    <Select onValueChange={(value) => handleSelectChange('seoLevel', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Выберите уровень" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="basic">Базовая оптимизация</SelectItem>
-                        <SelectItem value="advanced">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Расширенная оптимизация</span>
-                            <span className="text-xs text-orange-600 ml-2">+20%</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="technical">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Техническая оптимизация</span>
-                            <span className="text-xs text-orange-600 ml-2">+40%</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="metaDescription">Meta описание</Label>
+                    <Textarea
+                      id="metaDescription"
+                      name="metaDescription"
+                      value={formData.metaDescription}
+                      onChange={handleInputChange}
+                      placeholder="Желаемое описание для поисковых систем"
+                      rows={2}
+                    />
                   </div>
                   
                   <div>
-                    <Label htmlFor="competitorAnalysis">Анализ конкурентов</Label>
-                    <Select onValueChange={(value) => handleSelectChange('competitorAnalysis', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Выберите тип анализа" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">Не требуется</SelectItem>
-                        <SelectItem value="basic">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Базовый анализ</span>
-                            <span className="text-xs text-orange-600 ml-2">+10%</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="detailed">
-                          <div className="flex items-center justify-between w-full">
-                            <span>Детальный анализ</span>
-                            <span className="text-xs text-orange-600 ml-2">+25%</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="callToAction">Призыв к действию</Label>
+                    <Input
+                      id="callToAction"
+                      name="callToAction"
+                      value={formData.callToAction}
+                      onChange={handleInputChange}
+                      placeholder="Что должен сделать читатель?"
+                    />
                   </div>
                 </div>
 
@@ -266,111 +418,22 @@ export default function SeoArticleOrder() {
                     name="competitorUrls"
                     value={formData.competitorUrls}
                     onChange={handleInputChange}
-                    placeholder="Укажите URL статей конкурентов для анализа (по одной ссылке на строку)"
-                    rows={4}
+                    placeholder="Укажите URL статей конкурентов для анализа"
+                    rows={3}
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <h4 className="font-medium flex items-center gap-2">
-                      <Settings className="w-4 h-4" />
-                      Дополнительные опции
-                    </h4>
-                    
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="includeImages"
-                            checked={formData.includeImages}
-                            onCheckedChange={(checked) => handleCheckboxChange('includeImages', !!checked)}
-                          />
-                          <Label htmlFor="includeImages">Подобрать изображения</Label>
-                        </div>
-                        <span className="text-sm text-green-600">+800₽</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="includeInfographics"
-                            checked={formData.includeInfographics}
-                            onCheckedChange={(checked) => handleCheckboxChange('includeInfographics', !!checked)}
-                          />
-                          <Label htmlFor="includeInfographics">Создать инфографику</Label>
-                        </div>
-                        <span className="text-sm text-green-600">+1500₽</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="expertQuotes"
-                            checked={formData.expertQuotes}
-                            onCheckedChange={(checked) => handleCheckboxChange('expertQuotes', !!checked)}
-                          />
-                          <Label htmlFor="expertQuotes">Добавить экспертные мнения</Label>
-                        </div>
-                        <span className="text-sm text-green-600">+1200₽</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="statistics"
-                            checked={formData.statistics}
-                            onCheckedChange={(checked) => handleCheckboxChange('statistics', !!checked)}
-                          />
-                          <Label htmlFor="statistics">Включить актуальную статистику</Label>
-                        </div>
-                        <span className="text-sm text-green-600">+600₽</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h4 className="font-medium flex items-center gap-2">
-                      <Target className="w-4 h-4" />
-                      Уточнения
-                    </h4>
-                    
-                    <div>
-                      <Label htmlFor="metaDescription">Meta описание</Label>
-                      <Textarea
-                        id="metaDescription"
-                        name="metaDescription"
-                        value={formData.metaDescription}
-                        onChange={handleInputChange}
-                        placeholder="Желаемое описание для поисковых систем (150-160 символов)"
-                        rows={2}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="callToAction">Призыв к действию</Label>
-                      <Input
-                        id="callToAction"
-                        name="callToAction"
-                        value={formData.callToAction}
-                        onChange={handleInputChange}
-                        placeholder="Что должен сделать читатель?"
-                      />
-                    </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold">Итоговая стоимость:</span>
+                    <span className="text-2xl font-bold text-green-600">
+                      {calculatePrice().toLocaleString('ru-RU')} ₽
+                    </span>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        );
-
-      case 3:
-        return (
-          <OrderEstimate 
-            formData={formData}
-            onEdit={handleEdit}
-            onPayment={handlePayment}
-          />
         );
 
       default:
@@ -387,7 +450,6 @@ export default function SeoArticleOrder() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Заказать SEO-статью
@@ -397,12 +459,10 @@ export default function SeoArticleOrder() {
             </p>
           </div>
 
-          {/* Form */}
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               {renderStep()}
               
-              {/* Navigation */}
               <div className="flex justify-between items-center mt-8">
                 {currentStep > 1 && (
                   <Button variant="outline" onClick={handleBack}>
@@ -421,22 +481,51 @@ export default function SeoArticleOrder() {
                 ) : (
                   <Button 
                     onClick={handlePayment}
+                    disabled={loading}
                     className="ml-auto bg-green-600 hover:bg-green-700"
                   >
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Перейти к оплате
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Создание заказа...
+                      </>
+                    ) : (
+                      <>
+                        <DollarSign className="w-4 h-4 mr-2" />
+                        Создать заказ
+                      </>
+                    )}
                   </Button>
                 )}
               </div>
             </div>
 
-            {/* Order Summary */}
             <div className="lg:col-span-1">
-              <OrderEstimate 
-                formData={formData}
-                onEdit={handleEdit}
-                onPayment={handlePayment}
-              />
+              <Card className="sticky top-4">
+                <CardHeader>
+                  <CardTitle>Сводка заказа</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span>Услуга:</span>
+                      <span>SEO-статья</span>
+                    </div>
+                    {formData.wordCount && (
+                      <div className="flex justify-between">
+                        <span>Объем:</span>
+                        <span>{formData.wordCount}</span>
+                      </div>
+                    )}
+                    <div className="border-t pt-3">
+                      <div className="flex justify-between font-semibold">
+                        <span>Итого:</span>
+                        <span className="text-green-600">{calculatePrice().toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
