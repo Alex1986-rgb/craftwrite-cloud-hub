@@ -1,11 +1,12 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, CreditCard, Download, Eye, RefreshCw, DollarSign } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, CreditCard, Download, Eye, RefreshCw, DollarSign, Settings } from "lucide-react";
+import ModulBankSettings from "./ModulBankSettings";
 
 interface Payment {
   id: string;
@@ -94,131 +95,144 @@ export default function PaymentManager() {
         </Button>
       </div>
 
-      {/* Статистика */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Всего получено</p>
-                <p className="text-2xl font-bold text-green-600">₽{totalAmount.toLocaleString()}</p>
-              </div>
-              <DollarSign className="w-8 h-8 text-green-500" />
-            </div>
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="payments" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="payments">Платежи</TabsTrigger>
+          <TabsTrigger value="settings">Настройки</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Завершенных</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {payments.filter(p => p.status === 'completed').length}
-                </p>
-              </div>
-              <CreditCard className="w-8 h-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
+        <TabsContent value="payments" className="space-y-6">
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600">Всего получено</p>
+                    <p className="text-2xl font-bold text-green-600">₽{totalAmount.toLocaleString()}</p>
+                  </div>
+                  <DollarSign className="w-8 h-8 text-green-500" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Ожидающих</p>
-                <p className="text-2xl font-bold text-yellow-600">
-                  {payments.filter(p => p.status === 'pending').length}
-                </p>
-              </div>
-              <RefreshCw className="w-8 h-8 text-yellow-500" />
-            </div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600">Завершенных</p>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {payments.filter(p => p.status === 'completed').length}
+                    </p>
+                  </div>
+                  <CreditCard className="w-8 h-8 text-blue-500" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Ошибок</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {payments.filter(p => p.status === 'failed').length}
-                </p>
-              </div>
-              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                <span className="text-red-600 font-bold">!</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600">Ожидающих</p>
+                    <p className="text-2xl font-bold text-yellow-600">
+                      {payments.filter(p => p.status === 'pending').length}
+                    </p>
+                  </div>
+                  <RefreshCw className="w-8 h-8 text-yellow-500" />
+                </div>
+              </CardContent>
+            </Card>
 
-      {/* Фильтры */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <Input
-                placeholder="Поиск по клиенту, номеру заказа, ID транзакции..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Button variant="outline">
-              <Download className="w-4 h-4 mr-2" />
-              Экспорт
-            </Button>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600">Ошибок</p>
+                    <p className="text-2xl font-bold text-red-600">
+                      {payments.filter(p => p.status === 'failed').length}
+                    </p>
+                  </div>
+                  <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                    <span className="text-red-600 font-bold">!</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Таблица платежей */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Платежи ({payments.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID платежа</TableHead>
-                <TableHead>Заказ</TableHead>
-                <TableHead>Клиент</TableHead>
-                <TableHead>Сумма</TableHead>
-                <TableHead>Статус</TableHead>
-                <TableHead>Способ</TableHead>
-                <TableHead>Дата</TableHead>
-                <TableHead>Действия</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payments.map((payment) => (
-                <TableRow key={payment.id}>
-                  <TableCell className="font-mono">{payment.id}</TableCell>
-                  <TableCell className="font-mono text-blue-600">{payment.orderId}</TableCell>
-                  <TableCell>{payment.clientName}</TableCell>
-                  <TableCell className="font-medium">₽{payment.amount.toLocaleString()}</TableCell>
-                  <TableCell>{getStatusBadge(payment.status)}</TableCell>
-                  <TableCell>{getMethodBadge(payment.method)}</TableCell>
-                  <TableCell>{new Date(payment.date).toLocaleDateString('ru-RU')}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+          {/* Filters */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Input
+                    placeholder="Поиск по клиенту, номеру заказа, ID транзакции..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Button variant="outline">
+                  <Download className="w-4 h-4 mr-2" />
+                  Экспорт
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Payments Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Платежи ({payments.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID платежа</TableHead>
+                    <TableHead>Заказ</TableHead>
+                    <TableHead>Клиент</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Статус</TableHead>
+                    <TableHead>Способ</TableHead>
+                    <TableHead>Дата</TableHead>
+                    <TableHead>Действия</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {payments.map((payment) => (
+                    <TableRow key={payment.id}>
+                      <TableCell className="font-mono">{payment.id}</TableCell>
+                      <TableCell className="font-mono text-blue-600">{payment.orderId}</TableCell>
+                      <TableCell>{payment.clientName}</TableCell>
+                      <TableCell className="font-medium">₽{payment.amount.toLocaleString()}</TableCell>
+                      <TableCell>{getStatusBadge(payment.status)}</TableCell>
+                      <TableCell>{getMethodBadge(payment.method)}</TableCell>
+                      <TableCell>{new Date(payment.date).toLocaleDateString('ru-RU')}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="settings">
+          <ModulBankSettings />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter,
   Routes,
@@ -42,6 +41,9 @@ import WildberriesOrder from "@/pages/order/WildberriesOrder";
 import WebsiteTextsOrder from "@/pages/order/WebsiteTextsOrder";
 import UnifiedOrderPage from "@/pages/order/UnifiedOrderPage";
 
+import PaymentSuccess from "@/components/payment/PaymentSuccess";
+import PaymentFailed from "@/components/payment/PaymentFailed";
+
 const queryClient = new QueryClient();
 
 // Layout wrapper for pages that need header/footer
@@ -76,6 +78,10 @@ function App() {
                   <Route path="/terms" element={<PageLayout><TermsOfServicePage /></PageLayout>} />
                   <Route path="/privacy" element={<PageLayout><PrivacyPolicyPage /></PageLayout>} />
                   <Route path="/order" element={<PageLayout><OrderPage /></PageLayout>} />
+                  
+                  {/* Payment routes */}
+                  <Route path="/payment/success" element={<PaymentSuccess />} />
+                  <Route path="/payment/failed" element={<PaymentFailed />} />
                   
                   {/* Новая унифицированная система заказов */}
                   <Route path="/order/:serviceId" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />

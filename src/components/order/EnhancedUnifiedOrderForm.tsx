@@ -2,435 +2,442 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, ArrowLeft, ArrowRight, Calculator, CreditCard } from 'lucide-react';
-import { getServiceConfig, calculateServicePrice, FormFieldConfig } from '@/data/serviceFormConfigs';
-import { useEnhancedOrders } from '@/hooks/useEnhancedOrders';
-import { useTelegramNotifications } from '@/hooks/useTelegramNotifications';
+import { 
+  ArrowRight, 
+  ArrowLeft, 
+  Check, 
+  Calculator, 
+  FileText, 
+  CreditCard,
+  Loader2
+} from 'lucide-react';
+import { getServiceConfig, calculateServicePrice } from '@/data/serviceFormConfigs';
+import PaymentForm from '@/components/payment/PaymentForm';
 import { toast } from 'sonner';
-
-// Компоненты для рендеринга полей
-import ContactInfoStep from './form-steps/ContactInfoStep';
-import DynamicFormField from './form-steps/DynamicFormField';
-import OrderSummaryStep from './form-steps/OrderSummaryStep';
+import { supabase } from '@/integrations/supabase/client';
+import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
 
 interface EnhancedUnifiedOrderFormProps {
   serviceId: string;
-  variant?: 'public' | 'client';
-  onOrderCreated?: () => void;
-  onSuccess?: () => void;
 }
 
-export default function EnhancedUnifiedOrderForm({ 
-  serviceId, 
-  variant = 'public',
-  onOrderCreated,
-  onSuccess 
-}: EnhancedUnifiedOrderFormProps) {
-  const { createOrder, loading } = useEnhancedOrders();
-  const { sendOrderNotification } = useTelegramNotifications();
-  
+export default function EnhancedUnifiedOrderForm({ serviceId }: EnhancedUnifiedOrderFormProps) {
+  const { user } = useUnifiedAuth();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    // Контактная информация
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+  const [deliveryOption, setDeliveryOption] = useState('standard');
+  const [contactInfo, setContactInfo] = useState({
     name: '',
     email: '',
     phone: '',
-    // Динамические поля сервиса
-    serviceFields: {} as { [key: string]: any },
-    // Дополнительные услуги
-    additionalServices: [] as string[],
-    // Опция доставки
-    deliveryOption: 'standard',
-    // Дополнительные требования
-    additionalRequirements: ''
+    company: ''
   });
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
 
   const serviceConfig = getServiceConfig(serviceId);
-  
+
+  useEffect(() => {
+    if (user) {
+      // Предзаполняем контактную информацию из профиля пользователя
+      setContactInfo(prev => ({
+        ...prev,
+        email: user.email || '',
+        // Можно загрузить дополнительную информацию из profiles
+      }));
+    }
+  }, [user]);
+
   if (!serviceConfig) {
     return (
       <Card className="max-w-2xl mx-auto">
-        <CardContent className="text-center py-12">
-          <p className="text-red-500">Конфигурация для услуги "{serviceId}" не найдена</p>
+        <CardContent className="p-8 text-center">
+          <h2 className="text-xl font-semibold text-red-600 mb-2">Услуга не найдена</h2>
+          <p className="text-gray-600">Конфигурация для услуги "{serviceId}" не найдена.</p>
         </CardContent>
       </Card>
     );
   }
 
-  const totalSteps = Math.max(...Object.keys(serviceConfig.steps).map(Number)) + 2; // +2 для контактов и подтверждения
+  const totalSteps = Object.keys(serviceConfig.steps).length + 2; // +2 для контактов и оплаты
+  const currentPrice = calculateServicePrice(serviceId, formData, additionalServices, deliveryOption);
   const progress = (currentStep / totalSteps) * 100;
 
-  const handleInputChange = (field: string, value: any) => {
-    if (field === 'additionalServices') {
-      setFormData(prev => ({ ...prev, additionalServices: value }));
-    } else if (field === 'deliveryOption') {
-      setFormData(prev => ({ ...prev, deliveryOption: value }));
-    } else if (['name', 'email', 'phone', 'additionalRequirements'].includes(field)) {
-      setFormData(prev => ({ ...prev, [field]: value }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        serviceFields: { ...prev.serviceFields, [field]: value }
-      }));
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const calculatePrice = () => {
-    return calculateServicePrice(serviceId, formData.serviceFields, formData.additionalServices, formData.deliveryOption);
-  };
-
-  const getDeliveryTime = () => {
-    const deliveryConfig = serviceConfig.deliveryOptions[formData.deliveryOption];
-    if (!deliveryConfig) return 'Не указано';
-    
-    switch (formData.deliveryOption) {
-      case 'urgent': return '1-2 дня';
-      case 'express': return '2-3 дня';
-      case 'standard': return '5-7 дней';
-      default: return 'Не указано';
-    }
-  };
-
-  const isStepValid = (step: number): boolean => {
-    switch (step) {
-      case 1:
-        return Boolean(formData.name.trim() && formData.email.trim());
-      case totalSteps:
-        return true; // Последний шаг (подтверждение)
-      default:
-        // Проверяем обязательные поля для текущего шага
-        const stepConfig = serviceConfig.steps[step - 1];
-        if (!stepConfig) return true;
-        
-        return Object.entries(stepConfig.fields).every(([fieldName, fieldConfig]) => {
-          if (!fieldConfig.required) return true;
-          const value = formData.serviceFields[fieldName];
-          return Boolean(value && value !== '');
-        });
-    }
-  };
-
-  const canProceedToNext = () => isStepValid(currentStep);
-
-  const goToNextStep = () => {
-    if (canProceedToNext() && currentStep < totalSteps) {
-      setCurrentStep(prev => prev + 1);
-    }
-  };
-
-  const goToPreviousStep = () => {
+  const handlePrev = () => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep(currentStep - 1);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleCreateOrder = async () => {
+    if (!contactInfo.name || !contactInfo.email) {
+      toast.error('Заполните обязательные поля контактной информации');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const estimatedPrice = calculatePrice();
-      const deliveryTime = getDeliveryTime();
-      
-      // Вычисляем дату дедлайна
-      const baseDeliveryDays = formData.deliveryOption === 'urgent' ? 2 : 
-                              formData.deliveryOption === 'express' ? 3 : 7;
-      const deadlineDate = new Date();
-      deadlineDate.setDate(deadlineDate.getDate() + baseDeliveryDays);
-      
-      // Формируем детальное описание заказа
-      const serviceFieldsDescription = Object.entries(formData.serviceFields)
-        .map(([key, value]) => {
-          const fieldConfig = Object.values(serviceConfig.steps).reduce((acc, step) => {
-            return { ...acc, ...step.fields };
-          }, {} as { [key: string]: FormFieldConfig });
-          
-          const field = fieldConfig[key];
-          const label = field?.label || key;
-          
-          if (Array.isArray(value)) {
-            return `${label}: ${value.join(', ')}`;
-          }
-          return `${label}: ${value}`;
-        })
-        .join('\n');
-
-      const additionalServicesDescription = formData.additionalServices.length > 0
-        ? `\nДополнительные услуги: ${formData.additionalServices.map(serviceId => {
-            const service = serviceConfig.additionalServices?.[serviceId];
-            return service?.label || serviceId;
-          }).join(', ')}`
-        : '';
-
       const orderData = {
-        service_slug: serviceId,
         service_name: serviceConfig.serviceName,
-        contact_name: formData.name,
-        contact_email: formData.email,
-        contact_phone: formData.phone,
-        details: `${serviceFieldsDescription}${additionalServicesDescription}`,
-        additional_requirements: formData.additionalRequirements || '',
-        estimated_price: estimatedPrice,
-        deadline: deadlineDate.toISOString().split('T')[0],
-        status: 'new',
-        priority: formData.deliveryOption === 'urgent' ? 'high' : 'medium',
+        service_slug: serviceId,
+        details: JSON.stringify(formData),
+        contact_name: contactInfo.name,
+        contact_email: contactInfo.email,
+        contact_phone: contactInfo.phone,
+        estimated_price: currentPrice,
         service_options: {
-          serviceFields: formData.serviceFields,
-          additionalServices: formData.additionalServices,
-          deliveryOption: formData.deliveryOption,
-          calculatedPrice: estimatedPrice,
-          deliveryTime: deliveryTime
-        }
+          additional_services: additionalServices,
+          delivery_option: deliveryOption,
+          ...formData
+        },
+        user_id: user?.id || null
       };
 
-      console.log('Создаем заказ с данными:', orderData);
-      const createdOrder = await createOrder(orderData);
-      
-      if (createdOrder) {
-        console.log('Заказ создан, отправляем уведомление в Telegram');
-        await sendOrderNotification(createdOrder.id, orderData);
-        
-        toast.success('Заказ создан успешно!', {
-          description: 'Переходим к оплате...',
-          action: {
-            label: 'Оплатить',
-            onClick: () => {
-              window.location.href = `/payment/${createdOrder.id}`;
-            }
-          }
-        });
+      const { data: order, error } = await supabase
+        .from('orders')
+        .insert(orderData)
+        .select()
+        .single();
 
-        setTimeout(() => {
-          window.location.href = `/payment/${createdOrder.id}`;
-        }, 3000);
-      }
-      
-      onOrderCreated?.();
-      onSuccess?.();
-      
-    } catch (error) {
-      console.error('Ошибка создания заказа:', error);
-      toast.error('Произошла ошибка при создании заказа. Попробуйте еще раз.');
+      if (error) throw error;
+
+      setOrderId(order.id);
+      setShowPayment(true);
+      toast.success('Заказ создан! Переходим к оплате...');
+    } catch (error: any) {
+      console.error('Error creating order:', error);
+      toast.error('Ошибка создания заказа: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const renderStepContent = () => {
-    // Шаг 1: Контактная информация
+    // Контактная информация (первый шаг)
     if (currentStep === 1) {
       return (
-        <ContactInfoStep
-          formData={{
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone
-          }}
-          onInputChange={(e) => handleInputChange(e.target.name, e.target.value)}
-        />
-      );
-    }
-
-    // Последний шаг: Подтверждение заказа
-    if (currentStep === totalSteps) {
-      return (
-        <OrderSummaryStep
-          serviceName={serviceConfig.serviceName}
-          formData={formData}
-          serviceConfig={serviceConfig}
-          estimatedPrice={calculatePrice()}
-          deliveryTime={getDeliveryTime()}
-          onEdit={() => setCurrentStep(1)}
-        />
-      );
-    }
-
-    // Динамические шаги на основе конфигурации
-    const stepConfig = serviceConfig.steps[currentStep - 1];
-    if (!stepConfig) {
-      return <div>Конфигурация шага не найдена</div>;
-    }
-
-    return (
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-4">{stepConfig.title}</h3>
-          <div className="grid grid-cols-1 gap-4">
-            {Object.entries(stepConfig.fields).map(([fieldName, fieldConfig]) => (
-              <DynamicFormField
-                key={fieldName}
-                fieldName={fieldName}
-                fieldConfig={fieldConfig}
-                value={formData.serviceFields[fieldName]}
-                onChange={(value) => handleInputChange(fieldName, value)}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">Контактная информация</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="name">Имя *</Label>
+              <Input
+                id="name"
+                value={contactInfo.name}
+                onChange={(e) => setContactInfo(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Ваше имя"
+                required
               />
-            ))}
-          </div>
-        </div>
-
-        {/* Дополнительные услуги на последнем шаге конфигурации */}
-        {currentStep === Math.max(...Object.keys(serviceConfig.steps).map(Number)) && serviceConfig.additionalServices && (
-          <>
-            <Separator />
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Дополнительные услуги</h3>
-              <div className="grid grid-cols-1 gap-3">
-                {Object.entries(serviceConfig.additionalServices).map(([serviceId, serviceConfig]) => (
-                  <Card 
-                    key={serviceId}
-                    className={`cursor-pointer transition-all hover:shadow-md ${
-                      formData.additionalServices.includes(serviceId) ? 'ring-2 ring-green-500 bg-green-50' : ''
-                    }`}
-                    onClick={() => {
-                      const newServices = formData.additionalServices.includes(serviceId)
-                        ? formData.additionalServices.filter(id => id !== serviceId)
-                        : [...formData.additionalServices, serviceId];
-                      handleInputChange('additionalServices', newServices);
-                    }}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          {formData.additionalServices.includes(serviceId) && (
-                            <CheckCircle className="w-5 h-5 text-green-500" />
-                          )}
-                          <span className="font-medium">{serviceConfig.label}</span>
-                        </div>
-                        <Badge variant="secondary">+{serviceConfig.additionalPrice}₽</Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </div>
-
-            <Separator />
-
+            
             <div>
-              <h3 className="text-lg font-semibold mb-4">Сроки выполнения</h3>
-              <div className="grid grid-cols-1 gap-3">
-                {Object.entries(serviceConfig.deliveryOptions).map(([optionId, optionConfig]) => (
-                  <Card 
-                    key={optionId}
-                    className={`cursor-pointer transition-all hover:shadow-md ${
-                      formData.deliveryOption === optionId ? 'ring-2 ring-blue-500 bg-blue-50' : ''
-                    }`}
-                    onClick={() => handleInputChange('deliveryOption', optionId)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{optionConfig.label}</span>
-                        {optionConfig.priceMultiplier && optionConfig.priceMultiplier > 1 && (
-                          <Badge variant="outline">
-                            +{Math.round((optionConfig.priceMultiplier - 1) * 100)}%
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <Label htmlFor="email">Email *</Label>
+              <Input
+                id="email"
+                type="email"
+                value={contactInfo.email}
+                onChange={(e) => setContactInfo(prev => ({ ...prev, email: e.target.value }))}
+                placeholder="email@example.com"
+                required
+              />
             </div>
-          </>
-        )}
-
-        {/* Показываем текущую расчетную стоимость */}
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <div className="flex items-center justify-between">
+            
             <div>
-              <div className="font-medium">Предварительная стоимость:</div>
-              <div className="text-sm text-gray-600">Срок выполнения: {getDeliveryTime()}</div>
+              <Label htmlFor="phone">Телефон</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={contactInfo.phone}
+                onChange={(e) => setContactInfo(prev => ({ ...prev, phone: e.target.value }))}
+                placeholder="+7 (999) 123-45-67"
+              />
             </div>
-            <div className="text-xl font-bold text-blue-600">
-              {calculatePrice().toLocaleString()}₽
+            
+            <div>
+              <Label htmlFor="company">Компания</Label>
+              <Input
+                id="company"
+                value={contactInfo.company}
+                onChange={(e) => setContactInfo(prev => ({ ...prev, company: e.target.value }))}
+                placeholder="Название компании"
+              />
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    // Шаги конфигурации услуги
+    const configStep = serviceConfig.steps[currentStep - 1];
+    if (configStep) {
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">{configStep.title}</h3>
+          
+          {Object.entries(configStep.fields).map(([fieldName, fieldConfig]) => (
+            <div key={fieldName}>
+              <Label htmlFor={fieldName}>
+                {fieldConfig.label}
+                {fieldConfig.required && <span className="text-red-500 ml-1">*</span>}
+              </Label>
+              
+              {fieldConfig.type === 'input' && (
+                <Input
+                  id={fieldName}
+                  value={formData[fieldName] || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, [fieldName]: e.target.value }))}
+                  placeholder={fieldConfig.placeholder}
+                  required={fieldConfig.required}
+                />
+              )}
+              
+              {fieldConfig.type === 'textarea' && (
+                <Textarea
+                  id={fieldName}
+                  value={formData[fieldName] || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, [fieldName]: e.target.value }))}
+                  placeholder={fieldConfig.placeholder}
+                  required={fieldConfig.required}
+                />
+              )}
+              
+              {fieldConfig.type === 'select' && (
+                <Select
+                  value={formData[fieldName] || ''}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, [fieldName]: value }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Выберите опцию" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fieldConfig.options?.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                        {option.price && <span className="ml-2 text-green-600">+{option.price}₽</span>}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              
+              {fieldConfig.type === 'radio' && (
+                <RadioGroup
+                  value={formData[fieldName] || ''}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, [fieldName]: value }))}
+                >
+                  {fieldConfig.options?.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={option.value} id={option.value} />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+              
+              {fieldConfig.type === 'checkbox' && (
+                <div className="space-y-2">
+                  {fieldConfig.options?.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={option.value}
+                        checked={(formData[fieldName] || []).includes(option.value)}
+                        onCheckedChange={(checked) => {
+                          const currentValues = formData[fieldName] || [];
+                          if (checked) {
+                            setFormData(prev => ({
+                              ...prev,
+                              [fieldName]: [...currentValues, option.value]
+                            }));
+                          } else {
+                            setFormData(prev => ({
+                              ...prev,
+                              [fieldName]: currentValues.filter(v => v !== option.value)
+                            }));
+                          }
+                        }}
+                      />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {fieldConfig.description && (
+                <p className="text-sm text-gray-500 mt-1">{fieldConfig.description}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // Последний шаг - дополнительные услуги и сроки
+    if (currentStep === totalSteps - 1) {
+      return (
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold">Дополнительные услуги и сроки</h3>
+          
+          {serviceConfig.additionalServices && Object.keys(serviceConfig.additionalServices).length > 0 && (
+            <div>
+              <h4 className="font-medium mb-3">Дополнительные услуги</h4>
+              <div className="space-y-2">
+                {Object.entries(serviceConfig.additionalServices).map(([serviceId, serviceData]) => (
+                  <div key={serviceId} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id={serviceId}
+                        checked={additionalServices.includes(serviceId)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setAdditionalServices(prev => [...prev, serviceId]);
+                          } else {
+                            setAdditionalServices(prev => prev.filter(s => s !== serviceId));
+                          }
+                        }}
+                      />
+                      <Label htmlFor={serviceId}>{serviceData.label}</Label>
+                    </div>
+                    {serviceData.additionalPrice && (
+                      <Badge variant="outline">+{serviceData.additionalPrice}₽</Badge>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div>
+            <h4 className="font-medium mb-3">Сроки выполнения</h4>
+            <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption}>
+              {Object.entries(serviceConfig.deliveryOptions).map(([optionId, optionData]) => (
+                <div key={optionId} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value={optionId} id={optionId} />
+                    <Label htmlFor={optionId}>{optionData.label}</Label>
+                  </div>
+                  {optionData.priceMultiplier && optionData.priceMultiplier !== 1 && (
+                    <Badge variant="outline">×{optionData.priceMultiplier}</Badge>
+                  )}
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        </div>
+      );
+    }
+
+    // Оплата
+    if (currentStep === totalSteps && showPayment && orderId) {
+      return (
+        <div className="text-center">
+          <PaymentForm
+            orderId={orderId}
+            amount={currentPrice}
+            description={`${serviceConfig.serviceName} - Заказ #${orderId.slice(-8)}`}
+            onSuccess={(paymentId) => {
+              toast.success('Платеж успешно завершен!');
+              // Можно перенаправить на страницу успеха
+            }}
+            onError={(error) => {
+              toast.error(`Ошибка оплаты: ${error}`);
+            }}
+          />
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Заголовок */}
-      <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold mb-2">Заказ: {serviceConfig.serviceName}</h1>
-        <p className="text-gray-600">Заполните форму для получения персонального предложения</p>
-      </div>
-
-      {/* Прогресс-бар */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium">Шаг {currentStep} из {totalSteps}</span>
-          <span className="text-sm text-gray-500">{Math.round(progress)}% завершено</span>
-        </div>
-        <Progress value={progress} className="h-2" />
-      </div>
-
-      {/* Индикатор шагов */}
-      <div className="flex items-center justify-center mb-8">
-        {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
-          <div key={step} className="flex items-center">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              step === currentStep ? 'bg-blue-500 text-white' :
-              step < currentStep ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
-              {step < currentStep ? <CheckCircle className="w-4 h-4" /> : step}
-            </div>
-            {step < totalSteps && (
-              <div className={`w-16 h-1 mx-2 ${
-                step < currentStep ? 'bg-green-500' : 'bg-gray-200'
-              }`} />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Основной контент */}
+    <div className="max-w-4xl mx-auto space-y-6">
+      {/* Header */}
       <Card>
         <CardHeader>
-          <CardTitle>
-            {currentStep === 1 && 'Контактная информация'}
-            {currentStep > 1 && currentStep < totalSteps && serviceConfig.steps[currentStep - 1]?.title}
-            {currentStep === totalSteps && 'Подтверждение заказа'}
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="w-5 h-5" />
+            {serviceConfig.serviceName}
           </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {renderStepContent()}
-
-          {/* Навигация */}
-          <div className="flex justify-between mt-8 pt-6 border-t">
-            {currentStep > 1 ? (
-              <Button 
-                variant="outline" 
-                onClick={goToPreviousStep}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Назад
-              </Button>
-            ) : <div />}
-
-            {currentStep < totalSteps ? (
-              <Button 
-                onClick={goToNextStep}
-                disabled={!canProceedToNext()}
-                className="flex items-center gap-2"
-              >
-                Далее
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            ) : (
-              <Button 
-                onClick={handleSubmit}
-                disabled={!canProceedToNext() || loading}
-                className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
-              >
-                <CreditCard className="w-4 h-4" />
-                {loading ? 'Отправка...' : 'Оформить заказ и перейти к оплате'}
-              </Button>
-            )}
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-600">
+              Шаг {currentStep} из {totalSteps}
+            </div>
+            <div className="flex items-center gap-2">
+              <Calculator className="w-4 h-4" />
+              <span className="font-semibold">{(currentPrice / 100).toLocaleString('ru-RU')} ₽</span>
+            </div>
           </div>
+          <Progress value={progress} className="mt-2" />
+        </CardHeader>
+      </Card>
+
+      {/* Content */}
+      <Card>
+        <CardContent className="p-6">
+          {renderStepContent()}
         </CardContent>
       </Card>
+
+      {/* Navigation */}
+      {!showPayment && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between">
+              <Button
+                variant="outline"
+                onClick={handlePrev}
+                disabled={currentStep === 1}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Назад
+              </Button>
+
+              {currentStep === totalSteps - 1 ? (
+                <Button
+                  onClick={handleCreateOrder}
+                  disabled={loading}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Создание заказа...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Перейти к оплате
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button onClick={handleNext}>
+                  Далее
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
