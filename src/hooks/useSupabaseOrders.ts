@@ -44,36 +44,61 @@ export function useSupabaseOrders() {
         estimated_cost: orderData.estimated_price
       };
 
+      // Подготавливаем данные для вставки
+      const insertData = {
+        ...orderData,
+        user_id: user?.id || null, // Может быть null для гостевых заказов
+        estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null,
+        technical_specification: technicalSpecification,
+        status: 'new',
+        payment_status: 'unpaid'
+      };
+
+      console.log('Creating order with data:', insertData);
+
       const { data, error } = await supabase
         .from('orders')
-        .insert({
-          ...orderData,
-          user_id: user?.id || null,
-          estimated_price: orderData.estimated_price ? Math.round(orderData.estimated_price * 100) : null,
-          technical_specification: technicalSpecification,
-          status: 'new',
-          payment_status: 'unpaid' // Новое поле
-        })
+        .insert(insertData)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase order creation error:', error);
+        throw error;
+      }
+
+      console.log('Order created successfully:', data);
 
       // Отправляем уведомление в Telegram
-      await sendOrderNotification(data.id, {
-        ...orderData,
-        ...data,
-        technical_specification: technicalSpecification
-      });
-
-      // Создаем уведомление для пользователя
-      if (user) {
-        await supabase.rpc('create_notification', {
-          p_user_id: user.id,
-          p_title: 'Заказ создан',
-          p_message: `Ваш заказ "${orderData.service_name}" успешно создан и принят в работу. Мы свяжемся с вами в ближайшее время.`,
-          p_type: 'success'
+      try {
+        await sendOrderNotification(data.id, {
+          ...orderData,
+          ...data,
+          technical_specification: technicalSpecification
         });
+      } catch (notificationError) {
+        console.error('Telegram notification error:', notificationError);
+        // Не прерываем процесс из-за ошибки уведомления
+      }
+
+      // Создаем уведомление для пользователя (только если аутентифицирован)
+      if (user) {
+        try {
+          const { error: notificationError } = await supabase
+            .from('notifications')
+            .insert({
+              user_id: user.id,
+              title: 'Заказ создан',
+              message: `Ваш заказ "${orderData.service_name}" успешно создан и принят в работу. Мы свяжемся с вами в ближайшее время.`,
+              type: 'success'
+            });
+
+          if (notificationError) {
+            console.error('Notification creation error:', notificationError);
+          }
+        } catch (notificationError) {
+          console.error('Notification error:', notificationError);
+        }
       }
 
       toast.success('Заказ успешно создан!', {
@@ -87,8 +112,16 @@ export function useSupabaseOrders() {
       return { success: true, order: data };
     } catch (error: any) {
       console.error('Error creating order:', error);
+      
+      let errorMessage = 'Попробуйте еще раз';
+      if (error.message?.includes('violates row-level security')) {
+        errorMessage = 'Ошибка доступа. Попробуйте войти в систему или создать заказ как гость';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast.error('Ошибка при создании заказа', {
-        description: error.message || 'Попробуйте еще раз'
+        description: errorMessage
       });
       return { success: false, error: error.message };
     } finally {
