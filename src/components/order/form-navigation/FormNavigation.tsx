@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 
 interface FormNavigationProps {
   currentStep: number;
@@ -10,6 +10,7 @@ interface FormNavigationProps {
   onPrevious: () => void;
   onNext: () => void;
   onSubmit: () => void;
+  showSkipService?: boolean;
 }
 
 export default function FormNavigation({
@@ -19,37 +20,73 @@ export default function FormNavigation({
   loading,
   onPrevious,
   onNext,
-  onSubmit
+  onSubmit,
+  showSkipService = false
 }: FormNavigationProps) {
   const isLastStep = currentStep === totalSteps;
-  const isPaymentStep = currentStep === 4;
+  const isFirstStep = currentStep === 1;
+
+  const handleNext = () => {
+    if (isLastStep) {
+      onSubmit();
+    } else {
+      onNext();
+    }
+  };
+
+  const getNextButtonText = () => {
+    if (loading) {
+      return (
+        <>
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          {isLastStep ? 'Создание заказа...' : 'Загрузка...'}
+        </>
+      );
+    }
+    
+    if (showSkipService) {
+      return (
+        <>
+          Далее
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </>
+      );
+    }
+    
+    if (isLastStep) {
+      return 'Создать заказ';
+    }
+    
+    return (
+      <>
+        Далее
+        <ArrowRight className="w-4 h-4 ml-2" />
+      </>
+    );
+  };
 
   return (
-    <div className="flex justify-between">
-      {currentStep > 1 && (
-        <Button variant="outline" onClick={onPrevious}>
+    <div className="flex justify-between items-center pt-6 border-t">
+      {!isFirstStep ? (
+        <Button
+          variant="outline"
+          onClick={onPrevious}
+          disabled={loading}
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
           Назад
         </Button>
-      )}
-      
-      {!isLastStep ? (
-        <Button 
-          onClick={onNext}
-          disabled={!isCurrentStepValid}
-          className="ml-auto"
-        >
-          {isPaymentStep ? 'К оплате' : 'Далее'}
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
       ) : (
-        <Button 
-          onClick={onSubmit}
-          disabled={!isCurrentStepValid || loading}
-          className="ml-auto"
-        >
-          {loading ? 'Обработка...' : 'Завершить заказ'}
-        </Button>
+        <div />
       )}
+
+      <Button
+        onClick={handleNext}
+        disabled={!isCurrentStepValid && !showSkipService || loading}
+        className={isLastStep ? "bg-green-600 hover:bg-green-700" : ""}
+      >
+        {getNextButtonText()}
+      </Button>
     </div>
   );
 }

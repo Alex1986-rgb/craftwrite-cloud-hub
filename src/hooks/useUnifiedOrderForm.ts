@@ -47,7 +47,7 @@ export function useUnifiedOrderForm({
     setFormData(prev => ({ ...prev, service }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (estimatedPrice?: number) => {
     if (!formData.name || !formData.email || !formData.service || !formData.details) {
       throw new Error('Заполните все обязательные поля');
     }
@@ -61,11 +61,14 @@ export function useUnifiedOrderForm({
         contact_phone: formData.phone,
         details: formData.details,
         additional_requirements: formData.additionalRequirements,
-        estimated_price: 3000, // Базовая цена, можно настроить динамически
+        estimated_price: estimatedPrice || 3000,
         service_options: {
-          package: selectedPackage
+          package: selectedPackage,
+          serviceTitle: serviceTitle
         }
       };
+
+      console.log('Creating order with data:', orderData);
 
       const result = await createOrder(orderData);
       
@@ -77,6 +80,7 @@ export function useUnifiedOrderForm({
         throw new Error(result.error || 'Ошибка создания заказа');
       }
     } catch (error: any) {
+      console.error('Error in handleSubmit:', error);
       throw new Error(error.message || 'Ошибка создания заказа');
     }
   };
@@ -86,7 +90,8 @@ export function useUnifiedOrderForm({
       case 1:
         return Boolean(formData.name.trim() && formData.email.trim() && formData.phone.trim());
       case 2:
-        return Boolean(formData.service.trim());
+        // Если у нас уже есть выбранная услуга, автоматически проходим валидацию
+        return Boolean(formData.service.trim() || serviceTitle || selectedPackage);
       case 3:
         return Boolean(formData.details.trim());
       case 4:
@@ -100,6 +105,13 @@ export function useUnifiedOrderForm({
 
   const goToNextStep = () => {
     if (isCurrentStepValid() && currentStep < 4) {
+      // Автоматически заполняем service если он не заполнен, но есть serviceTitle или selectedPackage
+      if (currentStep === 2 && !formData.service && (serviceTitle || selectedPackage)) {
+        setFormData(prev => ({ 
+          ...prev, 
+          service: serviceTitle || selectedPackage || '' 
+        }));
+      }
       setCurrentStep(prev => prev + 1);
     }
   };
@@ -110,6 +122,16 @@ export function useUnifiedOrderForm({
     }
   };
 
+  // Автоматически заполняем service при инициализации
+  useState(() => {
+    if ((serviceTitle || selectedPackage) && !formData.service) {
+      setFormData(prev => ({ 
+        ...prev, 
+        service: serviceTitle || selectedPackage || '' 
+      }));
+    }
+  });
+
   return {
     currentStep,
     formData,
@@ -119,6 +141,7 @@ export function useUnifiedOrderForm({
     handleSubmit,
     isCurrentStepValid,
     goToNextStep,
-    goToPreviousStep
+    goToPreviousStep,
+    setCurrentStep
   };
 }

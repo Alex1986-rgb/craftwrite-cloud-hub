@@ -35,7 +35,8 @@ export default function UnifiedOrderForm({
     handleSubmit,
     isCurrentStepValid,
     goToNextStep,
-    goToPreviousStep
+    goToPreviousStep,
+    setCurrentStep
   } = useUnifiedOrderForm({
     serviceTitle,
     selectedPackage,
@@ -51,11 +52,15 @@ export default function UnifiedOrderForm({
 
   const handleCreateOrder = async () => {
     try {
-      await handleSubmit();
-      toast.success('Заказ успешно создан!', {
-        description: 'Мы свяжемся с вами в течение 1 рабочего дня'
-      });
+      const result = await handleSubmit(calculatedPrice);
+      if (result.success) {
+        toast.success('Заказ успешно создан!', {
+          description: 'Мы свяжемся с вами в течение 1 рабочего дня'
+        });
+        onSuccess?.();
+      }
     } catch (error: any) {
+      console.error('Order creation error:', error);
       toast.error('Ошибка создания заказа', {
         description: error.message
       });
@@ -63,7 +68,7 @@ export default function UnifiedOrderForm({
   };
 
   const handlePayment = async () => {
-    if (!paymentMethod) {
+    if (currentStep === 4 && !paymentMethod) {
       toast.error('Выберите способ оплаты');
       return;
     }
@@ -86,6 +91,18 @@ export default function UnifiedOrderForm({
         );
 
       case 2:
+        // Пропускаем шаг выбора услуги если уже выбрана
+        if (serviceTitle || selectedPackage) {
+          return (
+            <div className="text-center py-8">
+              <h3 className="text-lg font-semibold mb-2">Выбранная услуга</h3>
+              <p className="text-gray-600 mb-4">{serviceTitle || selectedPackage}</p>
+              <p className="text-sm text-gray-500">
+                Автоматически переходим к следующему шагу...
+              </p>
+            </div>
+          );
+        }
         return (
           <ServiceSelectionStep
             formData={formData}
@@ -121,6 +138,12 @@ export default function UnifiedOrderForm({
             totalAmount={calculatedPrice}
             onPayment={handlePayment}
             loading={loading}
+            orderData={{
+              service_name: formData.service,
+              contact_email: formData.email,
+              contact_phone: formData.phone,
+              contact_name: formData.name
+            }}
           />
         );
 
@@ -132,8 +155,24 @@ export default function UnifiedOrderForm({
   const handleFormSubmit = () => {
     if (currentStep === 4) {
       handlePayment();
+    } else if (currentStep < 4) {
+      // Автоматически пропускаем шаг 2 если услуга уже выбрана
+      if (currentStep === 2 && (serviceTitle || selectedPackage)) {
+        setCurrentStep(3);
+      } else {
+        goToNextStep();
+      }
     } else {
       handleCreateOrder();
+    }
+  };
+
+  const handlePrevious = () => {
+    // Автоматически пропускаем шаг 2 при возврате если услуга уже выбрана
+    if (currentStep === 3 && (serviceTitle || selectedPackage)) {
+      setCurrentStep(1);
+    } else {
+      goToPreviousStep();
     }
   };
 
@@ -141,7 +180,7 @@ export default function UnifiedOrderForm({
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle className="text-center">
-          {serviceTitle ? `Заказ: ${serviceTitle}` : 'Оформление заказа'}
+          {serviceTitle ? `Заказ: ${serviceTitle}` : selectedPackage ? `Заказ: ${selectedPackage}` : 'Оформление заказа'}
         </CardTitle>
         <StepIndicator currentStep={currentStep} totalSteps={4} />
       </CardHeader>
@@ -153,9 +192,10 @@ export default function UnifiedOrderForm({
           totalSteps={4}
           isCurrentStepValid={isCurrentStepValid()}
           loading={loading}
-          onPrevious={goToPreviousStep}
-          onNext={goToNextStep}
+          onPrevious={handlePrevious}
+          onNext={handleFormSubmit}
           onSubmit={handleFormSubmit}
+          showSkipService={Boolean(serviceTitle || selectedPackage) && currentStep === 2}
         />
       </CardContent>
     </Card>
