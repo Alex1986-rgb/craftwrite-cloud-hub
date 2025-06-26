@@ -22,14 +22,16 @@ import {
   Filter,
   Settings,
   DollarSign,
-  Loader2
+  Loader2,
+  ArrowLeft
 } from 'lucide-react';
-import OrderEstimate from '@/components/order/OrderEstimate';
+import PaymentStep from '@/components/order/form-steps/PaymentStep';
 import { useSupabaseOrders } from '@/hooks/useSupabaseOrders';
 import { toast } from 'sonner';
 
 export default function SeoArticleOrder() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [contactInfo, setContactInfo] = useState({
     name: '',
     email: '',
@@ -123,13 +125,15 @@ export default function SeoArticleOrder() {
         return formData.articleTopic && formData.keywords && formData.wordCount;
       case 3:
         return true;
+      case 4:
+        return paymentMethod && contactInfo.email;
       default:
         return true;
     }
   };
 
   const handleNext = () => {
-    if (currentStep < 3) {
+    if (currentStep < 4) {
       setCurrentStep(prev => prev + 1);
     }
   };
@@ -140,7 +144,7 @@ export default function SeoArticleOrder() {
     }
   };
 
-  const handlePayment = async () => {
+  const handleCreateOrder = async () => {
     if (!contactInfo.name || !contactInfo.email) {
       toast.error('Заполните контактную информацию');
       return;
@@ -163,7 +167,8 @@ export default function SeoArticleOrder() {
         estimated_price: calculatePrice(),
         service_options: {
           ...formData,
-          company: contactInfo.company
+          company: contactInfo.company,
+          paymentMethod: paymentMethod
         }
       };
 
@@ -181,8 +186,18 @@ export default function SeoArticleOrder() {
     }
   };
 
-  const handleEdit = () => {
-    setCurrentStep(1);
+  const handlePayment = async () => {
+    await handleCreateOrder();
+  };
+
+  const getStepTitle = (step: number) => {
+    switch (step) {
+      case 1: return 'Контактная информация';
+      case 2: return 'Информация о статье';
+      case 3: return 'Дополнительные опции';
+      case 4: return 'Способ оплаты';
+      default: return '';
+    }
   };
 
   const renderStep = () => {
@@ -436,6 +451,23 @@ export default function SeoArticleOrder() {
           </div>
         );
 
+      case 4:
+        return (
+          <PaymentStep
+            selectedMethod={paymentMethod}
+            onMethodSelect={setPaymentMethod}
+            totalAmount={calculatePrice()}
+            onPayment={handlePayment}
+            loading={loading}
+            orderData={{
+              service_name: 'SEO-статья',
+              contact_email: contactInfo.email,
+              contact_phone: contactInfo.phone,
+              contact_name: contactInfo.name
+            }}
+          />
+        );
+
       default:
         return null;
     }
@@ -459,6 +491,37 @@ export default function SeoArticleOrder() {
             </p>
           </div>
 
+          {/* Индикатор прогресса */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              {[1, 2, 3, 4].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                    currentStep >= step 
+                      ? 'bg-blue-600 border-blue-600 text-white' 
+                      : 'border-gray-300 text-gray-500'
+                  }`}>
+                    {currentStep > step ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : (
+                      <span className="text-sm font-medium">{step}</span>
+                    )}
+                  </div>
+                  <span className={`ml-2 text-sm ${
+                    currentStep >= step ? 'text-blue-600 font-medium' : 'text-gray-500'
+                  }`}>
+                    {getStepTitle(step)}
+                  </span>
+                  {step < 4 && (
+                    <div className={`w-12 h-0.5 mx-4 ${
+                      currentStep > step ? 'bg-blue-600' : 'bg-gray-300'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               {renderStep()}
@@ -466,11 +529,12 @@ export default function SeoArticleOrder() {
               <div className="flex justify-between items-center mt-8">
                 {currentStep > 1 && (
                   <Button variant="outline" onClick={handleBack}>
+                    <ArrowLeft className="w-4 h-4 mr-2" />
                     Назад
                   </Button>
                 )}
                 
-                {currentStep < 3 ? (
+                {currentStep < 4 ? (
                   <Button 
                     onClick={handleNext}
                     disabled={!isStepValid(currentStep)}
@@ -481,7 +545,7 @@ export default function SeoArticleOrder() {
                 ) : (
                   <Button 
                     onClick={handlePayment}
-                    disabled={loading}
+                    disabled={loading || !isStepValid(currentStep)}
                     className="ml-auto bg-green-600 hover:bg-green-700"
                   >
                     {loading ? (
@@ -515,6 +579,16 @@ export default function SeoArticleOrder() {
                       <div className="flex justify-between">
                         <span>Объем:</span>
                         <span>{formData.wordCount}</span>
+                      </div>
+                    )}
+                    {currentStep === 4 && paymentMethod && (
+                      <div className="flex justify-between">
+                        <span>Способ оплаты:</span>
+                        <span className="text-sm">
+                          {paymentMethod === 'yookassa' && 'ЮKassa'}
+                          {paymentMethod === 'card' && 'Банковская карта'}
+                          {paymentMethod === 'bank' && 'Банковский перевод'}
+                        </span>
                       </div>
                     )}
                     <div className="border-t pt-3">
