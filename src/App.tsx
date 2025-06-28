@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -5,7 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UnifiedAuthProvider } from '@/contexts/UnifiedAuthContext';
 import ProviderErrorBoundary from '@/components/common/ProviderErrorBoundary';
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import ProtectedRoute from '@/components/common/ProtectedRoute';
 import './App.css';
 
 // Lazy load pages for better performance
@@ -90,8 +92,16 @@ function App() {
                     
                     {/* Auth and user panels */}
                     <Route path="/auth" element={<AuthPage />} />
-                    <Route path="/client/*" element={<ClientPanel />} />
-                    <Route path="/admin/*" element={<AdminPanel />} />
+                    <Route path="/client/*" element={
+                      <ProtectedRoute requiredRole="client">
+                        <ClientPanel />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/*" element={
+                      <ProtectedRoute requiredRole="admin">
+                        <AdminPanel />
+                      </ProtectedRoute>
+                    } />
                     
                     {/* Payment pages */}
                     <Route path="/payment/success" element={<PaymentSuccess />} />
