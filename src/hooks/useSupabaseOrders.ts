@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
 import { toast } from 'sonner';
@@ -137,7 +137,6 @@ export function useSupabaseOrders() {
       const { data, error } = await supabase
         .from('orders')
         .select('*')
-        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -153,20 +152,22 @@ export function useSupabaseOrders() {
 
   const updateOrder = async (orderId: string, updates: Partial<OrderData>) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('orders')
         .update(updates)
-        .eq('id', orderId);
+        .eq('id', orderId)
+        .select()
+        .single();
 
       if (error) throw error;
 
       toast.success('Заказ обновлен');
       await fetchUserOrders();
-      return true;
+      return { success: true, order: data };
     } catch (error: any) {
       console.error('Error updating order:', error);
       toast.error('Ошибка обновления заказа');
-      return false;
+      return { success: false, error: error.message };
     }
   };
 

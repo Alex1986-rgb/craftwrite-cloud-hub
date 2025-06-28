@@ -1,124 +1,115 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
-import HomePage from "@/pages/HomePage";
-import ServicesPage from "@/pages/ServicesPage";
-import ContactPage from "@/pages/ContactPage";
-import BlogPage from "@/pages/BlogPage";
-import BlogDetail from "@/pages/BlogDetail";
-import TermsOfServicePage from "@/pages/TermsOfServicePage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import OrderPage from "@/pages/OrderPage";
-import AuthPage from "@/pages/AuthPage";
-import ClientDashboard from "@/components/client/ClientDashboard";
-import AdminDashboard from "@/components/admin/AdminDashboard";
-import UnifiedHeader from "@/components/navigation/UnifiedHeader";
-import Footer from "@/components/common/Footer";
-import ErrorBoundary from "@/components/common/ErrorBoundary";
-import ProviderErrorBoundary from "@/components/common/ProviderErrorBoundary";
-import { UnifiedAuthProvider } from "./contexts/UnifiedAuthContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Suspense, lazy } from 'react';
+import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UnifiedAuthProvider } from '@/contexts/UnifiedAuthContext';
+import ProviderErrorBoundary from '@/components/common/ProviderErrorBoundary';
+import LoadingSpinner from '@/components/ui/loading-spinner';
+import './App.css';
 
-// Import missing page components
-import SeoArticleOrder from "@/pages/SeoArticleOrder";
-import LandingPageOrder from "@/pages/LandingPageOrder";
-import EmailCampaignsOrder from "@/pages/EmailCampaignsOrder";
-import TelegramContentOrder from "@/pages/TelegramContentOrder";
-import ChatbotScriptsOrder from "@/pages/ChatbotScriptsOrder";
-import PortfolioDetail from "@/pages/PortfolioDetail";
-import Portfolio from "@/pages/Portfolio";
-import Services from "@/pages/Services";
-import Prices from "@/pages/Prices";
-import SpecializedOrderPage from "@/pages/order/SpecializedOrderPage";
-import OzonOrder from "@/pages/order/OzonOrder";
-import LinkedInOrder from "@/pages/order/LinkedInOrder";
-import InstagramOrder from "@/pages/order/InstagramOrder";
-import YouTubeOrder from "@/pages/order/YouTubeOrder";
-import WildberriesOrder from "@/pages/order/WildberriesOrder";
-import WebsiteTextsOrder from "@/pages/order/WebsiteTextsOrder";
-import UnifiedOrderPage from "@/pages/order/UnifiedOrderPage";
-
-import PaymentSuccess from "@/components/payment/PaymentSuccess";
-import PaymentFailed from "@/components/payment/PaymentFailed";
+// Lazy load pages for better performance
+const Index = lazy(() => import('@/pages/Index'));
+const About = lazy(() => import('@/pages/About'));
+const Services = lazy(() => import('@/pages/Services'));
+const Portfolio = lazy(() => import('@/pages/Portfolio'));
+const PortfolioDetail = lazy(() => import('@/pages/PortfolioDetail'));
+const Blog = lazy(() => import('@/pages/Blog'));
+const BlogDetail = lazy(() => import('@/pages/BlogDetail'));
+const Prices = lazy(() => import('@/pages/Prices'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const Order = lazy(() => import('@/pages/Order'));
+const SeoArticleOrder = lazy(() => import('@/pages/SeoArticleOrder'));
+const LandingPageOrder = lazy(() => import('@/pages/LandingPageOrder'));
+const EmailCampaignsOrder = lazy(() => import('@/pages/EmailCampaignsOrder'));
+const TelegramContentOrder = lazy(() => import('@/pages/TelegramContentOrder'));
+const ChatbotScriptsOrder = lazy(() => import('@/pages/ChatbotScriptsOrder'));
+const WebsiteTextsOrder = lazy(() => import('@/pages/order/WebsiteTextsOrder'));
+const InstagramOrder = lazy(() => import('@/pages/order/InstagramOrder'));
+const LinkedInOrder = lazy(() => import('@/pages/order/LinkedInOrder'));
+const YouTubeOrder = lazy(() => import('@/pages/order/YouTubeOrder'));
+const OzonOrder = lazy(() => import('@/pages/order/OzonOrder'));
+const WildberriesOrder = lazy(() => import('@/pages/order/WildberriesOrder'));
+const AuthPage = lazy(() => import('@/pages/AuthPage'));
+const ClientPanel = lazy(() => import('@/pages/ClientPanel'));
+const AdminPanel = lazy(() => import('@/pages/AdminPanel'));
+const PaymentSuccess = lazy(() => import('@/pages/PaymentSuccess'));
+const PaymentCancelled = lazy(() => import('@/pages/PaymentCancelled'));
+const OrderTrackingPage = lazy(() => import('@/pages/OrderTrackingPage'));
+const Privacy = lazy(() => import('@/pages/Privacy'));
+const TermsOfServicePage = lazy(() => import('@/pages/TermsOfServicePage'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
-      refetchOnWindowFocus: false,
     },
   },
 });
-
-// Layout wrapper for pages that need header/footer
-function PageLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-background">
-      <UnifiedHeader />
-      <main>
-        {children}
-      </main>
-      <Footer />
-    </div>
-  );
-}
 
 function App() {
   return (
     <ProviderErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <UnifiedAuthProvider>
-          <ErrorBoundary>
-            <TooltipProvider>
-              <BrowserRouter>
-                <div className="min-h-screen bg-background">
-                  <Toaster />
+          <TooltipProvider>
+            <Router>
+              <div className="min-h-screen bg-background font-inter">
+                <Suspense fallback={
+                  <div className="flex items-center justify-center min-h-screen">
+                    <LoadingSpinner size="lg" />
+                  </div>
+                }>
                   <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/services" element={<PageLayout><ServicesPage /></PageLayout>} />
-                    <Route path="/service/:serviceId" element={<PageLayout><Services /></PageLayout>} />
-                    <Route path="/contact" element={<PageLayout><ContactPage /></PageLayout>} />
-                    <Route path="/blog" element={<PageLayout><BlogPage /></PageLayout>} />
-                    <Route path="/blog/:slug" element={<PageLayout><BlogDetail /></PageLayout>} />
-                    <Route path="/terms" element={<PageLayout><TermsOfServicePage /></PageLayout>} />
-                    <Route path="/privacy" element={<PageLayout><PrivacyPolicyPage /></PageLayout>} />
-                    <Route path="/order" element={<PageLayout><OrderPage /></PageLayout>} />
+                    {/* Main pages */}
+                    <Route path="/" element={<Index />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/portfolio" element={<Portfolio />} />
+                    <Route path="/portfolio/:id" element={<PortfolioDetail />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogDetail />} />
+                    <Route path="/prices" element={<Prices />} />
+                    <Route path="/contact" element={<ContactPage />} />
                     
-                    {/* Payment routes */}
+                    {/* Order pages */}
+                    <Route path="/order" element={<Order />} />
+                    <Route path="/order/seo-article" element={<SeoArticleOrder />} />
+                    <Route path="/order/landing-page" element={<LandingPageOrder />} />
+                    <Route path="/order/email-campaigns" element={<EmailCampaignsOrder />} />
+                    <Route path="/order/telegram-content" element={<TelegramContentOrder />} />
+                    <Route path="/order/chatbot-scripts" element={<ChatbotScriptsOrder />} />
+                    <Route path="/order/website-texts" element={<WebsiteTextsOrder />} />
+                    <Route path="/order/instagram" element={<InstagramOrder />} />
+                    <Route path="/order/linkedin" element={<LinkedInOrder />} />
+                    <Route path="/order/youtube" element={<YouTubeOrder />} />
+                    <Route path="/order/ozon" element={<OzonOrder />} />
+                    <Route path="/order/wildberries" element={<WildberriesOrder />} />
+                    
+                    {/* Auth and user panels */}
+                    <Route path="/auth" element={<AuthPage />} />
+                    <Route path="/client/*" element={<ClientPanel />} />
+                    <Route path="/admin/*" element={<AdminPanel />} />
+                    
+                    {/* Payment pages */}
                     <Route path="/payment/success" element={<PaymentSuccess />} />
-                    <Route path="/payment/failed" element={<PaymentFailed />} />
+                    <Route path="/payment/cancelled" element={<PaymentCancelled />} />
                     
-                    {/* Новая унифицированная система заказов */}
-                    <Route path="/order/:serviceId" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
+                    {/* Other pages */}
+                    <Route path="/track-order" element={<OrderTrackingPage />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<TermsOfServicePage />} />
                     
-                    {/* Старые маршруты для обратной совместимости - все ведут к унифицированной форме */}
-                    <Route path="/order/seo-article" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/landing-page" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/email-campaigns" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/telegram-content" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/chatbot-scripts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/ozon" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/linkedin" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/instagram" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/youtube" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/wildberries" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    <Route path="/order/website-texts" element={<PageLayout><UnifiedOrderPage /></PageLayout>} />
-                    
-                    <Route path="/portfolio" element={<PageLayout><Portfolio /></PageLayout>} />
-                    <Route path="/portfolio/:id" element={<PageLayout><PortfolioDetail /></PageLayout>} />
-                    <Route path="/prices" element={<PageLayout><Prices /></PageLayout>} />
-                    <Route path="/auth" element={<PageLayout><AuthPage /></PageLayout>} />
-                    <Route path="/client" element={<ClientDashboard />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
+                    {/* 404 page */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
-                </div>
-              </BrowserRouter>
-            </TooltipProvider>
-          </ErrorBoundary>
+                </Suspense>
+                <Toaster />
+              </div>
+            </Router>
+          </TooltipProvider>
         </UnifiedAuthProvider>
       </QueryClientProvider>
     </ProviderErrorBoundary>

@@ -10,7 +10,7 @@ export interface User {
   email: string;
   name?: string;
   phone?: string;
-  role?: string;
+  role?: UserRole;
 }
 
 interface UnifiedAuthContextType {
@@ -36,6 +36,26 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [currentRole, setCurrentRole] = useState<UserRole>('guest');
 
+  const getUserRole = async (userId: string): Promise<UserRole> => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+      
+      if (error || !data) {
+        console.log('No role found, defaulting to client');
+        return 'client';
+      }
+      
+      return data.role as UserRole;
+    } catch (error) {
+      console.error('Error getting user role:', error);
+      return 'client';
+    }
+  };
+
   useEffect(() => {
     // Получаем текущего пользователя при загрузке
     const getInitialUser = async () => {
@@ -48,6 +68,9 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
         }
 
         if (authUser) {
+          // Получаем роль пользователя
+          const userRole = await getUserRole(authUser.id);
+          
           // Получаем профиль пользователя если есть
           const { data: profile } = await supabase
             .from('profiles')
@@ -60,10 +83,11 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
             email: authUser.email || '',
             name: profile?.full_name || authUser.user_metadata?.name || '',
             phone: profile?.phone || authUser.user_metadata?.phone || '',
-            role: 'client' // По умолчанию клиент
+            role: userRole
           };
 
           setUser(userData);
+          setCurrentRole(userRole);
         }
       } catch (error) {
         console.error('Error getting initial user:', error);
@@ -80,6 +104,9 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
         console.log('Auth state changed:', event, session?.user?.id);
         
         if (session?.user) {
+          // Получаем роль пользователя
+          const userRole = await getUserRole(session.user.id);
+          
           // Получаем профиль пользователя
           const { data: profile } = await supabase
             .from('profiles')
@@ -92,12 +119,14 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
             email: session.user.email || '',
             name: profile?.full_name || session.user.user_metadata?.name || '',
             phone: profile?.phone || session.user.user_metadata?.phone || '',
-            role: 'client'
+            role: userRole
           };
 
           setUser(userData);
+          setCurrentRole(userRole);
         } else {
           setUser(null);
+          setCurrentRole('guest');
         }
         
         setLoading(false);
@@ -108,17 +137,6 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
       subscription.unsubscribe();
     };
   }, []);
-
-  // Устанавливаем роль пользователя при входе
-  useEffect(() => {
-    if (user?.role === 'admin') {
-      setCurrentRole('admin');
-    } else if (user) {
-      setCurrentRole('client');
-    } else {
-      setCurrentRole('guest');
-    }
-  }, [user]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -184,7 +202,8 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
             id: data.user.id,
             email: email,
             full_name: name,
-            phone: phone
+            phone: phone,
+            company: company
           });
 
         if (profileError) {
