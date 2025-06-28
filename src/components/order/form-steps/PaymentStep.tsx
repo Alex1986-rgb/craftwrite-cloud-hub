@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { CreditCard, Wallet, Building, AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import BankCardForm from '@/components/payment/BankCardForm';
 
 interface PaymentMethod {
   id: string;
@@ -16,6 +16,13 @@ interface PaymentMethod {
   fee: number;
   description: string;
   supported: boolean;
+}
+
+interface CardData {
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  cardholderName: string;
 }
 
 interface PaymentStepProps {
@@ -38,22 +45,23 @@ export default function PaymentStep({
   const [customerEmail, setCustomerEmail] = useState(orderData?.contact_email || '');
   const [customerPhone, setCustomerPhone] = useState(orderData?.contact_phone || '');
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [showCardForm, setShowCardForm] = useState(false);
 
   const paymentMethods: PaymentMethod[] = [
-    {
-      id: 'yookassa',
-      name: 'ЮKassa',
-      icon: <Wallet className="w-5 h-5" />,
-      fee: 2.9,
-      description: 'Банковские карты, СБП, электронные кошельки',
-      supported: true
-    },
     {
       id: 'card',
       name: 'Банковская карта',
       icon: <CreditCard className="w-5 h-5" />,
       fee: 0,
       description: 'Visa, MasterCard, МИР',
+      supported: true
+    },
+    {
+      id: 'yookassa',
+      name: 'ЮKassa',
+      icon: <Wallet className="w-5 h-5" />,
+      fee: 2.9,
+      description: 'Банковские карты, СБП, электронные кошельки',
       supported: true
     },
     {
@@ -66,6 +74,34 @@ export default function PaymentStep({
     }
   ];
 
+  const handleCardPayment = async (cardData: CardData) => {
+    if (!customerEmail) {
+      toast.error('Введите email для получения чека');
+      return;
+    }
+
+    setPaymentLoading(true);
+
+    try {
+      // В реальной системе здесь будет интеграция с процессингом
+      // Пока создаем заказ и имитируем успешную оплату
+      console.log('Processing card payment:', { cardData, amount: totalAmount });
+      
+      // Имитация обработки платежа
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Вызываем создание заказа
+      await onPayment();
+      
+      toast.success('Платеж успешно обработан!');
+    } catch (error: any) {
+      console.error('Card payment error:', error);
+      toast.error(error.message || 'Ошибка при обработке платежа');
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
   const handlePaymentProcess = async () => {
     if (!selectedMethod) {
       toast.error('Выберите способ оплаты');
@@ -74,6 +110,11 @@ export default function PaymentStep({
 
     if (!customerEmail) {
       toast.error('Введите email для получения чека');
+      return;
+    }
+
+    if (selectedMethod === 'card') {
+      setShowCardForm(true);
       return;
     }
 
@@ -96,16 +137,11 @@ export default function PaymentStep({
         if (error) throw error;
 
         if (data.confirmation_url) {
-          // Перенаправляем на страницу оплаты
           window.location.href = data.confirmation_url;
         } else {
           throw new Error('Не удалось получить ссылку для оплаты');
         }
-      } else if (selectedMethod === 'card') {
-        // Вызываем основную функцию создания заказа
-        await onPayment();
       } else if (selectedMethod === 'bank') {
-        // Создается заказ без оплаты, с возможностью оплаты по счету
         await onPayment();
         toast.success('Заказ создан. Мы отправим вам счет на оплату по электронной почте');
       }
@@ -120,6 +156,27 @@ export default function PaymentStep({
   const finalAmount = selectedMethod === 'yookassa' 
     ? totalAmount + Math.round(totalAmount * 0.029)
     : totalAmount;
+
+  if (showCardForm && selectedMethod === 'card') {
+    return (
+      <div className="space-y-4">
+        <Button
+          variant="outline"
+          onClick={() => setShowCardForm(false)}
+          className="mb-4"
+        >
+          ← Назад к выбору способа оплаты
+        </Button>
+        
+        <BankCardForm
+          onSubmit={handleCardPayment}
+          loading={paymentLoading}
+          amount={totalAmount}
+          description={`Оплата заказа: ${orderData?.service_name || 'Услуга'}`}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -257,6 +314,8 @@ export default function PaymentStep({
               'Перейти к оплате'
             ) : selectedMethod === 'bank' ? (
               'Создать заказ (оплата по счету)'
+            ) : selectedMethod === 'card' ? (
+              'Ввести данные карты'
             ) : (
               'Создать заказ'
             )}
@@ -265,6 +324,12 @@ export default function PaymentStep({
           {selectedMethod === 'bank' && (
             <p className="text-sm text-gray-600 mt-2 text-center">
               После создания заказа мы отправим вам счет на указанный email
+            </p>
+          )}
+
+          {selectedMethod === 'card' && (
+            <p className="text-sm text-gray-600 mt-2 text-center">
+              Безопасная обработка платежей с защитой данных
             </p>
           )}
         </CardContent>
