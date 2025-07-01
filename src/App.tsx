@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -19,6 +20,8 @@ const BlogDetail = lazy(() => import('@/pages/BlogDetail'));
 const Prices = lazy(() => import('@/pages/Prices'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const Order = lazy(() => import('@/pages/Order'));
+const SmartOrder = lazy(() => import('@/pages/SmartOrder'));
+const OrderSuccess = lazy(() => import('@/pages/OrderSuccess'));
 const SeoArticleOrder = lazy(() => import('@/pages/SeoArticleOrder'));
 const LandingPageOrder = lazy(() => import('@/pages/LandingPageOrder'));
 const EmailCampaignsOrder = lazy(() => import('@/pages/EmailCampaignsOrder'));
@@ -75,6 +78,8 @@ function App() {
                   
                   {/* Order pages */}
                   <Route path="/order" element={<Order />} />
+                  <Route path="/smart-order" element={<SmartOrder />} />
+                  <Route path="/order-success" element={<OrderSuccess />} />
                   <Route path="/order/seo-article" element={<SeoArticleOrder />} />
                   <Route path="/order/landing-page" element={<LandingPageOrder />} />
                   <Route path="/order/email-campaigns" element={<EmailCampaignsOrder />} />

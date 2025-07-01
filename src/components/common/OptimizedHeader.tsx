@@ -86,7 +86,7 @@ export default function OptimizedHeader() {
           ))}
         </nav>
 
-        {/* Enhanced CTA and mobile menu */}
+        {/* Enhanced CTA and mobile menu - Updated to use smart order */}
         <div className="flex items-center gap-4">
           <Button 
             asChild 
@@ -96,9 +96,9 @@ export default function OptimizedHeader() {
               "hover:scale-105 hover:shadow-glow"
             )}
           >
-            <Link to="/order" className="flex items-center gap-2 relative z-10">
+            <Link to="/smart-order" className="flex items-center gap-2 relative z-10">
               <Sparkles className="w-4 h-4" />
-              Заказать
+              Умный заказ
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </Link>
           </Button>
@@ -165,9 +165,9 @@ export default function OptimizedHeader() {
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-xl py-4 text-lg shadow-lg hover:shadow-glow transition-all duration-300 hover:scale-105"
                 onClick={closeMobileMenu}
               >
-                <Link to="/order" className="flex items-center justify-center gap-2">
+                <Link to="/smart-order" className="flex items-center justify-center gap-2">
                   <Sparkles className="w-5 h-5" />
-                  Заказать тексты
+                  Умный заказ
                 </Link>
               </Button>
             </div>

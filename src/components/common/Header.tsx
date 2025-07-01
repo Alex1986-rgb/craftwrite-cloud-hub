@@ -64,13 +64,16 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Desktop CTA */}
+        {/* Desktop CTA - Updated to use smart order */}
         <div className="hidden lg:flex items-center gap-4">
           <Button 
             asChild 
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-bold rounded-full px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <Link to="/order">Заказать</Link>
+            <Link to="/smart-order">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Умный заказ
+            </Link>
           </Button>
         </div>
 
@@ -123,16 +126,16 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Mobile CTA */}
+          {/* Mobile CTA - Updated to use smart order */}
           <div className="pt-6 border-t border-slate-200">
             <Button 
               asChild 
               className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-bold rounded-xl py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={closeMobileMenu}
             >
-              <Link to="/order">
+              <Link to="/smart-order">
                 <Sparkles className="w-5 h-5 mr-2" />
-                Заказать тексты
+                Умный заказ
               </Link>
             </Button>
           </div>
