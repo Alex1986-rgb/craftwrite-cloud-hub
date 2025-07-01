@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, Play, Zap, Star, Award, Users, CheckCircle } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import ParticleSystem from '@/components/interactive/ParticleSystem';
+import SmartCTAButton from '@/components/interactive/SmartCTAButton';
 
 export default function FutureHeroSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -33,7 +35,16 @@ export default function FutureHeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden particle-bg">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Enhanced Particle Background */}
+      <ParticleSystem 
+        particleCount={80}
+        colors={['#3b82f6', '#8b5cf6', '#06b6d4', '#f59e0b']}
+        type="floating"
+        interactive={true}
+        className="opacity-60"
+      />
+
       {/* Динамический фон с градиентами */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl floating"></div>
@@ -50,7 +61,7 @@ export default function FutureHeroSection() {
             return (
               <div 
                 key={index}
-                className={`glass-card-modern transition-all duration-500 ${
+                className={`glass-card-modern transition-all duration-500 hover:scale-110 cursor-pointer ${
                   activeStats === index ? 'glow-primary scale-110' : ''
                 }`}
               >
@@ -92,7 +103,7 @@ export default function FutureHeroSection() {
               { icon: Zap, text: 'Мгновенная доставка', color: 'text-blue-500' },
               { icon: Award, text: 'Премиум качество', color: 'text-purple-500' }
             ].map((feature, index) => (
-              <div key={index} className="glass-card-modern glow-hover">
+              <div key={index} className="glass-card-modern glow-hover hover:scale-105 transition-all duration-300 cursor-pointer">
                 <feature.icon className={`w-6 h-6 ${feature.color} mx-auto mb-2`} />
                 <p className="text-sm font-medium">{feature.text}</p>
               </div>
@@ -100,25 +111,31 @@ export default function FutureHeroSection() {
           </div>
         </div>
 
-        {/* Next-gen CTA buttons */}
+        {/* Next-gen Smart CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-slide-up-stagger stagger-4">
-          <Button 
-            size="lg" 
-            className="btn-modern group px-12 py-6 text-lg font-bold shadow-2xl" 
-            asChild
-            onClick={() => handleCTAClick('order_now')}
+          <SmartCTAButton
+            variant="primary"
+            size="lg"
+            personalization={{
+              discount: 25,
+              urgency: true,
+              popularity: true,
+              testimonial: "Заказал контент в CopyPro Cloud - результат превзошел ожидания!"
+            }}
+            analytics={{
+              category: 'Hero CTA',
+              action: 'click',
+              label: 'Smart Order'
+            }}
+            onClick={() => handleCTAClick('smart_order')}
           >
-            <Link to="/smart-order" className="flex items-center gap-3">
-              <Sparkles className="w-6 h-6" />
-              Создать контент
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
-            </Link>
-          </Button>
+            Создать контент
+          </SmartCTAButton>
           
           <Button 
             variant="outline" 
             size="lg" 
-            className="neo-card px-8 py-6 text-lg font-semibold border-0 glow-hover group"
+            className="neo-card px-8 py-6 text-lg font-semibold border-0 glow-hover group hover:scale-105 transition-all duration-300"
             onClick={() => handleCTAClick('watch_demo')}
           >
             <Play className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
@@ -150,24 +167,32 @@ export default function FutureHeroSection() {
           })}
         </div>
 
-        {/* Floating call to action */}
+        {/* Floating Smart CTA */}
         <div className="fixed bottom-8 right-8 z-50 animate-slide-up-stagger stagger-6">
-          <Button 
-            className="btn-modern rounded-full w-16 h-16 p-0 shadow-2xl"
+          <SmartCTAButton
+            variant="premium"
+            size="sm"
+            className="rounded-full w-16 h-16 p-0 shadow-2xl"
+            personalization={{
+              discount: 15,
+              urgency: false
+            }}
+            analytics={{
+              category: 'Floating CTA',
+              action: 'click',
+              label: 'Contact'
+            }}
             onClick={() => handleCTAClick('floating_cta')}
-            asChild
           >
-            <Link to="/contact">
-              <Sparkles className="w-6 h-6" />
-            </Link>
-          </Button>
+            <Sparkles className="w-6 h-6" />
+          </SmartCTAButton>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Enhanced Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse"></div>
+        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center hover:border-blue-500 transition-colors duration-300">
+          <div className="w-1 h-3 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
