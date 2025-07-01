@@ -1,3 +1,4 @@
+
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
@@ -21,6 +22,8 @@ import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
+import CompactTrustFeatures from "@/components/landing/CompactTrustFeatures";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -93,28 +96,57 @@ E-commerce и маркетплейсы:
 export default function Index() {
   return (
     <main className="relative overflow-hidden">
+      {/* 1. HERO SECTION - Above the fold */}
       <ModernHeroSection />
-      <SocialProofSection />
+      
+      {/* 2. TRUST & SOCIAL PROOF - Immediate credibility */}
+      <CompactSocialProofSection />
+      
+      {/* 3. TRUST FEATURES - What makes us reliable */}
+      <CompactTrustFeatures />
+      
+      {/* 4. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
-      <BenefitsSection />
-      <ExpertiseShowcaseSection />
+      
+      {/* 5. SERVICES OVERVIEW - What we offer */}
       <ServicesCatalogSection />
+      
+      {/* 6. PRICING - Clear value proposition */}
       <ModernPricingSection />
+      
+      {/* 7. HOW IT WORKS - Simple process */}
       <ProcessSection />
+      
+      {/* 8. PORTFOLIO SHOWCASE - Proof of results */}
       <CaseStudiesSection />
       <InnovativePortfolioSection />
+      
+      {/* 9. BENEFITS - Why choose us */}
+      <BenefitsSection />
+      <ExpertiseShowcaseSection />
+      
+      {/* 10. SOCIAL PROOF - Extended credibility */}
       <ProfessionalStatsSection />
       <TestimonialsSection />
+      
+      {/* 11. TEAM & EXPERTISE - Who we are */}
       <TeamSection />
-      <TrustSection />
+      
+      {/* 12. FAQ - Address concerns */}
       <FaqSection />
-      <NewsletterSection />
+      
+      {/* 13. FINAL CTA & CONTACT */}
       <ContactSection />
       
+      {/* 14. NEWSLETTER - Lead capture */}
+      <NewsletterSection />
+      
+      {/* 15. SEO TEXT - Search engine optimization */}
       <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
         <SeoTextExpandable text={seoText} />
       </div>
       
+      {/* SUPPORT WIDGETS */}
       <SupportWidget />
       <HumanLikeAiAssistant />
     </main>
