@@ -154,10 +154,12 @@ export default function SmartBriefConstructor() {
     }
   }, []);
 
-  const updateBriefData = (section: string, data: any) => {
+  const updateBriefData = (section: keyof BriefData, data: any) => {
     setBriefData(prev => ({
       ...prev,
-      [section]: { ...prev[section as keyof BriefData], ...data }
+      [section]: typeof prev[section] === 'object' && prev[section] !== null
+        ? { ...prev[section], ...data }
+        : data
     }));
     setIsSaved(false);
   };
@@ -258,7 +260,7 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
                         ? 'ring-2 ring-blue-500 bg-blue-50' 
                         : 'hover:bg-gray-50'
                     }`}
-                    onClick={() => updateBriefData('projectType', key)}
+                    onClick={() => setBriefData(prev => ({ ...prev, projectType: key }))}
                   >
                     <CardContent className="p-4 text-center">
                       <h4 className="font-semibold text-lg">{name}</h4>
