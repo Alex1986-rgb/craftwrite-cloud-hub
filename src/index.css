@@ -1,8 +1,10 @@
+
 @import url('./styles/fonts.css');
 @import url('./styles/variables.css');
 @import url('./styles/base.css');
 @import url('./styles/utilities.css');
 @import url('./styles/design-system.css');
+@import url('./styles/modern-design-system.css');
 @import url('./styles/unified-design-system.css');
 @import url('./styles/responsive.css');
 @import url('./styles/enhanced-responsive.css');
@@ -13,27 +15,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global base styles */
+/* Enhanced global base styles */
 @layer base {
   * {
     @apply border-border;
   }
   
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply bg-background text-foreground;
+    font-family: var(--font-primary);
     font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
   }
   
   html {
     scroll-behavior: smooth;
   }
   
-  /* Improved focus styles */
+  /* Enhanced focus styles */
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-primary;
   }
   
-  /* Enhanced scrollbar styles */
+  /* Modern scrollbar */
   ::-webkit-scrollbar {
     @apply w-2;
   }
@@ -43,235 +47,190 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-300 dark:bg-neutral-600 rounded-full;
-    @apply hover:bg-neutral-400 dark:hover:bg-neutral-500;
+    @apply bg-gradient-to-b from-blue-400 to-purple-500 rounded-full;
+    @apply hover:from-blue-500 hover:to-purple-600;
+  }
+  
+  /* Selection colors */
+  ::selection {
+    background: rgba(102, 126, 234, 0.2);
+    color: inherit;
   }
 }
 
-/* Enhanced global component styles */
+/* Enhanced component styles */
 @layer components {
-  /* Text gradient utility */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent;
+  /* Modern card with enhanced interactions */
+  .card-modern {
+    @apply glass-card-modern transition-all duration-300;
+    @apply hover:shadow-2xl hover:-translate-y-2;
   }
   
-  /* Enhanced glass card with improved backdrop */
-  .glass-card {
-    @apply glass-unified backdrop-blur-xl;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Enhanced buttons */
+  .btn-futuristic {
+    @apply btn-modern relative overflow-hidden;
+    @apply before:absolute before:inset-0 before:bg-gradient-to-r;
+    @apply before:from-transparent before:via-white/20 before:to-transparent;
+    @apply before:translate-x-[-100%] hover:before:translate-x-[100%];
+    @apply before:transition-transform before:duration-700;
   }
   
-  .dark .glass-card {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Animated text effects */
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(102, 126, 234, 0.4) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
   }
   
-  /* Enhanced button styles with better accessibility */
-  .btn-primary-enhanced {
-    @apply btn-unified-primary shadow-unified-glow;
-    @apply hover:scale-105 active:scale-95;
-    @apply focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary;
-    @apply transition-all duration-200 ease-out;
+  /* Enhanced input styles */
+  .input-modern {
+    @apply neo-card-inset px-6 py-4 text-lg;
+    @apply focus:neo-card focus:shadow-lg;
+    @apply transition-all duration-300;
+    border: none;
+    outline: none;
   }
   
-  /* Page transition wrapper with enhanced animation */
-  .page-transition {
-    @apply animate-unified-fade-in;
+  /* Loading states */
+  .loading-skeleton {
+    @apply bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200;
+    @apply animate-shimmer bg-[length:200%_100%];
+    border-radius: 8px;
   }
   
-  /* Enhanced container with better responsive padding */
-  .container-enhanced {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8;
-  }
-  
-  /* Loading skeleton styles */
-  .skeleton-box {
-    @apply bg-gray-200 dark:bg-gray-700 animate-pulse rounded;
-  }
-  
-  /* Enhanced form styles */
-  .form-enhanced {
-    @apply space-y-6;
-  }
-  
-  .form-enhanced .form-group {
-    @apply space-y-2;
-  }
-  
-  .form-enhanced label {
-    @apply text-sm font-medium text-gray-700 dark:text-gray-300;
-  }
-  
-  .form-enhanced input,
-  .form-enhanced textarea,
-  .form-enhanced select {
-    @apply min-h-[44px] transition-all duration-200;
-    @apply focus:ring-2 focus:ring-primary focus:border-primary;
-  }
-  
-  /* Enhanced card hover effects */
-  .card-interactive {
-    @apply transition-all duration-300 cursor-pointer;
-    @apply hover:shadow-lg hover:scale-[1.02];
-    @apply active:scale-[0.98];
-  }
-  
-  /* Enhanced notification styles */
-  .notification-enhanced {
-    @apply backdrop-blur-sm bg-white/95 border border-gray-200;
-    @apply shadow-lg rounded-lg p-4;
-    @apply animate-slide-up;
+  .dark .loading-skeleton {
+    @apply from-gray-700 via-gray-600 to-gray-700;
   }
 }
 
-/* Enhanced performance optimizations */
+/* Modern animations */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+  .glass-card-modern {
+    @apply p-4 rounded-xl;
+  }
+  
+  .btn-modern {
+    @apply px-6 py-3 text-base;
+  }
+  
+  .neo-card {
+    @apply rounded-2xl;
+  }
+}
+
+/* High performance optimizations */
 @layer utilities {
-  .gpu-accelerated {
+  .gpu-boost {
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
-  }
-  
-  .will-change-transform {
     will-change: transform;
   }
   
-  .will-change-opacity {
-    will-change: opacity;
-  }
-  
-  .will-change-auto {
-    will-change: auto;
-  }
-  
-  /* Enhanced scroll utilities */
-  .scroll-smooth {
+  .smooth-scroll {
     scroll-behavior: smooth;
-  }
-  
-  .scroll-hidden {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .scroll-hidden::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Enhanced visibility utilities */
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  
-  /* Enhanced focus utilities */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-  }
-  
-  .focus-ring-inset {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Print styles */
+/* Enhanced accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .floating-delayed,
+  .morphing-shape,
+  .animate-slide-up-stagger {
+    animation: none !important;
+  }
+  
+  .btn-modern:hover {
+    transform: none !important;
+  }
+  
+  .glass-card-modern:hover {
+    transform: none !important;
+  }
+}
+
+/* Dark theme enhancements */
+.dark {
+  .neo-card {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    box-shadow: 
+      20px 20px 60px #0a0a0a,
+      -20px -20px 60px #3a3a3a;
+  }
+  
+  .glass-card-modern {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Print optimizations */
 @media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  .print-only {
-    display: block !important;
-  }
-  
-  .glass-card {
-    @apply bg-white dark:bg-white border-2 border-gray-300;
+  .glass-card-modern,
+  .neo-card {
+    @apply bg-white border-2 border-gray-300 shadow-none;
     backdrop-filter: none !important;
   }
   
-  .text-gradient {
+  .btn-modern {
+    @apply bg-gray-800 text-white shadow-none;
+    background: #1f2937 !important;
+  }
+  
+  .text-gradient-primary,
+  .text-gradient-cyber {
     @apply text-black;
-    background: none;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-  }
-  
-  /* Ensure good contrast in print */
-  * {
-    color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .glass-card {
-    @apply bg-white dark:bg-black border-2 border-black dark:border-white;
-    backdrop-filter: none;
-  }
-  
-  .text-gradient {
-    @apply text-black dark:text-white;
-    background: none;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-  }
-  
-  /* Enhanced button contrast */
-  .btn-primary-enhanced {
-    @apply border-2 border-current;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  .animate-unified-glow,
-  .animate-slide-up,
-  .animate-slide-down,
-  .animate-scale-in-center,
-  .animate-bounce-soft {
-    animation: none;
-  }
-  
-  .page-transition {
-    animation: none;
-  }
-  
-  .card-interactive:hover {
-    transform: none;
-  }
-}
-
-/* Enhanced mobile viewport optimization */
-@supports (height: 100dvh) {
-  .min-h-screen {
-    min-height: 100dvh;
-  }
-}
-
-/* Enhanced color scheme support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: light;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
   }
 }
