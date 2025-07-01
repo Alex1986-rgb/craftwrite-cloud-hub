@@ -13,11 +13,14 @@ interface MobileOptimizedButtonProps extends React.ButtonHTMLAttributes<HTMLButt
 
 export const MobileOptimizedButton = React.forwardRef<HTMLButtonElement, MobileOptimizedButtonProps>(
   ({ className, variant = 'default', size = 'default', loading = false, children, disabled, ...props }, ref) => {
+    // Handle mobile size internally, don't pass it to Button component
+    const buttonSize = size === 'mobile' ? 'default' : size;
+    
     return (
       <Button
         ref={ref}
         variant={variant}
-        size={size}
+        size={buttonSize}
         disabled={disabled || loading}
         className={cn(
           // Base mobile optimizations
