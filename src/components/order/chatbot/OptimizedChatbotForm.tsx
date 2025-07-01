@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,15 @@ interface OptimizedChatbotFormProps {
   selectedType?: string;
   onClose: () => void;
   onSuccess?: () => void;
+}
+
+interface PriceBreakdown {
+  basePrice: number;
+  platformMultiplier: number;
+  complexityMultiplier: number;
+  dialogTypesPrice: number;
+  totalPrice: number;
+  deliveryTime: string;
 }
 
 const VALIDATION_RULES = [
@@ -65,7 +75,6 @@ export default function OptimizedChatbotForm({
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [isFormValid, setIsFormValid] = useState(false);
   
-  // ... keep existing state for form data ...
   const [contactData, setContactData] = useState({
     name: '',
     email: '',
@@ -88,10 +97,15 @@ export default function OptimizedChatbotForm({
     budget: ''
   });
 
+  // Updated pricing state to match FinalStep interface
   const [pricing, setPricing] = useState({
-    totalPrice: 0,
-    breakdown: null as any
+    platformsPrice: 0,
+    scenariosPrice: 0,
+    dialogTypesPrice: 0,
+    totalPrice: 0
   });
+
+  const [priceBreakdown, setPriceBreakdown] = useState<PriceBreakdown | null>(null);
 
   const [advancedOptions, setAdvancedOptions] = useState({
     characterCount: 3000,
@@ -121,8 +135,15 @@ export default function OptimizedChatbotForm({
     setValidationErrors(errors);
   }, []);
 
-  const handlePriceUpdate = useCallback((price: number, breakdown: any) => {
-    setPricing({ totalPrice: price, breakdown });
+  const handlePriceUpdate = useCallback((price: number, breakdown: PriceBreakdown) => {
+    // Update both pricing states
+    setPricing({
+      platformsPrice: breakdown.platformMultiplier,
+      scenariosPrice: breakdown.basePrice,
+      dialogTypesPrice: breakdown.dialogTypesPrice,
+      totalPrice: price
+    });
+    setPriceBreakdown(breakdown);
   }, []);
 
   const handleFormRestore = useCallback((savedData: any) => {
@@ -131,7 +152,6 @@ export default function OptimizedChatbotForm({
     if (savedData.characterCount) setAdvancedOptions(prev => ({ ...prev, ...savedData }));
   }, []);
 
-  // ... keep existing handler methods ...
   const handleContactChange = (field: string, value: string) => {
     setContactData(prev => ({ ...prev, [field]: value }));
   };
@@ -153,7 +173,8 @@ export default function OptimizedChatbotForm({
     try {
       const orderData = {
         ...allFormData,
-        ...pricing,
+        pricing,
+        breakdown: priceBreakdown,
         selectedType
       };
 
