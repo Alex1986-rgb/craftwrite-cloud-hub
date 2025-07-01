@@ -1,4 +1,3 @@
-
 export interface PerformanceMetrics {
   lcp: number; // Largest Contentful Paint
   fid: number; // First Input Delay
@@ -201,7 +200,11 @@ export function analyzeBundleSize() {
   const observer = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
       if (entry.name.includes('.js') || entry.name.includes('.css')) {
-        console.log(`Resource: ${entry.name}, Size: ${(entry.transferSize / 1024).toFixed(2)}KB`);
+        // Type assertion for resource timing entry
+        const resourceEntry = entry as PerformanceResourceTiming;
+        if (resourceEntry.transferSize) {
+          console.log(`Resource: ${entry.name}, Size: ${(resourceEntry.transferSize / 1024).toFixed(2)}KB`);
+        }
       }
     });
   });
