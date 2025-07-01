@@ -11,6 +11,7 @@ import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
+import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -46,28 +47,37 @@ export default function Index() {
       {/* 2. SOCIAL PROOF - Immediate credibility */}
       <CompactSocialProofSection />
       
-      {/* 3. SERVICES - What we offer */}
+      {/* 3. SMART ORDER CTA #1 - After hero for maximum visibility */}
+      <SmartOrderCTA />
+      
+      {/* 4. SERVICES - What we offer */}
       <ServicesCatalogSection />
       
-      {/* 4. PRICING - Clear value proposition */}
+      {/* 5. PRICING - Clear value proposition */}
       <ModernPricingSection />
       
-      {/* 5. GUARANTEES - Remove risk and build confidence */}
+      {/* 6. SMART ORDER CTA #2 - After pricing for logical continuation */}
+      <SmartOrderCTA />
+      
+      {/* 7. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
       
-      {/* 6. PORTFOLIO - Proof of results */}
+      {/* 8. PORTFOLIO - Proof of results */}
       <InnovativePortfolioSection />
       
-      {/* 7. HOW IT WORKS - Simple process */}
+      {/* 9. HOW IT WORKS - Simple process */}
       <ProcessSection />
       
-      {/* 8. FAQ - Address concerns */}
+      {/* 10. FAQ - Address concerns */}
       <FaqSection />
       
-      {/* 9. FINAL CTA & CONTACT */}
+      {/* 11. SMART ORDER CTA #3 - Final call to action before contact */}
+      <SmartOrderCTA />
+      
+      {/* 12. FINAL CTA & CONTACT */}
       <ContactSection />
       
-      {/* 10. SEO TEXT - Search engine optimization */}
+      {/* 13. SEO TEXT - Search engine optimization */}
       <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-slate-50/50 to-transparent">
         <SeoTextExpandable text={seoText} />
       </div>
