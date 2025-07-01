@@ -40,21 +40,31 @@ export function useAnalytics() {
     const trackPageView = () => {
       const path = location.pathname + location.search;
       
-      // Google Analytics 4
-      if (window.gtag) {
-        window.gtag('config', process.env.VITE_GA_MEASUREMENT_ID, {
-          page_path: path,
-          page_title: document.title,
-          page_location: window.location.href
-        });
-      }
+      try {
+        // Google Analytics 4 - только если доступен
+        if (window.gtag && typeof window.gtag === 'function') {
+          const gaId = import.meta.env?.VITE_GA_MEASUREMENT_ID;
+          if (gaId) {
+            window.gtag('config', gaId, {
+              page_path: path,
+              page_title: document.title,
+              page_location: window.location.href
+            });
+          }
+        }
 
-      // Yandex Metrica
-      if (window.ym) {
-        window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'hit', path);
-      }
+        // Yandex Metrica - только если доступен
+        if (window.ym && typeof window.ym === 'function') {
+          const yandexId = import.meta.env?.VITE_YANDEX_METRIKA;
+          if (yandexId && !isNaN(Number(yandexId))) {
+            window.ym(Number(yandexId), 'hit', path);
+          }
+        }
 
-      console.log('Page view tracked:', path);
+        console.log('Page view tracked:', path);
+      } catch (error) {
+        console.warn('Analytics tracking error:', error);
+      }
     };
 
     trackPageView();
@@ -62,44 +72,58 @@ export function useAnalytics() {
 
   // Track custom events
   const trackEvent = useCallback((event: AnalyticsEvent) => {
-    const { action, category, label, value, custom_parameters } = event;
+    try {
+      const { action, category, label, value, custom_parameters } = event;
 
-    // Google Analytics 4
-    if (window.gtag) {
-      window.gtag('event', action, {
-        event_category: category,
-        event_label: label,
-        value: value,
-        ...custom_parameters
-      });
+      // Google Analytics 4
+      if (window.gtag && typeof window.gtag === 'function') {
+        window.gtag('event', action, {
+          event_category: category,
+          event_label: label,
+          value: value,
+          ...custom_parameters
+        });
+      }
+
+      // Yandex Metrica
+      if (window.ym && typeof window.ym === 'function') {
+        const yandexId = import.meta.env?.VITE_YANDEX_METRIKA;
+        if (yandexId && !isNaN(Number(yandexId))) {
+          window.ym(Number(yandexId), 'reachGoal', action);
+        }
+      }
+
+      console.log('Event tracked:', event);
+    } catch (error) {
+      console.warn('Event tracking error:', error);
     }
-
-    // Yandex Metrica
-    if (window.ym) {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', action);
-    }
-
-    console.log('Event tracked:', event);
   }, []);
 
   // Track conversions
   const trackConversion = useCallback((conversion: ConversionEvent) => {
-    // Google Analytics 4 Enhanced Ecommerce
-    if (window.gtag) {
-      window.gtag('event', conversion.event_name, {
-        currency: conversion.currency || 'RUB',
-        value: conversion.value,
-        transaction_id: conversion.transaction_id,
-        items: conversion.items
-      });
-    }
+    try {
+      // Google Analytics 4 Enhanced Ecommerce
+      if (window.gtag && typeof window.gtag === 'function') {
+        window.gtag('event', conversion.event_name, {
+          currency: conversion.currency || 'RUB',
+          value: conversion.value,
+          transaction_id: conversion.transaction_id,
+          items: conversion.items
+        });
+      }
 
-    // Yandex Metrica eCommerce
-    if (window.ym && conversion.event_name === 'purchase') {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', 'ORDER_SUCCESS');
-    }
+      // Yandex Metrica eCommerce
+      if (window.ym && typeof window.ym === 'function' && conversion.event_name === 'purchase') {
+        const yandexId = import.meta.env?.VITE_YANDEX_METRIKA;
+        if (yandexId && !isNaN(Number(yandexId))) {
+          window.ym(Number(yandexId), 'reachGoal', 'ORDER_SUCCESS');
+        }
+      }
 
-    console.log('Conversion tracked:', conversion);
+      console.log('Conversion tracked:', conversion);
+    } catch (error) {
+      console.warn('Conversion tracking error:', error);
+    }
   }, []);
 
   // Track user interactions
@@ -123,118 +147,10 @@ export function useAnalytics() {
     });
   }, [trackEvent]);
 
-  // Track order funnel
-  const trackOrderFunnel = useCallback((step: string, stepNumber: number, details?: any) => {
-    trackEvent({
-      action: 'order_funnel_step',
-      category: 'Order Funnel',
-      label: step,
-      value: stepNumber,
-      custom_parameters: {
-        funnel_step: stepNumber,
-        step_name: step,
-        ...details
-      }
-    });
-  }, [trackEvent]);
-
-  // Track search
-  const trackSearch = useCallback((searchTerm: string, results?: number) => {
-    trackEvent({
-      action: 'search',
-      category: 'Search',
-      label: searchTerm,
-      value: results,
-      custom_parameters: {
-        search_term: searchTerm,
-        results_count: results
-      }
-    });
-  }, [trackEvent]);
-
-  // Track file downloads
-  const trackDownload = useCallback((fileName: string, fileType: string) => {
-    trackEvent({
-      action: 'file_download',
-      category: 'Download',
-      label: fileName,
-      custom_parameters: {
-        file_name: fileName,
-        file_type: fileType
-      }
-    });
-  }, [trackEvent]);
-
-  // Track social sharing
-  const trackSocialShare = useCallback((platform: string, url: string) => {
-    trackEvent({
-      action: 'social_share',
-      category: 'Social',
-      label: platform,
-      custom_parameters: {
-        platform,
-        shared_url: url
-      }
-    });
-  }, [trackEvent]);
-
   return {
     trackEvent,
     trackConversion,
     trackInteraction,
-    trackFormSubmission,
-    trackOrderFunnel,
-    trackSearch,
-    trackDownload,
-    trackSocialShare
-  };
-}
-
-// Custom hook for A/B testing
-export function useABTest(testName: string, variants: string[]) {
-  const { trackEvent } = useAnalytics();
-
-  const getVariant = useCallback(() => {
-    // Check if user already has a variant assigned
-    const savedVariant = localStorage.getItem(`ab_test_${testName}`);
-    if (savedVariant && variants.includes(savedVariant)) {
-      return savedVariant;
-    }
-
-    // Assign random variant
-    const randomVariant = variants[Math.floor(Math.random() * variants.length)];
-    localStorage.setItem(`ab_test_${testName}`, randomVariant);
-
-    // Track assignment
-    trackEvent({
-      action: 'ab_test_assignment',
-      category: 'A/B Test',
-      label: testName,
-      custom_parameters: {
-        test_name: testName,
-        variant: randomVariant
-      }
-    });
-
-    return randomVariant;
-  }, [testName, variants, trackEvent]);
-
-  const trackConversion = useCallback((conversionName: string) => {
-    const variant = getVariant();
-    trackEvent({
-      action: 'ab_test_conversion',
-      category: 'A/B Test',
-      label: `${testName}_${conversionName}`,
-      custom_parameters: {
-        test_name: testName,
-        variant,
-        conversion_name: conversionName
-      }
-    });
-  }, [testName, getVariant, trackEvent]);
-
-  return {
-    variant: getVariant(),
-    trackConversion
+    trackFormSubmission
   };
 }
