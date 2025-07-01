@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useAnalytics } from '../analytics/AnalyticsProvider';
 import { useEnhancedNotifications } from '@/hooks/useEnhancedNotifications';
+import { useRealtime } from '@/hooks/useRealtime';
 
 interface EnhancedSmartOrderAnalyticsProps {
   children: React.ReactNode;
@@ -10,6 +11,18 @@ interface EnhancedSmartOrderAnalyticsProps {
 export default function EnhancedSmartOrderAnalytics({ children }: EnhancedSmartOrderAnalyticsProps) {
   const analytics = useAnalytics();
   const notifications = useEnhancedNotifications();
+
+  // Real-time подписка на обновления аналитики
+  useRealtime({
+    table: 'smart_order_analytics',
+    event: 'INSERT',
+    onInsert: (payload) => {
+      console.log('📊 New analytics event:', payload.new);
+    },
+    onError: (error) => {
+      console.error('Analytics realtime error:', error);
+    }
+  });
 
   useEffect(() => {
     // Создаем напоминание при входе на страницу
