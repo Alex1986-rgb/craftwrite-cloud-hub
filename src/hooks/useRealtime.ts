@@ -35,13 +35,14 @@ export function useRealtime({
     try {
       const channel = supabase.channel(channelName);
 
-      channel.on(
+      // Исправленный синтаксис для подписки на postgres_changes
+      const subscription = channel.on(
         'postgres_changes',
         {
           event: event,
           schema: 'public',
           table: table,
-          filter: filter
+          ...(filter && { filter })
         },
         (payload) => {
           console.log('Realtime event:', payload);

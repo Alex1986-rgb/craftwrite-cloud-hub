@@ -66,16 +66,19 @@ export function useUserPresence() {
     }
   };
 
-  // Обработка закрытия страницы
+  // Обработка закрытия страницы - исправлено без использования supabaseUrl
   const handleBeforeUnload = () => {
     if (user) {
-      // Используем синхронный запрос для надежности
+      // Используем синхронный RPC вызов через fetch API
+      const payload = JSON.stringify({
+        p_user_id: user.id,
+        p_status: 'offline'
+      });
+
+      // Отправляем beacon запрос через стандартный URL
       navigator.sendBeacon(
-        `${supabase.supabaseUrl}/rest/v1/rpc/update_user_presence`,
-        JSON.stringify({
-          p_user_id: user.id,
-          p_status: 'offline'
-        })
+        'https://yotunjzgomkuuwpyftqr.supabase.co/rest/v1/rpc/update_user_presence',
+        payload
       );
     }
   };
