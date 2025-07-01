@@ -9,9 +9,13 @@ import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
+import { Button } from "@/components/ui/button";
+import { Search, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function UnifiedHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { isAuthenticated, user, logout } = useUnifiedAuth();
   const { t } = useTranslation();
 
@@ -34,6 +38,27 @@ export default function UnifiedHeader() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
+          {/* Search Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsSearchOpen(true)}
+            className="rounded-full"
+          >
+            <Search className="w-4 h-4" />
+          </Button>
+
+          {/* Smart Order CTA */}
+          <Button 
+            asChild 
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-bold rounded-full px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
+            <Link to="/smart-order">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Умный заказ
+            </Link>
+          </Button>
+
           {isAuthenticated && <NotificationCenter />}
           <LanguageSwitcher />
           <UserMenu 
@@ -58,6 +83,33 @@ export default function UnifiedHeader() {
         user={user}
         logout={logout}
       />
+
+      {/* Search Modal */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl mx-4 p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <Search className="w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Поиск по сайту..."
+                className="flex-1 text-lg outline-none"
+                autoFocus
+              />
+              <Button 
+                variant="ghost" 
+                onClick={() => setIsSearchOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </Button>
+            </div>
+            <div className="text-sm text-gray-500">
+              Поиск по услугам, статьям и FAQ
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

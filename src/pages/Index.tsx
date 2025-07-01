@@ -12,6 +12,9 @@ import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
+import UnifiedHeader from "@/components/navigation/UnifiedHeader";
+import EnhancedFooter from "@/components/common/EnhancedFooter";
+import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -41,6 +44,8 @@ CopyPro Cloud — ведущая платформа профессиональн
 export default function Index() {
   return (
     <main className="relative overflow-hidden">
+      <UnifiedHeader />
+      
       {/* 1. HERO SECTION - Above the fold */}
       <ModernHeroSection />
       
@@ -85,6 +90,9 @@ export default function Index() {
       {/* SUPPORT WIDGETS */}
       <SupportWidget />
       <HumanLikeAiAssistant />
+      <FloatingChatButton />
+      
+      <EnhancedFooter />
     </main>
   );
 }
