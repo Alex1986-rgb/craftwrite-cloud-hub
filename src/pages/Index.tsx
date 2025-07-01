@@ -1,96 +1,40 @@
 
-import HeroSection from "@/components/landing/HeroSection";
-import BenefitsSection from "@/components/landing/BenefitsSection";
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
-import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import ProfessionalStatsSection from "@/components/landing/ProfessionalStatsSection";
 import FaqSection from "@/components/landing/FaqSection";
-import TeamSection from "@/components/landing/TeamSection";
-import TrustSection from "@/components/landing/TrustSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
-import ExpertiseShowcaseSection from "@/components/landing/ExpertiseShowcaseSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
-import NewsletterSection from "@/components/landing/NewsletterSection";
-import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
-import CaseStudiesSection from "@/components/landing/CaseStudiesSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
-import CompactTrustFeatures from "@/components/landing/CompactTrustFeatures";
+import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
 
-Наши ключевые преимущества и достижения:
-- Команда из 50+ дипломированных SEO-копирайтеров с профильным образованием и опытом 5+ лет
-- Гарантия 100% уникальности по Text.ru, Advego, eTXT с официальными отчетами
-- Экспресс-доставка от 24 часов с сохранением премиального качества
-- Глубокая SEO-оптимизация с анализом ТОП-10 конкурентов и семантическим ядром 500+ ключей
-- Круглосуточная техподдержка и бесплатные правки в течение 30 дней
-- Более 5000 успешно реализованных проектов с ростом конверсии клиентов на 40-180%
+Наши ключевые преимущества:
+- Команда из 50+ дипломированных SEO-копирайтеров с опытом 5+ лет
+- Гарантия 100% уникальности по Text.ru с официальными отчетами
+- Экспресс-доставка от 24 часов с сохранением качества
+- Глубокая SEO-оптимизация с анализом ТОП-10 конкурентов
+- Более 2000 успешных проектов с ростом конверсии клиентов на 40-180%
 
-Полная экосистема контент-маркетинга CopyPro Cloud:
+Полная экосистема контент-маркетинга:
+- SEO-статьи и органическое продвижение
+- Продающие лендинги и email-воронки
+- Контент для соцсетей и мессенджеров
+- Описания товаров для маркетплейсов
+- Корпоративный и B2B контент
 
-SEO-контент и органическое продвижение:
-- Экспертные SEO-статьи 2000-8000 знаков с LSI-оптимизацией
-- Кластерные страницы под высокочастотные запросы
-- Контент-планы на 6-12 месяцев с календарем публикаций
-- Техническое SEO-копирайтинг (Title, Description, H1-H6)
-
-Коммерческий контент и продажи:
-- Высококонверсионные лендинги с A/B тестированием
-- Продающие email-воронки и автоматизированные последовательности  
-- Скрипты для отделов продаж и колл-центров
-- Коммерческие предложения с конверсией до 15%
-
-Контент для цифровых каналов:
-- Стратегии контент-маркетинга для соцсетей (ВК, Telegram, YouTube)
-- Персонализированные email-рассылки с сегментацией аудитории
-- Контент для мессенджер-маркетинга (WhatsApp, Telegram-боты)
-- UGC-контент и инфлюенсер-коллаборации
-
-E-commerce и маркетплейсы:
-- Детальные описания товаров для Wildberries, Ozon, Яндекс.Маркет
-- SEO-категории для интернет-магазинов
-- Карточки товаров с высоким CTR и конверсией
-- A+ контент для Amazon и международных площадок
-
-Корпоративный и B2B контент:
-- Технические тексты и регламенты
-- Корпоративные блоги и thought leadership статьи  
-- Белые книги (white papers) и кейс-стади
-- Презентации для инвесторов и партнеров
-
-Специализированный контент:
-- Медицинские тексты (при участии врачей-консультантов)
-- Юридический контент (проверка практикующими юристами)
-- Финансовые материалы (соответствие требованиям ЦБ РФ)
-- IT и технологический контент
-
-География работы: Россия, СНГ, Европа, США
-Отраслевая экспертиза: IT, e-commerce, финансы, медицина, образование, недвижимость, производство, услуги
-
-Технологический стек и инструменты:
-- Семантические анализаторы: Serpstat, Ahrefs, SEMrush
-- Проверка уникальности: Text.ru, Advego, eTXT  
-- CRM интеграции: AmoCRM, Битрикс24, HubSpot
-- Аналитика: Google Analytics, Яндекс.Метрика, Hotjar
-
-Результаты наших клиентов (медианные показатели):
+Результаты наших клиентов:
 - Рост органического трафика на 120-300% за 6 месяцев
 - Увеличение конверсии лендингов на 40-180%
-- Повышение времени на сайте на 60-120%
-- Снижение показателя отказов на 25-45%
 - ROI контент-маркетинга 300-800%
 
-Закажите профессиональный копирайтинг на CopyPro Cloud уже сегодня и получите результат мирового уровня с гарантией качества!
+Закажите профессиональный копирайтинг на CopyPro Cloud!
 `;
 
 export default function Index() {
@@ -99,50 +43,32 @@ export default function Index() {
       {/* 1. HERO SECTION - Above the fold */}
       <ModernHeroSection />
       
-      {/* 2. TRUST & SOCIAL PROOF - Immediate credibility */}
+      {/* 2. SOCIAL PROOF - Immediate credibility */}
       <CompactSocialProofSection />
       
-      {/* 3. TRUST FEATURES - What makes us reliable */}
-      <CompactTrustFeatures />
-      
-      {/* 4. GUARANTEES - Remove risk and build confidence */}
-      <InteractiveGuaranteesSection />
-      
-      {/* 5. SERVICES OVERVIEW - What we offer */}
+      {/* 3. SERVICES - What we offer */}
       <ServicesCatalogSection />
       
-      {/* 6. PRICING - Clear value proposition */}
+      {/* 4. PRICING - Clear value proposition */}
       <ModernPricingSection />
+      
+      {/* 5. GUARANTEES - Remove risk and build confidence */}
+      <InteractiveGuaranteesSection />
+      
+      {/* 6. PORTFOLIO - Proof of results */}
+      <InnovativePortfolioSection />
       
       {/* 7. HOW IT WORKS - Simple process */}
       <ProcessSection />
       
-      {/* 8. PORTFOLIO SHOWCASE - Proof of results */}
-      <CaseStudiesSection />
-      <InnovativePortfolioSection />
-      
-      {/* 9. BENEFITS - Why choose us */}
-      <BenefitsSection />
-      <ExpertiseShowcaseSection />
-      
-      {/* 10. SOCIAL PROOF - Extended credibility */}
-      <ProfessionalStatsSection />
-      <TestimonialsSection />
-      
-      {/* 11. TEAM & EXPERTISE - Who we are */}
-      <TeamSection />
-      
-      {/* 12. FAQ - Address concerns */}
+      {/* 8. FAQ - Address concerns */}
       <FaqSection />
       
-      {/* 13. FINAL CTA & CONTACT */}
+      {/* 9. FINAL CTA & CONTACT */}
       <ContactSection />
       
-      {/* 14. NEWSLETTER - Lead capture */}
-      <NewsletterSection />
-      
-      {/* 15. SEO TEXT - Search engine optimization */}
-      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+      {/* 10. SEO TEXT - Search engine optimization */}
+      <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-slate-50/50 to-transparent">
         <SeoTextExpandable text={seoText} />
       </div>
       
