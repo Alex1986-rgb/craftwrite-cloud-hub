@@ -344,6 +344,183 @@ export type Database = {
           },
         ]
       }
+      conversion_funnel_analytics: {
+        Row: {
+          completed: boolean | null
+          conversion_rate: number | null
+          created_at: string
+          device_type: string | null
+          entered_at: string
+          exited_at: string | null
+          id: string
+          session_id: string
+          step_name: string
+          step_number: number
+          time_spent: number | null
+          traffic_source: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          conversion_rate?: number | null
+          created_at?: string
+          device_type?: string | null
+          entered_at?: string
+          exited_at?: string | null
+          id?: string
+          session_id: string
+          step_name: string
+          step_number: number
+          time_spent?: number | null
+          traffic_source?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          conversion_rate?: number | null
+          created_at?: string
+          device_type?: string | null
+          entered_at?: string
+          exited_at?: string | null
+          id?: string
+          session_id?: string
+          step_name?: string
+          step_number?: number
+          time_spent?: number | null
+          traffic_source?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      custom_reports: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          last_generated_at: string | null
+          report_config: Json
+          report_name: string
+          report_type: string
+          schedule: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          last_generated_at?: string | null
+          report_config: Json
+          report_name: string
+          report_type: string
+          schedule?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          last_generated_at?: string | null
+          report_config?: Json
+          report_name?: string
+          report_type?: string
+          schedule?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      customer_analytics: {
+        Row: {
+          avg_order_value: number | null
+          churn_probability: number | null
+          created_at: string
+          first_order_date: string | null
+          id: string
+          last_calculated_at: string | null
+          last_order_date: string | null
+          lifetime_value: number | null
+          satisfaction_score: number | null
+          segment: string | null
+          total_orders: number | null
+          total_spent: number | null
+          user_id: string
+        }
+        Insert: {
+          avg_order_value?: number | null
+          churn_probability?: number | null
+          created_at?: string
+          first_order_date?: string | null
+          id?: string
+          last_calculated_at?: string | null
+          last_order_date?: string | null
+          lifetime_value?: number | null
+          satisfaction_score?: number | null
+          segment?: string | null
+          total_orders?: number | null
+          total_spent?: number | null
+          user_id: string
+        }
+        Update: {
+          avg_order_value?: number | null
+          churn_probability?: number | null
+          created_at?: string
+          first_order_date?: string | null
+          id?: string
+          last_calculated_at?: string | null
+          last_order_date?: string | null
+          lifetime_value?: number | null
+          satisfaction_score?: number | null
+          segment?: string | null
+          total_orders?: number | null
+          total_spent?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      financial_analytics: {
+        Row: {
+          avg_order_value: number
+          conversion_rate: number
+          created_at: string
+          customer_acquisition_cost: number | null
+          date: string
+          id: string
+          lifetime_value: number | null
+          margin_percentage: number | null
+          orders_count: number
+          refund_rate: number | null
+          revenue: number
+          service_slug: string | null
+        }
+        Insert: {
+          avg_order_value?: number
+          conversion_rate?: number
+          created_at?: string
+          customer_acquisition_cost?: number | null
+          date: string
+          id?: string
+          lifetime_value?: number | null
+          margin_percentage?: number | null
+          orders_count?: number
+          refund_rate?: number | null
+          revenue?: number
+          service_slug?: string | null
+        }
+        Update: {
+          avg_order_value?: number
+          conversion_rate?: number
+          created_at?: string
+          customer_acquisition_cost?: number | null
+          date?: string
+          id?: string
+          lifetime_value?: number | null
+          margin_percentage?: number | null
+          orders_count?: number
+          refund_rate?: number | null
+          revenue?: number
+          service_slug?: string | null
+        }
+        Relationships: []
+      }
       generated_content_versions: {
         Row: {
           ai_model: string | null
@@ -941,6 +1118,36 @@ export type Database = {
         }
         Relationships: []
       }
+      realtime_kpis: {
+        Row: {
+          category: string | null
+          id: string
+          kpi_name: string
+          kpi_target: number | null
+          kpi_value: number
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          id?: string
+          kpi_name: string
+          kpi_target?: number | null
+          kpi_value: number
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          id?: string
+          kpi_name?: string
+          kpi_target?: number | null
+          kpi_value?: number
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       seo_generation_tasks: {
         Row: {
           completed_at: string | null
@@ -1128,6 +1335,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      service_performance_analytics: {
+        Row: {
+          avg_completion_time: unknown | null
+          avg_quality_rating: number | null
+          client_satisfaction: number | null
+          completed_orders: number | null
+          created_at: string
+          date: string
+          id: string
+          margin: number | null
+          orders_count: number | null
+          repeat_rate: number | null
+          revenue: number | null
+          service_slug: string
+        }
+        Insert: {
+          avg_completion_time?: unknown | null
+          avg_quality_rating?: number | null
+          client_satisfaction?: number | null
+          completed_orders?: number | null
+          created_at?: string
+          date: string
+          id?: string
+          margin?: number | null
+          orders_count?: number | null
+          repeat_rate?: number | null
+          revenue?: number | null
+          service_slug: string
+        }
+        Update: {
+          avg_completion_time?: unknown | null
+          avg_quality_rating?: number | null
+          client_satisfaction?: number | null
+          completed_orders?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          margin?: number | null
+          orders_count?: number | null
+          repeat_rate?: number | null
+          revenue?: number | null
+          service_slug?: string
+        }
+        Relationships: []
       }
       smart_order_analytics: {
         Row: {
@@ -1384,6 +1636,10 @@ export type Database = {
           p_entity_id?: string
           p_details?: Json
         }
+        Returns: undefined
+      }
+      update_realtime_kpis: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
     }
