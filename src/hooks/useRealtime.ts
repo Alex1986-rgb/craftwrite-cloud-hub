@@ -35,38 +35,38 @@ export function useRealtime({
     try {
       const channel = supabase.channel(channelName);
 
-      // Исправленный синтаксис для подписки на postgres_changes
-      const subscription = channel.on(
-        'postgres_changes',
-        {
-          event: event,
-          schema: 'public',
-          table: table,
-          ...(filter && { filter })
-        },
-        (payload) => {
-          console.log('Realtime event:', payload);
-          
-          switch (payload.eventType) {
-            case 'INSERT':
-              onInsert?.(payload);
-              break;
-            case 'UPDATE':
-              onUpdate?.(payload);
-              break;
-            case 'DELETE':
-              onDelete?.(payload);
-              break;
+      // Правильный синтаксис для подписки на postgres_changes
+      channel
+        .on(
+          'postgres_changes' as any,
+          {
+            event: event,
+            schema: 'public',
+            table: table,
+            ...(filter && { filter })
+          } as any,
+          (payload: any) => {
+            console.log('Realtime event:', payload);
+            
+            switch (payload.eventType) {
+              case 'INSERT':
+                onInsert?.(payload);
+                break;
+              case 'UPDATE':
+                onUpdate?.(payload);
+                break;
+              case 'DELETE':
+                onDelete?.(payload);
+                break;
+            }
           }
-        }
-      );
-
-      channel.subscribe((status) => {
-        setIsConnected(status === 'SUBSCRIBED');
-        if (status === 'CHANNEL_ERROR') {
-          onError?.('Failed to subscribe to realtime channel');
-        }
-      });
+        )
+        .subscribe((status) => {
+          setIsConnected(status === 'SUBSCRIBED');
+          if (status === 'CHANNEL_ERROR') {
+            onError?.('Failed to subscribe to realtime channel');
+          }
+        });
 
       channelRef.current = channel;
 
