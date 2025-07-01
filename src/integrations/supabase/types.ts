@@ -1129,6 +1129,51 @@ export type Database = {
           },
         ]
       }
+      smart_order_analytics: {
+        Row: {
+          created_at: string
+          event_type: string
+          form_data: Json | null
+          id: string
+          session_id: string
+          step_name: string
+          step_number: number
+          time_spent: number | null
+          timestamp: string
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          form_data?: Json | null
+          id?: string
+          session_id: string
+          step_name: string
+          step_number: number
+          time_spent?: number | null
+          timestamp?: string
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          form_data?: Json | null
+          id?: string
+          session_id?: string
+          step_name?: string
+          step_number?: number
+          time_spent?: number | null
+          timestamp?: string
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       system_settings: {
         Row: {
           created_at: string | null
@@ -1308,6 +1353,18 @@ export type Database = {
       generate_order_prompt: {
         Args: { order_data: Json }
         Returns: string
+      }
+      get_funnel_analytics: {
+        Args: { start_date?: string; end_date?: string }
+        Returns: {
+          step_number: number
+          step_name: string
+          total_entries: number
+          total_exits: number
+          total_completions: number
+          average_time_spent: number
+          conversion_rate: number
+        }[]
       }
       get_user_role: {
         Args: { user_id: string }
