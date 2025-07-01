@@ -6,19 +6,23 @@ interface StructuredDataProps {
   id?: string;
 }
 
-export function StructuredData({ data, id = 'structured-data' }: StructuredDataProps) {
+export default function StructuredData({ data, id = 'structured-data' }: StructuredDataProps) {
   useEffect(() => {
-    // Remove previous structured data
+    // Remove existing script if it exists
     const existingScript = document.getElementById(id);
     if (existingScript) {
       existingScript.remove();
     }
 
-    // Add new structured data
+    // Create new script element
     const script = document.createElement('script');
     script.id = id;
     script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(Array.isArray(data) ? data : [data]);
+    
+    // Handle both single object and array
+    const jsonData = Array.isArray(data) ? data : [data];
+    script.textContent = JSON.stringify(jsonData, null, 0);
+    
     document.head.appendChild(script);
 
     return () => {
@@ -31,5 +35,3 @@ export function StructuredData({ data, id = 'structured-data' }: StructuredDataP
 
   return null;
 }
-
-export default StructuredData;

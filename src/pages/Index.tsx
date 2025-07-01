@@ -1,4 +1,3 @@
-
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import FaqSection from "@/components/landing/FaqSection";
@@ -15,6 +14,9 @@ import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
+import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useEffect } from "react";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -42,6 +44,21 @@ CopyPro Cloud — ведущая платформа профессиональн
 `;
 
 export default function Index() {
+  const { trackEvent } = useAnalytics();
+
+  useEffect(() => {
+    // Track landing page view with additional context
+    trackEvent({
+      action: 'landing_page_view',
+      category: 'Page View',
+      label: 'Home Page',
+      custom_parameters: {
+        page_type: 'landing',
+        user_type: 'anonymous'
+      }
+    });
+  }, [trackEvent]);
+
   return (
     <main className="relative overflow-hidden">
       <UnifiedHeader />
@@ -91,6 +108,7 @@ export default function Index() {
       <SupportWidget />
       <HumanLikeAiAssistant />
       <FloatingChatButton />
+      <PWAInstallPrompt />
       
       <EnhancedFooter />
     </main>
