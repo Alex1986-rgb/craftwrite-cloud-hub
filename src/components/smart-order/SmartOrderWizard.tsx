@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +14,11 @@ import PricingStep from './steps/PricingStep';
 import ContactStep from './steps/ContactStep';
 import SmartPriceCalculator from './SmartPriceCalculator';
 
-// Import the new integration hook
+// Import analytics components
+import { AnalyticsProvider, useAnalytics } from './analytics/AnalyticsProvider';
+import FunnelAnalyticsDisplay from './analytics/FunnelAnalyticsDisplay';
+
+// Import the integration hook
 import { useSmartOrderIntegration, SmartOrderData } from '@/hooks/useSmartOrderIntegration';
 
 interface SmartOrderWizardProps {
@@ -32,13 +35,15 @@ const STEPS = [
   { id: 5, title: 'Контакты', description: 'Как с вами связаться', icon: Clock }
 ];
 
-export default function SmartOrderWizard({ 
+function SmartOrderWizardContent({ 
   preselectedService, 
   onOrderComplete, 
   onClose 
 }: SmartOrderWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const { createSmartOrder, loading } = useSmartOrderIntegration();
+  const analytics = useAnalytics();
+  
   const [orderData, setOrderData] = useState<Partial<SmartOrderData>>({
     serviceType: preselectedService || '',
     characterCount: 3000,
@@ -81,18 +86,61 @@ export default function SmartOrderWizard({
     }
   }, []);
 
-  const handleNext = () => {
+  // Обновленный handleNext с аналитикой
+  const handleNext = async () => {
     if (validateCurrentStep()) {
-      setCurrentStep(prev => Math.min(STEPS.length, prev + 1));
+      // Отмечаем текущий шаг как завершённый
+      await analytics.trackStepExit(currentStep, true);
+      
+      const nextStep = Math.min(STEPS.length, currentStep + 1);
+      setCurrentStep(nextStep);
+      
+      // Отслеживаем вход на следующий шаг
+      if (nextStep <= STEPS.length) {
+        await analytics.trackStepEnter(nextStep);
+      }
+      
       toast.success(`Шаг ${currentStep} завершён`, {
-        description: `Переходим к шагу ${currentStep + 1}`
+        description: `Переходим к шагу ${nextStep}`
       });
     }
   };
 
-  const handlePrev = () => {
-    setCurrentStep(prev => Math.max(1, prev - 1));
+  // Обновленный handlePrev с аналитикой  
+  const handlePrev = async () => {
+    await analytics.trackStepExit(currentStep, false);
+    
+    const prevStep = Math.max(1, currentStep - 1);
+    setCurrentStep(prevStep);
+    
+    await analytics.trackStepEnter(prevStep);
   };
+
+  // Инициализация аналитики при монтировании
+  useEffect(() => {
+    analytics.trackStepEnter(1);
+    
+    // Обработчик закрытия формы
+    const handleFormClose = () => {
+      if (currentStep < 5) {
+        analytics.trackFormAbandon(currentStep, orderData);
+      }
+    };
+
+    // Отслеживание при закрытии компонента
+    return () => {
+      if (currentStep < 5) {
+        handleFormClose();
+      }
+    };
+  }, []);
+
+  // Отслеживание изменений шага
+  useEffect(() => {
+    if (currentStep > 1) {
+      analytics.trackStepEnter(currentStep);
+    }
+  }, [currentStep]);
 
   const validateCurrentStep = (): boolean => {
     switch (currentStep) {
@@ -145,7 +193,9 @@ export default function SmartOrderWizard({
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (!validateCurrentStep()) {
       return;
     }
@@ -165,6 +215,9 @@ export default function SmartOrderWizard({
     }
 
     try {
+      // Отслеживаем попытку отправки формы
+      await analytics.trackFormSubmit(orderData);
+      
       const result = await createSmartOrder(orderData as SmartOrderData);
       
       if (result.success && result.order) {
@@ -263,7 +316,16 @@ export default function SmartOrderWizard({
               <p className="opacity-90">Заполните форму за 3 минуты и получите точную цену</p>
             </div>
             {onClose && (
-              <Button variant="ghost" onClick={onClose} className="text-white hover:bg-white/20">
+              <Button 
+                variant="ghost" 
+                onClick={async () => {
+                  if (currentStep < 5) {
+                    await analytics.trackFormAbandon(currentStep, orderData);
+                  }
+                  onClose();
+                }} 
+                className="text-white hover:bg-white/20"
+              >
                 ✕
               </Button>
             )}
@@ -323,8 +385,8 @@ export default function SmartOrderWizard({
           </Card>
         </div>
 
-        {/* Price calculator sidebar */}
-        <div className="lg:col-span-1">
+        {/* Sidebar with price calculator and analytics */}
+        <div className="lg:col-span-1 space-y-6">
           <SmartPriceCalculator
             serviceType={orderData.serviceType || ''}
             characterCount={orderData.characterCount || 3000}
@@ -333,6 +395,12 @@ export default function SmartOrderWizard({
             onPriceUpdate={(price, breakdown) => 
               updateOrderData({ totalPrice: price, basePrice: breakdown.basePrice })
             }
+          />
+          
+          {/* Analytics Display */}
+          <FunnelAnalyticsDisplay 
+            sessionMetrics={analytics.getSessionMetrics()}
+            showDetails={false}
           />
         </div>
       </div>
@@ -376,5 +444,13 @@ export default function SmartOrderWizard({
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SmartOrderWizard(props: SmartOrderWizardProps) {
+  return (
+    <AnalyticsProvider>
+      <SmartOrderWizardContent {...props} />
+    </AnalyticsProvider>
   );
 }
