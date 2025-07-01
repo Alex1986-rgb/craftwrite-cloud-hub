@@ -15,46 +15,13 @@ import PricingStep from './steps/PricingStep';
 import ContactStep from './steps/ContactStep';
 import SmartPriceCalculator from './SmartPriceCalculator';
 
+// Import the new integration hook
+import { useSmartOrderIntegration, SmartOrderData } from '@/hooks/useSmartOrderIntegration';
+
 interface SmartOrderWizardProps {
   preselectedService?: string;
   onOrderComplete?: (orderId: string) => void;
   onClose?: () => void;
-}
-
-export interface OrderData {
-  // Service details
-  serviceType: string;
-  serviceSubtype: string;
-  
-  // Project details
-  projectTitle: string;
-  targetAudience: string;
-  projectGoals: string;
-  competitorUrls: string[];
-  
-  // Content requirements
-  characterCount: number;
-  keywordsMode: 'client' | 'auto' | 'ai';
-  keywords: string[];
-  toneOfVoice: string;
-  contentStructure: string[];
-  
-  // Pricing
-  basePrice: number;
-  totalPrice: number;
-  urgencyMultiplier: number;
-  additionalServices: string[];
-  
-  // Contact
-  contactName: string;
-  contactEmail: string;
-  contactPhone: string;
-  contactCompany: string;
-  
-  // Technical
-  deadline: string;
-  specialRequirements: string;
-  previousExperience: boolean;
 }
 
 const STEPS = [
@@ -71,8 +38,8 @@ export default function SmartOrderWizard({
   onClose 
 }: SmartOrderWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [orderData, setOrderData] = useState<Partial<OrderData>>({
+  const { createSmartOrder, loading } = useSmartOrderIntegration();
+  const [orderData, setOrderData] = useState<Partial<SmartOrderData>>({
     serviceType: preselectedService || '',
     characterCount: 3000,
     keywordsMode: 'auto',
@@ -97,13 +64,19 @@ export default function SmartOrderWizard({
   useEffect(() => {
     const savedData = localStorage.getItem('smart-order-draft');
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      const timeDiff = Date.now() - parsed.timestamp;
-      // Load if saved within last 24 hours
-      if (timeDiff < 24 * 60 * 60 * 1000) {
-        setOrderData(parsed);
-        setCurrentStep(parsed.currentStep || 1);
-        toast.success('Восстановлены сохранённые данные');
+      try {
+        const parsed = JSON.parse(savedData);
+        const timeDiff = Date.now() - parsed.timestamp;
+        // Load if saved within last 24 hours
+        if (timeDiff < 24 * 60 * 60 * 1000) {
+          setOrderData(parsed);
+          setCurrentStep(parsed.currentStep || 1);
+          toast.success('✨ Восстановлены сохранённые данные', {
+            description: 'Продолжите оформление заказа с того места, где остановились'
+          });
+        }
+      } catch (error) {
+        console.error('Error loading saved data:', error);
       }
     }
   }, []);
@@ -111,6 +84,9 @@ export default function SmartOrderWizard({
   const handleNext = () => {
     if (validateCurrentStep()) {
       setCurrentStep(prev => Math.min(STEPS.length, prev + 1));
+      toast.success(`Шаг ${currentStep} завершён`, {
+        description: `Переходим к шагу ${currentStep + 1}`
+      });
     }
   };
 
@@ -121,15 +97,49 @@ export default function SmartOrderWizard({
   const validateCurrentStep = (): boolean => {
     switch (currentStep) {
       case 1:
-        return !!orderData.serviceType;
+        if (!orderData.serviceType) {
+          toast.error('Выберите тип услуги');
+          return false;
+        }
+        return true;
       case 2:
-        return !!(orderData.projectTitle && orderData.targetAudience);
+        if (!orderData.projectTitle) {
+          toast.error('Укажите название проекта');
+          return false;
+        }
+        if (!orderData.targetAudience) {
+          toast.error('Опишите целевую аудиторию');
+          return false;
+        }
+        return true;
       case 3:
-        return orderData.characterCount! > 0;
+        if (!orderData.characterCount || orderData.characterCount <= 0) {
+          toast.error('Укажите корректный объем текста');
+          return false;
+        }
+        return true;
       case 4:
-        return orderData.totalPrice! > 0;
+        if (!orderData.totalPrice || orderData.totalPrice <= 0) {
+          toast.error('Ошибка расчёта стоимости');
+          return false;
+        }
+        return true;
       case 5:
-        return !!(orderData.contactName && orderData.contactEmail);
+        if (!orderData.contactName) {
+          toast.error('Укажите ваше имя');
+          return false;
+        }
+        if (!orderData.contactEmail) {
+          toast.error('Укажите email для связи');
+          return false;
+        }
+        // Простая валидация email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(orderData.contactEmail)) {
+          toast.error('Укажите корректный email адрес');
+          return false;
+        }
+        return true;
       default:
         return true;
     }
@@ -137,31 +147,38 @@ export default function SmartOrderWizard({
 
   const handleSubmit = async () => {
     if (!validateCurrentStep()) {
-      toast.error('Пожалуйста, заполните все обязательные поля');
       return;
     }
 
-    setLoading(true);
-    try {
-      // Simulate order creation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const orderId = `order_${Date.now()}`;
-      localStorage.removeItem('smart-order-draft');
-      
-      toast.success('Заказ успешно создан!', {
-        description: 'Мы свяжемся с вами в течение 30 минут'
+    // Проверяем, что все обязательные поля заполнены
+    const requiredFields = [
+      'serviceType', 'projectTitle', 'targetAudience', 'contactName', 'contactEmail'
+    ];
+    
+    const missingFields = requiredFields.filter(field => !orderData[field as keyof SmartOrderData]);
+    
+    if (missingFields.length > 0) {
+      toast.error('Заполните все обязательные поля', {
+        description: `Не заполнены: ${missingFields.join(', ')}`
       });
+      return;
+    }
+
+    try {
+      const result = await createSmartOrder(orderData as SmartOrderData);
       
-      onOrderComplete?.(orderId);
+      if (result.success && result.order) {
+        onOrderComplete?.(result.order.id);
+      }
     } catch (error) {
-      toast.error('Ошибка создания заказа');
-    } finally {
-      setLoading(false);
+      console.error('Order submission error:', error);
+      toast.error('Ошибка отправки заказа', {
+        description: 'Проверьте соединение с интернетом и попробуйте снова'
+      });
     }
   };
 
-  const updateOrderData = (updates: Partial<OrderData>) => {
+  const updateOrderData = (updates: Partial<SmartOrderData>) => {
     setOrderData(prev => ({ ...prev, ...updates }));
   };
 
@@ -350,7 +367,7 @@ export default function SmartOrderWizard({
                   disabled={loading || !validateCurrentStep()}
                   className="bg-gradient-to-r from-green-600 to-emerald-600 flex items-center gap-2"
                 >
-                  {loading ? 'Создание заказа...' : 'Отправить заказ'}
+                  {loading ? 'Создаём заказ...' : 'Отправить заказ'}
                   {!loading && <CheckCircle className="w-4 h-4" />}
                 </Button>
               )}
