@@ -44,6 +44,8 @@ const TermsOfServicePage = lazy(() => import('@/pages/TermsOfServicePage'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const InteractivePage = lazy(() => import('@/pages/InteractivePage'));
 const FAQ = lazy(() => import('@/pages/FAQ'));
+const Careers = lazy(() => import('@/pages/Careers'));
+const Partners = lazy(() => import('@/pages/Partners'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,8 +81,8 @@ function App() {
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/interactive" element={<InteractivePage />} />
                   <Route path="/faq" element={<FAQ />} />
-                  <Route path="/careers" element={lazy(() => import('@/pages/Careers'))} />
-                  <Route path="/partners" element={lazy(() => import('@/pages/Partners'))} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/partners" element={<Partners />} />
                   
                   {/* Order pages */}
                   <Route path="/order" element={<Order />} />
