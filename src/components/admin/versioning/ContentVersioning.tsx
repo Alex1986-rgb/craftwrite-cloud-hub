@@ -10,7 +10,7 @@ import {
   Clock,
   User,
   FileText,
-  Compare,
+  GitCompare,
   Download,
   ArrowLeft,
   Star,
@@ -227,7 +227,7 @@ export default function ContentVersioning() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Compare className="h-5 w-5" />
+                <GitCompare className="h-5 w-5" />
                 Сравнение версий
               </CardTitle>
               <Button 
@@ -367,7 +367,7 @@ export default function ContentVersioning() {
                             size="sm"
                             onClick={() => compareVersions(version.id, versions[index + 1].id)}
                           >
-                            <Compare className="h-4 w-4" />
+                            <GitCompare className="h-4 w-4" />
                           </Button>
                         )}
                       </div>

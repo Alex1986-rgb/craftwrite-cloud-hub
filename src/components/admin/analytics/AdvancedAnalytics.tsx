@@ -462,7 +462,7 @@ export default function AdvancedAnalytics() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span>VIP клиенты (>100k₽)</span>
+                    <span>VIP клиенты (&gt;100k₽)</span>
                     <div className="flex items-center gap-2">
                       <Progress value={15} className="w-32 h-2" />
                       <span className="text-sm">15%</span>
