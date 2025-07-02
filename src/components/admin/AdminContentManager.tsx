@@ -13,6 +13,7 @@ import ABTestManager from './ab-testing/ABTestManager';
 import NotificationSystem from './notifications/NotificationSystem';
 import AdvancedAnalytics from './analytics/AdvancedAnalytics';
 import ContentVersioning from './versioning/ContentVersioning';
+import SystemTester from './SystemTester';
 import { 
   FileText, 
   Eye, 
@@ -184,13 +185,18 @@ export default function AdminContentManager() {
         </Button>
       </div>
 
-      <Tabs defaultValue="generated" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="test" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="test">Тестирование</TabsTrigger>
           <TabsTrigger value="monitor">Мониторинг</TabsTrigger>
           <TabsTrigger value="quality">Качество</TabsTrigger>
           <TabsTrigger value="analytics">Аналитика</TabsTrigger>
           <TabsTrigger value="automation">Автоматизация</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="test">
+          <SystemTester />
+        </TabsContent>
 
         <TabsContent value="monitor">
           <Tabs defaultValue="monitoring" className="space-y-4">

@@ -21,6 +21,7 @@ import { lazy, Suspense } from "react";
 const UniversalContentManager = lazy(() => import("@/components/admin/content/UniversalContentManager"));
 const PromptManager = lazy(() => import("@/components/admin/prompts/PromptManager"));
 const DynamicPricingManager = lazy(() => import("@/components/admin/pricing/DynamicPricingManager"));
+const AdminContentManager = lazy(() => import("@/components/admin/AdminContentManager"));
 
 function AdminContent() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -61,6 +62,7 @@ function AdminContent() {
               <Route path="/ai-generator" element={<AITextGenerator />} />
               <Route path="/page-editor" element={<PageEditor />} />
               <Route path="/content-manager" element={<UniversalContentManager />} />
+              <Route path="/automation" element={<AdminContentManager />} />
               <Route path="/prompts" element={<PromptManager />} />
               <Route path="/pricing" element={<DynamicPricingManager />} />
               <Route path="/payments" element={<PaymentManager />} />

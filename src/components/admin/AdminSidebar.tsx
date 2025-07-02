@@ -13,7 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  Zap
+  Zap,
+  Cog
 } from "lucide-react";
 import { UnifiedButton } from "@/components/unified";
 import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
@@ -32,6 +33,7 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
     { path: "/admin/orders", icon: ShoppingCart, label: "Заказы", badge: "12" },
     { path: "/admin/clients", icon: Users, label: "Клиенты", badge: null },
     { path: "/admin/content-manager", icon: Edit, label: "Контент-менеджер", badge: "NEW" },
+    { path: "/admin/automation", icon: Cog, label: "Автоматизация", badge: "AI" },
     { path: "/admin/prompts", icon: Bot, label: "Промпты", badge: "HOT" },
     { path: "/admin/pricing", icon: CreditCard, label: "Ценообразование", badge: null },
     { path: "/admin/ai-generator", icon: Bot, label: "AI Генератор", badge: null },
