@@ -23,6 +23,7 @@ const PromptManager = lazy(() => import("@/components/admin/prompts/PromptManage
 const DynamicPricingManager = lazy(() => import("@/components/admin/pricing/DynamicPricingManager"));
 const AdminContentManager = lazy(() => import("@/components/admin/AdminContentManager"));
 const LaunchDashboard = lazy(() => import("@/components/admin/LaunchDashboard"));
+const ProductionLaunchManager = lazy(() => import("@/components/admin/ProductionLaunchManager"));
 const SEOSetupManager = lazy(() => import("@/components/admin/SEOSetupManager"));
 const MarketingCampaignManager = lazy(() => import("@/components/admin/MarketingCampaignManager"));
 
@@ -60,7 +61,7 @@ function AdminContent() {
           }>
             <Routes>
               <Route path="/" element={<AdminDashboard />} />
-              <Route path="/launch" element={<LaunchDashboard />} />
+              <Route path="/launch" element={<ProductionLaunchManager />} />
               <Route path="/seo-setup" element={<SEOSetupManager />} />
               <Route path="/marketing" element={<MarketingCampaignManager />} />
               <Route path="/orders" element={<OrderManagement />} />

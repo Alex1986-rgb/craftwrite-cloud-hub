@@ -33,7 +33,7 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
 
   const menuItems = [
     { path: "/admin", icon: Home, label: "Dashboard", badge: null },
-    { path: "/admin/launch", icon: Rocket, label: "🚀 Запуск системы", badge: "READY" },
+    { path: "/admin/launch", icon: Rocket, label: "🚀 Production Launch", badge: "READY" },
     { path: "/admin/seo-setup", icon: Search, label: "SEO & Аналитика", badge: "NEW" },
     { path: "/admin/marketing", icon: Megaphone, label: "Маркетинг", badge: "LAUNCH" },
     { path: "/admin/orders", icon: ShoppingCart, label: "Заказы", badge: "2" },

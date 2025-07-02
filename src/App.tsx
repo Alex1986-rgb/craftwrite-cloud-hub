@@ -10,6 +10,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { performanceMonitor } from "@/utils/performanceUtils";
 import { useEffect } from "react";
+import AnalyticsTracker from "@/components/common/AnalyticsTracker";
 
 // Import all pages
 import Index from "./pages/Index";
@@ -78,6 +79,7 @@ function App() {
             <UnifiedAuthProvider>
               <Router>
                 <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20">
+                  <AnalyticsTracker />
                   <Routes>
                     {/* Main pages */}
                     <Route path="/" element={<Index />} />
