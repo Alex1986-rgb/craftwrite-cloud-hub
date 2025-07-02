@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import OrderProcessingDebug from './OrderProcessingDebug';
+import TestOrderGenerator from './TestOrderGenerator';
+import OrderProcessingMonitor from './OrderProcessingMonitor';
 import { 
   FileText, 
   Eye, 
@@ -179,6 +181,12 @@ export default function AdminContentManager() {
 
       <Tabs defaultValue="generated" className="space-y-6">
         <TabsList>
+          <TabsTrigger value="monitor">
+            Мониторинг системы
+          </TabsTrigger>
+          <TabsTrigger value="generator">
+            Тестовые заказы
+          </TabsTrigger>
           <TabsTrigger value="generated">
             Сгенерированный контент ({generatedContent.length})
           </TabsTrigger>
@@ -192,6 +200,14 @@ export default function AdminContentManager() {
             Отладка системы
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="monitor">
+          <OrderProcessingMonitor />
+        </TabsContent>
+
+        <TabsContent value="generator">
+          <TestOrderGenerator />
+        </TabsContent>
 
         <TabsContent value="generated" className="space-y-4">
           <div className="flex gap-4">
