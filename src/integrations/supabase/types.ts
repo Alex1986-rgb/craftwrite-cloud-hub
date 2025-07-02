@@ -1772,6 +1772,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_trigger_health: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          trigger_exists: boolean
+          function_exists: boolean
+          recent_executions: number
+          last_error: string
+        }[]
+      }
       create_notification: {
         Args: {
           p_user_id: string
