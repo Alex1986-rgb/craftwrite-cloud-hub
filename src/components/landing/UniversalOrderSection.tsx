@@ -117,14 +117,30 @@ export default function UniversalOrderSection() {
       return;
     }
 
-    // Имитация процесса создания сметы с задержкой
+    console.log('Creating estimate with data:', {
+      serviceType: selectedServiceType,
+      formData,
+      technicalTaskData
+    });
+
+    // Проверяем наличие необходимых данных
+    if (!formData.details.trim()) {
+      toast({
+        title: "Ошибка",
+        description: "Заполните описание задачи",
+        variant: "destructive"
+      });
+      return;
+    }
+
     toast({
       title: "Создание сметы...",
       description: "Анализируем техническое задание"
     });
 
+    // Создаем полную смету с всеми необходимыми данными
     const estimate = {
-      serviceType: selectedServiceType?.id || '',
+      serviceType: selectedServiceType.id,
       projectDetails: formData.details,
       keywords: technicalTaskData.keywords || [],
       lsiKeywords: technicalTaskData.lsiKeywords || [],
@@ -132,14 +148,22 @@ export default function UniversalOrderSection() {
       totalWordCount: technicalTaskData.totalWordCount || 3000,
       targetAudience: technicalTaskData.targetAudience || '',
       competitorUrls: technicalTaskData.competitorUrls || [],
+      contentGoals: technicalTaskData.contentGoals || '',
       additionalServices: [],
-      urgencyMultiplier: 1
+      urgencyMultiplier: 1,
+      // Добавляем контактную информацию
+      contactInfo: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone
+      }
     };
     
     // Небольшая задержка для показа процесса
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setEstimateData(estimate);
+    console.log('Estimate created successfully:', estimate);
     
     toast({
       title: "Смета создана!",
@@ -525,12 +549,30 @@ export default function UniversalOrderSection() {
 
             {/* Step 5: Detailed Estimate */}
             {currentStep === 5 && estimateData && (
-              <ModernDetailedEstimate
-                {...estimateData}
-                onEdit={() => setCurrentStep(4)}
-                onApprove={handleEstimateApprove}
-                onPayment={handleFormSubmit}
-              />
+              <div className="space-y-6">
+                <div className="text-center space-y-2 mb-6">
+                  <h3 className="text-2xl font-semibold">Детальная смета проекта</h3>
+                  <p className="text-muted-foreground">
+                    Ознакомьтесь с планом работ и стоимостью
+                  </p>
+                </div>
+                
+                <ModernDetailedEstimate
+                  serviceType={estimateData.serviceType}
+                  projectDetails={estimateData.projectDetails}
+                  keywords={estimateData.keywords}
+                  lsiKeywords={estimateData.lsiKeywords}
+                  contentStructure={estimateData.contentStructure}
+                  totalWordCount={estimateData.totalWordCount}
+                  targetAudience={estimateData.targetAudience}
+                  competitorUrls={estimateData.competitorUrls}
+                  additionalServices={estimateData.additionalServices}
+                  urgencyMultiplier={estimateData.urgencyMultiplier}
+                  onEdit={() => setCurrentStep(4)}
+                  onApprove={handleEstimateApprove}
+                  onPayment={handleFormSubmit}
+                />
+              </div>
             )}
           </CardContent>
         </Card>

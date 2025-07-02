@@ -37,7 +37,7 @@ export default function ModernTechnicalTaskStep({
   const [totalWordCount, setTotalWordCount] = useState(formData.totalWordCount || 3000);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
 
-  // Auto-save functionality with debounce
+  // Auto-save functionality with optimized debounce
   useEffect(() => {
     if (!autoSaveEnabled) return;
     
@@ -52,12 +52,22 @@ export default function ModernTechnicalTaskStep({
         totalWordCount
       };
       
-      // Only save if there's actual data
-      if (keywords.length > 0 || targetAudience.trim() || contentGoals.trim()) {
+      // Only save if there's meaningful data
+      const hasData = keywords.length > 0 || 
+                     targetAudience.trim().length > 10 || 
+                     contentGoals.trim().length > 10 ||
+                     contentStructure.length > 0;
+                     
+      if (hasData) {
         onUpdate(updatedData);
-        console.log('Auto-saved technical task data');
+        console.log('Auto-saved technical task data:', {
+          keywords: keywords.length,
+          targetAudience: targetAudience.length,
+          contentGoals: contentGoals.length,
+          sections: contentStructure.length
+        });
       }
-    }, 2000); // Увеличили время до 2 секунд для меньшего количества сохранений
+    }, 5000); // Увеличили до 5 секунд для существенного уменьшения автосохранений
 
     return () => clearTimeout(timeoutId);
   }, [keywords, lsiKeywords, contentStructure, competitorUrls, targetAudience, contentGoals, totalWordCount, autoSaveEnabled, onUpdate]);
