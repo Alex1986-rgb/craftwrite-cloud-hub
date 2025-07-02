@@ -88,14 +88,14 @@ export function useUnifiedOrderForm({
   const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return Boolean(formData.name.trim() && formData.email.trim() && formData.phone.trim());
-      case 2:
-        // Если у нас уже есть выбранная услуга, автоматически проходим валидацию
+        // Step 1: Service selection is handled automatically in UniversalOrderSection
         return Boolean(formData.service.trim() || serviceTitle || selectedPackage);
-      case 3:
+      case 2:
+        // Step 2: Task description is required
         return Boolean(formData.details.trim());
-      case 4:
-        return true;
+      case 3:
+        // Step 3: Contact info is required
+        return Boolean(formData.name.trim() && formData.email.trim() && formData.phone.trim());
       default:
         return true;
     }

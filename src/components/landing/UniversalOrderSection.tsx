@@ -18,45 +18,38 @@ interface ServiceType {
 
 const SERVICE_TYPES: ServiceType[] = [
   {
-    id: "seo-article",
-    title: "Статья для сайта или блога",
-    description: "SEO-оптимизированная статья для привлечения клиентов",
-    examples: ["Статья в блог", "Экспертная статья", "Обзор товаров"],
+    id: "article",
+    title: "Статья или обзор",
+    description: "Для привлечения клиентов на сайт",
+    examples: ["Статья в блог", "Обзор товаров", "Экспертный материал"],
     icon: "📝"
   },
   {
-    id: "landing-page",
-    title: "Продающая страница",
-    description: "Убеждающий текст для продажи товара или услуги",
-    examples: ["Лендинг", "Продающее письмо", "Коммерческое предложение"],
+    id: "selling-text",
+    title: "Продающий текст",
+    description: "Чтобы убедить купить ваш товар или услугу",
+    examples: ["Страница товара", "Коммерческое предложение", "Презентация"],
     icon: "💰"
   },
   {
-    id: "website-content",
-    title: "Контент для сайта",
-    description: "Тексты для разделов сайта и карточек товаров",
-    examples: ["О компании", "Описания услуг", "Карточки товаров"],
-    icon: "🌐"
-  },
-  {
-    id: "social-content",
-    title: "Контент для соцсетей",
-    description: "Посты, рекламные материалы и контент-планы",
-    examples: ["Посты ВКонтакте", "Telegram-контент", "Instagram-посты"],
+    id: "social-posts",
+    title: "Посты для соцсетей",
+    description: "Контент для ваших групп и каналов",
+    examples: ["Посты ВК", "Telegram-посты", "Instagram-контент"],
     icon: "📱"
   },
   {
-    id: "email-marketing",
-    title: "Email-рассылки",
-    description: "Письма для автоворонок и рассылок",
-    examples: ["Приветственная серия", "Продающие письма", "Реактивации"],
-    icon: "📧"
+    id: "website-texts",
+    title: "Тексты для сайта",
+    description: "Разделы сайта и описания",
+    examples: ["О компании", "Услуги", "Карточки товаров"],
+    icon: "🌐"
   },
   {
     id: "other",
-    title: "Другое",
-    description: "Нестандартная задача или комплексный проект",
-    examples: ["Презентации", "Сценарии", "Комплексный проект"],
+    title: "Что-то другое",
+    description: "Опишете свою задачу подробнее",
+    examples: ["Email-письма", "Презентации", "Нестандартная задача"],
     icon: "🎯"
   }
 ];
@@ -117,15 +110,70 @@ export default function UniversalOrderSection() {
     if (!selectedServiceType) return 3000;
     
     const basePrices: Record<string, number> = {
-      "seo-article": 5000,
-      "landing-page": 8000,
-      "website-content": 4000,
-      "social-content": 3000,
-      "email-marketing": 6000,
-      "other": 5000
+      "article": 4000,
+      "selling-text": 6000,
+      "social-posts": 2500,
+      "website-texts": 3500,
+      "other": 4500
     };
     
-    return basePrices[selectedServiceType.id] || 5000;
+    const basePrice = basePrices[selectedServiceType.id] || 4000;
+    
+    // Adjust price based on details length (rough complexity estimation)
+    const detailsLength = formData.details.length;
+    let multiplier = 1;
+    
+    if (detailsLength > 500) multiplier = 1.3;
+    else if (detailsLength > 200) multiplier = 1.1;
+    
+    return Math.round(basePrice * multiplier);
+  };
+
+  const getSmartQuestions = (serviceType: ServiceType) => {
+    const questionSets: Record<string, { placeholder: string; hints: string[] }> = {
+      "article": {
+        placeholder: "Например: Статья про выбор детской коляски на 3000 знаков. Нужно раскрыть критерии выбора, популярные модели и где купить",
+        hints: [
+          "📝 Укажите тему и объем статьи",
+          "🎯 Какая цель статьи? (привлечь клиентов, информировать, продать)",
+          "🔍 Нужны ли ключевые слова для поиска в Яндексе/Google?"
+        ]
+      },
+      "selling-text": {
+        placeholder: "Например: Продающий текст для курса по изучению английского языка. Целевая аудитория - занятые взрослые 25-40 лет",
+        hints: [
+          "💡 Что продаете? (товар, услуга, курс)",
+          "👥 Кто ваши клиенты? (возраст, интересы, проблемы)",
+          "⭐ Какие у вас преимущества перед конкурентами?"
+        ]
+      },
+      "social-posts": {
+        placeholder: "Например: 10 постов для Instagram салона красоты. Темы: новые услуги, уход за кожей, акции",
+        hints: [
+          "📱 Для какой соцсети? (ВК, Телеграм, Инстаграм)",
+          "📊 Сколько постов нужно?",
+          "🎨 Какой стиль общения? (дружеский, экспертный, официальный)"
+        ]
+      },
+      "website-texts": {
+        placeholder: "Например: Тексты для сайта стоматологии. Нужны: главная страница, о клинике, услуги (лечение, имплантация, отбеливание)",
+        hints: [
+          "🌐 Какие разделы сайта нужно написать?",
+          "🏢 Расскажите о своей компании и услугах",
+          "📍 Где находитесь? (для местной SEO-оптимизации)"
+        ]
+      },
+      "other": {
+        placeholder: "Опишите подробно, что именно вам нужно. Например: презентация для инвесторов, сценарий видеоролика, email-рассылка",
+        hints: [
+          "📋 Какой формат текста нужен?",
+          "🎯 Какая цель вашего проекта?",
+          "⏰ Есть ли особые требования ко времени?"
+        ]
+      }
+    };
+    
+    return questionSets[serviceType.id] || questionSets["other"];
   };
 
   if (!isFormOpen) {
@@ -255,6 +303,14 @@ export default function UniversalOrderSection() {
                   </div>
                 </div>
 
+                {/* Smart hints */}
+                <div className="bg-blue-50 rounded-lg p-4 space-y-2">
+                  <div className="text-sm font-medium text-blue-800 mb-2">💡 Подсказки для заполнения:</div>
+                  {getSmartQuestions(selectedServiceType).hints.map((hint, idx) => (
+                    <div key={idx} className="text-sm text-blue-700">{hint}</div>
+                  ))}
+                </div>
+
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="details" className="text-base font-medium">
@@ -265,26 +321,42 @@ export default function UniversalOrderSection() {
                       name="details"
                       value={formData.details}
                       onChange={handleInputChange}
-                      placeholder={`Например: ${selectedServiceType.examples[0]} для ${selectedServiceType.description.toLowerCase()}`}
+                      placeholder={getSmartQuestions(selectedServiceType).placeholder}
                       className="min-h-32 mt-2"
                       required
                     />
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      Чем подробнее опишете, тем точнее будет цена и результат
+                    </div>
                   </div>
 
                   <div>
                     <Label htmlFor="additionalRequirements" className="text-base font-medium">
-                      Дополнительные требования
+                      Дополнительные пожелания
                     </Label>
                     <Textarea
                       id="additionalRequirements"
                       name="additionalRequirements"
                       value={formData.additionalRequirements}
                       onChange={handleInputChange}
-                      placeholder="Объем, стиль, ключевые слова, особые требования..."
+                      placeholder="Особые требования к стилю, объему, срокам..."
                       className="min-h-24 mt-2"
                     />
                   </div>
                 </div>
+
+                {/* Live price preview */}
+                {formData.details && (
+                  <div className="bg-green-50 rounded-lg p-4 text-center">
+                    <div className="text-sm text-green-600 mb-1">Предварительная стоимость:</div>
+                    <div className="text-xl font-bold text-green-700">
+                      {calculatePrice().toLocaleString()} ₽
+                    </div>
+                    <div className="text-xs text-green-600">
+                      {formData.details.length > 200 ? "Детальное описание — более точная цена!" : "Добавьте больше деталей для точной оценки"}
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex gap-4">
                   <Button variant="outline" onClick={goToPreviousStep} className="flex-1">
@@ -307,21 +379,39 @@ export default function UniversalOrderSection() {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div className="text-center space-y-4">
-                  <h3 className="text-2xl font-semibold">Ваши контакты</h3>
-                  <div className="bg-primary/10 rounded-lg p-4">
-                    <div className="text-lg font-semibold text-primary">
-                      Стоимость: {calculatePrice().toLocaleString()} ₽
+                  <h3 className="text-2xl font-semibold">Финальный шаг!</h3>
+                  
+                  {/* Enhanced pricing display */}
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center gap-2 text-sm text-green-600">
+                        <span className="text-lg">{selectedServiceType?.icon}</span>
+                        <span>{selectedServiceType?.title}</span>
+                      </div>
+                      <div className="text-3xl font-bold text-green-700">
+                        {calculatePrice().toLocaleString()} ₽
+                      </div>
+                      <div className="text-sm text-green-600 space-y-1">
+                        <div>📅 Срок: 2-5 рабочих дней</div>
+                        <div>✅ Гарантия качества и уникальности</div>
+                        <div>🔄 Бесплатные правки</div>
+                      </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      Срок: 2-5 дней
-                    </div>
+                  </div>
+                </div>
+
+                {/* Order summary */}
+                <div className="bg-slate-50 rounded-lg p-4 space-y-2">
+                  <div className="font-medium text-sm">Ваш заказ:</div>
+                  <div className="text-sm text-muted-foreground">
+                    {formData.details.slice(0, 150)}{formData.details.length > 150 ? '...' : ''}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="name" className="text-base font-medium">
-                      Имя *
+                      Ваше имя *
                     </Label>
                     <Input
                       id="name"
@@ -360,10 +450,13 @@ export default function UniversalOrderSection() {
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="для отправки готового текста"
+                    placeholder="На этот email отправим готовый текст"
                     className="mt-2"
                     required
                   />
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    💌 На email придет подтверждение заказа и готовый текст
+                  </div>
                 </div>
 
                 <div className="flex gap-4">
@@ -374,14 +467,14 @@ export default function UniversalOrderSection() {
                   <Button 
                     onClick={handleFormSubmit}
                     disabled={!isCurrentStepValid() || loading}
-                    className="flex-1"
+                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
                   >
                     {loading ? (
                       "Отправляем..."
                     ) : (
                       <>
                         <CheckCircle className="w-4 h-4 mr-2" />
-                        Заказать текст
+                        Заказать за {calculatePrice().toLocaleString()} ₽
                       </>
                     )}
                   </Button>
