@@ -1,5 +1,6 @@
 
 import OrderSystemTest from '@/components/test/OrderSystemTest';
+import SystemDiagnostics from '@/components/admin/SystemDiagnostics';
 import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 import EnhancedFooter from '@/components/common/EnhancedFooter';
 
@@ -17,8 +18,13 @@ export default function TestPage() {
       <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
 
       <UnifiedHeader />
-      <div className="py-20 relative z-10">
-        <OrderSystemTest />
+      <div className="py-20 relative z-10 space-y-12">
+        <div className="container mx-auto px-4">
+          <SystemDiagnostics />
+        </div>
+        <div className="container mx-auto px-4">
+          <OrderSystemTest />
+        </div>
       </div>
       <EnhancedFooter />
     </div>
