@@ -4,13 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useOrderSystem } from '@/hooks/useOrderSystem';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { useEnhancedAnalytics } from '@/hooks/useEnhancedAnalytics';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, AlertCircle, Loader2, Info, TestTube } from 'lucide-react';
+import { CheckCircle, AlertCircle, Loader2, Info, TestTube, Monitor } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import EnhancedSystemMonitor from '@/components/admin/EnhancedSystemMonitor';
+import ProductionLaunchManager from '@/components/admin/ProductionLaunchManager';
 
 export default function OrderSystemTest() {
   const { createOrder, loading, error } = useOrderSystem();
@@ -112,14 +115,37 @@ export default function OrderSystemTest() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TestTube className="w-5 h-5" />
-            Тестирование системы заказов
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="text-center">
+        <h2 className="text-2xl font-bold mb-2">Тестирование и мониторинг системы</h2>
+        <p className="text-muted-foreground">
+          Комплексная проверка всех компонентов системы с расширенным мониторингом
+        </p>
+      </div>
+
+      <Tabs defaultValue="diagnostics" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="diagnostics">Расширенная диагностика</TabsTrigger>
+          <TabsTrigger value="production">Управление продакшеном</TabsTrigger>
+          <TabsTrigger value="legacy">Базовое тестирование</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="diagnostics" className="space-y-6">
+          <EnhancedSystemMonitor />
+        </TabsContent>
+
+        <TabsContent value="production" className="space-y-6">
+          <ProductionLaunchManager />
+        </TabsContent>
+
+        <TabsContent value="legacy" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TestTube className="w-5 h-5" />
+                Тестирование системы заказов
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Системные настройки */}
             <Card>
@@ -297,8 +323,10 @@ export default function OrderSystemTest() {
               </Card>
             )}
           </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

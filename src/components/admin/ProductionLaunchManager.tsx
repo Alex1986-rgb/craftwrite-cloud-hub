@@ -1,262 +1,348 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, AlertTriangle, Rocket, Monitor, Settings, Globe } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Rocket, 
+  CheckCircle, 
+  AlertTriangle, 
+  XCircle, 
+  Settings,
+  Database,
+  Monitor,
+  Zap,
+  Shield,
+  TrendingUp,
+  ExternalLink
+} from 'lucide-react';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
+import { useSystemDiagnostics } from '@/hooks/useSystemDiagnostics';
 import { toast } from '@/hooks/use-toast';
 
-interface LaunchStep {
-  id: string;
-  title: string;
-  description: string;
-  status: 'pending' | 'completed' | 'warning';
-  required: boolean;
-}
-
 export default function ProductionLaunchManager() {
-  const [isLaunching, setIsLaunching] = useState(false);
+  const [launching, setLaunching] = useState(false);
   const { getSetting, updateSetting } = useSystemSettings();
-  
-  const launchSteps: LaunchStep[] = [
-    {
-      id: 'analytics',
-      title: 'Аналитика настроена',
-      description: 'Google Analytics и Яндекс.Метрика подключены',
-      status: (getSetting('google_analytics_enabled') || getSetting('yandex_metrika_enabled')) ? 'completed' : 'pending',
-      required: false
-    },
-    {
-      id: 'payments',
-      title: 'Платежная система',
-      description: 'Модульбанк или ЮKassa настроены',
-      status: 'completed', // Предполагаем что уже настроено
-      required: true
-    },
-    {
-      id: 'notifications',
-      title: 'Уведомления',
-      description: 'Telegram или Email уведомления активны',
-      status: getSetting('telegram_notifications_enabled') ? 'completed' : 'warning',
-      required: false
-    },
-    {
-      id: 'seo',
-      title: 'SEO оптимизация',
-      description: 'Sitemap.xml и robots.txt настроены',
-      status: 'completed', // Файлы уже есть
-      required: true
-    },
-    {
-      id: 'content',
-      title: 'Контент готов',
-      description: 'Блог, портфолио и страницы услуг заполнены',
-      status: 'completed', // У нас есть 65+ статей
-      required: true
+  const { diagnostics, runDiagnostics, getOverallStatus } = useSystemDiagnostics();
+
+  const isProductionMode = getSetting('production_mode', false);
+  const launchStatus = getSetting('launch_status', 'preparing');
+  const analyticsEnabled = getSetting('analytics_enabled', false);
+  const googleAnalyticsId = getSetting('google_analytics_id', '');
+  const yandexMetricaId = getSetting('yandex_metrica_id', '');
+
+  const getReadinessChecks = () => {
+    return [
+      {
+        name: 'Аналитика настроена',
+        status: analyticsEnabled && googleAnalyticsId && yandexMetricaId ? 'pass' : 'fail',
+        description: 'Google Analytics и Яндекс.Метрика должны быть настроены',
+        action: 'Настроить ID аналитики в системных настройках'
+      },
+      {
+        name: 'Система диагностики',
+        status: getOverallStatus() === 'healthy' ? 'pass' : getOverallStatus() === 'warning' ? 'warning' : 'fail',
+        description: 'Все системные проверки должны проходить успешно',
+        action: 'Проверить результаты диагностики и исправить ошибки'
+      },
+      {
+        name: 'База данных',
+        status: diagnostics.some(d => d.check_type === 'database' && d.status === 'pass') ? 'pass' : 'fail',
+        description: 'Подключение к базе данных должно работать стабильно',
+        action: 'Проверить подключение к Supabase'
+      },
+      {
+        name: 'Обработка заказов',
+        status: getSetting('order_auto_processing_enabled', false) ? 'pass' : 'warning',
+        description: 'Автоматическая обработка заказов должна быть включена',
+        action: 'Включить автоматическую обработку заказов'
+      },
+      {
+        name: 'Система уведомлений',
+        status: getSetting('notification_system_enabled', false) ? 'pass' : 'warning',
+        description: 'Система уведомлений должна быть настроена',
+        action: 'Настроить email и Telegram уведомления'
+      }
+    ];
+  };
+
+  const readinessChecks = getReadinessChecks();
+  const passedChecks = readinessChecks.filter(check => check.status === 'pass').length;
+  const totalChecks = readinessChecks.length;
+  const readinessPercent = Math.round((passedChecks / totalChecks) * 100);
+  const isReadyForProduction = passedChecks >= totalChecks - 1; // Allow 1 warning
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'pass':
+        return <CheckCircle className="w-5 h-5 text-green-600" />;
+      case 'warning':
+        return <AlertTriangle className="w-5 h-5 text-yellow-600" />;
+      case 'fail':
+        return <XCircle className="w-5 h-5 text-red-600" />;
+      default:
+        return <Monitor className="w-5 h-5 text-gray-600" />;
     }
-  ];
+  };
 
-  const readyToLaunch = launchSteps.filter(step => step.required).every(step => step.status === 'completed');
-  const productionMode = getSetting('production_mode');
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pass':
+        return 'border-green-200 bg-green-50';
+      case 'warning':
+        return 'border-yellow-200 bg-yellow-50';
+      case 'fail':
+        return 'border-red-200 bg-red-50';
+      default:
+        return 'border-gray-200 bg-gray-50';
+    }
+  };
 
-  const handleLaunch = async () => {
-    if (!readyToLaunch) {
+  const handleLaunchToProduction = async () => {
+    if (!isReadyForProduction) {
       toast({
-        title: "Не готов к запуску",
-        description: "Завершите все обязательные этапы",
+        title: "Система не готова",
+        description: "Исправьте критические ошибки перед запуском в продакшен",
         variant: "destructive"
       });
       return;
     }
 
-    setIsLaunching(true);
-    
     try {
-      // Переводим систему в production режим
+      setLaunching(true);
+
+      // Update system settings for production
       await updateSetting('production_mode', true);
-      await updateSetting('launch_status', 'launched');
-      
-      // Запускаем аналитику если настроена
-      if (getSetting('google_analytics_enabled') || getSetting('yandex_metrika_enabled')) {
-        // Аналитика уже запустится автоматически через AnalyticsTracker
-      }
-      
+      await updateSetting('launch_status', 'production');
+      await updateSetting('error_monitoring_enabled', true);
+      await updateSetting('performance_monitoring_enabled', true);
+
       toast({
-        title: "🚀 Система запущена!",
-        description: "CopyPro Cloud успешно переведён в production режим"
+        title: "Запуск в продакшен успешен!",
+        description: "Система переведена в режим продакшена"
       });
-      
+
+      // Run diagnostics after launch
+      await runDiagnostics();
+
     } catch (error) {
       toast({
         title: "Ошибка запуска",
-        description: "Не удалось запустить систему",
+        description: "Не удалось перевести систему в продакшен",
         variant: "destructive"
       });
     } finally {
-      setIsLaunching(false);
+      setLaunching(false);
     }
   };
 
-  const getStepIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-600" />;
-      case 'warning':
-        return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
-      default:
-        return <Monitor className="h-5 w-5 text-gray-400" />;
-    }
-  };
+  const handleReturnToTesting = async () => {
+    try {
+      await updateSetting('production_mode', false);
+      await updateSetting('launch_status', 'testing');
 
-  const getStepBadge = (step: LaunchStep) => {
-    if (step.status === 'completed') {
-      return <Badge className="bg-green-100 text-green-800">Готово</Badge>;
+      toast({
+        title: "Возврат в тестовый режим",
+        description: "Система переведена в тестовый режим"
+      });
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось изменить режим системы",
+        variant: "destructive"
+      });
     }
-    if (step.status === 'warning') {
-      return <Badge className="bg-yellow-100 text-yellow-800">Предупреждение</Badge>;
-    }
-    if (step.required) {
-      return <Badge variant="destructive">Требуется</Badge>;
-    }
-    return <Badge variant="outline">Опционально</Badge>;
   };
 
   return (
     <div className="space-y-6">
-      {/* Статус запуска */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Rocket className="h-5 w-5" />
-            Production Launch
-          </CardTitle>
-          <CardDescription>
-            Проверьте готовность системы и запустите production режим
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between mb-6">
-            <div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Управление запуском в продакшен</h2>
+          <p className="text-muted-foreground">
+            Проверка готовности и запуск системы в производственный режим
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge 
+            variant={isProductionMode ? "default" : "secondary"}
+            className="px-3 py-1"
+          >
+            {isProductionMode ? 'Продакшен' : 'Тестирование'}
+          </Badge>
+          <Badge variant="outline">
+            {launchStatus}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Current Status */}
+      <Card className={`border-2 ${isProductionMode ? 'border-green-200 bg-green-50' : 'border-yellow-200 bg-yellow-50'}`}>
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            {isProductionMode ? (
+              <Rocket className="w-8 h-8 text-green-600" />
+            ) : (
+              <Settings className="w-8 h-8 text-yellow-600" />
+            )}
+            <div className="flex-1">
               <h3 className="text-lg font-semibold">
-                {productionMode ? '✅ Система запущена' : 'Система в режиме разработки'}
+                {isProductionMode ? 'Система в продакшене' : 'Система в тестовом режиме'}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {readyToLaunch 
-                  ? 'Все критические компоненты готовы к запуску'
-                  : 'Завершите настройку перед запуском'
+                {isProductionMode 
+                  ? 'Все функции активны, система готова к работе с клиентами'
+                  : 'Система находится в режиме тестирования и разработки'
                 }
               </p>
             </div>
-            
-            {!productionMode && (
-              <Button 
-                onClick={handleLaunch}
-                disabled={!readyToLaunch || isLaunching}
-                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+            {isProductionMode && (
+              <Button
+                onClick={handleReturnToTesting}
+                variant="outline"
+                size="sm"
               >
-                {isLaunching ? (
-                  <>
-                    <Settings className="h-4 w-4 mr-2 animate-spin" />
-                    Запуск...
-                  </>
-                ) : (
-                  <>
-                    <Rocket className="h-4 w-4 mr-2" />
-                    Запустить Production
-                  </>
-                )}
+                Вернуть в тестирование
               </Button>
             )}
           </div>
-
-          {productionMode && (
-            <Alert>
-              <Globe className="h-4 w-4" />
-              <AlertDescription>
-                <strong>Production режим активен!</strong> Система работает в боевом режиме.
-                Все заказы обрабатываются автоматически, аналитика собирается.
-              </AlertDescription>
-            </Alert>
-          )}
         </CardContent>
       </Card>
 
-      {/* Чек-лист готовности */}
+      {/* Readiness Assessment */}
       <Card>
         <CardHeader>
-          <CardTitle>Чек-лист готовности</CardTitle>
-          <CardDescription>
-            Проверьте все компоненты перед запуском
-          </CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="w-5 h-5" />
+            Готовность к продакшену
+          </CardTitle>
+          <div className="flex items-center gap-4">
+            <Progress value={readinessPercent} className="flex-1" />
+            <span className="text-sm font-medium">{readinessPercent}%</span>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {launchSteps.map((step) => (
-              <div key={step.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  {getStepIcon(step.status)}
-                  <div>
-                    <h4 className="font-medium">{step.title}</h4>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
+            {readinessChecks.map((check, index) => (
+              <div 
+                key={index}
+                className={`p-4 rounded-lg border-2 ${getStatusColor(check.status)}`}
+              >
+                <div className="flex items-start gap-3">
+                  {getStatusIcon(check.status)}
+                  <div className="flex-1">
+                    <div className="font-medium">{check.name}</div>
+                    <div className="text-sm text-muted-foreground mt-1">
+                      {check.description}
+                    </div>
+                    {check.status !== 'pass' && (
+                      <div className="text-sm mt-2 p-2 bg-white rounded border">
+                        <strong>Действие:</strong> {check.action}
+                      </div>
+                    )}
                   </div>
+                  <Badge className={getStatusColor(check.status)}>
+                    {check.status}
+                  </Badge>
                 </div>
-                {getStepBadge(step)}
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Быстрые действия */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Launch Actions */}
+      {!isProductionMode && (
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Monitor className="h-4 w-4" />
-              <h4 className="font-medium">Мониторинг</h4>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              Отслеживание производительности в реальном времени
-            </p>
-            <Button variant="outline" size="sm" className="w-full">
-              Открыть мониторинг
-            </Button>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5" />
+              Запуск в продакшен
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isReadyForProduction ? (
+              <div className="space-y-4">
+                <Alert>
+                  <CheckCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Система готова к запуску в продакшен. Все критические проверки пройдены.
+                  </AlertDescription>
+                </Alert>
+                <Button
+                  onClick={handleLaunchToProduction}
+                  disabled={launching}
+                  size="lg"
+                  className="w-full"
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  {launching ? 'Запуск...' : 'Запустить в продакшен'}
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    Система не готова к запуску в продакшен. Исправьте критические ошибки.
+                  </AlertDescription>
+                </Alert>
+                <Button disabled size="lg" className="w-full">
+                  <XCircle className="w-4 h-4 mr-2" />
+                  Запуск заблокирован
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
+      )}
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Settings className="h-4 w-4" />
-              <h4 className="font-medium">Настройки</h4>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              Финальная настройка системы
-            </p>
-            <Button variant="outline" size="sm" className="w-full">
-              Настроить
+      {/* Quick Links */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ExternalLink className="w-5 h-5" />
+            Быстрые ссылки
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Button variant="outline" className="justify-start h-auto p-4">
+              <div className="text-left">
+                <div className="font-medium">Системные настройки</div>
+                <div className="text-sm text-muted-foreground">
+                  Настроить аналитику и интеграции
+                </div>
+              </div>
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Globe className="h-4 w-4" />
-              <h4 className="font-medium">Сайт</h4>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              Проверить работу сайта
-            </p>
-            <Button variant="outline" size="sm" className="w-full" asChild>
-              <a href="/" target="_blank">
-                Открыть сайт
-              </a>
+            <Button variant="outline" className="justify-start h-auto p-4">
+              <div className="text-left">
+                <div className="font-medium">Мониторинг системы</div>
+                <div className="text-sm text-muted-foreground">
+                  Проверить статус всех компонентов
+                </div>
+              </div>
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+            <Button variant="outline" className="justify-start h-auto p-4">
+              <div className="text-left">
+                <div className="font-medium">Управление заказами</div>
+                <div className="text-sm text-muted-foreground">
+                  Настроить автоматическую обработку
+                </div>
+              </div>
+            </Button>
+            <Button variant="outline" className="justify-start h-auto p-4">
+              <div className="text-left">
+                <div className="font-medium">Аналитика и отчеты</div>
+                <div className="text-sm text-muted-foreground">
+                  Настроить отслеживание метрик
+                </div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

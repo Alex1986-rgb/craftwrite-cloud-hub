@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      abandoned_orders: {
+        Row: {
+          abandoned_at: string | null
+          created_at: string | null
+          form_data: Json | null
+          id: string
+          recovered_at: string | null
+          recovery_attempts: number | null
+          session_id: string
+          step_abandoned: string
+          user_id: string | null
+        }
+        Insert: {
+          abandoned_at?: string | null
+          created_at?: string | null
+          form_data?: Json | null
+          id?: string
+          recovered_at?: string | null
+          recovery_attempts?: number | null
+          session_id: string
+          step_abandoned: string
+          user_id?: string | null
+        }
+        Update: {
+          abandoned_at?: string | null
+          created_at?: string | null
+          form_data?: Json | null
+          id?: string
+          recovered_at?: string | null
+          recovery_attempts?: number | null
+          session_id?: string
+          step_abandoned?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       activity_logs: {
         Row: {
           action: string
@@ -713,6 +749,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      order_processing_queue: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          max_attempts: number | null
+          order_id: string | null
+          processing_step: string
+          scheduled_at: string | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          max_attempts?: number | null
+          order_id?: string | null
+          processing_step: string
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          max_attempts?: number | null
+          order_id?: string | null
+          processing_step?: string
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_processing_queue_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       orders: {
         Row: {
@@ -1453,6 +1539,39 @@ export type Database = {
         }
         Relationships: []
       }
+      system_diagnostics: {
+        Row: {
+          check_name: string
+          check_type: string
+          checked_at: string | null
+          created_at: string | null
+          details: Json | null
+          error_message: string | null
+          id: string
+          status: string
+        }
+        Insert: {
+          check_name: string
+          check_type: string
+          checked_at?: string | null
+          created_at?: string | null
+          details?: Json | null
+          error_message?: string | null
+          id?: string
+          status: string
+        }
+        Update: {
+          check_name?: string
+          check_type?: string
+          checked_at?: string | null
+          created_at?: string | null
+          details?: Json | null
+          error_message?: string | null
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       system_settings: {
         Row: {
           created_at: string | null
@@ -1669,9 +1788,23 @@ export type Database = {
         }
         Returns: undefined
       }
+      process_order_queue: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       reprocess_order: {
         Args: { order_id: string }
         Returns: boolean
+      }
+      run_system_diagnostics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          check_type: string
+          check_name: string
+          status: string
+          details: Json
+          error_message: string
+        }[]
       }
       update_realtime_kpis: {
         Args: Record<PropertyKey, never>
