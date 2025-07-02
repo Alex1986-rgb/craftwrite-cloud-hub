@@ -156,8 +156,9 @@ export const ModernSelect = React.forwardRef<HTMLButtonElement, ModernSelectProp
           </PopoverTrigger>
 
           <PopoverContent 
-            className="w-full p-0 border border-border bg-popover backdrop-blur-sm" 
+            className="w-full p-0 border border-border bg-popover/95 backdrop-blur-md shadow-lg z-50" 
             align="start"
+            sideOffset={4}
           >
             <Command>
               {searchable && (
