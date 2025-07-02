@@ -12,6 +12,7 @@ import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
+import ExpertiseSection from "@/components/landing/ExpertiseSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -20,28 +21,26 @@ import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
 import { useEffect } from "react";
 
 const seoText = `
-CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
+CopyPro Cloud — узкоспециализированная студия SEO-копирайтинга и продающего контента с командой из 15+ экспертов.
 
-Наши ключевые преимущества:
-- Команда из 50+ дипломированных SEO-копирайтеров с опытом 5+ лет
-- Гарантия 100% уникальности по Text.ru с официальными отчетами
-- Экспресс-доставка от 24 часов с сохранением качества
-- Глубокая SEO-оптимизация с анализом ТОП-10 конкурентов
-- Более 2000 успешных проектов с ростом конверсии клиентов на 40-180%
+Наша экспертиза и специализация:
+- SEO-копирайтинг: 5+ лет опыта, сертификация Google, 1000+ статей в ТОП-10
+- Продающие лендинги: конверсия до 15%, 300+ проектов, профессиональное A/B-тестирование  
+- Email-маркетинг: автоматизация, сегментация, рост retention на 60%
+- Маркетплейс-контент: специализация на Wildberries/Ozon, товары в ТОП-3 поиска
 
-Полная экосистема контент-маркетинга:
-- SEO-статьи и органическое продвижение
-- Продающие лендинги и email-воронки
-- Контент для соцсетей и мессенджеров
-- Описания товаров для маркетплейсов
-- Корпоративный и B2B контент
+Мы НЕ универсалы. Мы эксперты в трёх направлениях:
+✓ SEO-статьи для роста органического трафика
+✓ Продающие лендинги и email-воронки  
+✓ Карточки товаров для маркетплейсов
 
 Результаты наших клиентов:
 - Рост органического трафика на 120-300% за 6 месяцев
 - Увеличение конверсии лендингов на 40-180%
+- Попадание товаров в ТОП-3 поиска на маркетплейсах
 - ROI контент-маркетинга 300-800%
 
-Закажите профессиональный копирайтинг на CopyPro Cloud!
+Выберите экспертов, а не универсалов. Закажите на CopyPro Cloud!
 `;
 
 export default function Index() {
@@ -70,34 +69,28 @@ export default function Index() {
       {/* 2. SOCIAL PROOF - Immediate credibility */}
       <CompactSocialProofSection />
       
-      {/* 3. SMART ORDER CTA #1 - After hero for maximum visibility */}
-      <SmartOrderCTA />
+      {/* 3. EXPERTISE - Positioning as experts, not generalists */}
+      <ExpertiseSection />
       
-      {/* 4. SERVICES - What we offer */}
+      {/* 4. CORE SERVICES - Only top 4 services */}
       <ServicesCatalogSection />
       
-      {/* 5. PRICING - Clear value proposition */}
-      <ModernPricingSection />
-      
-      {/* 6. SMART ORDER CTA #2 - After pricing for logical continuation */}
+      {/* 5. SMART ORDER CTA - After services */}
       <SmartOrderCTA />
       
-      {/* 7. GUARANTEES - Remove risk and build confidence */}
+      {/* 6. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
+      
+      {/* 7. PRICING - Clear value proposition */}
+      <ModernPricingSection />
       
       {/* 8. PORTFOLIO - Proof of results */}
       <InnovativePortfolioSection />
       
-      {/* 9. HOW IT WORKS - Simple process */}
-      <ProcessSection />
-      
-      {/* 10. FAQ - Address concerns */}
+      {/* 9. FAQ - Address concerns */}
       <FaqSection />
       
-      {/* 11. SMART ORDER CTA #3 - Final call to action before contact */}
-      <SmartOrderCTA />
-      
-      {/* 12. FINAL CTA & CONTACT */}
+      {/* 10. FINAL CTA & CONTACT */}
       <ContactSection />
       
       {/* 13. SEO TEXT - Search engine optimization */}

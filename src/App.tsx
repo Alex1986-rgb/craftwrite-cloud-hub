@@ -17,6 +17,7 @@ import Index from "./pages/Index";
 import Order from "./pages/Order";
 import OrderSuccess from "./pages/OrderSuccess";
 import Services from "./pages/Services";
+import AllServices from "./pages/AllServices";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import EnhancedServiceDetailPage from "./pages/EnhancedServiceDetailPage";
 import FormatDetailPage from "./pages/FormatDetailPage";
@@ -88,7 +89,7 @@ function App() {
                     <Route path="/order" element={<Order />} />
                     <Route path="/order-success" element={<OrderSuccess />} />
                     <Route path="/track-order" element={<OrderTrackingPage />} />
-                    <Route path="/services" element={<Services />} />
+                    <Route path="/services" element={<AllServices />} />
                     <Route path="/services/:slug" element={<ServiceDetailPage />} />
                     <Route path="/service/:slug" element={<EnhancedServiceDetailPage />} />
                     <Route path="/format/:slug" element={<FormatDetailPage />} />
