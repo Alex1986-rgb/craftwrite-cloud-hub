@@ -10,8 +10,13 @@ import { expandedBlogPosts } from "@/data/blog";
 
 export default function BlogDetail() {
   const { id } = useParams();
-  const postId = id ? parseInt(id, 10) : null;
-  const post = postId ? expandedBlogPosts.find(p => p.id === postId) : null;
+  
+  // Try to find by slug first, then by numeric ID for backward compatibility
+  let post = expandedBlogPosts.find(p => p.slug === id);
+  if (!post) {
+    const postId = id ? parseInt(id, 10) : null;
+    post = postId ? expandedBlogPosts.find(p => p.id === postId) : null;
+  }
 
   if (!post) {
     return (

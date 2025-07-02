@@ -12,4 +12,5 @@ export interface BlogPost {
   tags: string[];
   relatedPosts: number[];
   content: string;
+  slug?: string;
 }

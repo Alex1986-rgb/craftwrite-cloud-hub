@@ -14,6 +14,24 @@ import { additionalPosts } from './additional-posts';
 import { expertPosts } from './expert-posts';
 import { advancedWebDesignPosts } from './advanced-web-design-posts';
 import { conversionOptimizationPosts } from './conversion-optimization-posts';
+import { homePageArticles } from '../articles/homePageArticles';
+
+// Convert homePageArticles to BlogPost format
+const convertedHomePageArticles: BlogPost[] = homePageArticles.map((article, index) => ({
+  id: 9000 + index, // Use high IDs to avoid conflicts
+  title: article.title,
+  excerpt: article.excerpt,
+  category: "Экспертные материалы",
+  author: article.author,
+  date: new Date().toLocaleDateString('ru-RU'),
+  readTime: article.readTime,
+  image: article.image,
+  featured: true,
+  tags: article.tags,
+  relatedPosts: [],
+  content: article.content,
+  slug: article.slug
+}));
 
 export const expandedBlogPosts: BlogPost[] = [
   ...copywritingPosts,
@@ -29,7 +47,8 @@ export const expandedBlogPosts: BlogPost[] = [
   ...additionalPosts,
   ...expertPosts,
   ...advancedWebDesignPosts,
-  ...conversionOptimizationPosts
+  ...conversionOptimizationPosts,
+  ...convertedHomePageArticles
 ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 export type { BlogPost };
