@@ -16,6 +16,7 @@ import { ModernSelect } from '@/components/ui/modern-select';
 import { toast } from '@/hooks/use-toast';
 import EnhancedSystemMonitor from '@/components/admin/EnhancedSystemMonitor';
 import ProductionLaunchManager from '@/components/admin/ProductionLaunchManager';
+import ProductionTestSuite from './ProductionTestSuite';
 
 export default function OrderSystemTest() {
   const { createOrder, loading, error } = useOrderSystem();
@@ -196,8 +197,12 @@ export default function OrderSystemTest() {
         </div>
       </div>
 
-      <Tabs defaultValue="diagnostics" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 h-14 bg-gradient-to-r from-muted/50 to-muted/30 backdrop-blur-sm border border-border/50">
+      <Tabs defaultValue="production-tests" className="w-full">
+        <TabsList className="grid w-full grid-cols-4 h-14 bg-gradient-to-r from-muted/50 to-muted/30 backdrop-blur-sm border border-border/50">
+          <TabsTrigger value="production-tests" className="flex items-center gap-2 text-sm font-medium data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+            <CheckCircle className="w-4 h-4" />
+            Тесты продакшена
+          </TabsTrigger>
           <TabsTrigger value="diagnostics" className="flex items-center gap-2 text-sm font-medium data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
             <Activity className="w-4 h-4" />
             Расширенная диагностика
@@ -211,6 +216,10 @@ export default function OrderSystemTest() {
             Базовое тестирование
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="production-tests" className="space-y-6">
+          <ProductionTestSuite />
+        </TabsContent>
 
         <TabsContent value="diagnostics" className="space-y-6">
           <EnhancedSystemMonitor />

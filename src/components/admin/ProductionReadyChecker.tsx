@@ -3,8 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, AlertCircle, Globe, Database, Shield, Zap } from 'lucide-react';
+import { useSystemDiagnostics } from '@/hooks/useSystemDiagnostics';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
-import { supabase } from '@/integrations/supabase/client';
 
 interface SystemCheck {
   id: string;
@@ -16,97 +16,64 @@ interface SystemCheck {
 }
 
 export default function ProductionReadyChecker() {
-  const [checks, setChecks] = useState<SystemCheck[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { diagnostics, loading, error, runDiagnostics, getOverallStatus } = useSystemDiagnostics();
   const { settings } = useSystemSettings();
 
-  const runSystemChecks = async () => {
-    setLoading(true);
-    const systemChecks: SystemCheck[] = [];
+  const getSystemChecks = (): SystemCheck[] => {
+    const checks: SystemCheck[] = [];
 
-    // 1. Database connectivity
-    try {
-      const { data } = await supabase.from('system_settings').select('*').limit(1);
-      systemChecks.push({
-        id: 'database',
-        name: 'База данных',
-        description: 'Подключение к Supabase',
-        status: data ? 'passed' : 'failed',
-        icon: Database,
-        details: data ? 'Подключение активно' : 'Ошибка подключения'
-      });
-    } catch (error) {
-      systemChecks.push({
-        id: 'database',
-        name: 'База данных',
-        description: 'Подключение к Supabase',
-        status: 'failed',
-        icon: Database,
-        details: 'Ошибка подключения к БД'
-      });
-    }
+    // Map diagnostics to system checks
+    diagnostics.forEach(diagnostic => {
+      const statusMap: Record<string, 'passed' | 'failed' | 'warning'> = {
+        'pass': 'passed',
+        'fail': 'failed',
+        'warning': 'warning'
+      };
 
-    // 2. Edge Functions check
-    try {
-      const response = await fetch('/functions/v1/ai-assistant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ test: true })
+      checks.push({
+        id: `${diagnostic.check_type}_${diagnostic.check_name}`,
+        name: diagnostic.check_name === 'connectivity' ? 'База данных' :
+              diagnostic.check_name === 'system_settings' ? 'Системные настройки' :
+              diagnostic.check_name === 'orders_system' ? 'Система заказов' :
+              diagnostic.check_name === 'edge_functions' ? 'Edge Functions' :
+              diagnostic.check_name,
+        description: diagnostic.check_type === 'database' ? 'Подключение к Supabase' :
+                    diagnostic.check_type === 'configuration' ? 'Конфигурация системы' :
+                    diagnostic.check_type === 'operations' ? 'Операционные процессы' :
+                    diagnostic.check_type === 'infrastructure' ? 'Инфраструктура' :
+                    `Проверка ${diagnostic.check_type}`,
+        status: statusMap[diagnostic.status] || 'warning',
+        icon: diagnostic.check_type === 'database' ? Database :
+              diagnostic.check_type === 'configuration' ? Shield :
+              diagnostic.check_type === 'operations' ? CheckCircle :
+              diagnostic.check_type === 'infrastructure' ? Zap :
+              Globe,
+        details: typeof diagnostic.details === 'object' ? 
+                JSON.stringify(diagnostic.details, null, 2) : 
+                String(diagnostic.details || 'Проверка выполнена')
       });
+    });
+
+    // Add domain check if not present
+    if (!checks.some(c => c.id.includes('domain'))) {
+      const currentDomain = window.location.hostname;
+      const isProduction = !currentDomain.includes('localhost') && !currentDomain.includes('lovable.app');
+      const hasSSL = window.location.protocol === 'https:';
       
-      systemChecks.push({
-        id: 'edge_functions',
-        name: 'Edge Functions',
-        description: 'Серверные функции',
-        status: response.ok ? 'passed' : 'warning',
-        icon: Zap,
-        details: response.ok ? 'Функции работают' : 'Проблемы с функциями'
-      });
-    } catch (error) {
-      systemChecks.push({
-        id: 'edge_functions',
-        name: 'Edge Functions',
-        description: 'Серверные функции',
-        status: 'warning',
-        icon: Zap,
-        details: 'Не удалось проверить функции'
+      checks.push({
+        id: 'domain',
+        name: 'Домен и SSL',
+        description: 'Продакшн домен с HTTPS',
+        status: isProduction && hasSSL ? 'passed' : 'warning',
+        icon: Globe,
+        details: `${currentDomain} (${hasSSL ? 'HTTPS' : 'HTTP'})`
       });
     }
 
-    // 3. Domain and SSL
-    const currentDomain = window.location.hostname;
-    const isProduction = !currentDomain.includes('localhost') && !currentDomain.includes('lovable.app');
-    const hasSSL = window.location.protocol === 'https:';
-    
-    systemChecks.push({
-      id: 'domain',
-      name: 'Домен и SSL',
-      description: 'Продакшн домен с HTTPS',
-      status: isProduction && hasSSL ? 'passed' : 'warning',
-      icon: Globe,
-      details: `${currentDomain} (${hasSSL ? 'HTTPS' : 'HTTP'})`
-    });
-
-    // 4. Security settings
-    const hasSecuritySettings = settings.email_notifications_enabled && settings.telegram_notifications_enabled;
-    systemChecks.push({
-      id: 'security',
-      name: 'Безопасность',
-      description: 'Уведомления и мониторинг',
-      status: hasSecuritySettings ? 'passed' : 'warning',
-      icon: Shield,
-      details: hasSecuritySettings ? 'Уведомления настроены' : 'Требуется настройка уведомлений'
-    });
-
-    setChecks(systemChecks);
-    setLoading(false);
+    return checks;
   };
 
-  useEffect(() => {
-    if (Object.keys(settings).length > 0) {
-      runSystemChecks();
-    }
-  }, [settings]);
+  const checks = getSystemChecks();
 
   const getStatusIcon = (status: SystemCheck['status']) => {
     switch (status) {
@@ -138,8 +105,24 @@ export default function ProductionReadyChecker() {
       <Card>
         <CardContent className="pt-6">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
             <p>Проверка системы...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center text-destructive">
+            <AlertCircle className="h-8 w-8 mx-auto mb-4" />
+            <p>Ошибка при проверке системы: {error}</p>
+            <Button onClick={runDiagnostics} className="mt-4">
+              Повторить проверку
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -181,7 +164,7 @@ export default function ProductionReadyChecker() {
           </div>
           
           <div className="mt-6 pt-4 border-t">
-            <Button onClick={runSystemChecks} variant="outline" className="w-full">
+            <Button onClick={runDiagnostics} variant="outline" className="w-full">
               Повторить проверку
             </Button>
           </div>
