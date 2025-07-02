@@ -5,7 +5,7 @@ import FaqSection from "@/components/landing/FaqSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import ModernPricingSection from "@/components/landing/ModernPricingSection";
-import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
+
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
@@ -85,8 +85,6 @@ export default function Index() {
       {/* 7. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
       
-      {/* 8. PORTFOLIO - Proof of results */}
-      <InnovativePortfolioSection />
       
       {/* 9. HOW IT WORKS - Simple process */}
       <ProcessSection />
