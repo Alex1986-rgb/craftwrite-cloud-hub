@@ -65,16 +65,30 @@ export default function SmartOrderCTA() {
 
           {/* Main CTA */}
           <div className="space-y-4">
-            <Button 
-              asChild
-              size="lg" 
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
-            >
-              <Link to="/smart-order">
-                Заказать текст за 3 минуты
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                asChild
+                size="lg" 
+                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              >
+                <Link to="/smart-order">
+                  Заказать текст за 3 минуты
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild
+                size="lg" 
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold"
+              >
+                <Link to="/order/seo-article-modern">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  SEO-статья с AI
+                </Link>
+              </Button>
+            </div>
             
             <p className="text-sm opacity-75">
               Никаких скрытых платежей • Прозрачное ценообразование • Быстрый старт

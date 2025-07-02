@@ -102,12 +102,15 @@ export default function RequirementsStep({ data, onUpdate }: RequirementsStepPro
           <span>20 000 символов</span>
         </div>
         
-        <div className="bg-blue-50 p-3 rounded-lg">
-          <p className="text-sm text-blue-800">
-            <strong>Примерный объём:</strong> {Math.round(data.characterCount / 1800)} страниц A4 
-            (~{Math.round(data.characterCount / 6)} слов)
-          </p>
-        </div>
+          <div className="bg-blue-50 p-3 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <strong>Примерный объём:</strong> {Math.round(data.characterCount / 1800)} страниц A4 
+              (~{Math.round(data.characterCount / 6)} слов, {data.characterCount} символов)
+            </p>
+            <p className="text-xs text-blue-600 mt-1">
+              💡 Современная система учета по символам для точного ценообразования
+            </p>
+          </div>
       </div>
 
       {/* Keywords Mode */}
@@ -136,8 +139,8 @@ export default function RequirementsStep({ data, onUpdate }: RequirementsStepPro
               <RadioGroupItem value="auto" id="auto" />
               <Label htmlFor="auto" className="flex-1">
                 <div>
-                  <div className="font-medium">Автоматический подбор <Badge className="ml-2">+2000₽</Badge></div>
-                  <div className="text-sm text-gray-500">Мы найдём лучшие ключевые слова для вашей ниши</div>
+                   <div className="font-medium">Автоматический подбор <Badge className="ml-2">+300₽</Badge></div>
+                   <div className="text-sm text-gray-500">Мы найдём лучшие ключевые слова для вашей ниши</div>
                 </div>
               </Label>
             </div>
@@ -146,8 +149,8 @@ export default function RequirementsStep({ data, onUpdate }: RequirementsStepPro
               <RadioGroupItem value="ai" id="ai" />
               <Label htmlFor="ai" className="flex-1">
                 <div>
-                  <div className="font-medium">ИИ-анализ конкурентов <Badge className="ml-2">+3000₽</Badge></div>
-                  <div className="text-sm text-gray-500">Анализ конкурентов + семантическое ядро</div>
+                   <div className="font-medium">ИИ-анализ конкурентов <Badge className="ml-2">+500₽</Badge></div>
+                   <div className="text-sm text-gray-500">Анализ конкурентов + семантическое ядро + LSI-ключи</div>
                 </div>
               </Label>
             </div>

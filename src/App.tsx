@@ -37,6 +37,7 @@ import OrderTrackingPage from "./pages/OrderTrackingPage";
 
 // Specialized order pages
 import SeoArticleOrder from "./pages/SeoArticleOrder";
+import SeoArticleOrderModern from "./pages/SeoArticleOrderModern";
 import LandingPageOrder from "./pages/LandingPageOrder";
 import EmailCampaignsOrder from "./pages/EmailCampaignsOrder";
 import ChatbotScriptsOrder from "./pages/ChatbotScriptsOrder";
@@ -55,6 +56,7 @@ import OzonOrder from "./pages/order/OzonOrder";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import TestPage from "./pages/TestPage";
+import SmartOrder from "./pages/SmartOrder";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -107,6 +109,7 @@ function App() {
 
                     {/* Specialized order pages */}
                     <Route path="/order/seo-article" element={<SeoArticleOrder />} />
+                    <Route path="/order/seo-article-modern" element={<SeoArticleOrderModern />} />
                     <Route path="/order/landing-page" element={<LandingPageOrder />} />
                     <Route path="/order/email-campaigns" element={<EmailCampaignsOrder />} />
                     <Route path="/order/chatbot-scripts" element={<ChatbotScriptsOrder />} />
@@ -127,6 +130,7 @@ function App() {
 
                     {/* Test pages */}
                     <Route path="/test" element={<TestPage />} />
+                    <Route path="/smart-order" element={<SmartOrder />} />
 
                     {/* 404 page */}
                     <Route path="*" element={<NotFound />} />

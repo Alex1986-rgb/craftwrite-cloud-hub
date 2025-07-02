@@ -20,21 +20,29 @@ interface ContentAnalysis {
 }
 
 export class AIContentEnhancer {
-  private static async callAI(prompt: string): Promise<string> {
+  private static async callAI(action: string, data: any): Promise<any> {
     try {
-      const response = await fetch('/api/ai-enhance', {
+      const response = await fetch('https://yotunjzgomkuuwpyftqr.supabase.co/functions/v1/ai-content-enhancer', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvdHVuanpnb21rdXV3cHlmdHFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0Mjk4NTMsImV4cCI6MjA2NjAwNTg1M30.bFCR2HIpdG_4L_ZCuojseZfqbMHaLAco3SFdPqDKkqU`
+        },
+        body: JSON.stringify({ action, data })
       });
       
       if (!response.ok) throw new Error('AI service unavailable');
       
-      const data = await response.json();
-      return data.result || '';
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'AI service error');
+      }
+      
+      return result.result;
     } catch (error) {
       console.error('AI Enhancement Error:', error);
-      return '';
+      throw error;
     }
   }
 
@@ -58,9 +66,12 @@ export class AIContentEnhancer {
     `;
 
     try {
-      const result = await this.callAI(prompt);
-      const parsed = JSON.parse(result);
-      return Array.isArray(parsed) ? parsed : [];
+      const result = await this.callAI('generate-lsi-keywords', {
+        mainKeywords,
+        topic,
+        maxKeywords
+      });
+      return Array.isArray(result) ? result : [];
     } catch (error) {
       console.error('LSI Keywords generation failed:', error);
       return this.getFallbackLSI(mainKeywords, topic);
@@ -93,17 +104,14 @@ export class AIContentEnhancer {
     `;
 
     try {
-      const result = await this.callAI(prompt);
-      const parsed = JSON.parse(result);
+      const result = await this.callAI('generate-meta-tags', {
+        topic,
+        keywords,
+        characterCount,
+        targetAudience
+      });
       
-      return {
-        title: parsed.title || this.generateFallbackTitle(topic, keywords[0]),
-        description: parsed.description || this.generateFallbackDescription(topic, keywords),
-        length: {
-          title: parsed.title?.length || 0,
-          description: parsed.description?.length || 0
-        }
-      };
+      return result;
     } catch (error) {
       console.error('Meta tags generation failed:', error);
       return this.getFallbackMetaTags(topic, keywords);
@@ -116,18 +124,32 @@ export class AIContentEnhancer {
     characterCount: number,
     targetAudience?: string
   ): Promise<ContentAnalysis> {
-    const [lsiKeywords, metaTags] = await Promise.all([
-      this.generateLSIKeywords(keywords, topic),
-      this.generateMetaTags(topic, keywords, characterCount, targetAudience)
-    ]);
+    try {
+      const result = await this.callAI('analyze-content', {
+        topic,
+        keywords,
+        characterCount,
+        targetAudience
+      });
+      
+      return result;
+    } catch (error) {
+      console.error('Content analysis failed:', error);
+      
+      // Fallback to individual calls
+      const [lsiKeywords, metaTags] = await Promise.all([
+        this.generateLSIKeywords(keywords, topic),
+        this.generateMetaTags(topic, keywords, characterCount, targetAudience)
+      ]);
 
-    const suggestions = this.generateContentSuggestions(topic, characterCount, keywords);
+      const suggestions = this.generateContentSuggestions(topic, characterCount, keywords);
 
-    return {
-      lsiKeywords,
-      metaTags,
-      suggestions
-    };
+      return {
+        lsiKeywords,
+        metaTags,
+        suggestions
+      };
+    }
   }
 
   // Fallback методы для случаев, когда AI недоступен
