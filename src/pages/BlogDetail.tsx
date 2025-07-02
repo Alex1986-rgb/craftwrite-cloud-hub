@@ -11,11 +11,18 @@ import { expandedBlogPosts } from "@/data/blog";
 export default function BlogDetail() {
   const { id } = useParams();
   
+  console.log('BlogDetail - Looking for slug:', id);
+  console.log('BlogDetail - Available posts count:', expandedBlogPosts.length);
+  console.log('BlogDetail - Posts with slugs:', expandedBlogPosts.filter(p => p.slug).map(p => ({id: p.id, slug: p.slug, title: p.title})));
+  
   // Try to find by slug first, then by numeric ID for backward compatibility
   let post = expandedBlogPosts.find(p => p.slug === id);
+  console.log('BlogDetail - Found by slug:', post ? post.title : 'Not found');
+  
   if (!post) {
     const postId = id ? parseInt(id, 10) : null;
     post = postId ? expandedBlogPosts.find(p => p.id === postId) : null;
+    console.log('BlogDetail - Found by ID:', post ? post.title : 'Not found');
   }
 
   if (!post) {
