@@ -1,22 +1,67 @@
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import { Send, Mail, User, MessageSquare, CheckCircle2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { Send, Mail, User, MessageSquare } from "lucide-react";
+import { EnhancedFormField } from "@/components/ui/enhanced-form-field";
+import { ProgressiveTextarea } from "@/components/ui/progressive-textarea";
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
-  const [focusedField, setFocusedField] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    
+    // Очистка ошибок при вводе
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   }
+
+  // Валидация полей
+  const validateField = (name: string, value: string): string | null => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Имя обязательно';
+        if (value.length < 2) return 'Имя должно содержать минимум 2 символа';
+        return null;
+      case 'email':
+        if (!value.trim()) return 'Email обязателен';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return 'Введите корректный email';
+        return null;
+      case 'message':
+        if (!value.trim()) return 'Сообщение обязательно';
+        if (value.length < 10) return 'Сообщение должно содержать минимум 10 символов';
+        return null;
+      default:
+        return null;
+    }
+  };
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Валидация всех полей
+    const newErrors: { [key: string]: string } = {};
+    Object.entries(form).forEach(([key, value]) => {
+      const error = validateField(key, value);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast({
+        title: "Ошибки в форме",
+        description: "Пожалуйста, исправьте отмеченные ошибки",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
     setTimeout(() => {
       toast({
@@ -24,6 +69,7 @@ export default function ContactForm() {
         description: "Мы получили ваш запрос и свяжемся с вами в течение дня.",
       });
       setForm({ name: "", email: "", message: "" });
+      setErrors({});
       setLoading(false);
     }, 1200);
   }
@@ -31,95 +77,87 @@ export default function ContactForm() {
   const isFormValid = form.name.trim() && form.email.trim() && form.message.trim();
 
   return (
-    <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200/50 p-8 hover:shadow-glow transition-shadow duration-500">
+    <div className="form-modern">
       <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-        {/* Name Input */}
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <User className="w-4 h-4" />
-            Ваше имя
-          </label>
-          <div className={`relative transition-all duration-300 ${focusedField === 'name' ? 'scale-[1.02]' : ''}`}>
-            <Input
-              type="text"
-              name="name"
-              placeholder="Как к вам обращаться?"
-              required
-              value={form.name}
-              onChange={handleChange}
-              onFocus={() => setFocusedField('name')}
-              onBlur={() => setFocusedField('')}
-              className="h-14 rounded-2xl border-2 border-slate-200 focus:border-blue-500 bg-white/80 backdrop-blur-sm text-base placeholder:text-slate-400 transition-all duration-300"
-            />
-            {form.name && (
-              <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500 animate-in zoom-in duration-300" />
-            )}
-          </div>
-        </div>
+        <EnhancedFormField
+          id="name"
+          name="name"
+          type="text"
+          label="Ваше имя"
+          placeholder="Как к вам обращаться?"
+          icon={User}
+          value={form.name}
+          onChange={handleChange}
+          error={errors.name}
+          success={form.name.length > 0 && !errors.name}
+          required
+          validationRules={[(value) => validateField('name', value)]}
+          realTimeValidation
+          autoSave
+          onAutoSave={(value) => {
+            // Автосохранение в localStorage
+            localStorage.setItem('contact_form_name', value);
+          }}
+        />
 
-        {/* Email Input */}
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <Mail className="w-4 h-4" />
-            Email для связи
-          </label>
-          <div className={`relative transition-all duration-300 ${focusedField === 'email' ? 'scale-[1.02]' : ''}`}>
-            <Input
-              type="email"
-              name="email"
-              placeholder="your@email.com"
-              required
-              value={form.email}
-              onChange={handleChange}
-              onFocus={() => setFocusedField('email')}
-              onBlur={() => setFocusedField('')}
-              className="h-14 rounded-2xl border-2 border-slate-200 focus:border-blue-500 bg-white/80 backdrop-blur-sm text-base placeholder:text-slate-400 transition-all duration-300"
-            />
-            {form.email && form.email.includes('@') && (
-              <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500 animate-in zoom-in duration-300" />
-            )}
-          </div>
-        </div>
+        <EnhancedFormField
+          id="email"
+          name="email"
+          type="email"
+          label="Email для связи"
+          placeholder="your@email.com"
+          icon={Mail}
+          value={form.email}
+          onChange={handleChange}
+          error={errors.email}
+          success={form.email.includes('@') && !errors.email}
+          required
+          validationRules={[(value) => validateField('email', value)]}
+          realTimeValidation
+          autoSave
+          onAutoSave={(value) => {
+            localStorage.setItem('contact_form_email', value);
+          }}
+        />
 
-        {/* Message Input */}
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <MessageSquare className="w-4 h-4" />
-            Расскажите о проекте
-          </label>
-          <div className={`relative transition-all duration-300 ${focusedField === 'message' ? 'scale-[1.02]' : ''}`}>
-            <Textarea
-              name="message"
-              placeholder="Опишите ваш проект: тип контента, объем, сроки, особые требования..."
-              rows={5}
-              required
-              value={form.message}
-              onChange={handleChange}
-              onFocus={() => setFocusedField('message')}
-              onBlur={() => setFocusedField('')}
-              className="rounded-2xl border-2 border-slate-200 focus:border-blue-500 bg-white/80 backdrop-blur-sm text-base placeholder:text-slate-400 resize-none transition-all duration-300"
-            />
-            {form.message && (
-              <CheckCircle2 className="absolute right-4 top-4 w-5 h-5 text-green-500 animate-in zoom-in duration-300" />
-            )}
-          </div>
-        </div>
+        <ProgressiveTextarea
+          id="message"
+          name="message"
+          label="Расскажите о проекте"
+          placeholder="Опишите ваш проект: тип контента, объем, сроки, особые требования..."
+          value={form.message}
+          onChange={handleChange}
+          error={errors.message}
+          success={form.message.length >= 10 && !errors.message}
+          required
+          characterLimit={2000}
+          showWordCount
+          autoResize
+          minRows={5}
+          maxRows={10}
+          suggestions={[
+            "Нужен текст для главной страницы сайта",
+            "Требуется SEO-статья на 3000 символов",
+            "Нужны продающие тексты для карточек товаров",
+            "Создание контент-плана для социальных сетей",
+            "Написание коммерческого предложения"
+          ]}
+          autoSave
+          onAutoSave={(value) => {
+            localStorage.setItem('contact_form_message', value);
+          }}
+        />
 
-        {/* Submit Button */}
         <Button 
           type="submit" 
           size="lg" 
           disabled={loading || !isFormValid}
-          className={`w-full h-14 rounded-2xl text-lg font-bold shadow-xl transition-all duration-500 relative overflow-hidden group ${
-            isFormValid 
-              ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 hover:scale-105 hover:shadow-glow' 
-              : 'bg-slate-300 cursor-not-allowed'
-          }`}
+          className="submit-button-enhanced"
         >
-          <div className="flex items-center justify-center gap-3 relative z-10">
+          <div className="flex items-center justify-center gap-3">
             {loading ? (
               <>
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <div className="form-spinner" />
                 Отправляем...
               </>
             ) : (
@@ -129,9 +167,6 @@ export default function ContactForm() {
               </>
             )}
           </div>
-          {isFormValid && (
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          )}
         </Button>
 
         {/* Privacy Notice */}

@@ -2,13 +2,12 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Smartphone, Building2, Loader2 } from 'lucide-react';
+import { CreditCard, Smartphone, Building2, Loader2, Shield, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { EnhancedFormField } from '@/components/ui/enhanced-form-field';
+import { ModernSelect } from '@/components/ui/modern-select';
 
 interface PaymentFormProps {
   orderId: string;
@@ -29,10 +28,44 @@ export default function PaymentForm({
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const paymentOptions = [
+    { value: 'card', label: 'Банковская карта', description: 'Visa, MasterCard, Мир' },
+    { value: 'sbp', label: 'Система быстрых платежей', description: 'Мгновенный перевод через СБП' },
+    { value: 'bank', label: 'Интернет-банкинг', description: 'Оплата через банк-клиент' }
+  ];
+
+  // Валидация полей
+  const validateField = (name: string, value: string): string | null => {
+    switch (name) {
+      case 'customerEmail':
+        if (!value.trim()) return 'Email обязателен для получения чека';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return 'Введите корректный email';
+        return null;
+      case 'customerPhone':
+        if (value && !/^\+?[1-9]\d{1,14}$/.test(value.replace(/\s/g, ''))) {
+          return 'Введите корректный номер телефона';
+        }
+        return null;
+      default:
+        return null;
+    }
+  };
 
   const handlePayment = async () => {
-    if (!customerEmail) {
-      toast.error('Введите email для получения чека');
+    // Валидация полей
+    const newErrors: { [key: string]: string } = {};
+    const emailError = validateField('customerEmail', customerEmail);
+    const phoneError = validateField('customerPhone', customerPhone);
+    
+    if (emailError) newErrors.customerEmail = emailError;
+    if (phoneError) newErrors.customerPhone = phoneError;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error('Пожалуйста, исправьте ошибки в форме');
       return;
     }
 
@@ -75,99 +108,116 @@ export default function PaymentForm({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CreditCard className="w-5 h-5" />
-          Оплата заказа
+    <Card className="w-full max-w-md mx-auto form-modern">
+      <CardHeader className="text-center">
+        <CardTitle className="flex items-center justify-center gap-3 text-2xl">
+          <Shield className="w-6 h-6 text-primary" />
+          Безопасная оплата
         </CardTitle>
+        <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 mt-2">
+          <Lock className="w-4 h-4" />
+          Защищено 256-битным шифрованием
+        </p>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="bg-slate-50 p-4 rounded-lg">
+        {/* Сумма к оплате */}
+        <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-6 rounded-2xl border border-primary/10">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-600">Сумма к оплате:</span>
-            <span className="text-lg font-semibold">{formatPrice(amount)}</span>
+            <span className="text-sm font-medium text-muted-foreground">Сумма к оплате:</span>
+            <span className="text-2xl font-bold text-primary">{formatPrice(amount)}</span>
           </div>
-          <div className="text-sm text-slate-500 mt-1">{description}</div>
+          <div className="text-sm text-muted-foreground mt-2 bg-white/50 p-3 rounded-lg">
+            {description}
+          </div>
         </div>
 
+        {/* Способ оплаты */}
+        <ModernSelect
+          options={paymentOptions}
+          value={paymentMethod}
+          onValueChange={(value) => setPaymentMethod(value as string)}
+          label="Способ оплаты"
+          placeholder="Выберите способ оплаты"
+          searchable={false}
+        />
+
+        <Separator className="my-6" />
+
+        {/* Контактные данные */}
         <div className="space-y-4">
-          <div>
-            <Label htmlFor="payment-method">Способ оплаты</Label>
-            <RadioGroup 
-              value={paymentMethod} 
-              onValueChange={setPaymentMethod}
-              className="mt-2"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="card" id="card" />
-                <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer">
-                  <CreditCard className="w-4 h-4" />
-                  Банковская карта
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="sbp" id="sbp" />
-                <Label htmlFor="sbp" className="flex items-center gap-2 cursor-pointer">
-                  <Smartphone className="w-4 h-4" />
-                  Система быстрых платежей (СБП)
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="bank" id="bank" />
-                <Label htmlFor="bank" className="flex items-center gap-2 cursor-pointer">
-                  <Building2 className="w-4 h-4" />
-                  Интернет-банкинг
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
+          <EnhancedFormField
+            id="customerEmail"
+            name="customerEmail"
+            type="email"
+            label="Email для чека"
+            placeholder="email@example.com"
+            value={customerEmail}
+            onChange={(e) => {
+              setCustomerEmail(e.target.value);
+              if (errors.customerEmail) {
+                setErrors(prev => ({ ...prev, customerEmail: '' }));
+              }
+            }}
+            error={errors.customerEmail}
+            success={customerEmail.includes('@') && !errors.customerEmail}
+            required
+            validationRules={[(value) => validateField('customerEmail', value)]}
+            realTimeValidation
+            tooltip="На этот email будет отправлен чек об оплате"
+          />
+          
+          <EnhancedFormField
+            id="customerPhone"
+            name="customerPhone"
+            type="tel"
+            label="Телефон (необязательно)"
+            placeholder="+7 (999) 123-45-67"
+            value={customerPhone}
+            onChange={(e) => {
+              setCustomerPhone(e.target.value);
+              if (errors.customerPhone) {
+                setErrors(prev => ({ ...prev, customerPhone: '' }));
+              }
+            }}
+            error={errors.customerPhone}
+            success={customerPhone.length > 0 && !errors.customerPhone}
+            validationRules={[(value) => validateField('customerPhone', value)]}
+            realTimeValidation
+            tooltip="Дублирование чека на телефон (необязательно)"
+          />
+        </div>
 
-          <Separator />
-
-          <div className="space-y-3">
-            <div>
-              <Label htmlFor="email">Email для чека *</Label>
-              <Input
-                id="email"
-                type="email"
-                value={customerEmail}
-                onChange={(e) => setCustomerEmail(e.target.value)}
-                placeholder="email@example.com"
-                required
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="phone">Телефон (необязательно)</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={customerPhone}
-                onChange={(e) => setCustomerPhone(e.target.value)}
-                placeholder="+7 (999) 123-45-67"
-              />
-            </div>
-          </div>
-
-          <Button 
-            onClick={handlePayment}
-            disabled={loading || !customerEmail}
-            className="w-full"
-            size="lg"
-          >
+        <Button 
+          onClick={handlePayment}
+          disabled={loading || !customerEmail}
+          className="submit-button-enhanced"
+          size="lg"
+        >
+          <div className="flex items-center justify-center gap-3">
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <div className="form-spinner" />
                 Создание платежа...
               </>
             ) : (
-              `Оплатить ${formatPrice(amount)}`
+              <>
+                <Shield className="w-5 h-5" />
+                Оплатить {formatPrice(amount)}
+              </>
             )}
-          </Button>
+          </div>
+        </Button>
 
-          <div className="text-xs text-slate-500 text-center">
-            Нажимая кнопку "Оплатить", вы соглашаетесь с условиями оферты и переходите на защищенную страницу оплаты МодульБанк
+        {/* Безопасность и гарантии */}
+        <div className="space-y-3 pt-4 border-t border-border">
+          <div className="flex items-center justify-center gap-2 text-xs text-success">
+            <Shield className="w-4 h-4" />
+            <span>SSL-шифрование данных</span>
+          </div>
+          <div className="text-xs text-muted-foreground text-center leading-relaxed">
+            Нажимая кнопку "Оплатить", вы соглашаетесь с{" "}
+            <a href="/terms" className="text-primary hover:underline">условиями оферты</a>{" "}
+            и переходите на защищенную страницу оплаты МодульБанк
           </div>
         </div>
       </CardContent>
