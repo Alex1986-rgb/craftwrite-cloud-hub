@@ -200,8 +200,11 @@ export function analyzeBundleSize() {
 
   const observer = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
+      // Fix: Cast to PerformanceResourceTiming to access transferSize
+      const resourceEntry = entry as PerformanceResourceTiming;
       if (entry.name.includes('.js') || entry.name.includes('.css')) {
-        console.log(`Resource: ${entry.name}, Size: ${(entry.transferSize / 1024).toFixed(2)}KB`);
+        const size = resourceEntry.transferSize || 0;
+        console.log(`Resource: ${entry.name}, Size: ${(size / 1024).toFixed(2)}KB`);
       }
     });
   });

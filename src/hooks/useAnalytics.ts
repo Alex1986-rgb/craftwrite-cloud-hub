@@ -24,14 +24,7 @@ interface ConversionEvent {
   }>;
 }
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
-    ym: (id: number, action: string, params?: any) => void;
-  }
-}
-
+// Remove the conflicting global declaration since it's already in vite-env.d.ts
 export function useAnalytics() {
   const location = useLocation();
 
@@ -42,7 +35,7 @@ export function useAnalytics() {
       
       // Google Analytics 4
       if (window.gtag) {
-        window.gtag('config', process.env.VITE_GA_MEASUREMENT_ID, {
+        window.gtag('config', 'GA_MEASUREMENT_ID', {
           page_path: path,
           page_title: document.title,
           page_location: window.location.href
@@ -51,7 +44,7 @@ export function useAnalytics() {
 
       // Yandex Metrica
       if (window.ym) {
-        window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'hit', path);
+        window.ym(12345678, 'hit', path);
       }
 
       console.log('Page view tracked:', path);
@@ -64,7 +57,7 @@ export function useAnalytics() {
   const trackEvent = useCallback((event: AnalyticsEvent) => {
     const { action, category, label, value, custom_parameters } = event;
 
-    // Google Analytics 4
+    // Google Analytics 4 - fix argument count
     if (window.gtag) {
       window.gtag('event', action, {
         event_category: category,
@@ -74,9 +67,9 @@ export function useAnalytics() {
       });
     }
 
-    // Yandex Metrica
+    // Yandex Metrica - fix argument count
     if (window.ym) {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', action, {
+      window.ym(12345678, 'reachGoal', action, {
         category,
         label,
         value,
@@ -101,7 +94,7 @@ export function useAnalytics() {
 
     // Yandex Metrica eCommerce
     if (window.ym && conversion.event_name === 'purchase') {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', 'ORDER_SUCCESS', {
+      window.ym(12345678, 'reachGoal', 'ORDER_SUCCESS', {
         order_price: conversion.value,
         currency: conversion.currency || 'RUB'
       });
