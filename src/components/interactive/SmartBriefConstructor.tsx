@@ -162,12 +162,16 @@ export default function SmartBriefConstructor() {
   }, []);
 
   const updateBriefData = (section: keyof BriefData, data: any) => {
-    setBriefData(prev => ({
-      ...prev,
-      [section]: typeof prev[section] === 'object' && prev[section] !== null
-        ? { ...prev[section], ...data }
-        : data
-    }));
+    setBriefData(prev => {
+      const newData = {
+        ...prev,
+        [section]: typeof prev[section] === 'object' && prev[section] !== null
+          ? { ...prev[section], ...data }
+          : data
+      };
+      console.log('Brief data updated:', { section, data, newData }); // Debug log
+      return newData;
+    });
     setIsSaved(false);
   };
 
@@ -176,23 +180,31 @@ export default function SmartBriefConstructor() {
   };
 
   const canProceed = () => {
-    switch (currentStep) {
-      case 0: return briefData.projectType !== '';
-      case 1: return briefData.businessInfo.company !== '' && briefData.businessInfo.industry !== '';
-      case 2: return briefData.targetAudience.primary !== '';
-      case 3: return briefData.projectGoals.primary !== '';
-      case 4: return briefData.contentRequirements.tone !== '';
-      case 5: return briefData.technicalRequirements.deadline !== '';
-      default: return true;
-    }
+    const result = (() => {
+      switch (currentStep) {
+        case 0: return briefData.projectType.trim() !== '';
+        case 1: return briefData.businessInfo.company.trim() !== '' && briefData.businessInfo.industry.trim() !== '';
+        case 2: return briefData.targetAudience.primary.trim() !== '';
+        case 3: return briefData.projectGoals.primary.trim() !== '';
+        case 4: return briefData.contentRequirements.tone.trim() !== '';
+        case 5: return briefData.technicalRequirements.deadline.trim() !== '';
+        default: return true;
+      }
+    })();
+    console.log('canProceed check:', { currentStep, result, briefData }); // Debug log
+    return result;
   };
 
   const handleNext = () => {
+    console.log('handleNext called, canProceed:', canProceed()); // Debug log
     if (canProceed()) {
       if (!completedSteps.includes(currentStep)) {
         setCompletedSteps(prev => [...prev, currentStep]);
       }
       setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
+      toast.success(`Шаг ${currentStep + 1} завершен!`);
+    } else {
+      toast.error('Пожалуйста, заполните обязательные поля для продолжения');
     }
   };
 
@@ -267,7 +279,10 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
                         ? 'ring-2 ring-blue-500 bg-blue-50' 
                         : 'hover:bg-gray-50'
                     }`}
-                    onClick={() => setBriefData(prev => ({ ...prev, projectType: key }))}
+                    onClick={() => {
+                      console.log('Project type selected:', key); // Debug log
+                      setBriefData(prev => ({ ...prev, projectType: key }));
+                    }}
                   >
                     <CardContent className="p-4 text-center">
                       <h4 className="font-semibold text-lg">{name}</h4>
@@ -745,7 +760,12 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
                 <Button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 flex items-center gap-2"
+                  className={`submit-button-enhanced ${
+                    !canProceed() 
+                      ? 'opacity-50 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                  } flex items-center gap-2`}
+                  title={!canProceed() ? 'Заполните обязательные поля для продолжения' : 'Перейти к следующему шагу'}
                 >
                   Далее
                   <ArrowRight className="w-4 h-4" />
