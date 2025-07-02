@@ -10,6 +10,8 @@ import { generatedPosts } from './generated-posts';
 import { advancedCopywritingPosts } from './advanced-copywriting-posts';
 import { advancedSeoPosts } from './advanced-seo-posts';
 import { caseStudiesPosts } from './case-studies-posts';
+import { additionalPosts } from './additional-posts';
+import { expertPosts } from './expert-posts';
 
 export const expandedBlogPosts: BlogPost[] = [
   ...copywritingPosts,
@@ -21,7 +23,9 @@ export const expandedBlogPosts: BlogPost[] = [
   ...designPosts,
   ...neuromarketingPosts,
   ...caseStudiesPosts,
-  ...generatedPosts
+  ...generatedPosts,
+  ...additionalPosts,
+  ...expertPosts
 ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 export type { BlogPost };
