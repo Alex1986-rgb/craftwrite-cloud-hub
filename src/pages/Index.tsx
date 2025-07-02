@@ -4,7 +4,7 @@ import ProcessSection from "@/components/landing/ProcessSection";
 import FaqSection from "@/components/landing/FaqSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
-import ModernPricingSection from "@/components/landing/ModernPricingSection";
+
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
@@ -76,11 +76,6 @@ export default function Index() {
       {/* 4. SERVICES - What we offer */}
       <ServicesCatalogSection />
       
-      {/* 5. PRICING - Clear value proposition */}
-      <ModernPricingSection />
-      
-      {/* 6. SMART ORDER CTA #2 - After pricing for logical continuation */}
-      <SmartOrderCTA />
       
       {/* 7. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
