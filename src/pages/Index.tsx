@@ -1,7 +1,7 @@
 
 import UniversalOrderSection from "@/components/landing/UniversalOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
-import FaqSection from "@/components/landing/FaqSection";
+import CompactFaqSection from "@/components/landing/CompactFaqSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 
@@ -64,44 +64,41 @@ export default function Index() {
     <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. HERO SECTION - Above the fold */}
+      {/* 1. КОМПАКТНЫЙ HERO - выше сгиба */}
       <ModernHeroSection />
       
-      {/* 2. SOCIAL PROOF - Immediate credibility */}
+      {/* 2. ЕДИНАЯ ФОРМА ЗАКАЗА - основное действие */}
+      <section id="order">
+        <UniversalOrderSection />
+      </section>
+      
+      {/* 3. СОЦИАЛЬНОЕ ДОКАЗАТЕЛЬСТВО + ГАРАНТИИ - объединено */}
       <CompactSocialProofSection />
-      
-      {/* 3. UNIVERSAL ORDER FORM - Simplified ordering process */}
-      <UniversalOrderSection />
-      
-      
-      {/* 7. GUARANTEES - Remove risk and build confidence */}
       <InteractiveGuaranteesSection />
       
-      
-      {/* 9. HOW IT WORKS - Simple process */}
+      {/* 4. КАК МЫ РАБОТАЕМ - упрощенный процесс */}
       <ProcessSection />
       
-      {/* 10. FAQ - Address concerns */}
-      <FaqSection />
+      {/* 5. КОМПАКТНЫЕ FAQ - только ключевые */}
+      <CompactFaqSection />
       
-      {/* 11. SMART ORDER CTA #3 - Final call to action before contact */}
-      <SmartOrderCTA />
-      
-      {/* 12. FINAL CTA & CONTACT */}
+      {/* 6. ФИНАЛЬНЫЙ КОНТАКТ */}
       <ContactSection />
       
-      {/* 13. SEO TEXT - Search engine optimization */}
-      <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-slate-50/50 to-transparent">
-        <SeoTextExpandable text={seoText} />
-      </div>
-      
-      {/* SUPPORT WIDGETS */}
+      {/* ПОДДЕРЖКА И AI */}
       <SupportWidget />
       <HumanLikeAiAssistant />
       <FloatingChatButton />
       <PWAInstallPrompt />
       
       <EnhancedFooter />
+      
+      {/* SEO TEXT - перенесен в подвал */}
+      <div className="bg-muted/30 border-t">
+        <div className="container mx-auto px-4 py-8">
+          <SeoTextExpandable text={seoText} />
+        </div>
+      </div>
     </main>
   );
 }
