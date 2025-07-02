@@ -1,3 +1,4 @@
+
 import './index.css';
 
 import { UnifiedAuthProvider } from "./contexts/UnifiedAuthContext";
@@ -40,13 +41,13 @@ import ChatbotScriptsOrder from "./pages/ChatbotScriptsOrder";
 import TelegramContentOrder from "./pages/TelegramContentOrder";
 import BulkSeoOptimization from "./pages/BulkSeoOptimization";
 
-// Mobile order pages
-import { InstagramOrder } from "./pages/order/InstagramOrder";
-import { LinkedInOrder } from "./pages/order/LinkedInOrder";
-import { YouTubeOrder } from "./pages/order/YouTubeOrder";
-import { WebsiteTextsOrder } from "./pages/order/WebsiteTextsOrder";
-import { WildberriesOrder } from "./pages/order/WildberriesOrder";
-import { OzonOrder } from "./pages/order/OzonOrder";
+// Mobile order pages - использую default импорты
+import InstagramOrder from "./pages/order/InstagramOrder";
+import LinkedInOrder from "./pages/order/LinkedInOrder";
+import YouTubeOrder from "./pages/order/YouTubeOrder";
+import WebsiteTextsOrder from "./pages/order/WebsiteTextsOrder";
+import WildberriesOrder from "./pages/order/WildberriesOrder";
+import OzonOrder from "./pages/order/OzonOrder";
 
 // Payment pages
 import PaymentSuccess from "./pages/PaymentSuccess";
