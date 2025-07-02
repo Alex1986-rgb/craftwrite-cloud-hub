@@ -94,7 +94,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:slug" element={<BlogDetail />} />
+                    <Route path="/blog/:id" element={<BlogDetail />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/privacy" element={<Privacy />} />
 
