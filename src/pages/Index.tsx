@@ -1,5 +1,5 @@
 
-import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
+import UniversalOrderSection from "@/components/landing/UniversalOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import FaqSection from "@/components/landing/FaqSection";
 import ContactSection from "@/components/landing/ContactSection";
@@ -70,11 +70,8 @@ export default function Index() {
       {/* 2. SOCIAL PROOF - Immediate credibility */}
       <CompactSocialProofSection />
       
-      {/* 3. SMART ORDER CTA #1 - After hero for maximum visibility */}
-      <SmartOrderCTA />
-      
-      {/* 4. SERVICES - What we offer */}
-      <ServicesCatalogSection />
+      {/* 3. UNIVERSAL ORDER FORM - Simplified ordering process */}
+      <UniversalOrderSection />
       
       
       {/* 7. GUARANTEES - Remove risk and build confidence */}
