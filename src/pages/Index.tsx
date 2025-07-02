@@ -4,6 +4,8 @@ import ProcessSection from "@/components/landing/ProcessSection";
 import CompactFaqSection from "@/components/landing/CompactFaqSection";
 import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import RichArticleSection from "@/components/blog/RichArticleSection";
+import { homePageArticles } from "@/data/articles/homePageArticles";
 
 
 import SupportWidget from "@/components/common/SupportWidget";
@@ -84,6 +86,13 @@ export default function Index() {
       
       {/* 6. ФИНАЛЬНЫЙ КОНТАКТ */}
       <ContactSection />
+      
+      {/* 7. ЭКСПЕРТНЫЕ СТАТЬИ */}
+      <RichArticleSection 
+        articles={homePageArticles}
+        sectionTitle="Экспертные материалы по копирайтингу"
+        sectionDescription="Проверенные стратегии и кейсы от ведущих специалистов CopyPro Cloud"
+      />
       
       {/* ПОДДЕРЖКА И AI */}
       <SupportWidget />
