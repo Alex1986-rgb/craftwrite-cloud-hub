@@ -6,7 +6,25 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
+
+// Security: Input validation
+function validateInput(body: any): { isValid: boolean; error?: string } {
+  if (!body.message || typeof body.message !== 'string') {
+    return { isValid: false, error: 'Message is required and must be a string' };
+  }
+  
+  if (body.message.length > 2000) {
+    return { isValid: false, error: 'Message too long' };
+  }
+  
+  if (body.capability && !['general', 'copywriting', 'seo', 'marketing'].includes(body.capability)) {
+    return { isValid: false, error: 'Invalid capability' };
+  }
+  
+  return { isValid: true };
+}
 
 const systemPrompts = {
   general: `Меня зовут Анна Петрова, я ваш персональный менеджер по копирайтингу в CopyPro Cloud. 

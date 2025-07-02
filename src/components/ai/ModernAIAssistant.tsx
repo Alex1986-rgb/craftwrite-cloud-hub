@@ -22,6 +22,7 @@ import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { formatAIMessage } from '@/utils/aiMessageFormatter';
+import { ErrorHandler } from '@/utils/errorHandler';
 
 interface Message {
   id: string;
@@ -134,8 +135,7 @@ export default function ModernAIAssistant({
       }
 
     } catch (error) {
-      console.error('Personal Manager error:', error);
-      toast.error('Ошибка соединения с менеджером');
+      ErrorHandler.handle(error, { context: 'AI_Assistant', selectedCapability });
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -177,8 +177,8 @@ export default function ModernAIAssistant({
         setInputValue(transcript);
       };
 
-      recognition.onerror = () => {
-        toast.error('Ошибка распознавания речи');
+      recognition.onerror = (event: any) => {
+        ErrorHandler.handle(new Error('Speech recognition error'), { event });
         setIsListening(false);
       };
 

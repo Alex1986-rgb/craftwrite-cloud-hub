@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 export function formatAIMessage(text: string): string {
   if (!text) return '';
 
@@ -40,5 +42,10 @@ export function formatAIMessage(text: string): string {
   // Clean up excessive breaks
   formatted = formatted.replace(/(<br \/>){3,}/g, '<br /><br />');
 
-  return formatted;
+  // Sanitize HTML to prevent XSS attacks
+  return DOMPurify.sanitize(formatted, {
+    ALLOWED_TAGS: ['strong', 'em', 'code', 'hr', 'div', 'span', 'br'],
+    ALLOWED_ATTR: ['class'],
+    KEEP_CONTENT: true
+  });
 }
