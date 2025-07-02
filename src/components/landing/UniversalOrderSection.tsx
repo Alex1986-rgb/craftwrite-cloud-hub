@@ -268,45 +268,104 @@ export default function UniversalOrderSection() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
         
         <div className="container max-w-4xl mx-auto px-4 relative z-10 text-center">
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Заказать текст
-              </h2>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                3 простых вопроса — точная цена за 2 минуты
-              </p>
-            </div>
-
-            {/* Process steps */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 my-12">
-              {[
-                { step: 1, title: "Что нужно?", desc: "Выберите тип текста" },
-                { step: 2, title: "Расскажите детали", desc: "Опишите задачу" },
-                { step: 3, title: "Контакты", desc: "Ваши данные" },
-                { step: 4, title: "Техзадание", desc: "Детали проекта" },
-                { step: 5, title: "Смета", desc: "Одобрение и оплата" }
-              ].map((item) => (
-                <div key={item.step} className="flex flex-col items-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-primary/80 text-white flex items-center justify-center text-xl font-bold shadow-lg">
-                    {item.step}
-                  </div>
-                  <div className="text-center">
-                    <h3 className="font-semibold text-lg">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm">{item.desc}</p>
-                  </div>
+          <div className="space-y-12 animate-fade-in">
+            {/* Hero section with enhanced visuals */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold text-sm mb-6 border border-primary/20 backdrop-blur-sm">
+                  <Zap className="w-4 h-4" />
+                  <span>Умная система заказа</span>
                 </div>
-              ))}
+                
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent leading-tight">
+                  Заказать текст
+                </h2>
+                <div className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/90 max-w-4xl mx-auto leading-relaxed">
+                  <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-bold">3 простых вопроса</span>
+                  {" — "}
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">точная цена за 2 минуты</span>
+                </div>
+              </div>
+
+              {/* Key benefits with icons */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/50">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                  <span className="font-semibold text-green-800">100% уникальность</span>
+                </div>
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200/50">
+                  <Zap className="w-6 h-6 text-blue-600" />
+                  <span className="font-semibold text-blue-800">От 24 часов</span>
+                </div>
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200/50">
+                  <Target className="w-6 h-6 text-purple-600" />
+                  <span className="font-semibold text-purple-800">Гарантия результата</span>
+                </div>
+              </div>
             </div>
 
-            <Button 
-              size="lg" 
-              onClick={() => setIsFormOpen(true)}
-              className="text-xl px-12 py-6 h-auto bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-            >
-              Начать заказ
-              <ArrowRight className="ml-2 h-6 w-6" />
-            </Button>
+            {/* Enhanced process steps with animations */}
+            <div className="space-y-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-center text-foreground">
+                Как это работает
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8">
+                {[
+                  { step: 1, title: "Что нужно?", desc: "Выберите тип текста", color: "from-blue-500 to-cyan-500", bgColor: "from-blue-50 to-cyan-50" },
+                  { step: 2, title: "Расскажите детали", desc: "Опишите задачу", color: "from-green-500 to-emerald-500", bgColor: "from-green-50 to-emerald-50" },
+                  { step: 3, title: "Контакты", desc: "Ваши данные", color: "from-purple-500 to-violet-500", bgColor: "from-purple-50 to-violet-50" },
+                  { step: 4, title: "Техзадание", desc: "Детали проекта", color: "from-orange-500 to-red-500", bgColor: "from-orange-50 to-red-50" },
+                  { step: 5, title: "Смета", desc: "Одобрение и оплата", color: "from-pink-500 to-rose-500", bgColor: "from-pink-50 to-rose-50" }
+                ].map((item, index) => (
+                  <div key={item.step} className="flex flex-col items-center space-y-4 group">
+                    <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-r ${item.color} text-white flex items-center justify-center text-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                      {item.step}
+                      {index < 4 && (
+                        <div className="hidden md:block absolute -right-8 top-1/2 transform -translate-y-1/2">
+                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                    <div className={`text-center p-4 rounded-xl bg-gradient-to-r ${item.bgColor} border border-gray-200/50 transition-all duration-300 group-hover:shadow-md`}>
+                      <h4 className="font-semibold text-lg text-foreground">{item.title}</h4>
+                      <p className="text-muted-foreground text-sm mt-1">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Enhanced CTA section */}
+            <div className="space-y-6">
+              <Button 
+                size="lg" 
+                onClick={() => setIsFormOpen(true)}
+                className="group text-xl px-16 py-8 h-auto bg-gradient-to-r from-primary via-primary/90 to-accent hover:from-primary/90 hover:via-primary/80 hover:to-accent/90 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 rounded-2xl border-0 font-bold relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center gap-3">
+                  <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                  Начать заказ сейчас
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                </div>
+              </Button>
+              
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Без предоплаты</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Правки бесплатно</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Гарантия 30 дней</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
