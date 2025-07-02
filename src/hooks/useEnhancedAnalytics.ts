@@ -1,4 +1,3 @@
-
 import { useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSystemSettings } from './useSystemSettings';
@@ -51,7 +50,7 @@ export function useEnhancedAnalytics() {
         window.gtag = function() {
           window.dataLayer?.push(arguments);
         };
-        window.gtag('js', new Date());
+        window.gtag('js', new Date().toISOString());
         window.gtag('config', googleAnalyticsId, {
           send_page_view: false // We'll handle page views manually
         });
