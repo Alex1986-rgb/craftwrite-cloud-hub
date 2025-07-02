@@ -14,7 +14,8 @@ import {
   ChevronRight,
   LogOut,
   Zap,
-  Cog
+  Cog,
+  Rocket
 } from "lucide-react";
 import { UnifiedButton } from "@/components/unified";
 import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
@@ -30,6 +31,7 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
 
   const menuItems = [
     { path: "/admin", icon: Home, label: "Dashboard", badge: null },
+    { path: "/admin/launch", icon: Rocket, label: "🚀 Запуск системы", badge: "READY" },
     { path: "/admin/orders", icon: ShoppingCart, label: "Заказы", badge: "12" },
     { path: "/admin/clients", icon: Users, label: "Клиенты", badge: null },
     { path: "/admin/content-manager", icon: Edit, label: "Контент-менеджер", badge: "NEW" },
