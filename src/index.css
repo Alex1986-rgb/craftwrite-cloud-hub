@@ -9,6 +9,7 @@
 @import url('./styles/enhanced-responsive.css');
 @import url('./styles/animations/index.css');
 @import url('./styles/components/order-form.css');
+@import url('./styles/forms.css');
 
 @tailwind base;
 @tailwind components;
