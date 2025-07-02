@@ -1,3 +1,4 @@
+
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import FaqSection from "@/components/landing/FaqSection";
@@ -15,7 +16,7 @@ import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
-import { useAnalytics } from "@/hooks/useAnalytics";
+import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
 import { useEffect } from "react";
 
 const seoText = `
@@ -44,7 +45,7 @@ CopyPro Cloud — ведущая платформа профессиональн
 `;
 
 export default function Index() {
-  const { trackEvent } = useAnalytics();
+  const { trackEvent } = useEnhancedAnalytics();
 
   useEffect(() => {
     // Track landing page view with additional context
