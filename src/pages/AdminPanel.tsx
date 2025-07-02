@@ -23,6 +23,8 @@ const PromptManager = lazy(() => import("@/components/admin/prompts/PromptManage
 const DynamicPricingManager = lazy(() => import("@/components/admin/pricing/DynamicPricingManager"));
 const AdminContentManager = lazy(() => import("@/components/admin/AdminContentManager"));
 const LaunchDashboard = lazy(() => import("@/components/admin/LaunchDashboard"));
+const SEOSetupManager = lazy(() => import("@/components/admin/SEOSetupManager"));
+const MarketingCampaignManager = lazy(() => import("@/components/admin/MarketingCampaignManager"));
 
 function AdminContent() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -59,6 +61,8 @@ function AdminContent() {
             <Routes>
               <Route path="/" element={<AdminDashboard />} />
               <Route path="/launch" element={<LaunchDashboard />} />
+              <Route path="/seo-setup" element={<SEOSetupManager />} />
+              <Route path="/marketing" element={<MarketingCampaignManager />} />
               <Route path="/orders" element={<OrderManagement />} />
               <Route path="/clients" element={<ClientManagement />} />
               <Route path="/ai-generator" element={<AITextGenerator />} />

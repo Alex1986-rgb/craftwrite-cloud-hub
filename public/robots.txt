@@ -43,7 +43,7 @@ Disallow: /temp/
 Disallow: /draft/
 
 # Sitemap location
-Sitemap: https://copypro-cloud.lovable.app/sitemap.xml
+Sitemap: https://copypro.cloud/sitemap.xml
 
 # Host
-Host: https://copypro-cloud.lovable.app
+Host: https://copypro.cloud

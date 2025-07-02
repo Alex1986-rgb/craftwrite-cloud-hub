@@ -15,7 +15,9 @@ import {
   LogOut,
   Zap,
   Cog,
-  Rocket
+  Rocket,
+  Search,
+  Megaphone
 } from "lucide-react";
 import { UnifiedButton } from "@/components/unified";
 import { useUnifiedAuth } from "@/contexts/UnifiedAuthContext";
@@ -32,11 +34,13 @@ export default function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
   const menuItems = [
     { path: "/admin", icon: Home, label: "Dashboard", badge: null },
     { path: "/admin/launch", icon: Rocket, label: "🚀 Запуск системы", badge: "READY" },
-    { path: "/admin/orders", icon: ShoppingCart, label: "Заказы", badge: "12" },
+    { path: "/admin/seo-setup", icon: Search, label: "SEO & Аналитика", badge: "NEW" },
+    { path: "/admin/marketing", icon: Megaphone, label: "Маркетинг", badge: "LAUNCH" },
+    { path: "/admin/orders", icon: ShoppingCart, label: "Заказы", badge: "2" },
     { path: "/admin/clients", icon: Users, label: "Клиенты", badge: null },
-    { path: "/admin/content-manager", icon: Edit, label: "Контент-менеджер", badge: "NEW" },
+    { path: "/admin/content-manager", icon: Edit, label: "Контент-менеджер", badge: null },
     { path: "/admin/automation", icon: Cog, label: "Автоматизация", badge: "AI" },
-    { path: "/admin/prompts", icon: Bot, label: "Промпты", badge: "HOT" },
+    { path: "/admin/prompts", icon: Bot, label: "Промпты", badge: null },
     { path: "/admin/pricing", icon: CreditCard, label: "Ценообразование", badge: null },
     { path: "/admin/ai-generator", icon: Bot, label: "AI Генератор", badge: null },
     { path: "/admin/page-editor", icon: Edit, label: "Редактор страниц", badge: null },
