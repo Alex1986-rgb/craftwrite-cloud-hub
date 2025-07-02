@@ -168,6 +168,30 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
+  }
+
+  /* AI Message Content Styling */
+  .ai-message-content {
+    line-height: 1.6;
+  }
+
+  .ai-message-content strong {
+    font-weight: 600;
+  }
+
+  .ai-message-content em {
+    font-style: italic;
+  }
+
+  .ai-message-content code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Cascadia, "Cascadia Code", Roboto Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .ai-message-content hr {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid hsl(var(--border));
+  }
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;

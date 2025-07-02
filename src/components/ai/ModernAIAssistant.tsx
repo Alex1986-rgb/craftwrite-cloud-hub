@@ -21,6 +21,7 @@ import { useEnhancedAnalytics } from '@/hooks/useEnhancedAnalytics';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { formatAIMessage } from '@/utils/aiMessageFormatter';
 
 interface Message {
   id: string;
@@ -317,9 +318,18 @@ export default function ModernAIAssistant({
                 {messages.map((message) => (
                   <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[85%] ${message.type === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100'} rounded-lg p-3`}>
-                      <div className="whitespace-pre-wrap text-sm">
-                        {message.content}
-                      </div>
+                      {message.type === 'user' ? (
+                        <div className="whitespace-pre-wrap text-sm">
+                          {message.content}
+                        </div>
+                      ) : (
+                        <div 
+                          className="text-sm ai-message-content"
+                          dangerouslySetInnerHTML={{ 
+                            __html: formatAIMessage(message.content) 
+                          }}
+                        />
+                      )}
                       <div className="flex items-center justify-between mt-2">
                         <div className={`text-xs ${message.type === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
                           {message.timestamp.toLocaleTimeString('ru-RU', { 
