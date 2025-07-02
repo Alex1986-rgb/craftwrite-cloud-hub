@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, ArrowLeft, CheckCircle, FileText, Target, User } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle, FileText, Target, User, Zap } from "lucide-react";
 import { useUnifiedOrderForm } from "@/hooks/useUnifiedOrderForm";
 import { toast } from "@/hooks/use-toast";
+import TechnicalTaskStep from "@/components/order/advanced/TechnicalTaskStep";
+import DetailedEstimate from "@/components/order/advanced/DetailedEstimate";
 
 interface ServiceType {
   id: string;
@@ -57,12 +59,17 @@ const SERVICE_TYPES: ServiceType[] = [
 const STEP_ICONS = {
   1: Target,
   2: FileText,
-  3: User
+  3: User,
+  4: Zap,
+  5: CheckCircle
 };
 
 export default function UniversalOrderSection() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedServiceType, setSelectedServiceType] = useState<ServiceType | null>(null);
+  const [technicalTaskData, setTechnicalTaskData] = useState<any>({});
+  const [estimateData, setEstimateData] = useState(null);
+  const [isEstimateApproved, setIsEstimateApproved] = useState(false);
   
   const {
     currentStep,
@@ -79,6 +86,9 @@ export default function UniversalOrderSection() {
     onSuccess: () => {
       setIsFormOpen(false);
       setSelectedServiceType(null);
+      setTechnicalTaskData({});
+      setEstimateData(null);
+      setIsEstimateApproved(false);
       setCurrentStep(1);
       toast({
         title: "Заказ отправлен!",
@@ -91,6 +101,31 @@ export default function UniversalOrderSection() {
     setSelectedServiceType(serviceType);
     handleServiceSelect(serviceType.title);
     goToNextStep();
+  };
+
+  const handleTechnicalTaskUpdate = (updates: any) => {
+    setTechnicalTaskData(prev => ({ ...prev, ...updates }));
+  };
+
+  const handleCreateEstimate = () => {
+    const estimate = {
+      serviceType: selectedServiceType?.id || '',
+      projectDetails: formData.details,
+      keywords: technicalTaskData.keywords || [],
+      lsiKeywords: technicalTaskData.lsiKeywords || [],
+      contentStructure: technicalTaskData.contentStructure || [],
+      totalWordCount: technicalTaskData.totalWordCount || 3000,
+      targetAudience: technicalTaskData.targetAudience || '',
+      competitorUrls: technicalTaskData.competitorUrls || [],
+      additionalServices: [],
+      urgencyMultiplier: 1
+    };
+    setEstimateData(estimate);
+    goToNextStep();
+  };
+
+  const handleEstimateApprove = () => {
+    setIsEstimateApproved(true);
   };
 
   const handleFormSubmit = async () => {
@@ -195,11 +230,13 @@ export default function UniversalOrderSection() {
             </div>
 
             {/* Process steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 my-12">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 my-12">
               {[
                 { step: 1, title: "Что нужно?", desc: "Выберите тип текста" },
                 { step: 2, title: "Расскажите детали", desc: "Опишите задачу" },
-                { step: 3, title: "Получите цену", desc: "Контакты и стоимость" }
+                { step: 3, title: "Контакты", desc: "Ваши данные" },
+                { step: 4, title: "Техзадание", desc: "Детали проекта" },
+                { step: 5, title: "Смета", desc: "Одобрение и оплата" }
               ].map((item) => (
                 <div key={item.step} className="flex flex-col items-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-primary/80 text-white flex items-center justify-center text-xl font-bold shadow-lg">
@@ -238,14 +275,14 @@ export default function UniversalOrderSection() {
               {React.createElement(STEP_ICONS[currentStep as keyof typeof STEP_ICONS], { 
                 className: "h-8 w-8 text-primary" 
               })}
-              Шаг {currentStep} из 3
+              Шаг {currentStep} из 5
             </CardTitle>
             
             {/* Progress bar */}
             <div className="w-full bg-gray-200 rounded-full h-2 mt-6">
               <div 
                 className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-500"
-                style={{ width: `${(currentStep / 3) * 100}%` }}
+                style={{ width: `${(currentStep / 5) * 100}%` }}
               ></div>
             </div>
           </CardHeader>
@@ -379,33 +416,8 @@ export default function UniversalOrderSection() {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div className="text-center space-y-4">
-                  <h3 className="text-2xl font-semibold">Финальный шаг!</h3>
-                  
-                  {/* Enhanced pricing display */}
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-center gap-2 text-sm text-green-600">
-                        <span className="text-lg">{selectedServiceType?.icon}</span>
-                        <span>{selectedServiceType?.title}</span>
-                      </div>
-                      <div className="text-3xl font-bold text-green-700">
-                        {calculatePrice().toLocaleString()} ₽
-                      </div>
-                      <div className="text-sm text-green-600 space-y-1">
-                        <div>📅 Срок: 2-5 рабочих дней</div>
-                        <div>✅ Гарантия качества и уникальности</div>
-                        <div>🔄 Бесплатные правки</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Order summary */}
-                <div className="bg-slate-50 rounded-lg p-4 space-y-2">
-                  <div className="font-medium text-sm">Ваш заказ:</div>
-                  <div className="text-sm text-muted-foreground">
-                    {formData.details.slice(0, 150)}{formData.details.length > 150 ? '...' : ''}
-                  </div>
+                  <h3 className="text-2xl font-semibold">Контактная информация</h3>
+                  <p className="text-muted-foreground">Как с вами связаться для уточнения деталей</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -465,21 +477,35 @@ export default function UniversalOrderSection() {
                     Назад
                   </Button>
                   <Button 
-                    onClick={handleFormSubmit}
-                    disabled={!isCurrentStepValid() || loading}
-                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                    onClick={goToNextStep}
+                    disabled={!isCurrentStepValid()}
+                    className="flex-1"
                   >
-                    {loading ? (
-                      "Отправляем..."
-                    ) : (
-                      <>
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Заказать за {calculatePrice().toLocaleString()} ₽
-                      </>
-                    )}
+                    Далее
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </div>
+            )}
+
+            {/* Step 4: Technical Task */}
+            {currentStep === 4 && (
+              <TechnicalTaskStep
+                formData={technicalTaskData}
+                onUpdate={handleTechnicalTaskUpdate}
+                onNext={handleCreateEstimate}
+                onPrevious={goToPreviousStep}
+              />
+            )}
+
+            {/* Step 5: Detailed Estimate */}
+            {currentStep === 5 && estimateData && (
+              <DetailedEstimate
+                {...estimateData}
+                onEdit={() => setCurrentStep(4)}
+                onApprove={handleEstimateApprove}
+                onPayment={handleFormSubmit}
+              />
             )}
           </CardContent>
         </Card>
@@ -491,6 +517,9 @@ export default function UniversalOrderSection() {
             onClick={() => {
               setIsFormOpen(false);
               setSelectedServiceType(null);
+              setTechnicalTaskData({});
+              setEstimateData(null);
+              setIsEstimateApproved(false);
               setCurrentStep(1);
             }}
             className="text-muted-foreground hover:text-foreground"
