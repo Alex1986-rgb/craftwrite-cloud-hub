@@ -1,4 +1,3 @@
-
 import { useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -24,7 +23,6 @@ interface ConversionEvent {
   }>;
 }
 
-// Remove the conflicting global declaration since it's already in vite-env.d.ts
 export function useAnalytics() {
   const location = useLocation();
 
@@ -57,7 +55,7 @@ export function useAnalytics() {
   const trackEvent = useCallback((event: AnalyticsEvent) => {
     const { action, category, label, value, custom_parameters } = event;
 
-    // Google Analytics 4 - fix argument count
+    // Google Analytics 4
     if (window.gtag) {
       window.gtag('event', action, {
         event_category: category,
@@ -67,7 +65,7 @@ export function useAnalytics() {
       });
     }
 
-    // Yandex Metrica - fix argument count
+    // Yandex Metrica
     if (window.ym) {
       window.ym(12345678, 'reachGoal', action, {
         category,
