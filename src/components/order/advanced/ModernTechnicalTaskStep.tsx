@@ -119,9 +119,9 @@ export default function ModernTechnicalTaskStep({
       case 'structure':
         return contentStructure.length > 0;
       case 'audience':
-        return targetAudience.trim().length > 20; // минимум 20 символов
+        return targetAudience.trim().length > 10; // уменьшили до 10 символов
       case 'goals':
-        return contentGoals.trim().length > 20; // минимум 20 символов
+        return contentGoals.trim().length > 10; // уменьшили до 10 символов
       default:
         return false;
     }
@@ -147,9 +147,11 @@ export default function ModernTechnicalTaskStep({
   const completedTabs = ['keywords', 'structure', 'audience', 'goals'].filter(isTabComplete).length;
   const totalTabs = 4;
   const progressPercentage = (completedTabs / totalTabs) * 100;
-  const isStepComplete = completedTabs >= 3; // минимум 3 из 4 табов
+  const isStepComplete = completedTabs >= 1; // достаточно заполнить хотя бы 1 таб
 
   const handleNext = () => {
+    console.log('Button clicked! Step complete:', isStepComplete, 'Completed tabs:', completedTabs);
+    
     if (isStepComplete) {
       console.log('Moving to next step with technical task data:', {
         keywords: keywords.length,
@@ -162,8 +164,8 @@ export default function ModernTechnicalTaskStep({
       onNext();
     } else {
       toast({
-        title: "Необходимо заполнить больше разделов",
-        description: `Заполните минимум 3 из 4 разделов (сейчас: ${completedTabs}/4)`,
+        title: "Заполните хотя бы один раздел",
+        description: "Добавьте ключевые слова, структуру, описание аудитории или цели",
         variant: "destructive"
       });
     }
@@ -263,18 +265,17 @@ export default function ModernTechnicalTaskStep({
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="target-audience" className="text-base font-medium">
-                      Опишите вашу целевую аудиторию *
+                      Опишите вашу целевую аудиторию
                     </Label>
                     <Textarea
                       id="target-audience"
                       value={targetAudience}
                       onChange={(e) => handleTargetAudienceChange(e.target.value)}
-                      placeholder="Например: предприниматели 25-40 лет, интересующиеся автоматизацией бизнеса, со средним доходом от 100k рублей в месяц..."
+                      placeholder="Например: предприниматели 25-40 лет, интересующиеся автоматизацией бизнеса..."
                       className="min-h-32 mt-2"
-                      required
                     />
                     <div className="mt-1 text-xs text-muted-foreground">
-                      Символов: {targetAudience.length} (минимум 20)
+                      Символов: {targetAudience.length} (минимум 10)
                     </div>
                   </div>
                   
@@ -307,18 +308,17 @@ export default function ModernTechnicalTaskStep({
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="content-goals" className="text-base font-medium">
-                      Какие цели должен достигать контент? *
+                      Какие цели должен достигать контент?
                     </Label>
                     <Textarea
                       id="content-goals"
                       value={contentGoals}
                       onChange={(e) => handleContentGoalsChange(e.target.value)}
-                      placeholder="Например: увеличить продажи услуг автоматизации на 30%, повысить узнаваемость бренда, привлечь 500 новых клиентов в месяц..."
+                      placeholder="Например: увеличить продажи услуг автоматизации на 30%, повысить узнаваемость бренда..."
                       className="min-h-32 mt-2"
-                      required
                     />
                     <div className="mt-1 text-xs text-muted-foreground">
-                      Символов: {contentGoals.length} (минимум 20)
+                      Символов: {contentGoals.length} (минимум 10)
                     </div>
                   </div>
                   
@@ -370,7 +370,7 @@ export default function ModernTechnicalTaskStep({
             </>
           ) : (
             <>
-              Заполните {4 - completedTabs} раздел{4 - completedTabs === 1 ? '' : (4 - completedTabs < 5 ? 'а' : 'ов')}
+              Заполните хотя бы 1 раздел для продолжения
             </>
           )}
         </Button>
