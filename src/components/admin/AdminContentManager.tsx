@@ -8,6 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import OrderProcessingDebug from './OrderProcessingDebug';
 import TestOrderGenerator from './TestOrderGenerator';
 import OrderProcessingMonitor from './OrderProcessingMonitor';
+import QualityAnalyzer from './ai-quality/QualityAnalyzer';
+import ABTestManager from './ab-testing/ABTestManager';
+import NotificationSystem from './notifications/NotificationSystem';
+import AdvancedAnalytics from './analytics/AdvancedAnalytics';
+import ContentVersioning from './versioning/ContentVersioning';
 import { 
   FileText, 
   Eye, 
@@ -180,244 +185,59 @@ export default function AdminContentManager() {
       </div>
 
       <Tabs defaultValue="generated" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="monitor">
-            Мониторинг системы
-          </TabsTrigger>
-          <TabsTrigger value="generator">
-            Тестовые заказы
-          </TabsTrigger>
-          <TabsTrigger value="generated">
-            Сгенерированный контент ({generatedContent.length})
-          </TabsTrigger>
-          <TabsTrigger value="pending">
-            Ожидают обработки ({pendingOrders.length})
-          </TabsTrigger>
-          <TabsTrigger value="completed">
-            Завершенные ({completedOrders.length})
-          </TabsTrigger>
-          <TabsTrigger value="debug">
-            Отладка системы
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="monitor">Мониторинг</TabsTrigger>
+          <TabsTrigger value="quality">Качество</TabsTrigger>
+          <TabsTrigger value="analytics">Аналитика</TabsTrigger>
+          <TabsTrigger value="automation">Автоматизация</TabsTrigger>
         </TabsList>
 
         <TabsContent value="monitor">
-          <OrderProcessingMonitor />
+          <Tabs defaultValue="monitoring" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="monitoring">Мониторинг системы</TabsTrigger>
+              <TabsTrigger value="generator">Тестовые заказы</TabsTrigger>
+              <TabsTrigger value="debug">Отладка</TabsTrigger>
+            </TabsList>
+            <TabsContent value="monitoring">
+              <OrderProcessingMonitor />
+            </TabsContent>
+            <TabsContent value="generator">
+              <TestOrderGenerator />
+            </TabsContent>
+            <TabsContent value="debug">
+              <OrderProcessingDebug />
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
-        <TabsContent value="generator">
-          <TestOrderGenerator />
+        <TabsContent value="quality">
+          <Tabs defaultValue="analyzer" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="analyzer">Анализ качества</TabsTrigger>
+              <TabsTrigger value="abtest">A/B тестирование</TabsTrigger>
+              <TabsTrigger value="versioning">Версионирование</TabsTrigger>
+            </TabsList>
+            <TabsContent value="analyzer">
+              <QualityAnalyzer />
+            </TabsContent>
+            <TabsContent value="abtest">
+              <ABTestManager />
+            </TabsContent>
+            <TabsContent value="versioning">
+              <ContentVersioning />
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
-        <TabsContent value="generated" className="space-y-4">
-          <div className="flex gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Поиск по названию услуги или имени клиента..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            {filteredContent.map((content) => (
-              <Card key={content.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">
-                        {content.order?.service_name || content.content_type}
-                      </CardTitle>
-                      <CardDescription>
-                        Клиент: {content.order?.contact_name} | 
-                        Модель: {content.ai_model} | 
-                        {new Date(content.created_at).toLocaleString()}
-                      </CardDescription>
-                    </div>
-                    <div className="flex gap-2">
-                      <Badge variant={content.is_active ? "default" : "secondary"}>
-                        {content.is_active ? "Активен" : "Архив"}
-                      </Badge>
-                      {content.quality_score && (
-                        <Badge variant="outline">
-                          Оценка: {content.quality_score}/10
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Сгенерированный текст:</h4>
-                      <div className="bg-muted p-4 rounded-lg max-h-32 overflow-y-auto">
-                        <p className="text-sm whitespace-pre-wrap">
-                          {content.content.length > 500 
-                            ? content.content.substring(0, 500) + '...'
-                            : content.content
-                          }
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {content.prompt_used && (
-                      <div>
-                        <h4 className="font-medium mb-2">Использованный промпт:</h4>
-                        <div className="bg-blue-50 p-3 rounded-lg max-h-24 overflow-y-auto">
-                          <p className="text-sm text-blue-700">
-                            {content.prompt_used.length > 200
-                              ? content.prompt_used.substring(0, 200) + '...'
-                              : content.prompt_used
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => setSelectedOrder(content.order ? {...content.order, created_at: content.created_at} : null)}
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        Подробнее
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => {
-                          navigator.clipboard.writeText(content.content);
-                          toast({ title: "Скопировано в буфер обмена" });
-                        }}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Копировать
-                      </Button>
-                      {content.order?.id && (
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => reprocessOrder(content.order!.id)}
-                          disabled={processingOrders.has(content.order!.id)}
-                        >
-                          {processingOrders.has(content.order!.id) ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2" />
-                          ) : (
-                            <RefreshCw className="w-4 h-4 mr-2" />
-                          )}
-                          Перегенерировать
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <TabsContent value="analytics">
+          <AdvancedAnalytics />
         </TabsContent>
 
-        <TabsContent value="pending" className="space-y-4">
-          <div className="grid gap-4">
-            {pendingOrders.map((order) => (
-              <Card key={order.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{order.service_name}</CardTitle>
-                      <CardDescription>
-                        Клиент: {order.contact_name} | 
-                        {new Date(order.created_at).toLocaleString()}
-                      </CardDescription>
-                    </div>
-                    <Badge variant={order.status === 'pending' ? "secondary" : "default"}>
-                      <Clock className="w-3 h-3 mr-1" />
-                      {order.status === 'pending' ? 'В очереди' : 'Обрабатывается'}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {order.generated_prompt && (
-                      <div>
-                        <h4 className="font-medium mb-2">Сгенерированный промпт:</h4>
-                        <div className="bg-green-50 p-3 rounded-lg">
-                          <p className="text-sm text-green-700">
-                            {order.generated_prompt.substring(0, 200)}...
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => reprocessOrder(order.id)}
-                        disabled={processingOrders.has(order.id)}
-                      >
-                        {processingOrders.has(order.id) ? (
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2" />
-                        ) : (
-                          <Play className="w-4 h-4 mr-2" />
-                        )}
-                        Запустить обработку
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <TabsContent value="automation">
+          <NotificationSystem />
         </TabsContent>
 
-        <TabsContent value="completed" className="space-y-4">
-          <div className="grid gap-4">
-            {completedOrders.map((order) => (
-              <Card key={order.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{order.service_name}</CardTitle>
-                      <CardDescription>
-                        Клиент: {order.contact_name} | 
-                        {new Date(order.created_at).toLocaleString()}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="outline">
-                      <CheckCircle className="w-3 h-3 mr-1" />
-                      Завершен
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => reprocessOrder(order.id)}
-                      disabled={processingOrders.has(order.id)}
-                    >
-                      {processingOrders.has(order.id) ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2" />
-                      ) : (
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                      )}
-                      Перегенерировать
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="debug">
-          <OrderProcessingDebug />
-        </TabsContent>
       </Tabs>
     </div>
   );
