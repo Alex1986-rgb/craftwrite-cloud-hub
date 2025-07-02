@@ -122,6 +122,38 @@ export default function SystemDiagnostics() {
     }
   };
 
+  const configureServiceRoleKey = async () => {
+    const serviceRoleKey = prompt('Введите Supabase Service Role Key:');
+    if (!serviceRoleKey) return;
+
+    try {
+      const { error } = await supabase
+        .from('system_settings')
+        .update({ value: JSON.stringify(serviceRoleKey) })
+        .eq('key', 'supabase_service_role_key');
+
+      if (error) throw error;
+
+      toast({
+        title: "Service Role Key обновлен",
+        description: "Ключ успешно сохранен в системных настройках",
+      });
+
+      // Перезапускаем диагностику
+      setTimeout(() => {
+        runDiagnostics();
+      }, 1000);
+
+    } catch (err) {
+      console.error('Error updating service role key:', err);
+      toast({
+        title: "Ошибка обновления ключа",
+        description: err instanceof Error ? err.message : 'Неизвестная ошибка',
+        variant: "destructive"
+      });
+    }
+  };
+
   const reprocessStuckOrders = async () => {
     try {
       // Находим заказы, которые долго висят в статусе pending
@@ -303,6 +335,15 @@ export default function SystemDiagnostics() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                <Button 
+                  onClick={configureServiceRoleKey}
+                  variant="default"
+                  className="w-full"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Настроить Service Role Key
+                </Button>
+
                 <Button 
                   onClick={reprocessStuckOrders}
                   variant="outline"

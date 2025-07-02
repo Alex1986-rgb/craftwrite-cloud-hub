@@ -105,7 +105,7 @@ serve(async (req) => {
         content: generatedText,
         content_type: order.service_slug,
         prompt_used: prompt,
-        ai_model: 'gpt-4.1-2025-04-14',
+        ai_model: 'gpt-4o-mini',
         created_by: order.user_id
       });
 
@@ -271,7 +271,7 @@ async function generateText(prompt: string, serviceSlug: string): Promise<string
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4.1-2025-04-14',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
