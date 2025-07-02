@@ -6,12 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FileText, Search, Users, Target, Zap, CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import KeywordManager from './KeywordManager';
 import ContentStructureBuilder from './ContentStructureBuilder';
+import EstimateProgressIndicator from './EstimateProgressIndicator';
+import EstimateSummaryCard from './EstimateSummaryCard';
 
 interface ModernTechnicalTaskStepProps {
   formData: any;
@@ -36,13 +37,12 @@ export default function ModernTechnicalTaskStep({
   const [totalWordCount, setTotalWordCount] = useState(formData.totalWordCount || 3000);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
 
-  // Auto-save functionality
+  // Auto-save functionality with debounce
   useEffect(() => {
     if (!autoSaveEnabled) return;
     
     const timeoutId = setTimeout(() => {
-      console.log('Auto-saving technical task data...');
-      onUpdate({
+      const updatedData = {
         keywords,
         lsiKeywords,
         contentStructure,
@@ -50,8 +50,14 @@ export default function ModernTechnicalTaskStep({
         targetAudience,
         contentGoals,
         totalWordCount
-      });
-    }, 1000);
+      };
+      
+      // Only save if there's actual data
+      if (keywords.length > 0 || targetAudience.trim() || contentGoals.trim()) {
+        onUpdate(updatedData);
+        console.log('Auto-saved technical task data');
+      }
+    }, 2000); // Увеличили время до 2 секунд для меньшего количества сохранений
 
     return () => clearTimeout(timeoutId);
   }, [keywords, lsiKeywords, contentStructure, competitorUrls, targetAudience, contentGoals, totalWordCount, autoSaveEnabled, onUpdate]);
@@ -161,23 +167,13 @@ export default function ModernTechnicalTaskStep({
           Определите детали проекта для создания точной сметы
         </p>
         
-        <div className="flex items-center justify-center gap-6">
-          <Badge 
-            variant={isStepComplete ? "default" : "secondary"} 
-            className="text-sm font-medium"
-          >
-            Заполнено: {completedTabs}/{totalTabs} разделов
-          </Badge>
-          
-          <div className="flex items-center gap-3">
-            <div className="w-32 h-2 bg-secondary rounded-full overflow-hidden">
-              <Progress value={progressPercentage} className="h-full" />
-            </div>
-            <span className="text-sm text-muted-foreground font-medium">
-              {Math.round(progressPercentage)}%
-            </span>
-          </div>
-        </div>
+        <EstimateProgressIndicator
+          currentStep={3}
+          totalSteps={5}
+          completedTabs={completedTabs}
+          totalTabs={totalTabs}
+          isLoading={false}
+        />
 
         {autoSaveEnabled && (
           <Alert className="max-w-md mx-auto">
@@ -338,46 +334,13 @@ export default function ModernTechnicalTaskStep({
         </CardContent>
       </Card>
 
-      {/* Предварительный просмотр */}
-      {isStepComplete && (
-        <Card className="border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Zap className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-green-800">Предварительная оценка готова!</h4>
-                <p className="text-sm text-green-600">Все основные параметры определены</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-white/60 rounded-lg">
-                <div className="text-gray-600 text-xs uppercase tracking-wide">Ключевые слова</div>
-                <div className="font-bold text-lg">{keywords.length + lsiKeywords.length}</div>
-              </div>
-              
-              <div className="text-center p-3 bg-white/60 rounded-lg">
-                <div className="text-gray-600 text-xs uppercase tracking-wide">Разделов</div>
-                <div className="font-bold text-lg">{contentStructure.length}</div>
-              </div>
-              
-              <div className="text-center p-3 bg-white/60 rounded-lg">
-                <div className="text-gray-600 text-xs uppercase tracking-wide">Объем</div>
-                <div className="font-bold text-lg">{totalWordCount.toLocaleString()}</div>
-              </div>
-              
-              <div className="text-center p-3 bg-white/60 rounded-lg">
-                <div className="text-gray-600 text-xs uppercase tracking-wide">Примерная цена</div>
-                <div className="font-bold text-lg text-green-600">
-                  {(totalWordCount * 3).toLocaleString()}₽
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      <EstimateSummaryCard
+        keywordsCount={keywords.length}
+        lsiKeywordsCount={lsiKeywords.length}
+        sectionsCount={contentStructure.length}
+        totalWordCount={totalWordCount}
+        isComplete={isStepComplete}
+      />
 
       {/* Навигация */}
       <div className="flex gap-4">

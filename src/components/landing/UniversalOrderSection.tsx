@@ -107,13 +107,7 @@ export default function UniversalOrderSection() {
     setTechnicalTaskData(prev => ({ ...prev, ...updates }));
   };
 
-  const handleCreateEstimate = () => {
-    console.log('Creating estimate with data:', {
-      serviceType: selectedServiceType?.id,
-      projectDetails: formData.details,
-      technicalTaskData
-    });
-    
+  const handleCreateEstimate = async () => {
     if (!selectedServiceType) {
       toast({
         title: "Ошибка",
@@ -122,6 +116,12 @@ export default function UniversalOrderSection() {
       });
       return;
     }
+
+    // Имитация процесса создания сметы с задержкой
+    toast({
+      title: "Создание сметы...",
+      description: "Анализируем техническое задание"
+    });
 
     const estimate = {
       serviceType: selectedServiceType?.id || '',
@@ -136,7 +136,9 @@ export default function UniversalOrderSection() {
       urgencyMultiplier: 1
     };
     
-    console.log('Setting estimate data:', estimate);
+    // Небольшая задержка для показа процесса
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     setEstimateData(estimate);
     
     toast({

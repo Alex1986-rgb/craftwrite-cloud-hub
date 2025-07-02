@@ -25,6 +25,7 @@ import {
   Zap
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import EstimateExportActions from './EstimateExportActions';
 
 interface ModernDetailedEstimateProps {
   serviceType: string;
@@ -198,16 +199,13 @@ export default function ModernDetailedEstimate({
               </div>
             </CardTitle>
             
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={exportToPDF}>
-                <Download className="w-4 h-4 mr-2" />
-                PDF
-              </Button>
-              <Button variant="outline" size="sm">
-                <Eye className="w-4 h-4 mr-2" />
-                Превью
-              </Button>
-            </div>
+            <EstimateExportActions 
+              estimateData={{
+                serviceType,
+                totalWordCount,
+                pricing
+              }}
+            />
           </div>
           
           {isApproved && (
