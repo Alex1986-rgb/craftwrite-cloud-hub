@@ -11,6 +11,14 @@
 @import url('./styles/components/order-form.css');
 @import url('./styles/forms.css');
 
+/* Grid Pattern Background */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(hsl(var(--border)) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
