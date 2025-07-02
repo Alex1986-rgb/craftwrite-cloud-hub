@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import OrderProcessingDebug from './OrderProcessingDebug';
 import { 
   FileText, 
   Eye, 
@@ -186,6 +187,9 @@ export default function AdminContentManager() {
           </TabsTrigger>
           <TabsTrigger value="completed">
             Завершенные ({completedOrders.length})
+          </TabsTrigger>
+          <TabsTrigger value="debug">
+            Отладка системы
           </TabsTrigger>
         </TabsList>
 
@@ -393,6 +397,10 @@ export default function AdminContentManager() {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="debug">
+          <OrderProcessingDebug />
         </TabsContent>
       </Tabs>
     </div>

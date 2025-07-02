@@ -1,6 +1,19 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
+// Enhanced logging for debugging
+function logInfo(message: string, data?: any) {
+  console.log(`[INFO] ${new Date().toISOString()}: ${message}`, data || '');
+}
+
+function logError(message: string, error?: any) {
+  console.error(`[ERROR] ${new Date().toISOString()}: ${message}`, error || '');
+}
+
+function logDebug(message: string, data?: any) {
+  console.log(`[DEBUG] ${new Date().toISOString()}: ${message}`, data || '');
+}
+
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -31,9 +44,16 @@ serve(async (req) => {
   try {
     const { order_id } = await req.json();
     
-    console.log(`Starting workflow for order: ${order_id}`);
+    logInfo(`Starting workflow for order: ${order_id}`);
+    
+    // Validate input
+    if (!order_id) {
+      logError('No order_id provided in request');
+      throw new Error('Order ID is required');
+    }
 
     // 1. Получаем данные заказа
+    logDebug('Fetching order data', { order_id });
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .select('*')
@@ -41,25 +61,43 @@ serve(async (req) => {
       .single();
 
     if (orderError || !order) {
+      logError('Failed to fetch order', { order_id, error: orderError });
       throw new Error(`Order not found: ${orderError?.message}`);
     }
 
+    logInfo('Order data fetched successfully', { 
+      order_id, 
+      service: order.service_slug, 
+      status: order.status 
+    });
+
     // 2. Генерируем промпт
+    logDebug('Generating prompt for order', { order_id, service: order.service_slug });
     const prompt = await generatePrompt(order);
+    logInfo('Prompt generated successfully', { order_id, prompt_length: prompt.length });
     
     // 3. Обновляем заказ с промптом
-    await supabase
+    logDebug('Updating order with prompt', { order_id });
+    const { error: updateError } = await supabase
       .from('orders')
       .update({ 
         generated_prompt: prompt,
         status: 'processing'
       })
       .eq('id', order_id);
+      
+    if (updateError) {
+      logError('Failed to update order with prompt', { order_id, error: updateError });
+      throw new Error(`Failed to update order: ${updateError.message}`);
+    }
 
     // 4. Генерируем текст
+    logDebug('Generating text with AI', { order_id, service: order.service_slug });
     const generatedText = await generateText(prompt, order.service_slug);
+    logInfo('Text generated successfully', { order_id, text_length: generatedText.length });
     
     // 5. Сохраняем результат
+    logDebug('Saving generated content', { order_id });
     const { error: contentError } = await supabase
       .from('generated_content_versions')
       .insert({
@@ -72,22 +110,32 @@ serve(async (req) => {
       });
 
     if (contentError) {
+      logError('Failed to save generated content', { order_id, error: contentError });
       throw new Error(`Failed to save content: ${contentError.message}`);
     }
+    
+    logInfo('Content saved successfully', { order_id });
 
     // 6. Обновляем статус заказа
-    await supabase
+    logDebug('Updating order status to completed', { order_id });
+    const { error: statusError } = await supabase
       .from('orders')
       .update({ 
         status: 'completed',
         completed_at: new Date().toISOString()
       })
       .eq('id', order_id);
+      
+    if (statusError) {
+      logError('Failed to update order status', { order_id, error: statusError });
+      throw new Error(`Failed to update order status: ${statusError.message}`);
+    }
 
     // 7. Отправляем уведомление
+    logDebug('Sending notification', { order_id });
     await sendNotification(order);
 
-    console.log(`Workflow completed for order: ${order_id}`);
+    logInfo(`Workflow completed successfully for order: ${order_id}`);
 
     return new Response(
       JSON.stringify({ 
@@ -102,12 +150,17 @@ serve(async (req) => {
     );
 
   } catch (error: any) {
-    console.error('Workflow error:', error);
+    logError('Workflow failed', { 
+      error: error.message, 
+      stack: error.stack,
+      order_id: req.url?.includes('order_id') ? 'unknown' : 'not_provided'
+    });
     
     return new Response(
       JSON.stringify({ 
         error: error.message,
-        success: false 
+        success: false,
+        timestamp: new Date().toISOString()
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -118,18 +171,25 @@ serve(async (req) => {
 });
 
 async function generatePrompt(order: OrderData): Promise<string> {
+  logDebug('Fetching prompt template', { service_type: order.service_slug });
+  
   // Получаем шаблон промпта для услуги
-  const { data: template } = await supabase
+  const { data: template, error: templateError } = await supabase
     .from('prompt_templates')
     .select('*')
     .eq('service_type', order.service_slug)
     .eq('is_active', true)
     .single();
 
-  if (!template) {
-    // Fallback промпт если шаблон не найден
+  if (templateError || !template) {
+    logError('Template not found, using fallback', { 
+      service_type: order.service_slug, 
+      error: templateError 
+    });
     return createFallbackPrompt(order);
   }
+  
+  logDebug('Template found', { template_name: template.template_name });
 
   // Подставляем переменные из заказа
   let prompt = template.prompt_template;
@@ -195,8 +255,14 @@ async function generateText(prompt: string, serviceSlug: string): Promise<string
   const openAIKey = Deno.env.get('OPENAI_API_KEY');
   
   if (!openAIKey) {
+    logError('OpenAI API key not configured');
     throw new Error('OpenAI API key not configured');
   }
+  
+  logDebug('Making request to OpenAI API', { 
+    service: serviceSlug, 
+    prompt_length: prompt.length 
+  });
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -222,22 +288,42 @@ async function generateText(prompt: string, serviceSlug: string): Promise<string
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI API error: ${response.status}`);
+    const errorText = await response.text();
+    logError('OpenAI API error', { 
+      status: response.status, 
+      error: errorText 
+    });
+    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
-  return data.choices[0].message.content;
+  const generatedContent = data.choices[0].message.content;
+  
+  logDebug('OpenAI response received', { 
+    content_length: generatedContent.length,
+    tokens_used: data.usage?.total_tokens 
+  });
+  
+  return generatedContent;
 }
 
 async function sendNotification(order: OrderData) {
   try {
+    logDebug('Creating system notification', { order_id: order.id });
+    
     // Создаем уведомление в системе
-    await supabase.from('notifications').insert({
+    const { error: notificationError } = await supabase.from('notifications').insert({
       user_id: order.user_id,
       title: 'Текст готов!',
       message: `Ваш заказ "${order.service_name}" выполнен. Текст готов к просмотру.`,
       type: 'success'
     });
+    
+    if (notificationError) {
+      logError('Failed to create notification', { error: notificationError });
+    } else {
+      logInfo('System notification created successfully', { order_id: order.id });
+    }
 
     // Отправляем email если настроено
     const { data: settings } = await supabase
@@ -247,17 +333,23 @@ async function sendNotification(order: OrderData) {
       .single();
 
     if (settings?.email_notifications) {
-      await supabase.functions.invoke('send-email-notification', {
-        body: {
-          to: order.contact_email,
-          subject: 'Ваш заказ готов!',
-          orderData: order
-        }
-      });
+      logDebug('Sending email notification', { email: order.contact_email });
+      try {
+        await supabase.functions.invoke('send-email-notification', {
+          body: {
+            to: order.contact_email,
+            subject: 'Ваш заказ готов!',
+            orderData: order
+          }
+        });
+        logInfo('Email notification sent successfully');
+      } catch (emailError) {
+        logError('Failed to send email notification', { error: emailError });
+      }
     }
 
   } catch (error) {
-    console.error('Notification error:', error);
+    logError('Notification error', { error });
     // Не падаем из-за ошибки уведомлений
   }
 }
