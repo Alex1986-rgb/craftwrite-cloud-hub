@@ -32,6 +32,7 @@ import AuthPage from "./pages/AuthPage";
 import ClientDashboard from "./pages/ClientDashboard";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
 
 // Specialized order pages
 import SeoArticleOrder from "./pages/SeoArticleOrder";
@@ -82,6 +83,7 @@ function App() {
                     <Route path="/" element={<Index />} />
                     <Route path="/order" element={<Order />} />
                     <Route path="/order-success" element={<OrderSuccess />} />
+                    <Route path="/track-order" element={<OrderTrackingPage />} />
                     <Route path="/services" element={<Services />} />
                     <Route path="/services/:slug" element={<ServiceDetailPage />} />
                     <Route path="/service/:slug" element={<EnhancedServiceDetailPage />} />
