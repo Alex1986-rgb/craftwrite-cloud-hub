@@ -6,7 +6,7 @@ interface StructuredDataProps {
   id?: string;
 }
 
-export function StructuredData({ data, id = 'structured-data' }: StructuredDataProps) {
+export default function StructuredData({ data, id = 'structured-data' }: StructuredDataProps) {
   useEffect(() => {
     // Remove existing script if it exists
     const existingScript = document.getElementById(id);
@@ -35,5 +35,3 @@ export function StructuredData({ data, id = 'structured-data' }: StructuredDataP
 
   return null;
 }
-
-export default StructuredData;

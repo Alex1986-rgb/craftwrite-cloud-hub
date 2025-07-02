@@ -26,9 +26,9 @@ interface ConversionEvent {
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    dataLayer?: any[];
-    ym?: (id: number, action: string, params?: any) => void;
+    gtag: (...args: any[]) => void;
+    dataLayer: any[];
+    ym: (id: number, action: string, params?: any) => void;
   }
 }
 
@@ -76,7 +76,12 @@ export function useAnalytics() {
 
     // Yandex Metrica
     if (window.ym) {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', action);
+      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', action, {
+        category,
+        label,
+        value,
+        ...custom_parameters
+      });
     }
 
     console.log('Event tracked:', event);
@@ -96,7 +101,10 @@ export function useAnalytics() {
 
     // Yandex Metrica eCommerce
     if (window.ym && conversion.event_name === 'purchase') {
-      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', 'ORDER_SUCCESS');
+      window.ym(Number(process.env.VITE_YANDEX_METRIKA), 'reachGoal', 'ORDER_SUCCESS', {
+        order_price: conversion.value,
+        currency: conversion.currency || 'RUB'
+      });
     }
 
     console.log('Conversion tracked:', conversion);

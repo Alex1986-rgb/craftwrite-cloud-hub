@@ -1,4 +1,3 @@
-
 import ServicesCatalogSection from "@/components/landing/ServicesCatalogSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import FaqSection from "@/components/landing/FaqSection";
@@ -8,7 +7,7 @@ import ModernPricingSection from "@/components/landing/ModernPricingSection";
 import InnovativePortfolioSection from "@/components/landing/InnovativePortfolioSection";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import FutureHeroSection from "@/components/landing/FutureHeroSection";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
 import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
 import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
@@ -52,77 +51,60 @@ export default function Index() {
     trackEvent({
       action: 'landing_page_view',
       category: 'Page View',
-      label: 'Home Page - Future Design',
+      label: 'Home Page',
       custom_parameters: {
         page_type: 'landing',
-        user_type: 'anonymous',
-        design_version: 'future_v1'
+        user_type: 'anonymous'
       }
     });
   }, [trackEvent]);
 
   return (
-    <main className="relative overflow-hidden font-primary">
+    <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. REVOLUTIONARY HERO SECTION */}
-      <FutureHeroSection />
+      {/* 1. HERO SECTION - Above the fold */}
+      <ModernHeroSection />
       
-      {/* 2. SOCIAL PROOF - Enhanced with glass design */}
-      <div className="py-16 bg-gradient-to-r from-gray-50 to-blue-50/30">
-        <CompactSocialProofSection />
-      </div>
+      {/* 2. SOCIAL PROOF - Immediate credibility */}
+      <CompactSocialProofSection />
       
-      {/* 3. SMART ORDER CTA #1 - Floating glass design */}
+      {/* 3. SMART ORDER CTA #1 - After hero for maximum visibility */}
       <SmartOrderCTA />
       
-      {/* 4. SERVICES - Modern card layout */}
-      <div className="py-20 bg-white dark:bg-gray-900">
-        <ServicesCatalogSection />
-      </div>
+      {/* 4. SERVICES - What we offer */}
+      <ServicesCatalogSection />
       
-      {/* 5. PRICING - Neo-morphism design */}
-      <div className="py-20 bg-gradient-to-br from-blue-50/30 to-purple-50/20">
-        <ModernPricingSection />
-      </div>
+      {/* 5. PRICING - Clear value proposition */}
+      <ModernPricingSection />
       
-      {/* 6. SMART ORDER CTA #2 */}
+      {/* 6. SMART ORDER CTA #2 - After pricing for logical continuation */}
       <SmartOrderCTA />
       
-      {/* 7. GUARANTEES - Interactive glass cards */}
-      <div className="py-20 bg-white dark:bg-gray-900">
-        <InteractiveGuaranteesSection />
-      </div>
+      {/* 7. GUARANTEES - Remove risk and build confidence */}
+      <InteractiveGuaranteesSection />
       
-      {/* 8. PORTFOLIO - 3D hover effects */}
-      <div className="py-20 bg-gradient-to-br from-gray-50 to-cyan-50/30">
-        <InnovativePortfolioSection />
-      </div>
+      {/* 8. PORTFOLIO - Proof of results */}
+      <InnovativePortfolioSection />
       
-      {/* 9. PROCESS - Timeline with animations */}
-      <div className="py-20 bg-white dark:bg-gray-900">
-        <ProcessSection />
-      </div>
+      {/* 9. HOW IT WORKS - Simple process */}
+      <ProcessSection />
       
-      {/* 10. FAQ - Accordion with modern design */}
-      <div className="py-20 bg-gradient-to-br from-purple-50/20 to-pink-50/20">
-        <FaqSection />
-      </div>
+      {/* 10. FAQ - Address concerns */}
+      <FaqSection />
       
-      {/* 11. FINAL CTA */}
+      {/* 11. SMART ORDER CTA #3 - Final call to action before contact */}
       <SmartOrderCTA />
       
-      {/* 12. CONTACT - Glass morphism design */}
+      {/* 12. FINAL CTA & CONTACT */}
       <ContactSection />
       
-      {/* 13. SEO TEXT - Modern expandable */}
-      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
-        <div className="glass-card-modern max-w-4xl mx-auto">
-          <SeoTextExpandable text={seoText} />
-        </div>
+      {/* 13. SEO TEXT - Search engine optimization */}
+      <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-slate-50/50 to-transparent">
+        <SeoTextExpandable text={seoText} />
       </div>
       
-      {/* SUPPORT WIDGETS - Enhanced with modern design */}
+      {/* SUPPORT WIDGETS */}
       <SupportWidget />
       <HumanLikeAiAssistant />
       <FloatingChatButton />
