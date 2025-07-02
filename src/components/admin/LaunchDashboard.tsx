@@ -5,8 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, AlertCircle, Play, Monitor, Settings, Rocket, Clock } from 'lucide-react';
 import SystemTester from './SystemTester';
+import ProductionReadyChecker from './ProductionReadyChecker';
 import { useTelegramIntegration } from '@/hooks/useTelegramIntegration';
 import { useAdvancedAnalytics } from '@/hooks/useAdvancedAnalytics';
+import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -28,6 +30,7 @@ export default function LaunchDashboard() {
   
   const { integration } = useTelegramIntegration();
   const { kpis, updateKPIs } = useAdvancedAnalytics();
+  const { updateSetting } = useSystemSettings();
 
   const checkNotificationSetup = async () => {
     try {
@@ -79,7 +82,8 @@ export default function LaunchDashboard() {
       title: 'Запуск в продакшн',
       description: 'Система готова к работе',
       status: 'pending',
-      icon: Rocket
+      icon: Rocket,
+      component: <ProductionReadyChecker />
     }
   ]);
 
@@ -159,13 +163,17 @@ export default function LaunchDashboard() {
         case 'launch':
           if (productionReady) {
             // Обновляем системную настройку о готовности к продакшн
-            await supabase
-              .from('system_settings')
-              .upsert({
-                key: 'production_ready',
-                value: { enabled: true, timestamp: new Date().toISOString() },
-                description: 'Система готова к продакшн запуску'
-              });
+            await updateSetting('production_ready', {
+              enabled: true,
+              timestamp: new Date().toISOString(),
+              launched_by: 'admin',
+              version: '1.0.0'
+            });
+            
+            // Обновляем настройки для продакшн режима
+            await updateSetting('maintenance_mode', false);
+            await updateSetting('analytics_enabled', true);
+            await updateSetting('performance_monitoring_enabled', true);
             
             setProductionReady(true);
             toast({
@@ -365,11 +373,11 @@ export default function LaunchDashboard() {
                 Все компоненты протестированы и работают корректно.
               </p>
               <div className="flex justify-center gap-4 pt-4">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                  Перейти к заказам
+                <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
+                  <a href="/admin/orders">Перейти к заказам</a>
                 </Button>
-                <Button variant="outline" size="lg">
-                  Открыть аналитику
+                <Button variant="outline" size="lg" asChild>
+                  <a href="/admin/analytics">Открыть аналитику</a>
                 </Button>
               </div>
             </div>
