@@ -10,6 +10,7 @@ interface OrderTrackingResult {
   error: string | null;
   searchOrders: (query: string) => Promise<void>;
   getOrderById: (id: string) => Promise<any>;
+  clearResults: () => void;
 }
 
 export function useOrderTracking(): OrderTrackingResult {
