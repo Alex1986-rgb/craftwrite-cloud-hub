@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -18,9 +17,17 @@ import {
   ArrowRight,
   ArrowLeft,
   Save,
-  Download
+  Download,
+  Globe,
+  Mail,
+  User,
+  Calendar,
+  Hash
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { EnhancedFormField } from '@/components/ui/enhanced-form-field';
+import { ProgressiveTextarea } from '@/components/ui/progressive-textarea';
+import { ModernSelect } from '@/components/ui/modern-select';
 
 interface BriefData {
   projectType: string;
@@ -276,53 +283,87 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
         return (
           <div className="space-y-6">
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="company">Название компании *</Label>
-                <Input
-                  id="company"
-                  value={briefData.businessInfo.company}
-                  onChange={(e) => updateBriefData('businessInfo', { company: e.target.value })}
-                  placeholder="ООО 'Ваша компания'"
-                  className="mt-2"
-                />
-              </div>
+              <EnhancedFormField
+                id="company"
+                name="company"
+                type="text"
+                label="Название компании"
+                placeholder="ООО 'Ваша компания'"
+                icon={User}
+                value={briefData.businessInfo.company}
+                onChange={(e) => updateBriefData('businessInfo', { company: e.target.value })}
+                required
+                validationRules={[
+                  (value) => !value.trim() ? 'Название компании обязательно' : null,
+                  (value) => value.length < 2 ? 'Название должно содержать минимум 2 символа' : null
+                ]}
+                realTimeValidation
+                autoSave
+                onAutoSave={(value) => localStorage.setItem('brief_company', value)}
+                tooltip="Укажите полное или сокращенное название компании"
+              />
 
-              <div>
-                <Label htmlFor="industry">Отрасль *</Label>
-                <Select value={briefData.businessInfo.industry} onValueChange={(value) => updateBriefData('businessInfo', { industry: value })}>
-                  <SelectTrigger className="mt-2">
-                    <SelectValue placeholder="Выберите отрасль" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {industries.map(industry => (
-                      <SelectItem key={industry} value={industry}>{industry}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <ModernSelect
+                options={industries.map(industry => ({ 
+                  value: industry, 
+                  label: industry,
+                  description: industry === 'Другое' ? 'Опишите вашу отрасль' : undefined
+                }))}
+                value={briefData.businessInfo.industry}
+                onValueChange={(value) => updateBriefData('businessInfo', { industry: value as string })}
+                label="Отрасль"
+                placeholder="Выберите отрасль"
+                searchable
+              />
 
-              <div>
-                <Label htmlFor="website">Веб-сайт</Label>
-                <Input
-                  id="website"
-                  value={briefData.businessInfo.website}
-                  onChange={(e) => updateBriefData('businessInfo', { website: e.target.value })}
-                  placeholder="https://yoursite.com"
-                  className="mt-2"
-                />
-              </div>
+              <EnhancedFormField
+                id="website"
+                name="website"
+                type="url"
+                label="Веб-сайт"
+                placeholder="https://yoursite.com"
+                icon={Globe}
+                value={briefData.businessInfo.website}
+                onChange={(e) => updateBriefData('businessInfo', { website: e.target.value })}
+                validationRules={[
+                  (value) => {
+                    if (!value) return null;
+                    try {
+                      new URL(value);
+                      return null;
+                    } catch {
+                      return 'Введите корректный URL';
+                    }
+                  }
+                ]}
+                realTimeValidation
+                autoSave
+                onAutoSave={(value) => localStorage.setItem('brief_website', value)}
+                tooltip="Адрес сайта компании (если есть)"
+              />
 
-              <div>
-                <Label htmlFor="description">Описание компании</Label>
-                <Textarea
-                  id="description"
-                  value={briefData.businessInfo.description}
-                  onChange={(e) => updateBriefData('businessInfo', { description: e.target.value })}
-                  placeholder="Расскажите о своей компании, продуктах или услугах..."
-                  className="mt-2"
-                  rows={4}
-                />
-              </div>
+              <ProgressiveTextarea
+                id="description"
+                name="description"
+                label="Описание компании"
+                placeholder="Расскажите о своей компании, продуктах или услугах..."
+                value={briefData.businessInfo.description}
+                onChange={(e) => updateBriefData('businessInfo', { description: e.target.value })}
+                characterLimit={1000}
+                showWordCount
+                autoResize
+                minRows={4}
+                maxRows={8}
+                suggestions={[
+                  "Мы разрабатываем IT-решения для бизнеса",
+                  "Производим качественную мебель на заказ",
+                  "Оказываем юридические услуги для компаний",
+                  "Предоставляем консалтинговые услуги в области маркетинга",
+                  "Разрабатываем мобильные приложения"
+                ]}
+                autoSave
+                onAutoSave={(value) => localStorage.setItem('brief_description', value)}
+              />
             </div>
           </div>
         );
@@ -330,57 +371,102 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
       case 2:
         return (
           <div className="space-y-6">
-            <div>
-              <Label htmlFor="primary-audience">Основная целевая аудитория *</Label>
-              <Textarea
-                id="primary-audience"
-                value={briefData.targetAudience.primary}
-                onChange={(e) => updateBriefData('targetAudience', { primary: e.target.value })}
-                placeholder="Опишите вашу основную аудиторию: кто они, чем занимаются, какие у них потребности..."
-                className="mt-2"
-                rows={3}
-              />
-            </div>
+            <ProgressiveTextarea
+              id="primary-audience"
+              name="primary-audience"
+              label="Основная целевая аудитория"
+              placeholder="Опишите вашу основную аудиторию: кто они, чем занимаются, какие у них потребности..."
+              value={briefData.targetAudience.primary}
+              onChange={(e) => updateBriefData('targetAudience', { primary: e.target.value })}
+              required
+              characterLimit={500}
+              showWordCount
+              autoResize
+              minRows={3}
+              maxRows={6}
+              suggestions={[
+                "Предприниматели и владельцы малого бизнеса, 30-50 лет",
+                "IT-специалисты и разработчики, работающие в стартапах",
+                "Маркетологи и SMM-специалисты в компаниях среднего звена",
+                "Руководители отделов продаж в B2B сегменте",
+                "Собственники интернет-магазинов и e-commerce проектов"
+              ]}
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_audience', value)}
+            />
 
-            <div>
-              <Label htmlFor="age">Возрастная группа</Label>
-              <Input
-                id="age"
-                value={briefData.targetAudience.age}
-                onChange={(e) => updateBriefData('targetAudience', { age: e.target.value })}
-                placeholder="25-45 лет"
-                className="mt-2"
-              />
-            </div>
+            <EnhancedFormField
+              id="age"
+              name="age"
+              type="text"
+              label="Возрастная группа"
+              placeholder="25-45 лет"
+              value={briefData.targetAudience.age}
+              onChange={(e) => updateBriefData('targetAudience', { age: e.target.value })}
+              validationRules={[
+                (value) => {
+                  if (!value) return null;
+                  const agePattern = /^\d+(-\d+)?(\s*лет)?$/;
+                  return agePattern.test(value) ? null : 'Укажите возраст в формате "25-45" или "30 лет"';
+                }
+              ]}
+              realTimeValidation
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_age', value)}
+              tooltip="Укажите возрастной диапазон целевой аудитории"
+            />
 
-            <div>
-              <Label htmlFor="pain-points">Основные проблемы и потребности аудитории</Label>
-              <Textarea
-                id="pain-points"
-                value={briefData.targetAudience.painPoints}
-                onChange={(e) => updateBriefData('targetAudience', { painPoints: e.target.value })}
-                placeholder="Какие проблемы решает ваш продукт? Что беспокоит вашу аудиторию?"
-                className="mt-2"
-                rows={3}
-              />
-            </div>
+            <ProgressiveTextarea
+              id="pain-points"
+              name="pain-points"
+              label="Основные проблемы и потребности аудитории"
+              placeholder="Какие проблемы решает ваш продукт? Что беспокоит вашу аудиторию?"
+              value={briefData.targetAudience.painPoints}
+              onChange={(e) => updateBriefData('targetAudience', { painPoints: e.target.value })}
+              characterLimit={500}
+              showWordCount
+              autoResize
+              minRows={3}
+              maxRows={6}
+              suggestions={[
+                "Нехватка времени на рутинные задачи",
+                "Сложности с привлечением новых клиентов",
+                "Высокие расходы на маркетинг при низкой отдаче",
+                "Проблемы с автоматизацией бизнес-процессов",
+                "Недостаток экспертизы в digital-сфере"
+              ]}
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_pain_points', value)}
+            />
           </div>
         );
 
       case 3:
         return (
           <div className="space-y-6">
-            <div>
-              <Label htmlFor="primary-goal">Основная цель проекта *</Label>
-              <Textarea
-                id="primary-goal"
-                value={briefData.projectGoals.primary}
-                onChange={(e) => updateBriefData('projectGoals', { primary: e.target.value })}
-                placeholder="Что должен достичь этот контент? Увеличить продажи, повысить узнаваемость, привлечь трафик?"
-                className="mt-2"
-                rows={3}
-              />
-            </div>
+            <ProgressiveTextarea
+              id="primary-goal"
+              name="primary-goal"
+              label="Основная цель проекта"
+              placeholder="Что должен достичь этот контент? Увеличить продажи, повысить узнаваемость, привлечь трафик?"
+              value={briefData.projectGoals.primary}
+              onChange={(e) => updateBriefData('projectGoals', { primary: e.target.value })}
+              required
+              characterLimit={300}
+              showWordCount
+              autoResize
+              minRows={3}
+              maxRows={5}
+              suggestions={[
+                "Увеличить конверсию сайта на 25% за 3 месяца",
+                "Привлечь 1000 новых подписчиков в соцсетях",
+                "Повысить узнаваемость бренда в целевом сегменте",
+                "Генерировать 50+ качественных лидов в месяц",
+                "Улучшить позиции сайта в поисковой выдаче"
+              ]}
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_primary_goal', value)}
+            />
 
             <div>
               <Label>Дополнительные цели</Label>
@@ -408,46 +494,59 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
       case 4:
         return (
           <div className="space-y-6">
-            <div>
-              <Label>Тон коммуникации *</Label>
-              <Select value={briefData.contentRequirements.tone} onValueChange={(value) => updateBriefData('contentRequirements', { tone: value })}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Выберите тон" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="professional">Профессиональный</SelectItem>
-                  <SelectItem value="friendly">Дружелюбный</SelectItem>
-                  <SelectItem value="authoritative">Авторитетный</SelectItem>
-                  <SelectItem value="casual">Неформальный</SelectItem>
-                  <SelectItem value="inspiring">Вдохновляющий</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <ModernSelect
+              options={[
+                { value: 'professional', label: 'Профессиональный', description: 'Деловой, экспертный тон' },
+                { value: 'friendly', label: 'Дружелюбный', description: 'Теплый, располагающий' },
+                { value: 'authoritative', label: 'Авторитетный', description: 'Уверенный, экспертный' },
+                { value: 'casual', label: 'Неформальный', description: 'Простой, разговорный' },
+                { value: 'inspiring', label: 'Вдохновляющий', description: 'Мотивирующий, энергичный' }
+              ]}
+              value={briefData.contentRequirements.tone}
+              onValueChange={(value) => updateBriefData('contentRequirements', { tone: value as string })}
+              label="Тон коммуникации"
+              placeholder="Выберите тон"
+              searchable={false}
+            />
 
-            <div>
-              <Label>Стиль изложения</Label>
-              <Select value={briefData.contentRequirements.style} onValueChange={(value) => updateBriefData('contentRequirements', { style: value })}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Выберите стиль" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="informative">Информативный</SelectItem>
-                  <SelectItem value="storytelling">Storytelling</SelectItem>
-                  <SelectItem value="problem-solution">Проблема-решение</SelectItem>
-                  <SelectItem value="benefits-focused">Фокус на выгодах</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <ModernSelect
+              options={[
+                { value: 'informative', label: 'Информативный', description: 'Факты, данные, объяснения' },
+                { value: 'storytelling', label: 'Storytelling', description: 'Истории, кейсы, примеры' },
+                { value: 'problem-solution', label: 'Проблема-решение', description: 'Выявление проблемы и её решение' },
+                { value: 'benefits-focused', label: 'Фокус на выгодах', description: 'Акцент на преимуществах' }
+              ]}
+              value={briefData.contentRequirements.style}
+              onValueChange={(value) => updateBriefData('contentRequirements', { style: value as string })}
+              label="Стиль изложения"
+              placeholder="Выберите стиль"
+              searchable={false}
+            />
 
-            <div>
-              <Label htmlFor="key-messages">Ключевые сообщения</Label>
-              <Textarea
-                id="key-messages"
-                placeholder="Перечислите основные идеи, которые должны быть в тексте (по одной на строку)"
-                className="mt-2"
-                rows={4}
-              />
-            </div>
+            <ProgressiveTextarea
+              id="key-messages"
+              name="key-messages"
+              label="Ключевые сообщения"
+              placeholder="Перечислите основные идеи, которые должны быть в тексте (по одной на строку)"
+              value={briefData.contentRequirements.keyMessages.join('\n')}
+              onChange={(e) => updateBriefData('contentRequirements', { 
+                keyMessages: e.target.value.split('\n').filter(msg => msg.trim())
+              })}
+              characterLimit={800}
+              showWordCount
+              autoResize
+              minRows={4}
+              maxRows={8}
+              suggestions={[
+                "Наша компания - лидер в отрасли",
+                "Высокое качество продукции по доступной цене",
+                "Индивидуальный подход к каждому клиенту",
+                "Быстрое решение задач клиента",
+                "Экспертность и многолетний опыт"
+              ]}
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_key_messages', value)}
+            />
           </div>
         );
 
@@ -455,69 +554,110 @@ ${projectTypes[briefData.projectType as keyof typeof projectTypes]}
         return (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="word-count">Примерный объем (слов)</Label>
-                <Input
-                  id="word-count"
-                  type="number"
-                  value={briefData.technicalRequirements.wordCount}
-                  onChange={(e) => updateBriefData('technicalRequirements', { wordCount: parseInt(e.target.value) })}
-                  className="mt-2"
-                />
-              </div>
+              <EnhancedFormField
+                id="word-count"
+                name="word-count"
+                type="number"
+                label="Примерный объем (слов)"
+                placeholder="1000"
+                icon={Hash}
+                value={briefData.technicalRequirements.wordCount.toString()}
+                onChange={(e) => updateBriefData('technicalRequirements', { 
+                  wordCount: parseInt(e.target.value) || 0 
+                })}
+                validationRules={[
+                  (value) => {
+                    const num = parseInt(value);
+                    if (isNaN(num) || num < 100) return 'Минимум 100 слов';
+                    if (num > 50000) return 'Максимум 50,000 слов';
+                    return null;
+                  }
+                ]}
+                realTimeValidation
+                autoSave
+                onAutoSave={(value) => localStorage.setItem('brief_word_count', value)}
+                tooltip="Укажите желаемый объем текста"
+              />
 
-              <div>
-                <Label htmlFor="deadline">Дедлайн *</Label>
-                <Input
-                  id="deadline"
-                  type="date"
-                  value={briefData.technicalRequirements.deadline}
-                  onChange={(e) => updateBriefData('technicalRequirements', { deadline: e.target.value })}
-                  className="mt-2"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label>Формат контента</Label>
-              <Select value={briefData.technicalRequirements.format} onValueChange={(value) => updateBriefData('technicalRequirements', { format: value })}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Выберите формат" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="article">Статья</SelectItem>
-                  <SelectItem value="landing">Лендинг</SelectItem>
-                  <SelectItem value="email">Email</SelectItem>
-                  <SelectItem value="social-post">Пост в соцсети</SelectItem>
-                  <SelectItem value="description">Описание</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="seo-keywords">SEO-ключевые слова</Label>
-              <Textarea
-                id="seo-keywords"
-                placeholder="Перечислите ключевые слова для SEO-оптимизации (по одному на строку)"
-                className="mt-2"
-                rows={3}
+              <EnhancedFormField
+                id="deadline"
+                name="deadline"
+                type="date"
+                label="Дедлайн"
+                icon={Calendar}
+                value={briefData.technicalRequirements.deadline}
+                onChange={(e) => updateBriefData('technicalRequirements', { deadline: e.target.value })}
+                required
+                validationRules={[
+                  (value) => {
+                    if (!value) return 'Дедлайн обязателен';
+                    const deadline = new Date(value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (deadline < today) return 'Дедлайн не может быть в прошлом';
+                    return null;
+                  }
+                ]}
+                realTimeValidation
+                autoSave
+                onAutoSave={(value) => localStorage.setItem('brief_deadline', value)}
+                tooltip="Укажите желаемую дату получения готового контента"
               />
             </div>
 
-            <div>
-              <Label>Бюджет проекта</Label>
-              <Select value={briefData.budget.range} onValueChange={(value) => updateBriefData('budget', { range: value })}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Выберите диапазон" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5000-15000">5 000 - 15 000 ₽</SelectItem>
-                  <SelectItem value="15000-30000">15 000 - 30 000 ₽</SelectItem>
-                  <SelectItem value="30000-50000">30 000 - 50 000 ₽</SelectItem>
-                  <SelectItem value="50000+">От 50 000 ₽</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <ModernSelect
+              options={[
+                { value: 'article', label: 'Статья', description: 'Информационная или SEO-статья' },
+                { value: 'landing', label: 'Лендинг', description: 'Посадочная страница' },
+                { value: 'email', label: 'Email', description: 'Email-рассылка' },
+                { value: 'social-post', label: 'Пост в соцсети', description: 'Контент для социальных сетей' },
+                { value: 'description', label: 'Описание', description: 'Описание товара или услуги' }
+              ]}
+              value={briefData.technicalRequirements.format}
+              onValueChange={(value) => updateBriefData('technicalRequirements', { format: value as string })}
+              label="Формат контента"
+              placeholder="Выберите формат"
+              searchable={false}
+            />
+
+            <ProgressiveTextarea
+              id="seo-keywords"
+              name="seo-keywords"
+              label="SEO-ключевые слова"
+              placeholder="Перечислите ключевые слова для SEO-оптимизации (по одному на строку)"
+              value={briefData.technicalRequirements.seoKeywords.join('\n')}
+              onChange={(e) => updateBriefData('technicalRequirements', { 
+                seoKeywords: e.target.value.split('\n').filter(keyword => keyword.trim())
+              })}
+              characterLimit={500}
+              showWordCount
+              autoResize
+              minRows={3}
+              maxRows={6}
+              suggestions={[
+                "купить товар москва",
+                "услуги компании недорого",
+                "лучший сервис отзывы",
+                "доставка заказ быстро",
+                "качественный продукт цена"
+              ]}
+              autoSave
+              onAutoSave={(value) => localStorage.setItem('brief_seo_keywords', value)}
+            />
+
+            <ModernSelect
+              options={[
+                { value: '5000-15000', label: '5 000 - 15 000 ₽', description: 'Базовый контент' },
+                { value: '15000-30000', label: '15 000 - 30 000 ₽', description: 'Стандартный проект' },
+                { value: '30000-50000', label: '30 000 - 50 000 ₽', description: 'Премиум качество' },
+                { value: '50000+', label: 'От 50 000 ₽', description: 'Комплексный проект' }
+              ]}
+              value={briefData.budget.range}
+              onValueChange={(value) => updateBriefData('budget', { range: value as string })}
+              label="Бюджет проекта"
+              placeholder="Выберите диапазон"
+              searchable={false}
+            />
           </div>
         );
 
