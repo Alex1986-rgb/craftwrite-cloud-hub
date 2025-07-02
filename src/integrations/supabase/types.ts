@@ -1772,6 +1772,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      auto_configure_order_processing: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       check_trigger_health: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1830,6 +1834,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      monitor_order_processing: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          status: string
+          orders_count: number
+          avg_processing_time: unknown
+          success_rate: number
+          last_processed: string
+        }[]
+      }
       process_order_queue: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1837,6 +1851,10 @@ export type Database = {
       reprocess_order: {
         Args: { order_id: string }
         Returns: boolean
+      }
+      restart_stuck_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       run_system_diagnostics: {
         Args: Record<PropertyKey, never>
