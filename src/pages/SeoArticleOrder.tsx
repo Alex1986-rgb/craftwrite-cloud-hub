@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, ArrowLeft, Loader2, DollarSign } from 'lucide-react';
 import PaymentStep from '@/components/order/form-steps/PaymentStep';
 import SeoArticleContactStep from '@/components/order/seo-article/SeoArticleContactStep';
-import SeoArticleBasicInfoStep from '@/components/order/seo-article/SeoArticleBasicInfoStep';
+import ModernSeoArticleBasicInfoStep from '@/components/order/seo-article/ModernSeoArticleBasicInfoStep';
 import SeoArticleOptionsStep from '@/components/order/seo-article/SeoArticleOptionsStep';
 import SeoArticleProgressIndicator from '@/components/order/seo-article/SeoArticleProgressIndicator';
 import SeoArticleOrderSummary from '@/components/order/seo-article/SeoArticleOrderSummary';
 import { useSupabaseOrders } from '@/hooks/useSupabaseOrders';
-import { useSeoArticlePricing } from '@/hooks/useSeoArticlePricing';
+import { useModernSeoArticlePricing } from '@/hooks/useModernSeoArticlePricing';
 import { toast } from 'sonner';
 
 export default function SeoArticleOrder() {
@@ -26,12 +26,13 @@ export default function SeoArticleOrder() {
   const [formData, setFormData] = useState({
     articleTopic: '',
     keywords: '',
-    wordCount: '',
+    characterCount: 3000,
     targetAudience: '',
     competitorUrls: '',
     includeImages: false,
     includeInfographics: false,
     metaDescription: '',
+    metaTitle: '',
     callToAction: '',
     contentStyle: '',
     expertQuotes: false,
@@ -42,12 +43,14 @@ export default function SeoArticleOrder() {
     revision: '',
     niche: '',
     tone: '',
-    cta_placement: ''
+    cta_placement: '',
+    lsiKeywords: [],
+    autoGenerateMeta: true
   });
   
   const navigate = useNavigate();
   const { createOrder, loading } = useSupabaseOrders();
-  const { calculatePrice } = useSeoArticlePricing(formData);
+  const { calculatePrice } = useModernSeoArticlePricing(formData);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -67,12 +70,16 @@ export default function SeoArticleOrder() {
     setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
+  const handleFormDataChange = (updates: Partial<typeof formData>) => {
+    setFormData(prev => ({ ...prev, ...updates }));
+  };
+
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
         return contactInfo.name && contactInfo.email;
       case 2:
-        return formData.articleTopic && formData.keywords && formData.wordCount;
+        return formData.articleTopic && formData.keywords && formData.characterCount > 0;
       case 3:
         return true;
       case 4:
@@ -100,7 +107,7 @@ export default function SeoArticleOrder() {
       return;
     }
 
-    if (!formData.articleTopic || !formData.keywords || !formData.wordCount) {
+    if (!formData.articleTopic || !formData.keywords || !formData.characterCount) {
       toast.error('Заполните основную информацию о статье');
       return;
     }
@@ -112,7 +119,7 @@ export default function SeoArticleOrder() {
         contact_name: contactInfo.name,
         contact_email: contactInfo.email,
         contact_phone: contactInfo.phone,
-        details: `Тема: ${formData.articleTopic}\nКлючевые слова: ${formData.keywords}\nОбъем: ${formData.wordCount}`,
+        details: `Тема: ${formData.articleTopic}\nКлючевые слова: ${formData.keywords}\nОбъем: ${formData.characterCount} символов`,
         additional_requirements: `${formData.metaDescription ? `Meta описание: ${formData.metaDescription}\n` : ''}${formData.callToAction ? `Призыв к действию: ${formData.callToAction}\n` : ''}${formData.competitorUrls ? `Конкуренты: ${formData.competitorUrls}` : ''}`,
         estimated_price: calculatePrice(),
         service_options: {
@@ -162,10 +169,11 @@ export default function SeoArticleOrder() {
 
       case 2:
         return (
-          <SeoArticleBasicInfoStep
+          <ModernSeoArticleBasicInfoStep
             formData={formData}
             onInputChange={handleInputChange}
             onSelectChange={handleSelectChange}
+            onFormDataChange={handleFormDataChange}
           />
         );
 
@@ -269,7 +277,7 @@ export default function SeoArticleOrder() {
 
             <div className="lg:col-span-1">
               <SeoArticleOrderSummary
-                wordCount={formData.wordCount}
+                wordCount={formData.characterCount.toString()}
                 paymentMethod={paymentMethod}
                 calculatePrice={calculatePrice}
                 currentStep={currentStep}
