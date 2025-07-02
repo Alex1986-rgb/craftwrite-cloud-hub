@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useSupabaseOrders } from './useSupabaseOrders';
 
 interface FormData {
@@ -123,14 +123,14 @@ export function useUnifiedOrderForm({
   };
 
   // Автоматически заполняем service при инициализации
-  useState(() => {
+  React.useEffect(() => {
     if ((serviceTitle || selectedPackage) && !formData.service) {
       setFormData(prev => ({ 
         ...prev, 
         service: serviceTitle || selectedPackage || '' 
       }));
     }
-  });
+  }, [serviceTitle, selectedPackage, formData.service]);
 
   return {
     currentStep,

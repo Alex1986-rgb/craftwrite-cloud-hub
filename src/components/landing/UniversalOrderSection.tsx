@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { ArrowRight, ArrowLeft, CheckCircle, FileText, Target, User, Zap } from "lucide-react";
 import { useUnifiedOrderForm } from "@/hooks/useUnifiedOrderForm";
 import { toast } from "@/hooks/use-toast";
-import TechnicalTaskStep from "@/components/order/advanced/TechnicalTaskStep";
-import DetailedEstimate from "@/components/order/advanced/DetailedEstimate";
+import ModernTechnicalTaskStep from "@/components/order/advanced/ModernTechnicalTaskStep";
+import ModernDetailedEstimate from "@/components/order/advanced/ModernDetailedEstimate";
 
 interface ServiceType {
   id: string;
@@ -490,7 +490,7 @@ export default function UniversalOrderSection() {
 
             {/* Step 4: Technical Task */}
             {currentStep === 4 && (
-              <TechnicalTaskStep
+              <ModernTechnicalTaskStep
                 formData={technicalTaskData}
                 onUpdate={handleTechnicalTaskUpdate}
                 onNext={handleCreateEstimate}
@@ -500,7 +500,7 @@ export default function UniversalOrderSection() {
 
             {/* Step 5: Detailed Estimate */}
             {currentStep === 5 && estimateData && (
-              <DetailedEstimate
+              <ModernDetailedEstimate
                 {...estimateData}
                 onEdit={() => setCurrentStep(4)}
                 onApprove={handleEstimateApprove}
