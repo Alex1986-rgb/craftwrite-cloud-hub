@@ -2,7 +2,7 @@
 import { useLocation } from 'react-router-dom';
 import { useSeoMeta } from '@/hooks/useSeoMeta';
 import { useSocialMeta } from '@/hooks/useSocialMeta';
-import { StructuredData } from './StructuredData';
+import StructuredData from './StructuredData';
 import { generateCanonicalUrl } from '@/utils/seoUtils';
 import { SEO_CONFIG } from '@/config/seoConfig';
 
