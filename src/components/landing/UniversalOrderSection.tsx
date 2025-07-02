@@ -108,6 +108,21 @@ export default function UniversalOrderSection() {
   };
 
   const handleCreateEstimate = () => {
+    console.log('Creating estimate with data:', {
+      serviceType: selectedServiceType?.id,
+      projectDetails: formData.details,
+      technicalTaskData
+    });
+    
+    if (!selectedServiceType) {
+      toast({
+        title: "Ошибка",
+        description: "Тип услуги не выбран",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const estimate = {
       serviceType: selectedServiceType?.id || '',
       projectDetails: formData.details,
@@ -120,7 +135,15 @@ export default function UniversalOrderSection() {
       additionalServices: [],
       urgencyMultiplier: 1
     };
+    
+    console.log('Setting estimate data:', estimate);
     setEstimateData(estimate);
+    
+    toast({
+      title: "Смета создана!",
+      description: "Переходим к просмотру детальной сметы"
+    });
+    
     goToNextStep();
   };
 
