@@ -720,6 +720,39 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_templates: {
+        Row: {
+          content_template: string
+          created_at: string | null
+          event_type: string
+          id: string
+          is_active: boolean | null
+          subject_template: string | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          content_template: string
+          created_at?: string | null
+          event_type: string
+          id?: string
+          is_active?: boolean | null
+          subject_template?: string | null
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          content_template?: string
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          is_active?: boolean | null
+          subject_template?: string | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string | null
