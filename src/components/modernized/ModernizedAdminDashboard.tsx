@@ -20,6 +20,7 @@ import ModernizedOrderManagement from './ModernizedOrderManagement';
 import ModernizedPaymentManager from './ModernizedPaymentManager';
 import ModernizedChatManagement from './ModernizedChatManagement';
 import ModernizedAnalytics from './ModernizedAnalytics';
+import AdminContentManager from '@/components/admin/AdminContentManager';
 
 export default function ModernizedAdminDashboard() {
   const { orders } = useEnhancedOrders();
@@ -116,9 +117,10 @@ export default function ModernizedAdminDashboard() {
 
       {/* Основные табы */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Обзор</TabsTrigger>
           <TabsTrigger value="orders">Заказы</TabsTrigger>
+          <TabsTrigger value="content">Контент</TabsTrigger>
           <TabsTrigger value="payments">Платежи</TabsTrigger>
           <TabsTrigger value="chats">Чаты</TabsTrigger>
           <TabsTrigger value="analytics">Аналитика</TabsTrigger>
@@ -196,6 +198,10 @@ export default function ModernizedAdminDashboard() {
 
         <TabsContent value="orders">
           <ModernizedOrderManagement />
+        </TabsContent>
+
+        <TabsContent value="content">
+          <AdminContentManager />
         </TabsContent>
 
         <TabsContent value="payments">

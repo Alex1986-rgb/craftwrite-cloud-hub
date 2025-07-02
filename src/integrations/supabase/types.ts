@@ -1629,6 +1629,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_order_ready_for_processing: {
+        Args: { order_id: string }
+        Returns: boolean
+      }
       log_activity: {
         Args: {
           p_action: string
@@ -1637,6 +1641,10 @@ export type Database = {
           p_details?: Json
         }
         Returns: undefined
+      }
+      reprocess_order: {
+        Args: { order_id: string }
+        Returns: boolean
       }
       update_realtime_kpis: {
         Args: Record<PropertyKey, never>

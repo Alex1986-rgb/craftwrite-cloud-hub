@@ -20,6 +20,7 @@ import { useUnifiedAuth } from '@/contexts/UnifiedAuthContext';
 import ModernizedClientOrders from './ModernizedClientOrders';
 import ModernizedClientChat from './ModernizedClientChat';
 import ModernizedClientPayments from './ModernizedClientPayments';
+import ClientContentView from '@/components/client/ClientContentView';
 import { Link } from 'react-router-dom';
 
 export default function ModernizedClientDashboard() {
@@ -121,9 +122,10 @@ export default function ModernizedClientDashboard() {
 
       {/* Основные табы */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Обзор</TabsTrigger>
           <TabsTrigger value="orders">Мои заказы</TabsTrigger>
+          <TabsTrigger value="content">Мои тексты</TabsTrigger>
           <TabsTrigger value="chats">Сообщения</TabsTrigger>
           <TabsTrigger value="payments">Платежи</TabsTrigger>
         </TabsList>
@@ -256,6 +258,10 @@ export default function ModernizedClientDashboard() {
 
         <TabsContent value="orders">
           <ModernizedClientOrders />
+        </TabsContent>
+
+        <TabsContent value="content">
+          <ClientContentView />
         </TabsContent>
 
         <TabsContent value="chats">
