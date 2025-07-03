@@ -1908,6 +1908,10 @@ export type Database = {
         Args: { test_order_id: string }
         Returns: Json
       }
+      test_order_processing_system: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       train_ai_on_completed_orders: {
         Args: Record<PropertyKey, never>
         Returns: Json
