@@ -1794,6 +1794,10 @@ export type Database = {
         }
         Returns: string
       }
+      full_system_synchronization: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       generate_order_prompt: {
         Args: { order_data: Json }
         Returns: string
@@ -1877,6 +1881,14 @@ export type Database = {
           details: Json
           error_message: string
         }[]
+      }
+      synchronize_system_interfaces: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      train_ai_on_completed_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       update_realtime_kpis: {
         Args: Record<PropertyKey, never>

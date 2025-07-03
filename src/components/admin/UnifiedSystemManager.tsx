@@ -15,7 +15,7 @@ import {
   BarChart3,
   Settings,
   Bot,
-  Sync
+  RotateCcw
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -234,7 +234,7 @@ export default function UnifiedSystemManager() {
             Проверить систему
           </Button>
           <Button onClick={synchronizeSystem} disabled={synchronizing} className="bg-gradient-to-r from-primary to-primary/80">
-            <Sync className="h-4 w-4 mr-2" />
+            <RotateCcw className="h-4 w-4 mr-2" />
             {synchronizing ? 'Синхронизация...' : 'Синхронизировать все'}
           </Button>
         </div>
@@ -329,7 +329,7 @@ export default function UnifiedSystemManager() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Sync className="h-5 w-5" />
+                  <RotateCcw className="h-5 w-5" />
                   Полная синхронизация
                 </CardTitle>
                 <CardDescription>
