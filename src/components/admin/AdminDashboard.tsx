@@ -1,13 +1,14 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Settings, Users, FileText, BarChart3, Wrench, Bug } from "lucide-react";
+import { Activity, Settings, Users, FileText, BarChart3, Wrench, Bug, Brain } from "lucide-react";
 import OrderManagement from "./OrderManagement";
 import ClientManagement from "./ClientManagement";
 import AnalyticsPanel from "./AnalyticsPanel";
 import SettingsPanel from "./SettingsPanel";
 import SystemDiagnostics from "./SystemDiagnostics";
 import OrderProcessingDebugger from "./OrderProcessingDebugger";
+import UnifiedSystemManager from "./UnifiedSystemManager";
 
 export default function AdminDashboard() {
   return (
@@ -18,8 +19,12 @@ export default function AdminDashboard() {
           <p className="text-gray-600">Управление заказами, клиентами и настройками системы</p>
         </div>
 
-        <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+        <Tabs defaultValue="unified" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="unified" className="flex items-center gap-2">
+              <Brain className="h-4 w-4" />
+              AI Система
+            </TabsTrigger>
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Заказы
@@ -45,6 +50,10 @@ export default function AdminDashboard() {
               Настройки
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="unified">
+            <UnifiedSystemManager />
+          </TabsContent>
 
           <TabsContent value="orders">
             <OrderManagement />

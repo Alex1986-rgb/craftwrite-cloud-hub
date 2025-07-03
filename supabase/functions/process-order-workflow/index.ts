@@ -34,6 +34,8 @@ interface OrderData {
   technical_specification?: any;
   contact_name: string;
   contact_email: string;
+  user_id?: string;
+  status: string;
 }
 
 serve(async (req) => {
@@ -334,7 +336,7 @@ async function sendNotification(order: OrderData) {
       .eq('user_id', order.user_id)
       .single();
 
-    if (settings?.email_notifications) {
+    if (settings?.email_notifications || !order.user_id) {
       logDebug('Sending email notification', { email: order.contact_email });
       try {
         await supabase.functions.invoke('send-email-notification', {
