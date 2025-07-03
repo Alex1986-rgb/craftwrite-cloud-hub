@@ -39,6 +39,8 @@ import OrderTrackingPage from "./pages/OrderTrackingPage";
 import SeoArticleOrder from "./pages/SeoArticleOrder";
 import SeoArticleOrderModern from "./pages/SeoArticleOrderModern";
 import LandingPageOrder from "./pages/LandingPageOrder";
+import LandingOrderForm from "./components/order/landing/LandingOrderForm";
+import PaymentMock from "./pages/PaymentMock";
 import EmailCampaignsOrder from "./pages/EmailCampaignsOrder";
 import ChatbotScriptsOrder from "./pages/ChatbotScriptsOrder";
 import TelegramContentOrder from "./pages/TelegramContentOrder";
@@ -112,6 +114,8 @@ function App() {
                     <Route path="/order/seo-article" element={<SeoArticleOrder />} />
                     <Route path="/order/seo-article-modern" element={<SeoArticleOrderModern />} />
                     <Route path="/order/landing-page" element={<LandingPageOrder />} />
+                    <Route path="/order/landing-enhanced" element={<LandingOrderForm />} />
+                    <Route path="/payment-mock" element={<PaymentMock />} />
                     <Route path="/order/email-campaigns" element={<EmailCampaignsOrder />} />
                     <Route path="/order/chatbot-scripts" element={<ChatbotScriptsOrder />} />
                     <Route path="/order/telegram-content" element={<TelegramContentOrder />} />

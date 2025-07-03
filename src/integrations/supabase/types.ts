@@ -681,6 +681,51 @@ export type Database = {
           },
         ]
       }
+      landing_packages: {
+        Row: {
+          created_at: string | null
+          delivery_days: number | null
+          description: string | null
+          features: Json
+          id: string
+          included_revisions: number | null
+          is_active: boolean | null
+          name: string
+          package_type: string
+          price: number
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          delivery_days?: number | null
+          description?: string | null
+          features?: Json
+          id?: string
+          included_revisions?: number | null
+          is_active?: boolean | null
+          name: string
+          package_type: string
+          price: number
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          delivery_days?: number | null
+          description?: string | null
+          features?: Json
+          id?: string
+          included_revisions?: number | null
+          is_active?: boolean | null
+          name?: string
+          package_type?: string
+          price?: number
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       notification_settings: {
         Row: {
           created_at: string | null
@@ -783,6 +828,63 @@ export type Database = {
         }
         Relationships: []
       }
+      order_comments: {
+        Row: {
+          attachments: Json | null
+          author_id: string
+          author_type: string
+          comment_type: string | null
+          content: string
+          created_at: string | null
+          id: string
+          is_internal: boolean | null
+          order_id: string
+          parent_comment_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          attachments?: Json | null
+          author_id: string
+          author_type?: string
+          comment_type?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          is_internal?: boolean | null
+          order_id: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          attachments?: Json | null
+          author_id?: string
+          author_type?: string
+          comment_type?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_internal?: boolean | null
+          order_id?: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_comments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "order_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_processing_queue: {
         Row: {
           attempts: number | null
@@ -833,103 +935,210 @@ export type Database = {
           },
         ]
       }
+      order_workflow_steps: {
+        Row: {
+          actual_duration: unknown | null
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string | null
+          deliverables: Json | null
+          estimated_duration: unknown | null
+          id: string
+          notes: string | null
+          order_id: string
+          started_at: string | null
+          status: string
+          step_name: string
+          step_order: number
+          updated_at: string | null
+        }
+        Insert: {
+          actual_duration?: unknown | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          deliverables?: Json | null
+          estimated_duration?: unknown | null
+          id?: string
+          notes?: string | null
+          order_id: string
+          started_at?: string | null
+          status?: string
+          step_name: string
+          step_order: number
+          updated_at?: string | null
+        }
+        Update: {
+          actual_duration?: unknown | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          deliverables?: Json | null
+          estimated_duration?: unknown | null
+          id?: string
+          notes?: string | null
+          order_id?: string
+          started_at?: string | null
+          status?: string
+          step_name?: string
+          step_order?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_workflow_steps_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           additional_requirements: string | null
+          approval_status: string | null
           assigned_admin_id: string | null
           assigned_manager_id: string | null
+          business_goals: string | null
+          client_approved: boolean | null
           client_feedback: string | null
           completed_at: string | null
           contact_email: string
           contact_name: string
           contact_phone: string | null
+          content_materials: Json | null
           created_at: string
+          current_revisions: number | null
           deadline: string | null
+          delivery_date: string | null
+          design_preferences: Json | null
+          designer_id: string | null
           details: string
+          developer_id: string | null
           estimated_completion_time: unknown | null
           estimated_price: number | null
           files_urls: string[] | null
           final_price: number | null
           generated_prompt: string | null
           id: string
+          landing_requirements: Json | null
           last_activity_at: string | null
           notes: string | null
+          package_type: string | null
           payment_status: string | null
           priority: string | null
+          project_manager_id: string | null
+          project_type: string | null
           quality_rating: number | null
           revision_count: number | null
+          revision_limit: number | null
           service_name: string
           service_options: Json | null
           service_slug: string
           status: string
+          target_audience: string | null
           technical_specification: Json | null
           telegram_sent_at: string | null
+          timeline_requirements: string | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
           additional_requirements?: string | null
+          approval_status?: string | null
           assigned_admin_id?: string | null
           assigned_manager_id?: string | null
+          business_goals?: string | null
+          client_approved?: boolean | null
           client_feedback?: string | null
           completed_at?: string | null
           contact_email: string
           contact_name: string
           contact_phone?: string | null
+          content_materials?: Json | null
           created_at?: string
+          current_revisions?: number | null
           deadline?: string | null
+          delivery_date?: string | null
+          design_preferences?: Json | null
+          designer_id?: string | null
           details: string
+          developer_id?: string | null
           estimated_completion_time?: unknown | null
           estimated_price?: number | null
           files_urls?: string[] | null
           final_price?: number | null
           generated_prompt?: string | null
           id?: string
+          landing_requirements?: Json | null
           last_activity_at?: string | null
           notes?: string | null
+          package_type?: string | null
           payment_status?: string | null
           priority?: string | null
+          project_manager_id?: string | null
+          project_type?: string | null
           quality_rating?: number | null
           revision_count?: number | null
+          revision_limit?: number | null
           service_name: string
           service_options?: Json | null
           service_slug: string
           status?: string
+          target_audience?: string | null
           technical_specification?: Json | null
           telegram_sent_at?: string | null
+          timeline_requirements?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
           additional_requirements?: string | null
+          approval_status?: string | null
           assigned_admin_id?: string | null
           assigned_manager_id?: string | null
+          business_goals?: string | null
+          client_approved?: boolean | null
           client_feedback?: string | null
           completed_at?: string | null
           contact_email?: string
           contact_name?: string
           contact_phone?: string | null
+          content_materials?: Json | null
           created_at?: string
+          current_revisions?: number | null
           deadline?: string | null
+          delivery_date?: string | null
+          design_preferences?: Json | null
+          designer_id?: string | null
           details?: string
+          developer_id?: string | null
           estimated_completion_time?: unknown | null
           estimated_price?: number | null
           files_urls?: string[] | null
           final_price?: number | null
           generated_prompt?: string | null
           id?: string
+          landing_requirements?: Json | null
           last_activity_at?: string | null
           notes?: string | null
+          package_type?: string | null
           payment_status?: string | null
           priority?: string | null
+          project_manager_id?: string | null
+          project_type?: string | null
           quality_rating?: number | null
           revision_count?: number | null
+          revision_limit?: number | null
           service_name?: string
           service_options?: Json | null
           service_slug?: string
           status?: string
+          target_audience?: string | null
           technical_specification?: Json | null
           telegram_sent_at?: string | null
+          timeline_requirements?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -978,13 +1187,19 @@ export type Database = {
           discount_amount: number | null
           gateway_payment_id: string | null
           id: string
+          installment_plan: Json | null
           modulbank_payment_id: string | null
           order_id: string | null
           payment_gateway: string | null
+          payment_intent_id: string | null
           payment_method: string | null
+          payment_session_id: string | null
           payment_status: string | null
           payment_url: string | null
+          processing_fee: number | null
           promo_code_id: string | null
+          refund_amount: number | null
+          refund_reason: string | null
           user_id: string | null
         }
         Insert: {
@@ -996,13 +1211,19 @@ export type Database = {
           discount_amount?: number | null
           gateway_payment_id?: string | null
           id?: string
+          installment_plan?: Json | null
           modulbank_payment_id?: string | null
           order_id?: string | null
           payment_gateway?: string | null
+          payment_intent_id?: string | null
           payment_method?: string | null
+          payment_session_id?: string | null
           payment_status?: string | null
           payment_url?: string | null
+          processing_fee?: number | null
           promo_code_id?: string | null
+          refund_amount?: number | null
+          refund_reason?: string | null
           user_id?: string | null
         }
         Update: {
@@ -1014,13 +1235,19 @@ export type Database = {
           discount_amount?: number | null
           gateway_payment_id?: string | null
           id?: string
+          installment_plan?: Json | null
           modulbank_payment_id?: string | null
           order_id?: string | null
           payment_gateway?: string | null
+          payment_intent_id?: string | null
           payment_method?: string | null
+          payment_session_id?: string | null
           payment_status?: string | null
           payment_url?: string | null
+          processing_fee?: number | null
           promo_code_id?: string | null
+          refund_amount?: number | null
+          refund_reason?: string | null
           user_id?: string | null
         }
         Relationships: [
@@ -1802,6 +2029,10 @@ export type Database = {
           last_error: string
         }[]
       }
+      create_landing_workflow_steps: {
+        Args: { order_id: string; package_type: string }
+        Returns: undefined
+      }
       create_notification: {
         Args: {
           p_user_id: string
@@ -1940,6 +2171,24 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "client" | "guest"
+      order_status_type:
+        | "draft"
+        | "pending"
+        | "payment_pending"
+        | "payment_confirmed"
+        | "in_progress"
+        | "review"
+        | "revision_requested"
+        | "completed"
+        | "cancelled"
+        | "refunded"
+      payment_status_type:
+        | "pending"
+        | "processing"
+        | "completed"
+        | "failed"
+        | "cancelled"
+        | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2056,6 +2305,26 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "client", "guest"],
+      order_status_type: [
+        "draft",
+        "pending",
+        "payment_pending",
+        "payment_confirmed",
+        "in_progress",
+        "review",
+        "revision_requested",
+        "completed",
+        "cancelled",
+        "refunded",
+      ],
+      payment_status_type: [
+        "pending",
+        "processing",
+        "completed",
+        "failed",
+        "cancelled",
+        "refunded",
+      ],
     },
   },
 } as const

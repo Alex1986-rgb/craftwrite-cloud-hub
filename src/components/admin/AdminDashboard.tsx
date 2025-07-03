@@ -9,6 +9,7 @@ import SettingsPanel from "./SettingsPanel";
 import SystemDiagnostics from "./SystemDiagnostics";
 import OrderProcessingDebugger from "./OrderProcessingDebugger";
 import UnifiedSystemManager from "./UnifiedSystemManager";
+import LandingOrderManager from "./landing/LandingOrderManager";
 
 export default function AdminDashboard() {
   return (
@@ -20,7 +21,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs defaultValue="unified" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="unified" className="flex items-center gap-2">
               <Brain className="h-4 w-4" />
               AI Система
@@ -28,6 +29,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="orders" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Заказы
+            </TabsTrigger>
+            <TabsTrigger value="landing" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Лендинги
             </TabsTrigger>
             <TabsTrigger value="clients" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
@@ -57,6 +62,10 @@ export default function AdminDashboard() {
 
           <TabsContent value="orders">
             <OrderManagement />
+          </TabsContent>
+
+          <TabsContent value="landing">
+            <LandingOrderManager />
           </TabsContent>
 
           <TabsContent value="clients">
