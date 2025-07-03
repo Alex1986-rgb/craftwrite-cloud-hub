@@ -57,6 +57,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import TestPage from "./pages/TestPage";
 import SmartOrder from "./pages/SmartOrder";
+import SystemMonitoringPage from "./pages/SystemMonitoringPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -131,6 +132,7 @@ function App() {
                     {/* Test pages */}
                     <Route path="/test" element={<TestPage />} />
                     <Route path="/smart-order" element={<SmartOrder />} />
+                    <Route path="/system-monitoring" element={<SystemMonitoringPage />} />
 
                     {/* 404 page */}
                     <Route path="*" element={<NotFound />} />
