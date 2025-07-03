@@ -1,278 +1,300 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { 
-  Sparkles, 
   Mail, 
   Phone, 
-  MessageCircle, 
-  Clock,
-  Shield,
-  Award,
-  Users,
+  Clock, 
+  CheckCircle, 
+  Users, 
+  Award, 
   TrendingUp,
   ExternalLink,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Youtube
-} from 'lucide-react';
-import { toast } from 'sonner';
+  Send,
+  Shield,
+  UserCheck,
+  Zap
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import HolographicIcon from "../landing/HolographicIcon";
 
-const Footer = () => {
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success('Спасибо за подписку!');
+const services = [
+  { name: "SEO-статьи", path: "/seo-article-order", icon: "📝" },
+  { name: "Лендинги", path: "/landing-page-order", icon: "🚀" },
+  { name: "Email-кампании", path: "/email-campaigns-order", icon: "📧" },
+  { name: "Контент для соцсетей", path: "/services", icon: "📱" },
+  { name: "Тексты для сайтов", path: "/order/website-texts", icon: "🌐" },
+  { name: "Описания товаров", path: "/services", icon: "📦" }
+];
+
+const tools = [
+  { name: "Калькулятор стоимости", path: "/prices", icon: "🧮" },
+  { name: "Конструктор ТЗ", path: "/order", icon: "🔧" },
+  { name: "Примеры работ", path: "/portfolio", icon: "📋" },
+  { name: "AI-рекомендации", path: "/order", icon: "🤖" },
+  { name: "Отслеживание заказов", path: "/order-tracking", icon: "📊" },
+  { name: "FAQ", path: "/faq", icon: "❓" }
+];
+
+const support = [
+  { name: "О нас", path: "/about", icon: "ℹ️" },
+  { name: "Блог", path: "/blog", icon: "📚" },
+  { name: "Контакты", path: "/contact", icon: "📞" },
+  { name: "Карьера", path: "/careers", icon: "💼" },
+  { name: "Партнерам", path: "/partners", icon: "🤝" },
+  { name: "Статус системы", path: "/test", icon: "⚡" }
+];
+
+const guarantees = [
+  { icon: CheckCircle, title: "100% Гарантия", subtitle: "Качество или возврат" },
+  { icon: UserCheck, title: "Сертификация", subtitle: "Эксперты с дипломами" },
+  { icon: Users, title: "50+ Экспертов", subtitle: "Команда профессионалов" },
+  { icon: TrendingUp, title: "5 лет роста", subtitle: "Проверено временем" }
+];
+
+export default function EnhancedFooter() {
+  const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!email) return;
+    setIsSubscribing(true);
+    // Simulate subscription
+    setTimeout(() => {
+      setIsSubscribing(false);
+      setEmail("");
+    }, 1000);
   };
 
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          
-          {/* Company Info */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold">CopyPro Cloud</h3>
-                <p className="text-slate-400 text-sm">Профессиональный копирайтинг</p>
-              </div>
-            </div>
+    <footer className="relative overflow-hidden">
+      {/* Main Footer */}
+      <div className="relative bg-gradient-to-br from-[hsl(var(--deep-space))] via-[hsl(var(--ai-blue)/0.05)] to-[hsl(var(--electric-purple)/0.05)]">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+
+        <div className="container mx-auto px-4 py-12 relative z-10">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
             
-            <p className="text-slate-300 leading-relaxed">
-              Ведущая платформа копирайтинга с командой из 50+ экспертов. 
-              Создаем контент, который продает и привлекает клиентов.
-            </p>
+            {/* Company Info */}
+            <div className="lg:col-span-1 space-y-6">
+              <div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl cyber-glow bg-gradient-to-br from-[hsl(var(--ai-blue))] to-[hsl(var(--electric-purple))] flex items-center justify-center">
+                    <HolographicIcon icon={Zap} size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gradient-holographic">CopyPro Cloud</h3>
+                    <p className="text-sm text-white/60">Профессиональный копирайтинг</p>
+                  </div>
+                </div>
+                <p className="text-white/70 text-sm leading-relaxed">
+                  Ведущая платформа копирайтинга с командой из 50+ экспертов. 
+                  Создаем контент, который продает и привлекает клиентов.
+                </p>
+              </div>
 
-            {/* Key Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-slate-800/50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-400">5000+</div>
-                <div className="text-xs text-slate-400">Проектов</div>
+              {/* Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="holographic-border p-4 bg-black/20 backdrop-blur-xl">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gradient-holographic">5000+</div>
+                    <div className="text-xs text-white/60">Проектов</div>
+                  </div>
+                </Card>
+                <Card className="holographic-border p-4 bg-black/20 backdrop-blur-xl">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gradient-holographic">98%</div>
+                    <div className="text-xs text-white/60">Довольных клиентов</div>
+                  </div>
+                </Card>
               </div>
-              <div className="text-center p-4 bg-slate-800/50 rounded-lg">
-                <div className="text-2xl font-bold text-green-400">98%</div>
-                <div className="text-xs text-slate-400">Довольных клиентов</div>
-              </div>
+
+              {/* Newsletter */}
+              <Card className="holographic-border p-4 bg-black/10 backdrop-blur-xl">
+                <h4 className="text-white font-semibold mb-3 flex items-center">
+                  <Mail className="w-4 h-4 mr-2 text-[hsl(var(--ai-blue))]" />
+                  Email рассылка
+                </h4>
+                <p className="text-white/60 text-sm mb-4">
+                  Получайте советы по копирайтингу и новости
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Ваш email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-black/20 border-white/20 text-white placeholder:text-white/40"
+                  />
+                  <Button 
+                    onClick={handleSubscribe}
+                    disabled={isSubscribing || !email}
+                    className="cyber-glow bg-gradient-to-r from-[hsl(var(--ai-blue))] to-[hsl(var(--electric-purple))] px-4"
+                  >
+                    {isSubscribing ? (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <Send className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+              </Card>
             </div>
 
-            {/* Newsletter */}
-            <div className="space-y-3">
-              <h4 className="font-semibold flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                Email рассылка
+            {/* Services */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-white mb-4 flex items-center">
+                <span className="text-gradient-holographic">Услуги</span>
               </h4>
-              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-                <Input 
-                  placeholder="Ваш email" 
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
-                />
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                  Подписаться
-                </Button>
-              </form>
-              <p className="text-xs text-slate-400">
-                Получайте советы по копирайтингу и новости
-              </p>
+              <div className="space-y-3">
+                {services.map((service) => (
+                  <Link
+                    key={service.name}
+                    to={service.path}
+                    className="flex items-center group text-white/70 hover:text-white transition-colors"
+                  >
+                    <span className="mr-3 text-lg">{service.icon}</span>
+                    <span className="group-hover:text-gradient transition-colors">{service.name}</span>
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Services */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Услуги</h4>
-            <ul className="space-y-2">
-              {[
-                { name: 'SEO-статьи', href: '/order/seo-article' },
-                { name: 'Лендинги', href: '/order/landing-page' },
-                { name: 'Email-кампании', href: '/order/email-campaigns' },
-                { name: 'Контент для соцсетей', href: '/order/instagram' },
-                { name: 'Тексты для сайтов', href: '/order/website-texts' },
-                { name: 'Описания товаров', href: '/order/ozon' }
-              ].map((service) => (
-                <li key={service.name}>
-                  <Link 
-                    to={service.href}
-                    className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm flex items-center gap-2"
+            {/* Tools */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-white mb-4">
+                <span className="text-gradient-holographic">Инструменты</span>
+              </h4>
+              <div className="space-y-3">
+                {tools.map((tool) => (
+                  <Link
+                    key={tool.name}
+                    to={tool.path}
+                    className="flex items-center group text-white/70 hover:text-white transition-colors"
                   >
-                    {service.name}
-                    <ExternalLink className="w-3 h-3" />
+                    <span className="mr-3 text-lg">{tool.icon}</span>
+                    <span className="group-hover:text-gradient transition-colors">{tool.name}</span>
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tools & Resources */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Инструменты</h4>
-            <ul className="space-y-2">
-              {[
-                { name: 'Калькулятор стоимости', href: '/interactive' },
-                { name: 'Конструктор ТЗ', href: '/interactive?tab=brief' },
-                { name: 'Примеры работ', href: '/interactive?tab=examples' },
-                { name: 'AI-рекомендации', href: '/interactive?tab=recommendations' },
-                { name: 'Отслеживание заказов', href: '/track-order' },
-                { name: 'FAQ', href: '/faq' }
-              ].map((tool) => (
-                <li key={tool.name}>
-                  <Link 
-                    to={tool.href}
-                    className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm"
-                  >
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company & Support */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-lg">Поддержка</h4>
-            <ul className="space-y-2">
-              {[
-                { name: 'О нас', href: '/about' },
-                { name: 'Блог', href: '/blog' },
-                { name: 'Контакты', href: '/contact' },
-                { name: 'Карьера', href: '/careers' },
-                { name: 'Партнерам', href: '/partners' },
-                { name: 'Статус системы', href: '/status' }
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href}
-                    className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Contact Info */}
-            <div className="space-y-3 pt-4 border-t border-slate-700">
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <Phone className="w-4 h-4" />
-                <span>+7 (800) 555-0199</span>
+                ))}
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <MessageCircle className="w-4 h-4" />
-                <span>Telegram: @copyprocloud</span>
+            </div>
+
+            {/* Support & Contact */}
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-4">
+                  <span className="text-gradient-holographic">Поддержка</span>
+                </h4>
+                <div className="space-y-3">
+                  {support.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      className="flex items-center group text-white/70 hover:text-white transition-colors"
+                    >
+                      <span className="mr-3 text-lg">{item.icon}</span>
+                      <span className="group-hover:text-gradient transition-colors">{item.name}</span>
+                      <ExternalLink className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <Clock className="w-4 h-4" />
-                <span>Работаем 24/7</span>
-              </div>
+
+              {/* Contact Info */}
+              <Card className="holographic-border p-4 bg-black/10 backdrop-blur-xl space-y-3">
+                <div className="flex items-center text-white/70">
+                  <Phone className="w-4 h-4 mr-3 text-[hsl(var(--ai-blue))]" />
+                  <span className="text-sm">+7 (800) 555-0199</span>
+                </div>
+                <div className="flex items-center text-white/70">
+                  <Mail className="w-4 h-4 mr-3 text-[hsl(var(--neon-green))]" />
+                  <span className="text-sm">Telegram: @copyprocloud</span>
+                </div>
+                <div className="flex items-center text-white/70">
+                  <Clock className="w-4 h-4 mr-3 text-[hsl(var(--cyber-gold))]" />
+                  <span className="text-sm">Работаем 24/7</span>
+                </div>
+              </Card>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Trust Badges */}
-      <div className="border-t border-slate-700 bg-slate-800/50">
-        <div className="container mx-auto px-6 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="flex items-center gap-3 text-sm">
-              <Shield className="w-5 h-5 text-green-400" />
-              <div>
-                <div className="font-semibold">100% Гарантия</div>
-                <div className="text-slate-400 text-xs">Качество или возврат</div>
+      {/* Guarantees Section */}
+      <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {guarantees.map((guarantee, index) => (
+              <div key={index} className="flex items-center space-x-3 group">
+                <div className="w-10 h-10 rounded-lg cyber-glow bg-gradient-to-br from-[hsl(var(--ai-blue))] to-[hsl(var(--neon-green))] flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <guarantee.icon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="text-white font-medium text-sm">{guarantee.title}</div>
+                  <div className="text-white/60 text-xs">{guarantee.subtitle}</div>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Award className="w-5 h-5 text-blue-400" />
-              <div>
-                <div className="font-semibold">Сертификация</div>
-                <div className="text-slate-400 text-xs">Эксперты с дипломами</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Users className="w-5 h-5 text-purple-400" />
-              <div>
-                <div className="font-semibold">50+ Экспертов</div>
-                <div className="text-slate-400 text-xs">Команда профессионалов</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <TrendingUp className="w-5 h-5 text-orange-400" />
-              <div>
-                <div className="font-semibold">5 лет роста</div>
-                <div className="text-slate-400 text-xs">Проверено временем</div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="border-t border-slate-700">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-slate-400">
-              © {currentYear} CopyPro Cloud. Все права защищены. | 
-              <Link to="/privacy" className="hover:text-blue-400 ml-1">Политика конфиденциальности</Link> | 
-              <Link to="/terms" className="hover:text-blue-400 ml-1">Условия использования</Link>
-            </div>
+      {/* Bottom Bar */}
+      <div className="bg-black/60 backdrop-blur-xl border-t border-white/10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
+            {/* Quick Order Button */}
+            <Button 
+              asChild
+              className="magnetic-hover cyber-glow bg-gradient-to-r from-[hsl(var(--neon-green))] to-[hsl(var(--ai-blue))] text-white font-semibold px-6 py-3 rounded-xl"
+            >
+              <Link to="/order">
+                <Zap className="w-4 h-4 mr-2" />
+                Быстрый заказ
+              </Link>
+            </Button>
+
+            {/* Legal Links */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-white/60">
+              <Link to="/privacy" className="hover:text-white transition-colors">
+                Политика конфиденциальности
+              </Link>
+              <span className="text-white/30">|</span>
+              <Link to="/terms" className="hover:text-white transition-colors">
+                Условия использования
+              </Link>
+              <span className="text-white/30">|</span>
+              <span>© 2024 CopyPro Cloud</span>
+            </div>
+
+            {/* Social Media */}
+            <div className="flex space-x-3">
               {[
-                { icon: Facebook, href: '#', name: 'Facebook' },
-                { icon: Twitter, href: '#', name: 'Twitter' },
-                { icon: Instagram, href: '#', name: 'Instagram' },
-                { icon: Linkedin, href: '#', name: 'LinkedIn' },
-                { icon: Youtube, href: '#', name: 'YouTube' }
+                { name: "Facebook", icon: "📘" },
+                { name: "Twitter", icon: "🐦" },
+                { name: "Instagram", icon: "📸" },
+                { name: "LinkedIn", icon: "💼" },
+                { name: "YouTube", icon: "📺" }
               ].map((social) => (
-                <a
+                <div
                   key={social.name}
-                  href={social.href}
-                  className="w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center transition-colors duration-200"
-                  aria-label={social.name}
+                  className="w-8 h-8 rounded-lg cyber-glow bg-black/20 backdrop-blur-xl flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
                 >
-                  <social.icon className="w-4 h-4" />
-                </a>
+                  <span className="text-sm">{social.icon}</span>
+                </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Quick Actions Float */}
-      <div className="fixed bottom-6 left-6 z-40 hidden lg:block">
-        <div className="space-y-3">
-          <Button 
-            asChild
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white shadow-lg"
-          >
-            <Link to="/smart-order">
-              Быстрый заказ
-            </Link>
-          </Button>
-          <Button 
-            asChild
-            size="sm"
-            variant="outline"
-            className="bg-white hover:bg-gray-50 shadow-lg"
-          >
-            <Link to="/track-order">
-              Статус заказа
-            </Link>
-          </Button>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
