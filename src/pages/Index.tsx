@@ -13,7 +13,7 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import OptimizedHeroSection from "@/components/landing/OptimizedHeroSection";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -66,7 +66,7 @@ export default function Index() {
       <UnifiedHeader />
       
       {/* Hero Section */}
-      <OptimizedHeroSection />
+      <ModernHeroSection />
       
       {/* Quick Order Section */}
       <section id="order" className="relative">

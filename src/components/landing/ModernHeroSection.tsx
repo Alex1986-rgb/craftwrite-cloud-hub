@@ -1,137 +1,190 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
+import AnimatedCounter from "@/components/ui/animated-counter";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Star, Users, Clock, TrendingUp, Shield, Award, Zap, Target, CheckCircle, PlayCircle } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Zap, Shield, Award, TrendingUp, CheckCircle, Play, Globe, Users, Clock } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const ModernHeroSection = () => {
-  const [animatedNumber, setAnimatedNumber] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeFeature, setActiveFeature] = useState(0);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsVisible(true);
-    const timer = setInterval(() => {
-      setAnimatedNumber(prev => prev < 2000 ? prev + 50 : 2000);
-    }, 50);
-    
-    // Cycling through features
-    const featureTimer = setInterval(() => {
-      setActiveFeature(prev => (prev + 1) % 4);
-    }, 3000);
-    
-    return () => {
-      clearInterval(timer);
-      clearInterval(featureTimer);
-    };
   }, []);
 
-  const features = [
-    { icon: Shield, text: "100% гарантия уникальности", color: "text-green-600" },
-    { icon: Award, text: "50+ экспертов с опытом 5+ лет", color: "text-blue-600" },
-    { icon: Zap, text: "Экспресс-доставка от 24 часов", color: "text-purple-600" },
-    { icon: Target, text: "SEO-оптимизация под ТОП-10", color: "text-orange-600" }
+  const trustIndicators = [
+    { icon: Star, text: "4.9/5", value: "98% довольных", gradient: "from-yellow-400 to-orange-500" },
+    { icon: Shield, text: "100%", value: "Гарантия качества", gradient: "from-green-400 to-emerald-500" },
+    { icon: Clock, text: "24ч", value: "Быстрая доставка", gradient: "from-blue-400 to-cyan-500" },
+    { icon: Award, text: "50+", value: "Экспертов", gradient: "from-purple-400 to-pink-500" }
+  ];
+
+  const stats = [
+    { value: 5000, suffix: "+", label: "Проектов", icon: Globe },
+    { value: 98, suffix: "%", label: "Довольных", icon: Star },
+    { value: 24, suffix: "ч", label: "Мин. срок", icon: Clock },
+    { value: 180, suffix: "%", label: "Рост продаж", icon: TrendingUp }
   ];
 
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 overflow-hidden mobile-safe-area pt-16 pb-8">
-      {/* Enhanced background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Animated gradient orbs */}
-        <div className={`absolute top-1/4 left-1/6 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl ${!isMobile ? 'animate-float' : ''}`}></div>
-        <div className={`absolute bottom-1/4 right-1/6 w-80 h-80 sm:w-[500px] sm:h-[500px] bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl ${!isMobile ? 'animate-float' : ''}`} style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 sm:w-[600px] sm:h-[600px] bg-gradient-to-r from-emerald-400/5 to-blue-400/5 rounded-full blur-3xl animate-pulse"></div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Animated Background Blobs */}
+        <div className="absolute top-1/4 left-1/6 w-[500px] h-[500px] bg-gradient-to-r from-blue-400/15 to-purple-400/15 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/6 w-[600px] h-[600px] bg-gradient-to-r from-emerald-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-r from-pink-400/8 to-violet-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-32 left-16 w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-emerald-400 rounded-full animate-ping"></div>
+        {/* Floating Particles */}
+        <FloatingParticles count={30} />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto text-center px-4 sm:px-6">
-        {/* Premium badge */}
-        <div className={`flex justify-center mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-md border border-blue-200/30 text-blue-800 font-semibold text-sm shadow-lg">
-            <Award className="w-4 h-4 text-blue-600" />
-            <span>Премиальная платформа копирайтинга #1 в России</span>
-          </div>
-        </div>
-
-        {/* Компактный заголовок */}
-        <div className={`transition-all duration-1200 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <h1 className="text-3xl sm:text-5xl xl:text-6xl font-bold mb-4 text-slate-900 leading-tight">
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent animate-shimmer">
-              CopyPro Cloud
-            </span>
-            <div className="text-xl sm:text-2xl font-medium text-slate-600 mt-2">
-              SEO-копирайтинг от 500₽
-            </div>
-          </h1>
-        </div>
-
-        {/* Компактное описание */}
-        <div className={`transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <p className="text-base sm:text-lg text-slate-700 mb-6 max-w-2xl mx-auto leading-relaxed">
-            50+ экспертов создают продающие тексты за 24-72 часа с <span className="font-bold text-green-600">гарантией результата</span>
-          </p>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          <div className="flex flex-wrap justify-center items-center gap-4 mb-6 text-sm">
-            <div className="flex items-center gap-1.5 text-green-600 font-medium">
-              <Star className="w-3.5 h-3.5 fill-current" />
-              100% уникальность
-            </div>
-            <div className="flex items-center gap-1.5 text-blue-600 font-medium">
-              <Zap className="w-3.5 h-3.5" />
-              Быстрая доставка
-            </div>
-            <div className="flex items-center gap-1.5 text-purple-600 font-medium">
-              <Shield className="w-3.5 h-3.5" />
-              Гарантия качества
-            </div>
-          </div>
-        </div>
-
-        {/* Компактная CTA */}
-        <div className={`transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="space-y-4 mb-6">
-            <Button 
-              size="lg" 
-              className="group px-8 py-3 rounded-full text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 hover:scale-105" 
-              asChild
-            >
-              <Link to="#order" className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                Заказать от 500₽
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </Button>
+          {/* Left Column - Content */}
+          <div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             
-            <div className="flex flex-wrap justify-center items-center gap-4 text-xs text-slate-600">
-              <span>✓ Без предоплаты</span>
-              <span>✓ Правки бесплатно</span>
-              <span>✓ Гарантия результата</span>
+            {/* Premium Badge */}
+            <GlassCard variant="frosted" className="inline-flex items-center gap-3 px-6 py-4">
+              <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <Award className="w-3 h-3 text-white" />
+              </div>
+              <span className="text-slate-800 font-semibold">Премиальный копирайтинг с 2019 года</span>
+            </GlassCard>
+
+            {/* Main Headline */}
+            <div className="space-y-6">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+                <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 bg-clip-text text-transparent mb-2">
+                  Продающие
+                </div>
+                <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+                  тексты
+                </div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl mt-4 bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                  от 500₽ за 24 часа
+                </div>
+              </h1>
+              
+              <p className="text-xl sm:text-2xl text-slate-600 max-w-2xl leading-relaxed">
+                Команда из <span className="font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">50+ экспертов</span> создает контент, 
+                который увеличивает продажи на <span className="font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">40-180%</span>
+              </p>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-2 gap-4">
+              {trustIndicators.map((indicator, index) => (
+                <GlassCard key={index} variant="elevated" className="group p-4 hover:scale-105">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 bg-gradient-to-r ${indicator.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <indicator.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-lg text-slate-800">{indicator.text}</div>
+                      <div className="text-sm text-slate-600">{indicator.value}</div>
+                    </div>
+                  </div>
+                </GlassCard>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="group px-10 py-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 text-white font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 text-lg" 
+                asChild
+              >
+                <Link to="#order" className="flex items-center gap-3">
+                  <Sparkles className="w-6 h-6" />
+                  Заказать текст
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                </Link>
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="group px-10 py-6 border-2 border-slate-300 text-slate-700 hover:bg-white/80 backdrop-blur-sm rounded-2xl transition-all duration-500 hover:scale-105 text-lg font-semibold"
+                asChild
+              >
+                <Link to="/portfolio" className="flex items-center gap-3">
+                  <Play className="w-6 h-6" />
+                  Примеры работ
+                </Link>
+              </Button>
+            </div>
+
+            {/* Quick Features */}
+            <div className="flex flex-wrap gap-6 text-sm text-slate-600">
+              {[
+                "Без предоплаты",
+                "Правки бесплатно", 
+                "Гарантия результата"
+              ].map((feature, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-medium">{feature}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Компактные интегрированные метрики */}
-          <div className="grid grid-cols-4 gap-3 max-w-lg mx-auto text-center">
-            <div>
-              <div className="text-lg lg:text-xl font-bold text-blue-600">{animatedNumber >= 2000 ? '2000+' : animatedNumber}</div>
-              <div className="text-xs text-slate-600">проектов</div>
+          {/* Right Column - Stats & Visual */}
+          <div className={`space-y-8 transition-all duration-1200 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              {stats.map((stat, index) => (
+                <GlassCard key={index} variant="frosted" className="group p-8 text-center hover:scale-105">
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${
+                      index === 0 ? 'from-blue-500 to-cyan-500' :
+                      index === 1 ? 'from-yellow-500 to-orange-500' :
+                      index === 2 ? 'from-green-500 to-emerald-500' :
+                      'from-purple-500 to-pink-500'
+                    } rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <stat.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <AnimatedCounter 
+                      end={stat.value}
+                      suffix={stat.suffix}
+                      className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent"
+                    />
+                    <div className="text-sm text-slate-600 font-medium">{stat.label}</div>
+                  </div>
+                </GlassCard>
+              ))}
             </div>
-            <div>
-              <div className="text-lg lg:text-xl font-bold text-green-600">100%</div>
-              <div className="text-xs text-slate-600">уникальность</div>
-            </div>
-            <div>
-              <div className="text-lg lg:text-xl font-bold text-purple-600">50+</div>
-              <div className="text-xs text-slate-600">экспертов</div>
-            </div>
-            <div>
-              <div className="text-lg lg:text-xl font-bold text-orange-600">24ч</div>
-              <div className="text-xs text-slate-600">доставка</div>
-            </div>
+
+            {/* Achievement Card */}
+            <GlassCard variant="elevated" className="bg-gradient-to-r from-blue-600/90 via-purple-600/90 to-blue-700/90 p-8 text-white relative overflow-hidden group hover:scale-105">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 group-hover:scale-110 transition-transform duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full -ml-16 -mb-16 group-hover:scale-110 transition-transform duration-700"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                    <TrendingUp className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold">5 лет</div>
+                    <div className="text-blue-100 text-lg">в топе рынка</div>
+                  </div>
+                </div>
+                <p className="text-blue-50 leading-relaxed text-lg">
+                  Помогли 1000+ компаниям увеличить продажи с помощью качественного контента
+                </p>
+              </div>
+            </GlassCard>
           </div>
         </div>
       </div>
