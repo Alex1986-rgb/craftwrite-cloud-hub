@@ -1844,9 +1844,21 @@ export type Database = {
           last_processed: string
         }[]
       }
+      monitor_stuck_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          stuck_orders_count: number
+          oldest_pending_age: unknown
+          recommended_action: string
+        }[]
+      }
       process_order_queue: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      reprocess_all_stuck_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       reprocess_order: {
         Args: { order_id: string }
