@@ -152,10 +152,28 @@ serve(async (req) => {
     );
 
   } catch (error: any) {
+    // Дополнительное логирование в БД для мониторинга
+    try {
+      const order_id_from_body = await req.clone().json().then(data => data?.order_id).catch(() => 'unknown');
+      await supabase.from('system_diagnostics').insert({
+        check_type: 'edge_function',
+        check_name: 'process_order_workflow_error',
+        status: 'fail',
+        details: {
+          order_id: order_id_from_body,
+          error_message: error.message,
+          timestamp: new Date().toISOString()
+        },
+        error_message: `Edge Function Error: ${error.message}`
+      });
+    } catch (dbError) {
+      logError('Failed to log error to database', dbError);
+    }
+
     logError('Workflow failed', { 
       error: error.message, 
       stack: error.stack,
-      order_id: req.url?.includes('order_id') ? 'unknown' : 'not_provided'
+      timestamp: new Date().toISOString()
     });
     
     return new Response(
