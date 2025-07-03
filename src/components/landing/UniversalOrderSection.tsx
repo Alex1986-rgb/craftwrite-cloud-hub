@@ -262,51 +262,51 @@ export default function UniversalOrderSection() {
 
   if (!isFormOpen) {
     return (
-      <section className="py-20 md:py-32 relative overflow-hidden">
+      <section className="py-20 md:py-32 relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
         
         <div className="container max-w-4xl mx-auto px-4 relative z-10 text-center">
           <div className="space-y-12 animate-fade-in">
             {/* Hero section with enhanced visuals */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold text-sm mb-6 border border-primary/20 backdrop-blur-sm">
-                  <Zap className="w-4 h-4" />
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card text-white font-semibold text-sm mb-6">
+                  <Zap className="w-4 h-4 text-blue-400" />
                   <span>Умная система заказа</span>
                 </div>
                 
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent leading-tight">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gradient leading-tight">
                   Заказать текст
                 </h2>
-                <div className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/90 max-w-4xl mx-auto leading-relaxed">
-                  <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-bold">3 простых вопроса</span>
+                <div className="text-xl md:text-2xl lg:text-3xl font-medium text-white max-w-4xl mx-auto leading-relaxed">
+                  <span className="text-green-400 font-bold">3 простых вопроса</span>
                   {" — "}
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">точная цена за 2 минуты</span>
+                  <span className="text-blue-400 font-bold">точная цена за 2 минуты</span>
                 </div>
               </div>
 
               {/* Key benefits with icons */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/50">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                  <span className="font-semibold text-green-800">100% уникальность</span>
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl glass-card">
+                  <CheckCircle className="w-6 h-6 text-green-400" />
+                  <span className="font-semibold text-white">100% уникальность</span>
                 </div>
-                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200/50">
-                  <Zap className="w-6 h-6 text-blue-600" />
-                  <span className="font-semibold text-blue-800">От 24 часов</span>
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl glass-card">
+                  <Zap className="w-6 h-6 text-blue-400" />
+                  <span className="font-semibold text-white">От 24 часов</span>
                 </div>
-                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200/50">
-                  <Target className="w-6 h-6 text-purple-600" />
-                  <span className="font-semibold text-purple-800">Гарантия результата</span>
+                <div className="flex items-center justify-center gap-3 p-4 rounded-2xl glass-card">
+                  <Target className="w-6 h-6 text-purple-400" />
+                  <span className="font-semibold text-white">Гарантия результата</span>
                 </div>
               </div>
             </div>
 
             {/* Enhanced process steps with animations */}
             <div className="space-y-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-center text-foreground">
+              <h3 className="text-2xl md:text-3xl font-bold text-center text-white">
                 Как это работает
               </h3>
               
@@ -323,13 +323,13 @@ export default function UniversalOrderSection() {
                       {item.step}
                       {index < 4 && (
                         <div className="hidden md:block absolute -right-8 top-1/2 transform -translate-y-1/2">
-                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                          <ArrowRight className="w-5 h-5 text-slate-400" />
                         </div>
                       )}
                     </div>
-                    <div className={`text-center p-4 rounded-xl bg-gradient-to-r ${item.bgColor} border border-gray-200/50 transition-all duration-300 group-hover:shadow-md`}>
-                      <h4 className="font-semibold text-lg text-foreground">{item.title}</h4>
-                      <p className="text-muted-foreground text-sm mt-1">{item.desc}</p>
+                    <div className="text-center p-4 rounded-xl glass-card transition-all duration-300 group-hover:shadow-md">
+                      <h4 className="font-semibold text-lg text-white">{item.title}</h4>
+                      <p className="text-slate-300 text-sm mt-1">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -351,17 +351,17 @@ export default function UniversalOrderSection() {
                 </div>
               </Button>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-300">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Без предоплаты</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Правки бесплатно</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Гарантия 30 дней</span>
                 </div>
               </div>
@@ -373,15 +373,15 @@ export default function UniversalOrderSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-background to-primary/5"></div>
+    <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
       
       <div className="container max-w-4xl mx-auto px-4 relative z-10">
-        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="shadow-2xl border-0 glass-card">
           <CardHeader className="text-center pb-8">
-            <CardTitle className="text-3xl font-bold flex items-center justify-center gap-4">
+            <CardTitle className="text-3xl font-bold flex items-center justify-center gap-4 text-white">
               {React.createElement(STEP_ICONS[currentStep as keyof typeof STEP_ICONS], { 
-                className: "h-8 w-8 text-primary" 
+                className: "h-8 w-8 text-blue-400" 
               })}
               Шаг {currentStep} из 5
             </CardTitle>

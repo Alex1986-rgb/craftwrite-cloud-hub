@@ -40,7 +40,7 @@ export default function UnifiedHeader() {
   };
 
   return (
-    <header className="w-full z-50 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200/50 dark:border-slate-700/50 backdrop-blur-xl sticky top-0 shadow-sm">
+    <header className="w-full z-50 bg-slate-900/95 border-b border-slate-700/50 backdrop-blur-xl sticky top-0 shadow-sm">
       <div className="container max-w-7xl mx-auto flex justify-between items-center h-16 md:h-20 px-4 sm:px-6">
         {/* Logo */}
         <Logo onLogoClick={closeMobileMenu} />
