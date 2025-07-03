@@ -1789,6 +1789,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      auto_fix_stuck_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       check_trigger_health: {
         Args: Record<PropertyKey, never>
         Returns: {
