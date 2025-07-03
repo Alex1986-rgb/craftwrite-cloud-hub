@@ -55,41 +55,26 @@ export default function BusinessInfo({ variant = 'full', className = '' }: Busin
 
   if (variant === 'footer') {
     return (
-      <div className={`space-y-4 ${className}`}>
-        <h4 className="font-semibold text-lg flex items-center gap-2">
-          <Building2 className="w-4 h-4" />
-          Реквизиты ИП
-        </h4>
-        <div className="space-y-3 text-sm">
-          <div className="text-slate-300">{businessData.name}</div>
-          <div className="grid grid-cols-1 gap-2">
-            <div className="flex justify-between">
-              <span className="text-slate-400">ИНН:</span>
-              <span className="text-slate-300 font-mono">{businessData.inn}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">ОГРНИП:</span>
-              <span className="text-slate-300 font-mono">{businessData.ogrnip}</span>
-            </div>
-          </div>
-          <div className="pt-2 border-t border-slate-700">
-            <div className="text-slate-400 text-xs mb-2">Банковские реквизиты:</div>
-            <div className="space-y-1">
-              <div className="text-xs">
-                <span className="text-slate-400">Банк:</span>
-                <span className="text-slate-300 ml-1">{businessData.bank}</span>
-              </div>
-              <div className="text-xs">
-                <span className="text-slate-400">Счет:</span>
-                <span className="text-slate-300 font-mono ml-1">{businessData.account}</span>
-              </div>
-              <div className="text-xs">
-                <span className="text-slate-400">БИК:</span>
-                <span className="text-slate-300 font-mono ml-1">{businessData.bik}</span>
-              </div>
-            </div>
+      <div className={`space-y-3 ${className}`}>
+        <div className="text-sm">
+          <div className="text-slate-300 font-medium mb-2">{businessData.name}</div>
+          <div className="text-xs text-slate-400 space-y-1">
+            <div>ИНН: {businessData.inn}</div>
+            <div>ОГРНИП: {businessData.ogrnip}</div>
           </div>
         </div>
+        <details className="group">
+          <summary className="text-xs text-blue-400 hover:text-blue-300 cursor-pointer list-none flex items-center gap-1">
+            Банковские реквизиты
+            <span className="transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div className="mt-2 text-xs text-slate-400 space-y-1 pl-2 border-l border-slate-600">
+            <div>Банк: {businessData.bank}</div>
+            <div>Счет: {businessData.account}</div>
+            <div>БИК: {businessData.bik}</div>
+            <div>Корр. счет: {businessData.corrAccount}</div>
+          </div>
+        </details>
       </div>
     );
   }

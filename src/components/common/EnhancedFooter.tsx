@@ -198,22 +198,21 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-lg flex items-center gap-2">
               <Building2 className="w-4 h-4 text-orange-400" />
-              Юридическая информация
+              Документы
             </h4>
             
             <BusinessInfo variant="footer" />
             
-            {/* Legal Links */}
-            <div className="space-y-2 pt-4 border-t border-slate-700">
+            {/* Quick Links */}
+            <div className="space-y-2">
               {[
                 { name: 'Политика конфиденциальности', href: '/privacy' },
-                { name: 'Условия использования', href: '/terms' },
-                { name: 'Контакты', href: '/contact' }
+                { name: 'Условия использования', href: '/terms' }
               ].map((link) => (
                 <Link 
                   key={link.name}
                   to={link.href}
-                  className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-sm block"
+                  className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-xs block"
                 >
                   {link.name}
                 </Link>
@@ -221,20 +220,19 @@ const Footer = () => {
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-3 pt-4">
+            <div className="flex items-center gap-2 pt-2">
               {[
                 { icon: Facebook, href: '#', name: 'Facebook' },
-                { icon: Twitter, href: '#', name: 'Twitter' },
                 { icon: Instagram, href: '#', name: 'Instagram' },
                 { icon: Linkedin, href: '#', name: 'LinkedIn' }
               ].map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
-                  className="w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center transition-colors duration-200"
+                  className="w-7 h-7 bg-slate-700 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors duration-200"
                   aria-label={social.name}
                 >
-                  <social.icon className="w-4 h-4" />
+                  <social.icon className="w-3 h-3" />
                 </a>
               ))}
             </div>
