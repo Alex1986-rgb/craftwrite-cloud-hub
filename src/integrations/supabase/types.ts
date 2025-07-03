@@ -971,46 +971,55 @@ export type Database = {
       payments: {
         Row: {
           amount: number
+          callback_data: Json | null
           completed_at: string | null
           created_at: string | null
           currency: string | null
           discount_amount: number | null
           gateway_payment_id: string | null
           id: string
+          modulbank_payment_id: string | null
           order_id: string | null
           payment_gateway: string | null
           payment_method: string | null
           payment_status: string | null
+          payment_url: string | null
           promo_code_id: string | null
           user_id: string | null
         }
         Insert: {
           amount: number
+          callback_data?: Json | null
           completed_at?: string | null
           created_at?: string | null
           currency?: string | null
           discount_amount?: number | null
           gateway_payment_id?: string | null
           id?: string
+          modulbank_payment_id?: string | null
           order_id?: string | null
           payment_gateway?: string | null
           payment_method?: string | null
           payment_status?: string | null
+          payment_url?: string | null
           promo_code_id?: string | null
           user_id?: string | null
         }
         Update: {
           amount?: number
+          callback_data?: Json | null
           completed_at?: string | null
           created_at?: string | null
           currency?: string | null
           discount_amount?: number | null
           gateway_payment_id?: string | null
           id?: string
+          modulbank_payment_id?: string | null
           order_id?: string | null
           payment_gateway?: string | null
           payment_method?: string | null
           payment_status?: string | null
+          payment_url?: string | null
           promo_code_id?: string | null
           user_id?: string | null
         }
