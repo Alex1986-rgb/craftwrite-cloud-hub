@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, ArrowLeft, CheckCircle, MessageSquare, User, Zap } from "lucide-react";
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
 import { useUnifiedOrderForm } from "@/hooks/useUnifiedOrderForm";
 import { toast } from "@/hooks/use-toast";
 
@@ -89,19 +91,28 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
   if (!isFormOpen) {
     return (
       <section className="py-20 md:py-32 relative overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+          {/* Animated Background Blobs */}
+          <div className="absolute top-1/4 left-1/6 w-[500px] h-[500px] bg-gradient-to-r from-blue-400/15 to-purple-400/15 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/6 w-[600px] h-[600px] bg-gradient-to-r from-emerald-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Floating Particles */}
+          <FloatingParticles count={20} />
+          
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+        </div>
         
         <div className="container max-w-4xl mx-auto px-4 relative z-10 text-center">
           <div className="space-y-12 animate-fade-in">
             {/* Hero section */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold text-sm mb-6 border border-primary/20 backdrop-blur-sm">
+                <GlassCard variant="frosted" className="inline-flex items-center gap-3 px-6 py-3">
                   <Zap className="w-4 h-4" />
                   <span>Быстрый заказ</span>
-                </div>
+                </GlassCard>
                 
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent leading-tight">
                   Заказать текст
@@ -120,8 +131,8 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                   { step: 2, title: "Опишите детали", desc: "Расскажите о проекте", color: "from-green-500 to-emerald-500" },
                   { step: 3, title: "Получите смету", desc: "И начнем работу", color: "from-purple-500 to-violet-500" }
                 ].map((item, index) => (
-                  <div key={item.step} className="flex flex-col items-center space-y-4 group">
-                    <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-r ${item.color} text-white flex items-center justify-center text-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                  <GlassCard key={item.step} variant="elevated" className="flex flex-col items-center space-y-4 group p-8 hover:scale-105">
+                    <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-r ${item.color} text-white flex items-center justify-center text-xl font-bold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
                       {item.step}
                       {index < 2 && (
                         <div className="hidden md:block absolute -right-8 top-1/2 transform -translate-y-1/2">
@@ -133,7 +144,7 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                       <h4 className="font-semibold text-lg text-foreground">{item.title}</h4>
                       <p className="text-muted-foreground text-sm mt-1">{item.desc}</p>
                     </div>
-                  </div>
+                  </GlassCard>
                 ))}
               </div>
             </div>
@@ -176,10 +187,13 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
 
   return (
     <section className="py-16 md:py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-background to-primary/5"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <FloatingParticles count={15} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+      </div>
       
       <div className="container max-w-3xl mx-auto px-4 relative z-10">
-        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+        <GlassCard variant="elevated" className="shadow-2xl">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-3xl font-bold flex items-center justify-center gap-4">
               {currentStep === 1 && <MessageSquare className="h-8 w-8 text-primary" />}
@@ -208,17 +222,18 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {QUICK_SERVICES.map((service) => (
-                    <button
+                    <GlassCard
                       key={service.id}
+                      variant={formData.service === service.title ? "elevated" : "default"}
+                      className={`p-4 cursor-pointer transition-all duration-300 text-left hover:scale-105 ${
+                        formData.service === service.title
+                          ? 'border-2 border-blue-400/50 bg-blue-50/50'
+                          : 'hover:border-white/50'
+                      }`}
                       onClick={() => {
                         handleServiceSelect(service.title);
                         nextStep();
                       }}
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 text-left hover:shadow-md ${
-                        formData.service === service.title
-                          ? 'border-primary bg-primary/5'
-                          : 'border-gray-200 hover:border-primary/50'
-                      }`}
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{service.emoji}</span>
@@ -227,7 +242,7 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                           <div className="text-sm text-primary font-medium">{service.price}</div>
                         </div>
                       </div>
-                    </button>
+                    </GlassCard>
                   ))}
                 </div>
               </div>
@@ -302,7 +317,7 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                   <p className="text-muted-foreground">Проверьте данные и отправьте заказ</p>
                 </div>
                 
-                <div className="bg-slate-50 rounded-xl p-6 space-y-4">
+                <GlassCard variant="subtle" className="p-6 space-y-4">
                   <div>
                     <div className="font-semibold">Услуга:</div>
                     <div className="text-muted-foreground">{formData.service}</div>
@@ -315,9 +330,9 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                     <div className="font-semibold">Контакт:</div>
                     <div className="text-muted-foreground">{formData.name} ({formData.email})</div>
                   </div>
-                </div>
+                </GlassCard>
 
-                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                <GlassCard variant="elevated" className="bg-green-50/80 border border-green-200/50 p-4">
                   <div className="flex items-center gap-2 text-green-800">
                     <CheckCircle className="w-5 h-5" />
                     <span className="font-semibold">Что дальше?</span>
@@ -328,7 +343,7 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
                     <li>• Начнем работу сразу после одобрения</li>
                     <li>• Оплата только после получения результата</li>
                   </ul>
-                </div>
+                </GlassCard>
               </div>
             )}
 
@@ -360,7 +375,7 @@ export default function SimplifiedOrderSection({ selectedService }: SimplifiedOr
               )}
             </div>
           </CardContent>
-        </Card>
+        </GlassCard>
       </div>
     </section>
   );

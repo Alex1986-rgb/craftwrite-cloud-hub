@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ProcessSteps } from "./process/ProcessSteps";
 import { ProcessAdvantages } from "./process/ProcessAdvantages";
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
 
 const ProcessSection = () => {
   const [activeStep, setActiveStep] = useState<number | null>(null);
@@ -71,16 +73,27 @@ const ProcessSection = () => {
 
   return (
     <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
-      {/* Декоративные элементы */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/20 to-purple-200/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-r from-green-200/20 to-cyan-200/20 rounded-full blur-3xl"></div>
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Animated Background Blobs */}
+        <div className="absolute top-1/4 left-1/6 w-[400px] h-[400px] bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/6 w-[350px] h-[350px] bg-gradient-to-r from-emerald-400/8 to-cyan-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        
+        {/* Floating Particles */}
+        <FloatingParticles count={30} />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+      </div>
       
       <div className="container max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 text-lg mb-6 shadow-lg">
-            <Clock className="w-5 h-5 mr-2" />
-            Четкий процесс работы
-          </Badge>
+          <GlassCard variant="frosted" className="inline-flex items-center gap-3 px-6 py-3 mb-6">
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Clock className="w-3 h-3 text-white" />
+            </div>
+            <span className="text-slate-800 font-semibold">Четкий процесс работы</span>
+          </GlassCard>
           
           <h2 className="text-4xl md:text-6xl font-playfair font-bold mb-6 bg-gradient-to-r from-slate-900 via-blue-900 to-purple-900 bg-clip-text text-transparent">
             Как мы создаем идеальные тексты

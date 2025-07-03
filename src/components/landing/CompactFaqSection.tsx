@@ -2,6 +2,8 @@ import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HelpCircle } from "lucide-react";
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
 
 const COMPACT_FAQ_DATA = [
   {
@@ -28,13 +30,23 @@ const COMPACT_FAQ_DATA = [
 
 export default function CompactFaqSection() {
   return (
-    <section className="py-12 bg-muted/30">
-      <div className="container max-w-4xl mx-auto px-4">
+    <section className="py-12 relative overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Floating Particles */}
+        <FloatingParticles count={20} />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+      </div>
+      <div className="container max-w-4xl mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-4">
-            <HelpCircle className="w-4 h-4" />
-            Часто задаваемые вопросы
-          </div>
+          <GlassCard variant="frosted" className="inline-flex items-center gap-3 px-6 py-3 mb-4">
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <HelpCircle className="w-3 h-3 text-white" />
+            </div>
+            <span className="text-slate-800 font-semibold">Часто задаваемые вопросы</span>
+          </GlassCard>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
             Ответы на ключевые вопросы
           </h2>
@@ -43,26 +55,26 @@ export default function CompactFaqSection() {
           </p>
         </div>
 
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
+        <GlassCard variant="elevated" className="shadow-2xl">
+          <div className="p-6">
             <Accordion type="single" collapsible className="space-y-2">
               {COMPACT_FAQ_DATA.map((faq, index) => (
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
-                  className="border border-border/50 rounded-lg px-4 hover:bg-muted/50 transition-colors"
+                  className="border border-white/20 rounded-lg px-4 hover:bg-white/10 transition-colors backdrop-blur-sm"
                 >
                   <AccordionTrigger className="text-left font-medium hover:no-underline py-4">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
+                  <AccordionContent className="text-slate-600 pb-4 leading-relaxed">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
-          </CardContent>
-        </Card>
+          </div>
+        </GlassCard>
 
         <div className="text-center mt-8">
           <p className="text-muted-foreground text-sm">

@@ -2,6 +2,9 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Award, Users, TrendingUp, Shield, Clock } from 'lucide-react';
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
+import AnimatedCounter from "@/components/ui/animated-counter";
 
 const TRUST_STATS = [
   {
@@ -79,16 +82,28 @@ const CLIENT_CASES = [
 export default function EnhancedTrustSection() {
   return (
     <section className="py-16 md:py-24 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20"></div>
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Animated Background Blobs */}
+        <div className="absolute top-1/4 left-1/6 w-[400px] h-[400px] bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/6 w-[500px] h-[500px] bg-gradient-to-r from-emerald-400/8 to-cyan-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        
+        {/* Floating Particles */}
+        <FloatingParticles count={25} />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+      </div>
       
       <div className="container max-w-7xl mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center space-y-6 mb-16">
-          <Badge variant="outline" className="px-4 py-2 text-sm font-semibold bg-primary/10 text-primary border-primary/20">
-            <Award className="w-4 h-4 mr-2" />
-            Проверенная экспертиза
-          </Badge>
+          <GlassCard variant="frosted" className="inline-flex items-center gap-2 px-6 py-3">
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Award className="w-3 h-3 text-white" />
+            </div>
+            <span className="text-slate-800 font-semibold">Проверенная экспертиза</span>
+          </GlassCard>
           
           <h2 className="text-3xl md:text-5xl font-bold">
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -105,16 +120,18 @@ export default function EnhancedTrustSection() {
         {/* Trust Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           {TRUST_STATS.map((stat, index) => (
-            <Card key={index} className="text-center border-0 shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
-              <CardContent className="p-6">
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${stat.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="w-8 h-8" />
-                </div>
-                <div className="text-3xl font-bold text-foreground mb-2">{stat.number}</div>
-                <div className="font-semibold text-foreground mb-1">{stat.label}</div>
-                <div className="text-sm text-muted-foreground">{stat.description}</div>
-              </CardContent>
-            </Card>
+            <GlassCard key={index} variant="elevated" className="text-center group p-8 hover:scale-105">
+              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${stat.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                <stat.icon className="w-8 h-8" />
+              </div>
+              <AnimatedCounter 
+                end={parseInt(stat.number.replace(/[^0-9]/g, '')) || 0}
+                suffix={stat.number.replace(/[0-9]/g, '')}
+                className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-2"
+              />
+              <div className="font-semibold text-slate-800 mb-1">{stat.label}</div>
+              <div className="text-sm text-slate-600">{stat.description}</div>
+            </GlassCard>
           ))}
         </div>
 
@@ -126,15 +143,13 @@ export default function EnhancedTrustSection() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {GUARANTEES.map((guarantee, index) => (
-              <Card key={index} className="border-0 shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-100 text-green-600 mb-4">
-                    <guarantee.icon className="w-6 h-6" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-3">{guarantee.title}</h4>
-                  <p className="text-muted-foreground leading-relaxed">{guarantee.description}</p>
-                </CardContent>
-              </Card>
+              <GlassCard key={index} variant="elevated" className="p-6 text-center hover:scale-105">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white mb-4 shadow-lg">
+                  <guarantee.icon className="w-6 h-6" />
+                </div>
+                <h4 className="text-xl font-bold mb-3 text-slate-800">{guarantee.title}</h4>
+                <p className="text-slate-600 leading-relaxed">{guarantee.description}</p>
+              </GlassCard>
             ))}
           </div>
         </div>
@@ -147,23 +162,23 @@ export default function EnhancedTrustSection() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {CLIENT_CASES.map((clientCase, index) => (
-              <Card key={index} className="border-0 shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+              <GlassCard key={index} variant="elevated" className="overflow-hidden group hover:scale-105">
                 {/* Growth badge */}
-                <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 text-center font-bold">
+                <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 text-center font-bold shadow-lg">
                   {clientCase.growth}
                 </div>
                 
-                <CardContent className="p-6">
+                <div className="p-6">
                   <div className="space-y-4">
                     <div>
                       <Badge variant="secondary" className="mb-2">{clientCase.industry}</Badge>
                       <h4 className="font-semibold text-foreground">{clientCase.task}</h4>
                     </div>
                     
-                    <div className="bg-slate-50 rounded-lg p-4">
+                    <GlassCard variant="subtle" className="p-4">
                       <div className="text-sm text-muted-foreground mb-1">Результат:</div>
                       <div className="font-semibold text-foreground">{clientCase.result}</div>
-                    </div>
+                    </GlassCard>
                     
                     <div className="flex justify-between items-center text-sm">
                       <div className="text-muted-foreground">
@@ -175,8 +190,8 @@ export default function EnhancedTrustSection() {
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </GlassCard>
             ))}
           </div>
           

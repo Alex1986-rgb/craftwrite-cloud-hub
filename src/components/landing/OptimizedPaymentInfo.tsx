@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Shield, CreditCard, Clock, CheckCircle, ArrowRight } from 'lucide-react';
+import { GlassCard } from "@/components/ui/glass-card";
+import FloatingParticles from "@/components/ui/floating-particles";
 
 const PAYMENT_BENEFITS = [
   {
@@ -33,14 +35,24 @@ const SECURITY_FEATURES = [
 
 export default function OptimizedPaymentInfo() {
   return (
-    <section className="py-12 bg-slate-50 border-y border-slate-200">
-      <div className="container max-w-6xl mx-auto px-4">
+    <section className="py-12 relative overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Floating Particles */}
+        <FloatingParticles count={15} />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.03)_1px,transparent_0)] [background-size:50px_50px]"></div>
+      </div>
+      <div className="container max-w-6xl mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <Badge variant="outline" className="px-4 py-2 text-sm font-semibold bg-green-50 text-green-700 border-green-200 mb-4">
-            <Shield className="w-4 h-4 mr-2" />
-            Безопасная оплата
-          </Badge>
+          <GlassCard variant="frosted" className="inline-flex items-center gap-3 px-6 py-3 mb-4">
+            <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+              <Shield className="w-3 h-3 text-white" />
+            </div>
+            <span className="text-slate-800 font-semibold">Безопасная оплата</span>
+          </GlassCard>
           
           <h3 className="text-2xl md:text-3xl font-bold mb-2">
             Никаких рисков для вас
@@ -54,34 +66,32 @@ export default function OptimizedPaymentInfo() {
           {/* Payment Benefits */}
           <div className="space-y-4">
             {PAYMENT_BENEFITS.map((benefit, index) => (
-              <Card key={index} className="border-0 shadow-sm bg-white hover:shadow-md transition-all duration-300">
-                <CardContent className="p-4 flex items-center gap-4">
+              <GlassCard key={index} variant="elevated" className="p-4 flex items-center gap-4 hover:scale-105">
                   <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-r ${benefit.color} text-white flex items-center justify-center`}>
                     <benefit.icon className="w-6 h-6" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">{benefit.title}</h4>
-                    <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                    <p className="text-sm text-slate-600">{benefit.description}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </GlassCard>
             ))}
           </div>
 
           {/* Security Info */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <GlassCard variant="elevated" className="p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                <CheckCircle className="w-5 h-5 text-white" />
               </div>
-              <h4 className="text-xl font-bold">Полная безопасность</h4>
+              <h4 className="text-xl font-bold text-slate-800">Полная безопасность</h4>
             </div>
             
             <ul className="space-y-3">
               {SECURITY_FEATURES.map((feature, index) => (
                 <li key={index} className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-                  <span className="text-muted-foreground">{feature}</span>
+                  <span className="text-slate-600">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -93,17 +103,17 @@ export default function OptimizedPaymentInfo() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
+          </GlassCard>
         </div>
 
         {/* Additional info */}
-        <div className="text-center mt-8 p-4 bg-blue-50 rounded-xl border border-blue-200">
+        <GlassCard variant="subtle" className="text-center mt-8 p-4 bg-blue-50/80 border border-blue-200/50">
           <p className="text-blue-800 text-sm">
             <span className="font-semibold">Для больших проектов:</span> 
             {" "}возможна поэтапная оплата. НДС включается при необходимости. 
             Все детали обсуждаем индивидуально.
           </p>
-        </div>
+        </GlassCard>
       </div>
     </section>
   );
