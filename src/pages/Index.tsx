@@ -68,8 +68,6 @@ export default function Index() {
       {/* 1. КОМПАКТНЫЙ HERO */}
       <ModernHeroSection />
       
-      {/* 2. ТОП-3 ОСНОВНЫЕ УСЛУГИ */}
-      <CoreServicesSection onServiceSelect={setSelectedService} />
       
       {/* 3. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
       <section id="order">
