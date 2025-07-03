@@ -36,45 +36,45 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6 text-sm">
           
           {/* Company Info */}
-          <div className="md:col-span-2 lg:col-span-2 xl:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+          <div className="col-span-2 space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-3 h-3 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">CopyPro Cloud</h3>
+                <h3 className="font-bold">CopyPro Cloud</h3>
                 <p className="text-slate-400 text-xs">Профессиональный копирайтинг</p>
               </div>
             </div>
             
-            <p className="text-slate-300 text-sm leading-relaxed">
+            <p className="text-slate-300 text-xs leading-relaxed">
               Ведущая платформа копирайтинга с командой из 50+ экспертов.
             </p>
 
             {/* Key Stats */}
-            <div className="grid grid-cols-2 gap-2">
-              <div className="text-center p-2 bg-slate-800/50 rounded-lg">
-                <div className="text-lg font-bold text-blue-400">5000+</div>
+            <div className="flex gap-3">
+              <div className="text-center">
+                <div className="text-sm font-bold text-blue-400">5000+</div>
                 <div className="text-xs text-slate-400">Проектов</div>
               </div>
-              <div className="text-center p-2 bg-slate-800/50 rounded-lg">
-                <div className="text-lg font-bold text-green-400">98%</div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-green-400">98%</div>
                 <div className="text-xs text-slate-400">Довольных</div>
               </div>
             </div>
           </div>
 
-          {/* Main Services */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm flex items-center gap-2">
+          {/* Services */}
+          <div className="space-y-2">
+            <h4 className="font-semibold text-xs flex items-center gap-1">
               <TrendingUp className="w-3 h-3 text-blue-400" />
               Услуги
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-1">
               {[
                 { name: 'SEO-статьи', href: '/order/seo-article' },
                 { name: 'Лендинги', href: '/order/landing-page' },
@@ -92,23 +92,17 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-            <Link 
-              to="/services" 
-              className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 text-xs font-medium"
-            >
-              Все услуги <ExternalLink className="w-2 h-2" />
-            </Link>
           </div>
 
           {/* E-commerce */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm">E-commerce</h4>
-            <ul className="space-y-1.5">
+          <div className="space-y-2">
+            <h4 className="font-semibold text-xs">Маркетплейсы</h4>
+            <ul className="space-y-1">
               {[
                 { name: 'Ozon', href: '/order/ozon' },
                 { name: 'Wildberries', href: '/order/wildberries' },
-                { name: 'Описания товаров', href: '/order/website-texts' },
-                { name: 'Карточки товаров', href: '/order/ozon' }
+                { name: 'YouTube', href: '/order/youtube' },
+                { name: 'LinkedIn', href: '/order/linkedin' }
               ].map((service) => (
                 <li key={service.name}>
                   <Link 
@@ -123,12 +117,12 @@ const Footer = () => {
           </div>
 
           {/* Tools */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm flex items-center gap-2">
+          <div className="space-y-2">
+            <h4 className="font-semibold text-xs flex items-center gap-1">
               <Users className="w-3 h-3 text-purple-400" />
               Инструменты
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-1">
               {[
                 { name: 'Калькулятор', href: '/interactive' },
                 { name: 'Конструктор ТЗ', href: '/interactive?tab=brief' },
@@ -148,9 +142,9 @@ const Footer = () => {
           </div>
 
           {/* Info */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm">Информация</h4>
-            <ul className="space-y-1.5">
+          <div className="space-y-2">
+            <h4 className="font-semibold text-xs">Информация</h4>
+            <ul className="space-y-1">
               {[
                 { name: 'О нас', href: '/about' },
                 { name: 'Блог', href: '/blog' },
@@ -171,161 +165,99 @@ const Footer = () => {
           </div>
 
           {/* Contact */}
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm flex items-center gap-2">
+          <div className="space-y-2">
+            <h4 className="font-semibold text-xs flex items-center gap-1">
               <Phone className="w-3 h-3 text-green-400" />
               Контакты
             </h4>
-            <div className="space-y-2">
-              <div className="text-xs text-slate-300">
-                <Phone className="w-3 h-3 inline mr-1" />
-                +7 (925) 733-86-48
-              </div>
-              <div className="text-xs text-slate-300">
-                <Mail className="w-3 h-3 inline mr-1" />
-                optteem@mail.ru
-              </div>
-              <div className="text-xs text-slate-300">
-                <MessageCircle className="w-3 h-3 inline mr-1" />
-                @Koopeerayter
-              </div>
-              <div className="text-xs text-slate-300">
-                <Clock className="w-3 h-3 inline mr-1" />
-                24/7
-              </div>
-            </div>
-          </div>
-
-          {/* Legal & Social */}
-          <div className="md:col-span-1 lg:col-span-2 xl:col-span-2 space-y-3">
-            <h4 className="font-semibold text-sm flex items-center gap-2">
-              <Building2 className="w-3 h-3 text-orange-400" />
-              Документы
-            </h4>
-            
-            <BusinessInfo variant="footer" />
-            
             <div className="space-y-1">
-              {[
-                { name: 'Политика конфиденциальности', href: '/privacy' },
-                { name: 'Условия использования', href: '/terms' }
-              ].map((link) => (
-                <Link 
-                  key={link.name}
-                  to={link.href}
-                  className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-xs block"
-                >
-                  {link.name}
-                </Link>
-              ))}
+              <div className="text-xs text-slate-300">+7 (925) 733-86-48</div>
+              <div className="text-xs text-slate-300">optteem@mail.ru</div>
+              <div className="text-xs text-slate-300">@Koopeerayter</div>
+              <div className="text-xs text-slate-300">24/7</div>
             </div>
+          </div>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-2 pt-2">
-              {[
-                { icon: Facebook, href: '#', name: 'Facebook' },
-                { icon: Instagram, href: '#', name: 'Instagram' },
-                { icon: Linkedin, href: '#', name: 'LinkedIn' }
-              ].map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  className="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors duration-200"
-                  aria-label={social.name}
-                >
-                  <social.icon className="w-3 h-3" />
-                </a>
-              ))}
+          {/* Legal & Newsletter */}
+          <div className="col-span-2 space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Newsletter */}
+              <div className="space-y-2">
+                <h4 className="font-semibold text-xs flex items-center gap-1">
+                  <Mail className="w-3 h-3" />
+                  Email рассылка
+                </h4>
+                <form onSubmit={handleNewsletterSubmit} className="space-y-1">
+                  <Input 
+                    placeholder="Ваш email" 
+                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400 text-xs h-8"
+                  />
+                  <Button type="submit" size="sm" className="w-full bg-blue-600 hover:bg-blue-700 h-7 text-xs">
+                    Подписаться
+                  </Button>
+                </form>
+              </div>
+
+              {/* Legal */}
+              <div className="space-y-2">
+                <h4 className="font-semibold text-xs flex items-center gap-1">
+                  <Building2 className="w-3 h-3 text-orange-400" />
+                  Документы
+                </h4>
+                <BusinessInfo variant="footer" />
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <Link to="/privacy" className="text-slate-300 hover:text-blue-400">Политика</Link>
+                  <Link to="/terms" className="text-slate-300 hover:text-blue-400">Условия</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Newsletter Section */}
-        <div className="mt-12 pt-8 border-t border-slate-700">
-          <div className="max-w-md mx-auto text-center">
-            <h4 className="font-semibold text-sm mb-3 flex items-center justify-center gap-2">
-              <Mail className="w-4 h-4" />
-              Email рассылка
-            </h4>
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-              <Input 
-                placeholder="Ваш email" 
-                className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400 text-sm"
-              />
-              <Button type="submit" size="sm" className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap">
-                Подписаться
-              </Button>
-            </form>
-            <p className="text-xs text-slate-400 mt-2">
-              Советы по копирайтингу и новости
-            </p>
-          </div>
-        </div>
-
-        {/* Trust Badges */}
+        {/* Bottom Section */}
         <div className="mt-8 pt-6 border-t border-slate-700">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 text-xs">
-              <Shield className="w-4 h-4 text-green-400" />
-              <div>
-                <div className="font-semibold">100% Гарантия</div>
-                <div className="text-slate-400">Качество или возврат</div>
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+            {/* Trust Badges */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-xs">
+              <div className="flex items-center gap-1">
+                <Shield className="w-3 h-3 text-green-400" />
+                <span className="text-slate-300">100% Гарантия</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Award className="w-3 h-3 text-blue-400" />
+                <span className="text-slate-300">50+ Экспертов</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Users className="w-3 h-3 text-purple-400" />
+                <span className="text-slate-300">5000+ Проектов</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-3 h-3 text-orange-400" />
+                <span className="text-slate-300">5 лет работы</span>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs">
-              <Award className="w-4 h-4 text-blue-400" />
-              <div>
-                <div className="font-semibold">50+ Экспертов</div>
-                <div className="text-slate-400">Команда профессионалов</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <Users className="w-4 h-4 text-purple-400" />
-              <div>
-                <div className="font-semibold">5000+ Проектов</div>
-                <div className="text-slate-400">Выполнено успешно</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <TrendingUp className="w-4 h-4 text-orange-400" />
-              <div>
-                <div className="font-semibold">5 лет</div>
-                <div className="text-slate-400">На рынке</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-
-      {/* Bottom Footer */}
-      <div className="border-t border-slate-700">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-slate-400">
-              © {currentYear} CopyPro Cloud. Все права защищены. | 
-              <Link to="/privacy" className="hover:text-blue-400 ml-1">Политика конфиденциальности</Link> | 
-              <Link to="/terms" className="hover:text-blue-400 ml-1">Условия использования</Link>
-            </div>
-            
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
-              {[
-                { icon: Facebook, href: '#', name: 'Facebook' },
-                { icon: Twitter, href: '#', name: 'Twitter' },
-                { icon: Instagram, href: '#', name: 'Instagram' },
-                { icon: Linkedin, href: '#', name: 'LinkedIn' },
-                { icon: Youtube, href: '#', name: 'YouTube' }
-              ].map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  className="w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center transition-colors duration-200"
-                  aria-label={social.name}
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
-              ))}
+            {/* Social & Copyright */}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex items-center gap-2">
+                {[
+                  { icon: Facebook, href: '#', name: 'Facebook' },
+                  { icon: Instagram, href: '#', name: 'Instagram' },
+                  { icon: Linkedin, href: '#', name: 'LinkedIn' }
+                ].map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    className="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded-lg flex items-center justify-center transition-colors duration-200"
+                    aria-label={social.name}
+                  >
+                    <social.icon className="w-3 h-3" />
+                  </a>
+                ))}
+              </div>
+              <div className="text-xs text-slate-400 text-center">
+                © {currentYear} CopyPro Cloud. Все права защищены.
+              </div>
             </div>
           </div>
         </div>
