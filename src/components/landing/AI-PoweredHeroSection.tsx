@@ -83,7 +83,7 @@ export default function AIPoweredHeroSection() {
               
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Загружайте файл с <strong>1000+ URL</strong> — получайте готовую таблицу с 
-                <strong> SEO-текстами, мета-тегами и LSI-ключами</strong> за час
+                <strong> SEO-текстами, мета-тегами и LSI-ключами</strong> за 3 дня
               </p>
             </div>
 
@@ -101,7 +101,7 @@ export default function AIPoweredHeroSection() {
           </div>
 
           {/* AI Stats Glass Panel */}
-          <Card className="glass-hero max-w-4xl mx-auto p-8">
+          <Card className="glass-premium max-w-4xl mx-auto p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {AI_STATS.map((stat, index) => (
                 <div key={index} className="text-center space-y-2">

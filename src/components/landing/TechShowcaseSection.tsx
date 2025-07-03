@@ -26,9 +26,9 @@ const TECH_FEATURES = [
   },
   {
     icon: <Clock className="w-8 h-8" />,
-    title: "Lightning Speed",
-    description: "Обработка до 10,000 URL за час благодаря параллельным вычислениям",
-    stats: "1 час = 10К страниц",
+    title: "Quality Assurance",
+    description: "Профессиональная обработка до 10,000 URL за 3 дня с экспертной проверкой",
+    stats: "3 дня = 10К страниц",
     gradient: "from-orange-500 to-red-400"
   },
   {
@@ -48,10 +48,10 @@ const TECH_FEATURES = [
 ];
 
 const PROCESSING_METRICS = [
-  { label: "Текстов в минуту", value: "167", icon: "⚡" },
+  { label: "Текстов в день", value: "2000+", icon: "⚡" },
   { label: "Ключей анализируется", value: "2.5M", icon: "🔍" },
-  { label: "Конкурентов в анализе", value: "Top 10", icon: "🎯" },
-  { label: "Языков поддержки", value: "12", icon: "🌍" }
+  { label: "Экспертных проверок", value: "100%", icon: "🎯" },
+  { label: "Дней полного цикла", value: "3", icon: "🌍" }
 ];
 
 export default function TechShowcaseSection() {
@@ -97,13 +97,13 @@ export default function TechShowcaseSection() {
         </div>
 
         {/* Processing Metrics */}
-        <Card className="glass-hero max-w-4xl mx-auto p-8 mb-16">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-semibold text-white mb-2">
-              Производительность в реальном времени
-            </h3>
-            <p className="text-blue-200">Метрики нашей AI-системы прямо сейчас</p>
-          </div>
+        <Card className="glass-premium max-w-4xl mx-auto p-8 mb-16">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-white mb-2">
+                Качество за 3 дня работы
+              </h3>
+              <p className="text-blue-200">Метрики профессионального подхода к массовому контенту</p>
+            </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {PROCESSING_METRICS.map((metric, index) => (
@@ -153,22 +153,22 @@ export default function TechShowcaseSection() {
 
         {/* AI Process Visualization */}
         <div className="mt-20">
-          <Card className="glass-hero p-8">
+          <Card className="glass-neon p-8">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-semibold text-white mb-4">
-                Как работает AI-обработка
+                3-дневный цикл качественной обработки
               </h3>
               <p className="text-blue-200">
-                Схема процесса создания массового SEO-контента
+                Схема профессионального процесса создания массового SEO-контента
               </p>
             </div>
 
             <div className="grid md:grid-cols-5 gap-4 items-center">
               {[
-                { step: "URL", desc: "Анализ страницы", color: "blue" },
-                { step: "AI", desc: "Изучение конкурентов", color: "purple" },
-                { step: "LSI", desc: "Подбор ключей", color: "green" },
-                { step: "GPT", desc: "Генерация текста", color: "orange" },
+                { step: "День 1", desc: "Анализ + подбор ключей", color: "blue" },
+                { step: "День 2", desc: "AI генерация текстов", color: "purple" },
+                { step: "День 2", desc: "Экспертная проверка", color: "green" },
+                { step: "День 3", desc: "Финальная проверка", color: "orange" },
                 { step: "✓", desc: "Готовый контент", color: "cyan" }
               ].map((item, index) => (
                 <div key={index} className="text-center space-y-3">

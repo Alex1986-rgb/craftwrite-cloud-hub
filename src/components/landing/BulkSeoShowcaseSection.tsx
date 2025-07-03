@@ -79,12 +79,12 @@ export default function BulkSeoShowcaseSection() {
           <h2 className="text-3xl md:text-5xl font-bold">
             <span className="text-gradient">От файла до результата</span>
             <br />
-            <span className="text-foreground">за 1 час</span>
+            <span className="text-foreground">за 3 дня</span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Демонстрация процесса создания массового SEO-контента: 
-            загружаете Excel с URL → получаете готовую таблицу с текстами и метатегами
+            Демонстрация процесса создания массового SEO-контента с экспертной проверкой: 
+            загружаете Excel с URL → получаете готовую таблицу с проверенными текстами и метатегами за 3 дня
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function BulkSeoShowcaseSection() {
             
             {/* Demo Interface */}
             <div className="space-y-6">
-              <Card className="glass-hero p-8">
+              <Card className="glass-premium p-8">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-center">
                     Интерактивная демонстрация
@@ -128,10 +128,10 @@ export default function BulkSeoShowcaseSection() {
                       
                       <div className="space-y-3">
                         {[
-                          { stage: 1, text: "Анализ конкурентов в ТОП-10", icon: "🔍" },
-                          { stage: 2, text: "Подбор ключевых слов и LSI", icon: "🔑" },
-                          { stage: 3, text: "Генерация SEO-текстов", icon: "✍️" },
-                          { stage: 4, text: "Создание метатегов", icon: "🏷️" }
+                          { stage: 1, text: "Анализ конкурентов в ТОП-10 (День 1)", icon: "🔍" },
+                          { stage: 2, text: "Подбор ключевых слов и LSI (День 1)", icon: "🔑" },
+                          { stage: 3, text: "Генерация и экспертная проверка текстов (День 2-3)", icon: "✍️" },
+                          { stage: 4, text: "Финальная проверка качества (День 3)", icon: "🏷️" }
                         ].map((item) => (
                           <div key={item.stage} className={`flex items-center space-x-3 p-3 rounded-lg transition-all ${
                             processingStage >= item.stage 
@@ -167,7 +167,7 @@ export default function BulkSeoShowcaseSection() {
                           <span>Создана таблица: bulk_seo_results.xlsx</span>
                         </div>
                         <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-1">
-                          <span>3 URL обработано • 9 SEO-текстов создано • 18 метатегов</span>
+                          <span>3 URL обработано • 9 экспертно проверенных SEO-текстов • 18 метатегов</span>
                         </div>
                       </div>
                     </div>
@@ -236,7 +236,7 @@ export default function BulkSeoShowcaseSection() {
               </div>
 
               {/* CTA */}
-              <Card className="glass-hero p-6 text-center">
+              <Card className="glass-neon p-6 text-center">
                 <div className="space-y-4">
                   <h4 className="text-xl font-semibold">Готовы попробовать?</h4>
                   <p className="text-muted-foreground">
