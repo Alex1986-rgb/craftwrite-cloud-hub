@@ -1,25 +1,24 @@
 
-import UniversalOrderSection from "@/components/landing/UniversalOrderSection";
+import { useState, useEffect } from "react";
+import CoreServicesSection from "@/components/landing/CoreServicesSection";
+import SimplifiedOrderSection from "@/components/landing/SimplifiedOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import CompactFaqSection from "@/components/landing/CompactFaqSection";
 import ContactSection from "@/components/landing/ContactSection";
+import EnhancedTrustSection from "@/components/landing/EnhancedTrustSection";
+import OptimizedPaymentInfo from "@/components/landing/OptimizedPaymentInfo";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import RichArticleSection from "@/components/blog/RichArticleSection";
 import { homePageArticles } from "@/data/articles/homePageArticles";
 
-
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import ModernHeroSection from "@/components/landing/ModernHeroSection";
-import CompactSocialProofSection from "@/components/landing/CompactSocialProofSection";
-import InteractiveGuaranteesSection from "@/components/landing/InteractiveGuaranteesSection";
-import SmartOrderCTA from "@/components/landing/SmartOrderCTA";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
 import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
-import { useEffect } from "react";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -48,9 +47,9 @@ CopyPro Cloud — ведущая платформа профессиональн
 
 export default function Index() {
   const { trackEvent } = useEnhancedAnalytics();
+  const [selectedService, setSelectedService] = useState<string>("");
 
   useEffect(() => {
-    // Track landing page view with additional context
     trackEvent({
       action: 'landing_page_view',
       category: 'Page View',
@@ -66,28 +65,33 @@ export default function Index() {
     <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. КОМПАКТНЫЙ HERO - выше сгиба */}
+      {/* 1. КОМПАКТНЫЙ HERO */}
       <ModernHeroSection />
       
-      {/* 2. ЕДИНАЯ ФОРМА ЗАКАЗА - основное действие */}
+      {/* 2. ТОП-3 ОСНОВНЫЕ УСЛУГИ */}
+      <CoreServicesSection onServiceSelect={setSelectedService} />
+      
+      {/* 3. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
       <section id="order">
-        <UniversalOrderSection />
+        <SimplifiedOrderSection selectedService={selectedService} />
       </section>
       
-      {/* 3. СОЦИАЛЬНОЕ ДОКАЗАТЕЛЬСТВО + ГАРАНТИИ - объединено */}
-      <CompactSocialProofSection />
-      <InteractiveGuaranteesSection />
+      {/* 4. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
+      <EnhancedTrustSection />
       
-      {/* 4. КАК МЫ РАБОТАЕМ - упрощенный процесс */}
+      {/* 5. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
+      <OptimizedPaymentInfo />
+      
+      {/* 6. ПРОЦЕСС РАБОТЫ */}
       <ProcessSection />
       
-      {/* 5. КОМПАКТНЫЕ FAQ - только ключевые */}
+      {/* 7. FAQ */}
       <CompactFaqSection />
       
-      {/* 6. ФИНАЛЬНЫЙ КОНТАКТ */}
+      {/* 8. КОНТАКТЫ */}
       <ContactSection />
       
-      {/* 7. ЭКСПЕРТНЫЕ СТАТЬИ */}
+      {/* 9. ЭКСПЕРТНЫЕ СТАТЬИ */}
       <RichArticleSection 
         articles={homePageArticles}
         sectionTitle="Экспертные материалы по копирайтингу"
@@ -102,7 +106,7 @@ export default function Index() {
       
       <EnhancedFooter />
       
-      {/* SEO TEXT - перенесен в подвал */}
+      {/* SEO TEXT */}
       <div className="bg-muted/30 border-t">
         <div className="container mx-auto px-4 py-8">
           <SeoTextExpandable text={seoText} />
