@@ -1848,6 +1848,16 @@ export type Database = {
           last_processed: string
         }[]
       }
+      monitor_order_processing_health: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          status: string
+          metric_name: string
+          metric_value: number
+          alert_level: string
+          details: Json
+        }[]
+      }
       monitor_stuck_orders: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1855,6 +1865,10 @@ export type Database = {
           oldest_pending_age: unknown
           recommended_action: string
         }[]
+      }
+      process_all_stuck_orders_enhanced: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       process_order_queue: {
         Args: Record<PropertyKey, never>
@@ -1882,8 +1896,16 @@ export type Database = {
           error_message: string
         }[]
       }
+      run_system_health_check: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       synchronize_system_interfaces: {
         Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      test_edge_function_directly: {
+        Args: { test_order_id: string }
         Returns: Json
       }
       train_ai_on_completed_orders: {
