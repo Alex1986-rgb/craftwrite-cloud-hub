@@ -250,21 +250,32 @@ export default function OfficeSection() {
               или мы приедем к вам для обсуждения проекта.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div>
-                <Phone className="w-8 h-8 mx-auto mb-2 text-blue-400" />
-                <div className="font-semibold mb-1">Позвоните нам</div>
-                <div className="text-slate-300">+7 (495) 123-45-67</div>
-              </div>
-              <div>
-                <Mail className="w-8 h-8 mx-auto mb-2 text-green-400" />
-                <div className="font-semibold mb-1">Напишите нам</div>
-                <div className="text-slate-300">hello@copyprocloud.ru</div>
-              </div>
-              <div>
-                <Calendar className="w-8 h-8 mx-auto mb-2 text-purple-400" />
-                <div className="font-semibold mb-1">Запишитесь</div>
-                <div className="text-slate-300">Онлайн-календарь</div>
+            <div className="space-y-6 mb-8">
+              <div className="bg-slate-800/50 rounded-xl p-6">
+                <h4 className="font-semibold text-white mb-4 text-center">Реквизиты для связи</h4>
+                <div className="space-y-3 text-sm">
+                  <div className="text-center">
+                    <div className="text-slate-300 font-medium">ИП Рыбалко Евгения Олеговна</div>
+                    <div className="text-slate-400">ИНН: 773165156383 | ОГРНИП: 310774607801041</div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-600">
+                    <div className="text-center">
+                      <Phone className="w-8 h-8 mx-auto mb-2 text-blue-400" />
+                      <div className="font-semibold mb-1">Позвоните нам</div>
+                      <div className="text-slate-300">+7 (925) 733-86-48</div>
+                    </div>
+                    <div className="text-center">
+                      <Mail className="w-8 h-8 mx-auto mb-2 text-green-400" />
+                      <div className="font-semibold mb-1">Напишите нам</div>
+                      <div className="text-slate-300">optteem@mail.ru</div>
+                    </div>
+                    <div className="text-center">
+                      <Calendar className="w-8 h-8 mx-auto mb-2 text-purple-400" />
+                      <div className="font-semibold mb-1">Telegram</div>
+                      <div className="text-slate-300">@Koopeerayter</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             

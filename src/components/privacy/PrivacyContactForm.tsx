@@ -105,12 +105,24 @@ export default function PrivacyContactForm() {
 
       {/* Контактная информация */}
       <div className="space-y-6">
+        <Card className="p-6 bg-gradient-to-br from-purple-50/80 to-white border-purple-200/50">
+          <div className="flex items-center gap-3 mb-4">
+            <MapPin className="w-5 h-5 text-purple-600" />
+            <h4 className="font-semibold text-slate-800">Юридическая информация</h4>
+          </div>
+          <div className="space-y-2 text-slate-600">
+            <p className="font-medium">ИП Рыбалко Евгения Олеговна</p>
+            <p>ИНН: 773165156383</p>
+            <p>ОГРНИП: 310774607801041</p>
+          </div>
+        </Card>
+
         <Card className="p-6 bg-gradient-to-br from-blue-50/80 to-white border-blue-200/50">
           <div className="flex items-center gap-3 mb-4">
             <Phone className="w-5 h-5 text-blue-600" />
             <h4 className="font-semibold text-slate-800">Телефон</h4>
           </div>
-          <p className="text-slate-600">+7 (800) 123-45-67</p>
+          <p className="text-slate-600">+7 (925) 733-86-48</p>
           <Badge variant="secondary" className="mt-2">
             <Clock className="w-3 h-3 mr-1" />
             Пн-Пт 9:00-18:00
@@ -122,22 +134,10 @@ export default function PrivacyContactForm() {
             <Mail className="w-5 h-5 text-green-600" />
             <h4 className="font-semibold text-slate-800">Email</h4>
           </div>
-          <p className="text-slate-600">privacy@copypro.cloud</p>
+          <p className="text-slate-600">optteem@mail.ru</p>
           <Badge variant="secondary" className="mt-2">
             Ответ в течение 24 часов
           </Badge>
-        </Card>
-
-        <Card className="p-6 bg-gradient-to-br from-purple-50/80 to-white border-purple-200/50">
-          <div className="flex items-center gap-3 mb-4">
-            <MapPin className="w-5 h-5 text-purple-600" />
-            <h4 className="font-semibold text-slate-800">Адрес</h4>
-          </div>
-          <p className="text-slate-600">
-            Россия, Москва<br />
-            ул. Примерная, д. 123<br />
-            офис 456
-          </p>
         </Card>
       </div>
     </div>

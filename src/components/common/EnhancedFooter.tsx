@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import BusinessInfo from '@/components/common/BusinessInfo';
 import { 
   Sparkles, 
   Mail, 
@@ -35,7 +36,7 @@ const Footer = () => {
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           
           {/* Company Info */}
           <div className="lg:col-span-2 space-y-6">
@@ -163,17 +164,22 @@ const Footer = () => {
             <div className="space-y-3 pt-4 border-t border-slate-700">
               <div className="flex items-center gap-2 text-sm text-slate-300">
                 <Phone className="w-4 h-4" />
-                <span>+7 (800) 555-0199</span>
+                <span>+7 (925) 733-86-48</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-300">
                 <MessageCircle className="w-4 h-4" />
-                <span>Telegram: @copyprocloud</span>
+                <span>Telegram: @Koopeerayter</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-300">
                 <Clock className="w-4 h-4" />
                 <span>Работаем 24/7</span>
               </div>
             </div>
+          </div>
+
+          {/* Business Info */}
+          <div className="space-y-4">
+            <BusinessInfo variant="footer" />
           </div>
         </div>
       </div>

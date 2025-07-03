@@ -2,6 +2,7 @@
 import ContactHeader from "./contact/ContactHeader";
 import ContactForm from "./contact/ContactForm";
 import ContactMethods from "./contact/ContactMethods";
+import BusinessInfo from "@/components/common/BusinessInfo";
 
 const ContactSection = () => {
   return (
@@ -33,8 +34,9 @@ const ContactSection = () => {
 
           {/* Contact Methods - Enhanced */}
           <div className="lg:col-span-2">
-            <div className="sticky top-8">
+            <div className="sticky top-8 space-y-6">
               <ContactMethods />
+              <BusinessInfo variant="compact" />
             </div>
           </div>
         </div>

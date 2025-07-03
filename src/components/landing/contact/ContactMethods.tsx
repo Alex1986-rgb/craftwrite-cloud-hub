@@ -55,12 +55,18 @@ export default function ContactMethods() {
         </a>
       </div>
 
-      {/* Developer Info - Compact */}
+      {/* Business Info - Compact */}
       <div className="border-t border-slate-200 pt-4">
         <div className="text-center">
-          <div className="text-xs text-slate-500 mb-1">Генеральный директор</div>
-          <div className="font-semibold text-slate-700 text-sm mb-2">Кырлан Александр Сергеевич</div>
-          <SocialLinks variant="default" className="justify-center" />
+          <div className="text-xs text-slate-500 mb-1">Индивидуальный предприниматель</div>
+          <div className="font-semibold text-slate-700 text-sm mb-2">Рыбалко Евгения Олеговна</div>
+          <div className="text-xs text-slate-500 space-y-1">
+            <div>ИНН: 773165156383</div>
+            <div>ОГРНИП: 310774607801041</div>
+          </div>
+          <div className="mt-2">
+            <SocialLinks variant="default" className="justify-center" />
+          </div>
         </div>
       </div>
     </div>
