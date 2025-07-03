@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowDown, Zap, FileText, TrendingUp, Users, Clock, Target } from "lucide-react";
+import CyberParticleField from "./CyberParticleField";
+import HolographicIcon from "./HolographicIcon";
 
 const AI_STATS = [
   { label: "SEO-текстов сгенерировано", value: 12847, suffix: "+" },
@@ -42,21 +44,40 @@ export default function AIPoweredHeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-cyan-500/20">
-        <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+      {/* Next-Gen Cyber Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--deep-space))] via-[hsl(var(--ai-blue)/0.1)] to-[hsl(var(--electric-purple)/0.1)]">
+        <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
         
-        {/* Floating Particles */}
+        {/* Interactive Particle Field */}
+        <CyberParticleField />
+        
+        {/* Holographic Grid */}
+        <div className="absolute inset-0 opacity-30">
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(90deg, hsl(var(--ai-blue)/0.1) 1px, transparent 1px),
+                linear-gradient(180deg, hsl(var(--electric-purple)/0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px',
+              animation: 'gradient-shift 8s ease-in-out infinite'
+            }}
+          />
+        </div>
+        
+        {/* Floating Cyber Elements */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(15)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-float"
+              className="absolute w-1 h-1 rounded-full animate-float cyber-glow"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 6}s`,
                 animationDuration: `${6 + Math.random() * 4}s`,
+                backgroundColor: i % 2 === 0 ? 'hsl(var(--ai-blue))' : 'hsl(var(--neon-green))'
               }}
             />
           ))}
@@ -68,47 +89,48 @@ export default function AIPoweredHeroSection() {
           
           {/* Main Hero Content */}
           <div className="space-y-8">
-            <Badge className="glass-interactive px-6 py-2 text-lg font-medium">
-              🤖 AI-Powered Content Factory
+            <Badge className="holographic-border px-6 py-2 text-lg font-medium bg-black/20 backdrop-blur-xl">
+              <HolographicIcon icon={Zap} size={20} className="mr-2" />
+              <span className="text-gradient-holographic">AI-Powered Content Factory</span>
             </Badge>
             
             <div className="space-y-6">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                <span className="text-gradient">CopyPro Cloud</span>
+                <span className="text-gradient-holographic drop-shadow-2xl">CopyPro Cloud</span>
                 <br />
-                <span className="text-foreground">Массовое создание</span>
+                <span className="text-white/90 drop-shadow-lg">Массовое создание</span>
                 <br />
-                <span className="text-gradient">SEO-контента</span>
+                <span className="text-gradient-holographic drop-shadow-2xl">SEO-контента</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Загружайте файл с <strong>1000+ URL</strong> — получайте готовую таблицу с 
-                <strong> SEO-текстами, мета-тегами и LSI-ключами</strong> за 3 дня
+              <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+                Загружайте файл с <strong className="text-gradient">1000+ URL</strong> — получайте готовую таблицу с 
+                <strong className="text-gradient"> SEO-текстами, мета-тегами и LSI-ключами</strong> за 3 дня
               </p>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="glass-interactive px-8 py-4 text-lg font-semibold">
-                <Zap className="w-5 h-5 mr-2" />
+              <Button size="lg" className="cyber-glow magnetic-hover px-8 py-4 text-lg font-semibold bg-gradient-to-r from-[hsl(var(--ai-blue))] to-[hsl(var(--electric-purple))] text-white border-0">
+                <HolographicIcon icon={Zap} size={20} className="mr-2" />
                 Загрузить файл с URL
               </Button>
-              <Button variant="outline" size="lg" className="glass-interactive px-8 py-4 text-lg">
-                <FileText className="w-5 h-5 mr-2" />
+              <Button variant="outline" size="lg" className="holographic-border magnetic-hover px-8 py-4 text-lg bg-black/20 backdrop-blur-xl text-white">
+                <HolographicIcon icon={FileText} size={20} className="mr-2" />
                 Посмотреть примеры
               </Button>
             </div>
           </div>
 
-          {/* AI Stats Glass Panel */}
-          <Card className="glass-premium max-w-4xl mx-auto p-8">
+          {/* AI Stats Holographic Panel */}
+          <Card className="holographic-border cyber-glow max-w-4xl mx-auto p-8 bg-black/10 backdrop-blur-2xl">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {AI_STATS.map((stat, index) => (
-                <div key={index} className="text-center space-y-2">
-                  <div className="text-3xl md:text-4xl font-bold text-gradient">
+                <div key={index} className="text-center space-y-2 magnetic-hover">
+                  <div className="text-3xl md:text-4xl font-bold text-gradient-holographic drop-shadow-xl">
                     {animatedStats[index].toLocaleString()}{stat.suffix}
                   </div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-sm text-white/60">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -119,34 +141,34 @@ export default function AIPoweredHeroSection() {
             <div className="grid md:grid-cols-3 gap-6">
               
               {/* Step 1 */}
-              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
-                  <FileText className="w-8 h-8 text-white" />
+              <Card className="holographic-border cyber-glow p-6 text-center space-y-4 stagger-item magnetic-hover bg-black/10 backdrop-blur-xl">
+                <div className="w-16 h-16 mx-auto cyber-glow rounded-full flex items-center justify-center bg-gradient-to-br from-[hsl(var(--ai-blue))] to-[hsl(var(--neon-green))]">
+                  <HolographicIcon icon={FileText} size={32} />
                 </div>
-                <h3 className="text-xl font-semibold">1. Загружаете файл</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-xl font-semibold text-white">1. Загружаете файл</h3>
+                <p className="text-white/70">
                   Excel/CSV с URL-адресами ваших страниц (до 10,000 строк)
                 </p>
               </Card>
 
               {/* Step 2 */}
-              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-400 rounded-full flex items-center justify-center animate-pulse">
-                  <Zap className="w-8 h-8 text-white" />
+              <Card className="holographic-border cyber-glow p-6 text-center space-y-4 stagger-item magnetic-hover bg-black/10 backdrop-blur-xl">
+                <div className="w-16 h-16 mx-auto cyber-glow rounded-full flex items-center justify-center bg-gradient-to-br from-[hsl(var(--electric-purple))] to-[hsl(var(--cyber-gold))]">
+                  <HolographicIcon icon={Zap} size={32} animated />
                 </div>
-                <h3 className="text-xl font-semibold">2. AI обрабатывает</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-xl font-semibold text-white">2. AI обрабатывает</h3>
+                <p className="text-white/70">
                   Анализ конкурентов, подбор ключей, LSI-распределение
                 </p>
               </Card>
 
               {/* Step 3 */}
-              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-8 h-8 text-white" />
+              <Card className="holographic-border cyber-glow p-6 text-center space-y-4 stagger-item magnetic-hover bg-black/10 backdrop-blur-xl">
+                <div className="w-16 h-16 mx-auto cyber-glow rounded-full flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-green))] to-[hsl(var(--ai-blue))]">
+                  <HolographicIcon icon={TrendingUp} size={32} />
                 </div>
-                <h3 className="text-xl font-semibold">3. Получаете результат</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-xl font-semibold text-white">3. Получаете результат</h3>
+                <p className="text-white/70">
                   Готовая таблица с SEO-текстами, Title, Description
                 </p>
               </Card>
@@ -155,8 +177,8 @@ export default function AIPoweredHeroSection() {
 
           {/* Scroll Indicator */}
           <div className="flex justify-center pt-8">
-            <div className="animate-bounce">
-              <ArrowDown className="w-6 h-6 text-muted-foreground" />
+            <div className="animate-bounce cyber-glow p-3 rounded-full">
+              <HolographicIcon icon={ArrowDown} size={24} animated />
             </div>
           </div>
         </div>
