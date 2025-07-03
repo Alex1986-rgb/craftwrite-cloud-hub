@@ -13,7 +13,7 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import OptimizedHeroSection from "@/components/landing/OptimizedHeroSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -62,41 +62,40 @@ export default function Index() {
   }, [trackEvent]);
 
   return (
-    <main className="relative overflow-hidden">
+    <main className="relative overflow-hidden bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30">
       <UnifiedHeader />
       
-      {/* 1. КОМПАКТНЫЙ HERO */}
-      <ModernHeroSection />
+      {/* Hero Section */}
+      <OptimizedHeroSection />
       
-      
-      {/* 3. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
-      <section id="order">
+      {/* Quick Order Section */}
+      <section id="order" className="relative">
         <SimplifiedOrderSection selectedService={selectedService} />
       </section>
       
-      {/* 4. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
+      {/* Trust & Results */}
       <EnhancedTrustSection />
       
-      {/* 5. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
-      <OptimizedPaymentInfo />
-      
-      {/* 6. ПРОЦЕСС РАБОТЫ */}
+      {/* Process Overview */}
       <ProcessSection />
       
-      {/* 7. FAQ */}
+      {/* Payment Information */}
+      <OptimizedPaymentInfo />
+      
+      {/* FAQ */}
       <CompactFaqSection />
       
-      {/* 8. КОНТАКТЫ */}
-      <ContactSection />
-      
-      {/* 9. ЭКСПЕРТНЫЕ СТАТЬИ */}
+      {/* Expert Articles */}
       <RichArticleSection 
         articles={homePageArticles}
         sectionTitle="Экспертные материалы по копирайтингу"
         sectionDescription="Проверенные стратегии и кейсы от ведущих специалистов CopyPro Cloud"
       />
       
-      {/* ПОДДЕРЖКА И AI */}
+      {/* Contact */}
+      <ContactSection />
+      
+      {/* Support & AI */}
       <SupportWidget />
       <HumanLikeAiAssistant />
       <FloatingChatButton />
@@ -104,8 +103,8 @@ export default function Index() {
       
       <EnhancedFooter />
       
-      {/* SEO TEXT */}
-      <div className="bg-muted/30 border-t">
+      {/* SEO Content */}
+      <div className="bg-slate-50/50 border-t border-slate-200/50">
         <div className="container mx-auto px-4 py-8">
           <SeoTextExpandable text={seoText} />
         </div>
