@@ -15,6 +15,7 @@ import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
 import AIPoweredHeroSection from "@/components/landing/AI-PoweredHeroSection";
 import BulkSeoShowcaseSection from "@/components/landing/BulkSeoShowcaseSection";
 import TechShowcaseSection from "@/components/landing/TechShowcaseSection";
+import InteractiveTimeline from "@/components/landing/InteractiveTimeline";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -74,6 +75,13 @@ export default function Index() {
       
       {/* 3. TECH SHOWCASE */}
       <TechShowcaseSection />
+      
+      {/* 3.5. INTERACTIVE TIMELINE */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <InteractiveTimeline />
+        </div>
+      </section>
       
       {/* 4. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
       <section id="order">
