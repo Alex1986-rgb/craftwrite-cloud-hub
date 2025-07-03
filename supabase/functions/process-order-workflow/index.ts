@@ -311,18 +311,20 @@ async function sendNotification(order: OrderData) {
   try {
     logDebug('Creating system notification', { order_id: order.id });
     
-    // Создаем уведомление в системе
-    const { error: notificationError } = await supabase.from('notifications').insert({
-      user_id: order.user_id,
-      title: 'Текст готов!',
-      message: `Ваш заказ "${order.service_name}" выполнен. Текст готов к просмотру.`,
-      type: 'success'
-    });
-    
-    if (notificationError) {
-      logError('Failed to create notification', { error: notificationError });
-    } else {
-      logInfo('System notification created successfully', { order_id: order.id });
+    // Создаем уведомление в системе только если есть user_id
+    if (order.user_id) {
+      const { error: notificationError } = await supabase.from('notifications').insert({
+        user_id: order.user_id,
+        title: 'Текст готов!',
+        message: `Ваш заказ "${order.service_name}" выполнен. Текст готов к просмотру.`,
+        type: 'success'
+      });
+      
+      if (notificationError) {
+        logError('Failed to create notification', { error: notificationError });
+      } else {
+        logInfo('System notification created successfully', { order_id: order.id });
+      }
     }
 
     // Отправляем email если настроено
