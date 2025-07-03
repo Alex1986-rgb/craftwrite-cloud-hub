@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import CoreServicesSection from "@/components/landing/CoreServicesSection";
 import SimplifiedOrderSection from "@/components/landing/SimplifiedOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import CompactFaqSection from "@/components/landing/CompactFaqSection";
@@ -13,7 +12,9 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import AIPoweredHeroSection from "@/components/landing/AI-PoweredHeroSection";
+import BulkSeoShowcaseSection from "@/components/landing/BulkSeoShowcaseSection";
+import TechShowcaseSection from "@/components/landing/TechShowcaseSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -65,28 +66,33 @@ export default function Index() {
     <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. КОМПАКТНЫЙ HERO */}
-      <ModernHeroSection />
+      {/* 1. AI-POWERED HERO */}
+      <AIPoweredHeroSection />
       
+      {/* 2. BULK SEO SHOWCASE */}
+      <BulkSeoShowcaseSection />
       
-      {/* 3. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
+      {/* 3. TECH SHOWCASE */}
+      <TechShowcaseSection />
+      
+      {/* 4. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
       <section id="order">
         <SimplifiedOrderSection selectedService={selectedService} />
       </section>
       
-      {/* 4. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
+      {/* 5. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
       <EnhancedTrustSection />
       
-      {/* 5. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
+      {/* 6. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
       <OptimizedPaymentInfo />
       
-      {/* 6. ПРОЦЕСС РАБОТЫ */}
+      {/* 7. ПРОЦЕСС РАБОТЫ */}
       <ProcessSection />
       
-      {/* 7. FAQ */}
+      {/* 8. FAQ */}
       <CompactFaqSection />
       
-      {/* 8. КОНТАКТЫ */}
+      {/* 9. КОНТАКТЫ */}
       <ContactSection />
       
       {/* 9. ЭКСПЕРТНЫЕ СТАТЬИ */}

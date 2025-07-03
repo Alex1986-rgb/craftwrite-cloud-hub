@@ -72,7 +72,7 @@
   }
 }
 
-/* Glass Morphism Utilities */
+/* Advanced Glass Morphism System */
 @layer utilities {
   .glass {
     background: var(--glass-bg);
@@ -83,6 +83,34 @@
   
   .glass-card {
     @apply glass rounded-xl;
+  }
+  
+  .glass-hero {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  
+  .glass-panel {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+  
+  .glass-interactive {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-interactive:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   }
   
   .gradient-primary {
