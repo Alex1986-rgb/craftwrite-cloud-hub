@@ -1772,6 +1772,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      activate_full_automation: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       auto_configure_order_processing: {
         Args: Record<PropertyKey, never>
         Returns: Json
