@@ -35,19 +35,7 @@ const ModernHeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden mobile-safe-area pt-16 pb-8">
-      {/* Enhanced background elements with dark theme */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Animated gradient orbs */}
-        <div className={`absolute top-1/4 left-1/6 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl ${!isMobile ? 'animate-float' : ''}`}></div>
-        <div className={`absolute bottom-1/4 right-1/6 w-80 h-80 sm:w-[500px] sm:h-[500px] bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl ${!isMobile ? 'animate-float' : ''}`} style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 sm:w-[600px] sm:h-[600px] bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-32 left-16 w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-emerald-400 rounded-full animate-ping"></div>
-      </div>
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden mobile-safe-area pt-16 pb-8">
 
       <div className="relative z-10 max-w-6xl mx-auto text-center px-4 sm:px-6">
         {/* Premium badge */}

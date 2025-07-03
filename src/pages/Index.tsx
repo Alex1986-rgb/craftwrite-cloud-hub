@@ -18,6 +18,7 @@ import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
+import TestPageBackground from "@/components/common/TestPageBackground";
 import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
 import { useEffect } from "react";
 
@@ -63,7 +64,7 @@ export default function Index() {
   }, [trackEvent]);
 
   return (
-    <main className="relative overflow-hidden">
+    <TestPageBackground>
       <UnifiedHeader />
       
       {/* 1. КОМПАКТНЫЙ HERO - выше сгиба */}
@@ -108,6 +109,6 @@ export default function Index() {
           <SeoTextExpandable text={seoText} />
         </div>
       </div>
-    </main>
+    </TestPageBackground>
   );
 }
