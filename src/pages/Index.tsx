@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import CoreServicesSection from "@/components/landing/CoreServicesSection";
 import SimplifiedOrderSection from "@/components/landing/SimplifiedOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import CompactFaqSection from "@/components/landing/CompactFaqSection";
@@ -12,9 +13,7 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ProfessionalHeroSection from "@/components/landing/ProfessionalHeroSection";
-import BulkSeoShowcaseSection from "@/components/landing/BulkSeoShowcaseSection";
-import TechShowcaseSection from "@/components/landing/TechShowcaseSection";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -66,33 +65,30 @@ export default function Index() {
     <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. PROFESSIONAL HERO */}
-      <ProfessionalHeroSection />
+      {/* 1. КОМПАКТНЫЙ HERO */}
+      <ModernHeroSection />
       
-      {/* 2. BULK SEO SHOWCASE */}
-      <BulkSeoShowcaseSection />
+      {/* 2. ТОП-3 ОСНОВНЫЕ УСЛУГИ */}
+      <CoreServicesSection onServiceSelect={setSelectedService} />
       
-      {/* 3. TECH SHOWCASE */}
-      <TechShowcaseSection />
-      
-      {/* 4. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
+      {/* 3. УПРОЩЕННАЯ ФОРМА ЗАКАЗА */}
       <section id="order">
         <SimplifiedOrderSection selectedService={selectedService} />
       </section>
       
-      {/* 5. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
+      {/* 4. ДОВЕРИЕ И РЕЗУЛЬТАТЫ */}
       <EnhancedTrustSection />
       
-      {/* 6. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
+      {/* 5. ИНФОРМАЦИЯ ОБ ОПЛАТЕ */}
       <OptimizedPaymentInfo />
       
-      {/* 7. ПРОЦЕСС РАБОТЫ */}
+      {/* 6. ПРОЦЕСС РАБОТЫ */}
       <ProcessSection />
       
-      {/* 8. FAQ */}
+      {/* 7. FAQ */}
       <CompactFaqSection />
       
-      {/* 9. КОНТАКТЫ */}
+      {/* 8. КОНТАКТЫ */}
       <ContactSection />
       
       {/* 9. ЭКСПЕРТНЫЕ СТАТЬИ */}
