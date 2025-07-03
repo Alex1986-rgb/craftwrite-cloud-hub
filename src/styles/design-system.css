@@ -24,20 +24,18 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
     
-    /* Next-Gen AI Colors */
-    --ai-blue: 193 100% 50%;
-    --electric-purple: 257 100% 68%;
-    --neon-green: 158 100% 50%;
-    --cyber-gold: 51 100% 50%;
-    --deep-space: 240 25% 6%;
+    /* Professional Colors */
+    --professional-blue: 210 87% 25%;
+    --warm-gray: 210 20% 44%;
+    --accent-orange: 20 87% 49%;
+    --success-emerald: 160 84% 39%;
+    --light-background: 210 40% 98%;
     
-    /* Custom gradient colors */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--ai-blue)) 0%, hsl(var(--electric-purple)) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--electric-purple)) 0%, hsl(var(--neon-green)) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(var(--ai-blue)) 0%, hsl(var(--neon-green)) 100%);
-    --gradient-warning: linear-gradient(135deg, hsl(var(--neon-green)) 0%, hsl(var(--cyber-gold)) 100%);
-    --gradient-cyber: linear-gradient(135deg, hsl(var(--ai-blue)) 0%, hsl(var(--electric-purple)) 50%, hsl(var(--neon-green)) 100%);
-    --gradient-holographic: linear-gradient(45deg, hsl(var(--ai-blue)) 0%, hsl(var(--electric-purple)) 25%, hsl(var(--neon-green)) 50%, hsl(var(--cyber-gold)) 75%, hsl(var(--ai-blue)) 100%);
+    /* Professional gradient colors */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--professional-blue)) 0%, hsl(var(--accent-orange)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--warm-gray)) 0%, hsl(var(--professional-blue)) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(var(--success-emerald)) 0%, hsl(var(--professional-blue)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--light-background)) 0%, rgba(255,255,255,0.9) 100%);
     
     /* Glass morphism */
     --glass-bg: rgba(255, 255, 255, 0.1);

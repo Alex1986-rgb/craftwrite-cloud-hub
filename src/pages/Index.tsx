@@ -12,7 +12,7 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import AIPoweredHeroSection from "@/components/landing/AI-PoweredHeroSection";
+import ProfessionalHeroSection from "@/components/landing/ProfessionalHeroSection";
 import BulkSeoShowcaseSection from "@/components/landing/BulkSeoShowcaseSection";
 import TechShowcaseSection from "@/components/landing/TechShowcaseSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
@@ -66,8 +66,8 @@ export default function Index() {
     <main className="relative overflow-hidden">
       <UnifiedHeader />
       
-      {/* 1. AI-POWERED HERO */}
-      <AIPoweredHeroSection />
+      {/* 1. PROFESSIONAL HERO */}
+      <ProfessionalHeroSection />
       
       {/* 2. BULK SEO SHOWCASE */}
       <BulkSeoShowcaseSection />
