@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowDown, Zap, FileText, TrendingUp, Users, Clock, Target } from "lucide-react";
-import NextGenParticleField from "./NextGenParticleField";
-import HolographicCard from "./HolographicCard";
 
 const AI_STATS = [
   { label: "SEO-текстов сгенерировано", value: 12847, suffix: "+" },
@@ -44,24 +42,21 @@ export default function AIPoweredHeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Next-Gen Animated Background */}
-      <div className="absolute inset-0 morphing-gradient">
-        <div className="absolute inset-0 cyber-grid opacity-20"></div>
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-cyan-500/20">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
         
-        {/* Advanced Particle System */}
-        <NextGenParticleField />
-        
-        {/* Holographic Elements */}
+        {/* Floating Particles */}
         <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-32 h-32 glass-holographic rounded-full floating-3d"
+              className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-float"
               style={{
-                left: `${Math.random() * 80 + 10}%`,
-                top: `${Math.random() * 80 + 10}%`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 6}s`,
-                animationDuration: `${8 + Math.random() * 4}s`,
+                animationDuration: `${6 + Math.random() * 4}s`,
               }}
             />
           ))}
@@ -73,97 +68,88 @@ export default function AIPoweredHeroSection() {
           
           {/* Main Hero Content */}
           <div className="space-y-8">
-            <Badge className="glass-holographic neon-glow px-8 py-3 text-xl font-medium">
-              🤖 Next-Gen AI Content Platform
+            <Badge className="glass-interactive px-6 py-2 text-lg font-medium">
+              🤖 AI-Powered Content Factory
             </Badge>
             
             <div className="space-y-6">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                <span className="text-holographic">CopyPro Cloud</span>
+                <span className="text-gradient">CopyPro Cloud</span>
                 <br />
-                <span className="text-foreground">Профессиональное создание</span>
+                <span className="text-foreground">Массовое создание</span>
                 <br />
-                <span className="text-holographic">SEO-контента за 3 дня</span>
+                <span className="text-gradient">SEO-контента</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Загружайте файл с <strong>1000+ URL</strong> — получайте готовую таблицу с 
-                <strong> экспертно проверенными SEO-текстами, мета-тегами и LSI-ключами</strong> за 3 дня
+                <strong> SEO-текстами, мета-тегами и LSI-ключами</strong> за 3 дня
               </p>
             </div>
 
-            {/* Next-Gen CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Button size="lg" className="glass-ultra magnetic-hover px-10 py-5 text-xl font-semibold">
-                <Zap className="w-6 h-6 mr-3" />
-                Заказать профессиональную обработку
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button size="lg" className="glass-interactive px-8 py-4 text-lg font-semibold">
+                <Zap className="w-5 h-5 mr-2" />
+                Загрузить файл с URL
               </Button>
-              <Button variant="outline" size="lg" className="glass-holographic neon-glow px-10 py-5 text-xl">
-                <FileText className="w-6 h-6 mr-3" />
-                Посмотреть примеры работ
+              <Button variant="outline" size="lg" className="glass-interactive px-8 py-4 text-lg">
+                <FileText className="w-5 h-5 mr-2" />
+                Посмотреть примеры
               </Button>
             </div>
           </div>
 
-          {/* Next-Gen AI Stats Panel */}
-          <HolographicCard variant="ultra" className="max-w-5xl mx-auto p-10">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-holographic mb-2">
-                Результаты профессиональной работы
-              </h3>
-              <p className="text-muted-foreground">3 дня экспертного качества вместо 1 часа автоматизации</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {/* AI Stats Glass Panel */}
+          <Card className="glass-premium max-w-4xl mx-auto p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {AI_STATS.map((stat, index) => (
-                <div key={index} className="text-center space-y-3 magnetic-hover">
-                  <div className="text-4xl md:text-5xl font-bold text-holographic">
+                <div key={index} className="text-center space-y-2">
+                  <div className="text-3xl md:text-4xl font-bold text-gradient">
                     {animatedStats[index].toLocaleString()}{stat.suffix}
                   </div>
-                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
               ))}
             </div>
-          </HolographicCard>
+          </Card>
 
           {/* Demo Process Visualization */}
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-3 gap-6">
               
               {/* Step 1 */}
-              <HolographicCard variant="neon" className="p-8 text-center space-y-6 stagger-item liquid-morph">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center floating-3d">
-                  <FileText className="w-10 h-10 text-white" />
+              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-holographic">1. Загружаете файл</h3>
-                <p className="text-muted-foreground text-lg">
+                <h3 className="text-xl font-semibold">1. Загружаете файл</h3>
+                <p className="text-muted-foreground">
                   Excel/CSV с URL-адресами ваших страниц (до 10,000 строк)
                 </p>
-                <Badge className="glass-interactive">День 1: Начало</Badge>
-              </HolographicCard>
+              </Card>
 
               {/* Step 2 */}
-              <HolographicCard variant="neon" className="p-8 text-center space-y-6 stagger-item liquid-morph">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-400 rounded-full flex items-center justify-center floating-3d neon-glow">
-                  <Zap className="w-10 h-10 text-white" />
+              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-400 rounded-full flex items-center justify-center animate-pulse">
+                  <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-holographic">2. Экспертная обработка</h3>
-                <p className="text-muted-foreground text-lg">
-                  AI-анализ + проверка 50+ экспертов-копирайтеров
+                <h3 className="text-xl font-semibold">2. AI обрабатывает</h3>
+                <p className="text-muted-foreground">
+                  Анализ конкурентов, подбор ключей, LSI-распределение
                 </p>
-                <Badge className="glass-interactive">День 1-2: Работа</Badge>
-              </HolographicCard>
+              </Card>
 
               {/* Step 3 */}
-              <HolographicCard variant="neon" className="p-8 text-center space-y-6 stagger-item liquid-morph">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center floating-3d">
-                  <TrendingUp className="w-10 h-10 text-white" />
+              <Card className="glass-panel p-6 text-center space-y-4 stagger-item">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center">
+                  <TrendingUp className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-holographic">3. Готовый результат</h3>
-                <p className="text-muted-foreground text-lg">
-                  Проверенная таблица с гарантией качества
+                <h3 className="text-xl font-semibold">3. Получаете результат</h3>
+                <p className="text-muted-foreground">
+                  Готовая таблица с SEO-текстами, Title, Description
                 </p>
-                <Badge className="glass-interactive">День 3: Результат</Badge>
-              </HolographicCard>
+              </Card>
             </div>
           </div>
 
