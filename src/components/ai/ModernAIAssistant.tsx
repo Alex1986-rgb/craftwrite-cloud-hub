@@ -74,6 +74,56 @@ export default function ModernAIAssistant({
   const { trackEvent } = useEnhancedAnalytics();
   const { getSetting } = useSystemSettings();
 
+  // AI Response Generator
+  const generateLocalResponse = (content: string, capability: string): string => {
+    const lowerContent = content.toLowerCase();
+    
+    // Ответы по категориям
+    const responses: { [key: string]: { [key: string]: string } } = {
+      general: {
+        'привет': '👋 Привет! Как дела? Чем могу помочь с текстами?',
+        'цена': '💰 Наши цены начинаются от 800₽ за SEO-статью. Хотите точный расчет?',
+        'сроки': '⏰ Обычно выполняем за 3-5 дней. Есть экспресс-доставка за 24 часа!',
+        'помощь': '🤝 Конечно помогу! Расскажите подробнее, что нужно?',
+        'спасибо': '😊 Пожалуйста! Всегда рада помочь. Есть еще вопросы?'
+      },
+      copywriting: {
+        'заголовок': '🎯 Продающий заголовок должен:\n• Обещать выгоду\n• Создавать любопытство\n• Быть конкретным\nПример: "Увеличьте продажи на 50% за 30 дней"',
+        'aida': '📝 Формула AIDA:\n**A**ttention - привлечь внимание\n**I**nterest - заинтересовать\n**D**esire - создать желание\n**A**ction - призвать к действию',
+        'призыв': '🚀 Сильные призывы к действию:\n• "Получите скидку 50% сегодня!"\n• "Закажите за 2 минуты"\n• "Узнайте секрет успеха"'
+      },
+      seo: {
+        'ключевые': '🔍 Подбор ключевых слов:\n1. Анализ конкурентов\n2. Wordstat от Яндекса\n3. Google Keyword Planner\n4. Проверка частотности',
+        'длина': '📏 Оптимальная длина SEO-статьи:\n• Информационные: 1500-3000 слов\n• Коммерческие: 800-1500 слов\n• Главное - полезность!',
+        'топ': '🎯 Попадание в ТОП:\n• Качественный контент\n• Правильные ключи\n• Хорошая перелинковка\n• Регулярные обновления'
+      },
+      marketing: {
+        'аудитория': '🎯 Определение ЦА:\n• Демография (возраст, пол)\n• Интересы и потребности\n• Боли и проблемы\n• Каналы общения',
+        'воронка': '⚡ Воронка продаж:\n1. Привлечение внимания\n2. Интерес к продукту\n3. Желание купить\n4. Покупка\n5. Повторные продажи',
+        'конкуренты': '🔍 Анализ конкурентов:\n• Изучите их сайты\n• Проанализируйте цены\n• Посмотрите отзывы\n• Найдите слабые места'
+      }
+    };
+
+    // Поиск подходящего ответа
+    const categoryResponses = responses[capability] || responses.general;
+    
+    for (const keyword in categoryResponses) {
+      if (lowerContent.includes(keyword)) {
+        return categoryResponses[keyword];
+      }
+    }
+
+    // Дефолтные ответы по категориям
+    const defaultResponses: { [key: string]: string } = {
+      general: '🤔 Интересный вопрос! Могу помочь с копирайтингом, SEO или маркетингом. Что конкретно вас интересует?',
+      copywriting: '✍️ Отличный вопрос про тексты! Расскажите подробнее - какой тип контента вас интересует?',
+      seo: '🔍 По SEO могу дать много полезного! Уточните, пожалуйста, что именно хотите узнать?',
+      marketing: '📊 В маркетинге много нюансов! Расскажите про ваш бизнес - помогу составить стратегию.'
+    };
+
+    return defaultResponses[capability] || defaultResponses.general;
+  };
+
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -106,32 +156,23 @@ export default function ModernAIAssistant({
     });
 
     try {
-      // Call AI service
-      const { data, error } = await supabase.functions.invoke('ai-assistant', {
-        body: {
-          message: content,
-          context: conversationContext,
-          capability: selectedCapability,
-          conversation_history: messages.slice(-5) // Last 5 messages for context
-        }
-      });
-
-      if (error) throw error;
+      // Simulate AI response for now (fallback to local responses)
+      const response = generateLocalResponse(content, selectedCapability);
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
-        content: data.response,
+        content: response,
         timestamp: new Date(),
         category: selectedCapability as any
       };
 
       setMessages(prev => [...prev, assistantMessage]);
-      setConversationContext(data.context || {});
+      setConversationContext({ lastTopic: selectedCapability });
 
       // Text-to-speech if enabled
       if (getSetting('ai_tts_enabled', false)) {
-        speakText(data.response);
+        speakText(response);
       }
 
     } catch (error) {
