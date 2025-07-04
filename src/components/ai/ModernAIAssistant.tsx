@@ -15,14 +15,18 @@ import {
   Mic,
   MicOff,
   Volume2,
-  VolumeX
+  VolumeX,
+  CheckCircle,
+  Clock,
+  Star,
+  Brain,
+  ListTodo,
+  Award
 } from 'lucide-react';
 import { useEnhancedAnalytics } from '@/hooks/useEnhancedAnalytics';
-import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { formatAIMessage } from '@/utils/aiMessageFormatter';
-import { ErrorHandler } from '@/utils/errorHandler';
 
 interface Message {
   id: string;
@@ -31,6 +35,37 @@ interface Message {
   timestamp: Date;
   category?: 'general' | 'copywriting' | 'seo' | 'marketing';
   helpful?: boolean;
+  messageType?: 'text' | 'task' | 'recommendation' | 'reminder';
+  metadata?: any;
+}
+
+interface AIPersona {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  expertise_areas: string[];
+  personality_traits: any;
+}
+
+interface Task {
+  id: string;
+  task_title: string;
+  task_description: string;
+  priority: number;
+  status: string;
+  due_date?: string;
+  related_order_id?: string;
+}
+
+interface Recommendation {
+  id: string;
+  title: string;
+  description: string;
+  recommendation_type: string;
+  priority_score: number;
+  estimated_impact: string;
+  status: string;
 }
 
 interface ModernAIAssistantProps {
@@ -72,7 +107,7 @@ export default function ModernAIAssistant({
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { trackEvent } = useEnhancedAnalytics();
-  const { getSetting } = useSystemSettings();
+  const { trackEvent } = useEnhancedAnalytics();
 
   // AI Response Generator
   const generateLocalResponse = (content: string, capability: string): string => {

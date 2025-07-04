@@ -111,6 +111,53 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_conversations: {
+        Row: {
+          context: Json
+          conversation_type: string
+          created_at: string
+          id: string
+          is_active: boolean
+          last_message_at: string
+          persona_id: string | null
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          context?: Json
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_message_at?: string
+          persona_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          context?: Json
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_message_at?: string
+          persona_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversations_persona_id_fkey"
+            columns: ["persona_id"]
+            isOneToOne: false
+            referencedRelation: "ai_personas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_generation_settings: {
         Row: {
           created_at: string
@@ -137,6 +184,224 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      ai_manager_tasks: {
+        Row: {
+          assigned_by_persona_id: string | null
+          completed_at: string | null
+          completion_notes: string | null
+          conversation_id: string | null
+          created_at: string
+          due_date: string | null
+          id: string
+          priority: number
+          related_order_id: string | null
+          status: string
+          task_description: string | null
+          task_title: string
+          task_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_by_persona_id?: string | null
+          completed_at?: string | null
+          completion_notes?: string | null
+          conversation_id?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          priority?: number
+          related_order_id?: string | null
+          status?: string
+          task_description?: string | null
+          task_title: string
+          task_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_by_persona_id?: string | null
+          completed_at?: string | null
+          completion_notes?: string | null
+          conversation_id?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          priority?: number
+          related_order_id?: string | null
+          status?: string
+          task_description?: string | null
+          task_title?: string
+          task_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_manager_tasks_assigned_by_persona_id_fkey"
+            columns: ["assigned_by_persona_id"]
+            isOneToOne: false
+            referencedRelation: "ai_personas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_manager_tasks_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_manager_tasks_related_order_id_fkey"
+            columns: ["related_order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          is_read: boolean
+          message_type: string
+          metadata: Json
+          sender_type: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message_type?: string
+          metadata?: Json
+          sender_type: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message_type?: string
+          metadata?: Json
+          sender_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_personas: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          description: string
+          expertise_areas: Json
+          id: string
+          is_active: boolean
+          name: string
+          personality_traits: Json
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          description: string
+          expertise_areas?: Json
+          id?: string
+          is_active?: boolean
+          name: string
+          personality_traits?: Json
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          description?: string
+          expertise_areas?: Json
+          id?: string
+          is_active?: boolean
+          name?: string
+          personality_traits?: Json
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_recommendations: {
+        Row: {
+          action_items: Json
+          created_at: string
+          description: string
+          estimated_impact: string | null
+          expires_at: string | null
+          id: string
+          implementation_effort: string | null
+          persona_id: string | null
+          priority_score: number
+          recommendation_type: string
+          related_data: Json
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_items?: Json
+          created_at?: string
+          description: string
+          estimated_impact?: string | null
+          expires_at?: string | null
+          id?: string
+          implementation_effort?: string | null
+          persona_id?: string | null
+          priority_score?: number
+          recommendation_type: string
+          related_data?: Json
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_items?: Json
+          created_at?: string
+          description?: string
+          estimated_impact?: string | null
+          expires_at?: string | null
+          id?: string
+          implementation_effort?: string | null
+          persona_id?: string | null
+          priority_score?: number
+          recommendation_type?: string
+          related_data?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommendations_persona_id_fkey"
+            columns: ["persona_id"]
+            isOneToOne: false
+            referencedRelation: "ai_personas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       audit_logs: {
         Row: {
@@ -1964,6 +2229,60 @@ export type Database = {
           namespace?: string | null
           updated_at?: string | null
           value?: string
+        }
+        Relationships: []
+      }
+      user_progress_tracking: {
+        Row: {
+          avg_order_value: number
+          challenges: Json
+          communication_style: string | null
+          completed_orders: number
+          created_at: string
+          engagement_score: number
+          goals: Json
+          id: string
+          last_interaction_at: string | null
+          preferred_services: Json
+          satisfaction_score: number | null
+          total_orders: number
+          total_spent: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_order_value?: number
+          challenges?: Json
+          communication_style?: string | null
+          completed_orders?: number
+          created_at?: string
+          engagement_score?: number
+          goals?: Json
+          id?: string
+          last_interaction_at?: string | null
+          preferred_services?: Json
+          satisfaction_score?: number | null
+          total_orders?: number
+          total_spent?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_order_value?: number
+          challenges?: Json
+          communication_style?: string | null
+          completed_orders?: number
+          created_at?: string
+          engagement_score?: number
+          goals?: Json
+          id?: string
+          last_interaction_at?: string | null
+          preferred_services?: Json
+          satisfaction_score?: number | null
+          total_orders?: number
+          total_spent?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
