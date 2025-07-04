@@ -195,21 +195,6 @@ export function UnifiedAuthProvider({ children }: UnifiedAuthProviderProps) {
       }
 
       if (data.user) {
-        // Создаем профиль пользователя
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            email: email,
-            full_name: name,
-            phone: phone,
-            company: company
-          });
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError);
-        }
-
         toast.success('Регистрация успешна! Проверьте email для подтверждения');
         return true;
       }
