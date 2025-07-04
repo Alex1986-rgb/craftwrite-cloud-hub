@@ -4,10 +4,10 @@ import CoreServicesSection from "@/components/landing/CoreServicesSection";
 import SimplifiedOrderSection from "@/components/landing/SimplifiedOrderSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import CompactFaqSection from "@/components/landing/CompactFaqSection";
-import ContactSection from "@/components/landing/ContactSection";
+import ModernContactSection from "@/components/landing/ModernContactSection";
 import EnhancedTrustSection from "@/components/landing/EnhancedTrustSection";
 import OptimizedPaymentInfo from "@/components/landing/OptimizedPaymentInfo";
-import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
+import ModernSeoSection from "@/components/landing/ModernSeoSection";
 import RichArticleSection from "@/components/blog/RichArticleSection";
 import { homePageArticles } from "@/data/articles/homePageArticles";
 
@@ -18,7 +18,7 @@ import CleanOrderSection from "@/components/landing/CleanOrderSection";
 import CleanStatsSection from "@/components/landing/CleanStatsSection";
 import CleanProcessSection from "@/components/landing/CleanProcessSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
-import EnhancedFooter from "@/components/common/EnhancedFooter";
+import ModernFooter from "@/components/common/ModernFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
 import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
@@ -94,7 +94,7 @@ export default function Index() {
       />
       
       {/* Contact */}
-      <ContactSection />
+      <ModernContactSection />
       
       {/* Support & AI */}
       <SupportWidget />
@@ -102,14 +102,10 @@ export default function Index() {
       <FloatingChatButton />
       <PWAInstallPrompt />
       
-      <EnhancedFooter />
-      
       {/* SEO Content */}
-      <div className="bg-slate-50/50 border-t border-slate-200/50">
-        <div className="container mx-auto px-4 py-8">
-          <SeoTextExpandable text={seoText} />
-        </div>
-      </div>
+      <ModernSeoSection />
+      
+      <ModernFooter />
     </main>
   );
 }
