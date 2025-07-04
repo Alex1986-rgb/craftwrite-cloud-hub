@@ -13,7 +13,10 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import CleanHeroSection from "@/components/landing/CleanHeroSection";
+import CleanOrderSection from "@/components/landing/CleanOrderSection";
+import CleanStatsSection from "@/components/landing/CleanStatsSection";
+import CleanProcessSection from "@/components/landing/CleanProcessSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import EnhancedFooter from "@/components/common/EnhancedFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
@@ -66,18 +69,16 @@ export default function Index() {
       <UnifiedHeader />
       
       {/* Hero Section */}
-      <ModernHeroSection />
+      <CleanHeroSection />
       
-      {/* Quick Order Section */}
-      <section id="order" className="relative">
-        <SimplifiedOrderSection selectedService={selectedService} />
-      </section>
+      {/* Order Section */}
+      <CleanOrderSection />
       
-      {/* Trust & Results */}
-      <EnhancedTrustSection />
+      {/* Stats & Trust */}
+      <CleanStatsSection />
       
       {/* Process Overview */}
-      <ProcessSection />
+      <CleanProcessSection />
       
       {/* Payment Information */}
       <OptimizedPaymentInfo />
