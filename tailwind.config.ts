@@ -130,6 +130,51 @@ const config: Config = {
           "0%, 100%": { textShadow: "0 0 5px rgba(59, 130, 246, 0.3)" },
           "50%": { textShadow: "0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4)" },
         },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "morph": {
+          "0%": { transform: "scale(1) rotateY(0deg)" },
+          "50%": { transform: "scale(1.05) rotateY(180deg)" },
+          "100%": { transform: "scale(1) rotateY(360deg)" },
+        },
+        "spatial-float": {
+          "0%, 100%": { transform: "translateY(0px) translateZ(0px)" },
+          "33%": { transform: "translateY(-10px) translateZ(20px)" },
+          "66%": { transform: "translateY(5px) translateZ(-10px)" },
+        },
+        "liquid-flow": {
+          "0%": { transform: "scale(1) rotate(0deg)" },
+          "50%": { transform: "scale(1.1) rotate(180deg)" },
+          "100%": { transform: "scale(1) rotate(360deg)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { 
+            boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
+            filter: "brightness(1)"
+          },
+          "50%": { 
+            boxShadow: "0 0 40px rgba(59, 130, 246, 0.8), 0 0 60px rgba(147, 51, 234, 0.4)",
+            filter: "brightness(1.2)"
+          },
+        },
+        "text-reveal": {
+          "0%": { 
+            clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)",
+            opacity: "0"
+          },
+          "100%": { 
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+            opacity: "1"
+          },
+        },
+        "magnetic-hover": {
+          "0%": { transform: "translate(0, 0) scale(1)" },
+          "50%": { transform: "translate(-2px, -4px) scale(1.02)" },
+          "100%": { transform: "translate(0, -8px) scale(1.05)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -138,6 +183,13 @@ const config: Config = {
         "shimmer": "shimmer 2s linear infinite",
         "bounce-soft": "bounce-soft 2s infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "gradient-shift": "gradient-shift 15s ease infinite",
+        "morph": "morph 3s ease-in-out infinite",
+        "spatial-float": "spatial-float 8s ease-in-out infinite",
+        "liquid-flow": "liquid-flow 6s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "text-reveal": "text-reveal 1.5s ease-out forwards",
+        "magnetic-hover": "magnetic-hover 0.3s ease-out forwards",
       },
     },
   },
