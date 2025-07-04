@@ -61,20 +61,20 @@ function AdminContent() {
           }>
             <Routes>
               <Route path="/" element={<AdminDashboard />} />
-              <Route path="/launch" element={<ProductionLaunchManager />} />
-              <Route path="/seo-setup" element={<SEOSetupManager />} />
-              <Route path="/marketing" element={<MarketingCampaignManager />} />
-              <Route path="/orders" element={<OrderManagement />} />
-              <Route path="/clients" element={<ClientManagement />} />
-              <Route path="/ai-generator" element={<AITextGenerator />} />
-              <Route path="/page-editor" element={<PageEditor />} />
-              <Route path="/content-manager" element={<UniversalContentManager />} />
-              <Route path="/automation" element={<AdminContentManager />} />
-              <Route path="/prompts" element={<PromptManager />} />
-              <Route path="/pricing" element={<DynamicPricingManager />} />
-              <Route path="/payments" element={<PaymentManager />} />
-              <Route path="/analytics" element={<AnalyticsPanel />} />
-              <Route path="/settings" element={<SettingsPanel />} />
+              <Route path="launch" element={<ProductionLaunchManager />} />
+              <Route path="seo-setup" element={<SEOSetupManager />} />
+              <Route path="marketing" element={<MarketingCampaignManager />} />
+              <Route path="orders" element={<OrderManagement />} />
+              <Route path="clients" element={<ClientManagement />} />
+              <Route path="ai-generator" element={<AITextGenerator />} />
+              <Route path="page-editor" element={<PageEditor />} />
+              <Route path="content-manager" element={<UniversalContentManager />} />
+              <Route path="automation" element={<AdminContentManager />} />
+              <Route path="prompts" element={<PromptManager />} />
+              <Route path="pricing" element={<DynamicPricingManager />} />
+              <Route path="payments" element={<PaymentManager />} />
+              <Route path="analytics" element={<AnalyticsPanel />} />
+              <Route path="settings" element={<SettingsPanel />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Routes>
           </Suspense>

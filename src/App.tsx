@@ -108,7 +108,7 @@ function App() {
                     {/* Auth pages */}
                     <Route path="/auth" element={<AuthPage />} />
                     <Route path="/client" element={<ClientDashboard />} />
-                    <Route path="/admin" element={<AdminPanel />} />
+                    <Route path="/admin/*" element={<AdminPanel />} />
 
                     {/* Specialized order pages */}
                     <Route path="/order/seo-article" element={<SeoArticleOrder />} />
