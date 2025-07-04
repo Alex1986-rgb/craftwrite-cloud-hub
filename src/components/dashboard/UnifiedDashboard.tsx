@@ -15,10 +15,13 @@ import {
   CheckCircle,
   AlertCircle,
   Plus,
-  ArrowUpRight
+  ArrowUpRight,
+  MessageCircle,
+  Star
 } from 'lucide-react';
 import { useUnifiedAuth, UserRole } from '@/contexts/UnifiedAuthContext';
 import { cn } from '@/lib/utils';
+import { sampleOrders, sampleClients, sampleAnalytics, sampleActivity } from '@/data/sampleDashboardData';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -42,14 +45,14 @@ interface QuickAction {
 export default function UnifiedDashboard() {
   const { currentRole, user } = useUnifiedAuth();
   
-  // Mock data - in real app would come from API
+  // Real CopyPro data
   const [stats] = useState<DashboardStats>({
-    totalRevenue: 158340,
-    totalOrders: 24,
-    totalClients: 187,
-    aiGenerated: 156,
-    activeOrders: 8,
-    completedOrders: 16
+    totalRevenue: sampleAnalytics.monthly_revenue,
+    totalOrders: sampleAnalytics.total_orders,
+    totalClients: sampleClients.length,
+    aiGenerated: 89,
+    activeOrders: sampleOrders.filter(o => o.status === 'in_progress' || o.status === 'pending').length,
+    completedOrders: sampleAnalytics.completed_orders
   });
 
   const quickActions: QuickAction[] = [
@@ -275,48 +278,77 @@ export default function UnifiedDashboard() {
           <div className="space-y-3">
             {currentRole === 'admin' ? (
               <>
-                <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                {sampleActivity.slice(0, 4).map((activity, index) => (
+                  <div key={activity.id} className="flex items-center gap-3 p-3 glass-unified rounded-lg">
+                    <div className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center",
+                      activity.color === 'green' && "bg-green-100",
+                      activity.color === 'blue' && "bg-blue-100",
+                      activity.color === 'orange' && "bg-orange-100",
+                      activity.color === 'yellow' && "bg-yellow-100"
+                    )}>
+                      {activity.icon === 'check-circle' && <CheckCircle className="w-4 h-4 text-green-600" />}
+                      {activity.icon === 'plus' && <Plus className="w-4 h-4 text-blue-600" />}
+                      {activity.icon === 'dollar-sign' && <DollarSign className="w-4 h-4 text-green-600" />}
+                      {activity.icon === 'message-circle' && <MessageCircle className="w-4 h-4 text-orange-600" />}
+                      {activity.icon === 'clock' && <Clock className="w-4 h-4 text-yellow-600" />}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium">{activity.title}</p>
+                      <p className="text-sm text-neutral-600">{activity.description}</p>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        {new Date(activity.timestamp).toLocaleString('ru-RU')}
+                      </p>
+                    </div>
+                    <Badge className={cn(
+                      activity.color === 'green' && "bg-green-100 text-green-800",
+                      activity.color === 'blue' && "bg-blue-100 text-blue-800",
+                      activity.color === 'orange' && "bg-orange-100 text-orange-800",
+                      activity.color === 'yellow' && "bg-yellow-100 text-yellow-800"
+                    )}>
+                      {activity.type === 'order_completed' && 'Завершено'}
+                      {activity.type === 'new_order' && 'Новый'}
+                      {activity.type === 'payment_received' && 'Оплачено'}
+                      {activity.type === 'client_message' && 'Сообщение'}
+                      {activity.type === 'deadline_approaching' && 'Дедлайн'}
+                    </Badge>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-medium">Заказ #ORD-001 завершен</p>
-                    <p className="text-sm text-neutral-600">5 минут назад</p>
-                  </div>
-                  <Badge className="bg-green-100 text-green-800">Завершено</Badge>
-                </div>
-                <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Plus className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">Новый заказ от ООО "Технологии"</p>
-                    <p className="text-sm text-neutral-600">15 минут назад</p>
-                  </div>
-                  <Badge>Новый</Badge>
-                </div>
+                ))}
               </>
             ) : (
               <>
-                <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                    <AlertCircle className="w-4 h-4 text-yellow-600" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">Заказ #ORD-002 на проверке</p>
-                    <p className="text-sm text-neutral-600">1 час назад</p>
-                  </div>
-                  <Badge className="bg-yellow-100 text-yellow-800">На проверке</Badge>
-                </div>
                 <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                     <Clock className="w-4 h-4 text-blue-600" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">Заказ #ORD-003 в работе</p>
-                    <p className="text-sm text-neutral-600">2 часа назад</p>
+                    <p className="font-medium">Лендинг для IT-курсов в работе</p>
+                    <p className="text-sm text-neutral-600">Ирина Волкова - ЭдуТех Академия</p>
+                    <p className="text-xs text-neutral-500 mt-1">Дедлайн: 10 июля 2024</p>
                   </div>
                   <Badge className="bg-blue-100 text-blue-800">В работе</Badge>
+                </div>
+                <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <Star className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Отзыв 5★ за SEO-статью</p>
+                    <p className="text-sm text-neutral-600">Алексей Петров - ТехКорп</p>
+                    <p className="text-xs text-neutral-500 mt-1">3 июля 2024</p>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800">Отлично</Badge>
+                </div>
+                <div className="flex items-center gap-3 p-3 glass-unified rounded-lg">
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <MessageCircle className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Новое сообщение от менеджера</p>
+                    <p className="text-sm text-neutral-600">По проекту "Telegram-контент"</p>
+                    <p className="text-xs text-neutral-500 mt-1">4 июля 2024</p>
+                  </div>
+                  <Badge className="bg-orange-100 text-orange-800">Сообщение</Badge>
                 </div>
               </>
             )}

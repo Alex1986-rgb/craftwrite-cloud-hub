@@ -10,6 +10,7 @@ import SystemDiagnostics from "./SystemDiagnostics";
 import OrderProcessingDebugger from "./OrderProcessingDebugger";
 import UnifiedSystemManager from "./UnifiedSystemManager";
 import LandingOrderManager from "./landing/LandingOrderManager";
+import SampleDataDashboard from "./SampleDataDashboard";
 
 export default function AdminDashboard() {
   return (
@@ -20,8 +21,12 @@ export default function AdminDashboard() {
           <p className="text-gray-600">Управление заказами, клиентами и настройками системы</p>
         </div>
 
-        <Tabs defaultValue="unified" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+        <Tabs defaultValue="sample-data" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-9">
+            <TabsTrigger value="sample-data" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Dashboard
+            </TabsTrigger>
             <TabsTrigger value="unified" className="flex items-center gap-2">
               <Brain className="h-4 w-4" />
               AI Система
@@ -55,6 +60,10 @@ export default function AdminDashboard() {
               Настройки
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="sample-data">
+            <SampleDataDashboard />
+          </TabsContent>
 
           <TabsContent value="unified">
             <UnifiedSystemManager />
