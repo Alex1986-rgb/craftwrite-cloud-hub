@@ -13,8 +13,8 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import ModernHeroSection from "@/components/landing/ModernHeroSection";
-import ModernOrderSection from "@/components/landing/ModernOrderSection";
+import CleanHeroSection from "@/components/landing/CleanHeroSection";
+import CleanOrderSection from "@/components/landing/CleanOrderSection";
 import CleanStatsSection from "@/components/landing/CleanStatsSection";
 import CleanProcessSection from "@/components/landing/CleanProcessSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
@@ -69,10 +69,10 @@ export default function Index() {
       <UnifiedHeader />
       
       {/* Hero Section */}
-      <ModernHeroSection />
+      <CleanHeroSection />
       
       {/* Order Section */}
-      <ModernOrderSection />
+      <CleanOrderSection />
       
       {/* Stats & Trust */}
       <CleanStatsSection />
