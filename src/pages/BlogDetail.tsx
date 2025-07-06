@@ -1,5 +1,5 @@
 
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import BlogDetailHero from "@/components/blog/BlogDetailHero";
 import BlogDetailContent from "@/components/blog/BlogDetailContent";
@@ -7,13 +7,22 @@ import BlogDetailAuthor from "@/components/blog/BlogDetailAuthor";
 import BlogDetailRelated from "@/components/blog/BlogDetailRelated";
 import BlogDetailCTA from "@/components/blog/BlogDetailCTA";
 import { expandedBlogPosts } from "@/data/blog";
+import { fullExpertArticles } from "@/data/articles/fullExpertArticles";
 
 export default function BlogDetail() {
   const { id } = useParams();
   
   console.log('BlogDetail - Looking for slug:', id);
   console.log('BlogDetail - Available posts count:', expandedBlogPosts.length);
+  console.log('BlogDetail - Expert articles count:', fullExpertArticles.length);
   console.log('BlogDetail - Posts with slugs:', expandedBlogPosts.filter(p => p.slug).map(p => ({id: p.id, slug: p.slug, title: p.title})));
+  
+  // Try to find in expert articles first
+  let expertArticle = fullExpertArticles.find(a => a.slug === id);
+  if (expertArticle) {
+    // Redirect to proper expert article page
+    return <Navigate to={`/article/${expertArticle.slug}`} replace />;
+  }
   
   // Try to find by slug first, then by numeric ID for backward compatibility
   let post = expandedBlogPosts.find(p => p.slug === id);
