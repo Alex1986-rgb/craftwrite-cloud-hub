@@ -27,6 +27,7 @@ import About from "./pages/About";
 import ContactPage from "./pages/ContactPage";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
+import BlogArticlePage from "./pages/BlogArticlePage";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import AuthPage from "./pages/AuthPage";
@@ -102,6 +103,7 @@ function App() {
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:id" element={<BlogDetail />} />
+                    <Route path="/article/:slug" element={<BlogArticlePage />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/privacy" element={<Privacy />} />
 

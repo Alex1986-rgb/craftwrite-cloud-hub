@@ -107,7 +107,6 @@ export default function ModernAIAssistant({
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { trackEvent } = useEnhancedAnalytics();
-  const { trackEvent } = useEnhancedAnalytics();
 
   // AI Response Generator
   const generateLocalResponse = (content: string, capability: string): string => {
@@ -205,13 +204,11 @@ export default function ModernAIAssistant({
       setMessages(prev => [...prev, assistantMessage]);
       setConversationContext({ lastTopic: selectedCapability });
 
-      // Text-to-speech if enabled
-      if (getSetting('ai_tts_enabled', false)) {
-        speakText(response);
-      }
+      // Text-to-speech if enabled (disabled for now)
+      // speakText(response);
 
     } catch (error) {
-      ErrorHandler.handle(error, { context: 'AI_Assistant', selectedCapability });
+      console.error('AI Assistant error:', error);
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -254,7 +251,7 @@ export default function ModernAIAssistant({
       };
 
       recognition.onerror = (event: any) => {
-        ErrorHandler.handle(new Error('Speech recognition error'), { event });
+        console.error('Speech recognition error:', event);
         setIsListening(false);
       };
 
