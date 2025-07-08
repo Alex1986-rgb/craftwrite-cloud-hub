@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, Eye, Share2, BookmarkPlus, Star } from 'lucide-react';
+import { ArrowLeft, Clock, Eye, Share2, BookmarkPlus, Star, Hash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,10 +8,69 @@ import { Separator } from '@/components/ui/separator';
 import UnifiedHeader from '@/components/navigation/UnifiedHeader';
 import ModernFooter from '@/components/common/ModernFooter';
 import { fullExpertArticles } from '@/data/articles/fullExpertArticles';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 export default function BlogArticlePage() {
   const { slug } = useParams();
   const article = fullExpertArticles.find(a => a.slug === slug);
+
+  // Parse markdown content
+  const parsedContent = useMemo(() => {
+    if (!article?.fullContent) return '';
+    
+    // Configure marked options
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+    });
+    
+    // Process markdown and add anchor links to headings
+    let html = marked.parse(article.fullContent) as string;
+    
+    // Add CSS classes to HTML elements
+    html = html
+      .replace(/<h1>/g, '<h1 class="text-3xl font-bold text-slate-800 mt-12 mb-6 border-b-2 border-blue-500 pb-2">')
+      .replace(/<h2>/g, '<h2 class="text-2xl font-bold text-slate-800 mt-10 mb-5 border-b border-slate-200 pb-2">')
+      .replace(/<h3>/g, '<h3 class="text-xl font-bold text-blue-600 mt-8 mb-4">')
+      .replace(/<h4>/g, '<h4 class="text-lg font-semibold text-purple-600 mt-6 mb-3">')
+      .replace(/<p>/g, '<p class="text-slate-700 leading-relaxed mb-6">')
+      .replace(/<ul>/g, '<ul class="list-disc list-inside text-slate-700 mb-6 space-y-2">')
+      .replace(/<ol>/g, '<ol class="list-decimal list-inside text-slate-700 mb-6 space-y-2">')
+      .replace(/<li>/g, '<li class="leading-relaxed">')
+      .replace(/<strong>/g, '<strong class="font-semibold text-slate-800">')
+      .replace(/<em>/g, '<em class="italic text-slate-600">')
+      .replace(/<blockquote>/g, '<blockquote class="border-l-4 border-blue-500 pl-6 py-4 mb-6 bg-blue-50 rounded-r-lg italic text-slate-700">')
+      .replace(/<code>/g, '<code class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-sm font-mono">')
+      .replace(/<pre>/g, '<pre class="bg-slate-800 text-slate-100 p-4 rounded-lg mb-6 overflow-x-auto">')
+      .replace(/<table>/g, '<table class="min-w-full bg-white rounded-lg overflow-hidden shadow-sm border border-slate-200 mb-8">')
+      .replace(/<thead>/g, '<thead class="bg-gradient-to-r from-blue-500 to-purple-600">')
+      .replace(/<th>/g, '<th class="border border-slate-200 px-4 py-3 text-left font-semibold text-white text-sm">')
+      .replace(/<td>/g, '<td class="border border-slate-200 px-4 py-3 text-slate-700 text-sm">')
+      .replace(/<tr>/g, '<tr class="hover:bg-blue-50 transition-colors">');
+    
+    return DOMPurify.sanitize(html);
+  }, [article?.fullContent]);
+
+  // Generate table of contents
+  const tableOfContents = useMemo(() => {
+    if (!article?.fullContent) return [];
+    
+    const headings = [];
+    const lines = article.fullContent.split('\n');
+    
+    lines.forEach(line => {
+      const match = line.match(/^(#{1,4})\s+(.+)$/);
+      if (match) {
+        const level = match[1].length;
+        const text = match[2];
+        const slug = text.toLowerCase().replace(/[^\w\u0400-\u04FF]+/g, '-').replace(/^-+|-+$/g, '');
+        headings.push({ level, text, slug });
+      }
+    });
+    
+    return headings;
+  }, [article?.fullContent]);
 
   if (!article) {
     return (
@@ -132,10 +191,8 @@ export default function BlogArticlePage() {
 
               {/* Content */}
               <div 
-                className="prose prose-slate max-w-none prose-headings:text-slate-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-800"
-                dangerouslySetInnerHTML={{ 
-                  __html: article.fullContent.replace(/\n/g, '<br>').replace(/#{1,6}\s/g, '<h$&>').replace(/<h(\d+)>/g, '<h$1 class="text-slate-800 font-bold mt-8 mb-4">') 
-                }}
+                className="article-content max-w-none"
+                dangerouslySetInnerHTML={{ __html: parsedContent }}
               />
 
               {/* Table */}
@@ -173,6 +230,32 @@ export default function BlogArticlePage() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-8 space-y-6">
+              {/* Table of Contents */}
+              {tableOfContents.length > 0 && (
+                <Card className="p-4">
+                  <h3 className="font-semibold mb-4 flex items-center gap-2">
+                    <Hash className="w-4 h-4" />
+                    Содержание
+                  </h3>
+                  <nav className="space-y-2">
+                    {tableOfContents.map((heading, index) => (
+                      <a
+                        key={index}
+                        href={`#${heading.slug}`}
+                        className={`block text-sm hover:text-blue-600 transition-colors ${
+                          heading.level === 1 ? 'font-semibold text-slate-800' :
+                          heading.level === 2 ? 'font-medium text-slate-700 ml-2' :
+                          heading.level === 3 ? 'text-slate-600 ml-4' :
+                          'text-slate-500 ml-6'
+                        }`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </Card>
+              )}
+
               {/* Action Buttons */}
               <Card className="p-4">
                 <div className="space-y-3">
@@ -199,7 +282,7 @@ export default function BlogArticlePage() {
                       return (
                         <Link 
                           key={relatedSlug}
-                          to={`/blog/${relatedSlug}`}
+                          to={`/article/${relatedSlug}`}
                           className="block p-3 rounded-lg hover:bg-slate-50 transition-colors"
                         >
                           <div className="text-sm font-medium text-slate-800 mb-1">
