@@ -26,7 +26,7 @@ const AboutHeroSection = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium mb-12">
-            Мы — команда из <span className="text-primary font-bold">30+ дипломированных SEO-копирайтеров</span> с многолетним опытом создания премиального контента
+            Мы — команда из <span className="text-primary font-bold">52+ дипломированных специалистов</span> под руководством Анны Копейкиной (МГУ, HSE MBA), создающих премиальный контент с использованием ИИ-технологий
           </p>
 
           {/* Trust stats */}
@@ -35,7 +35,7 @@ const AboutHeroSection = () => {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-primary to-blue-600 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Users className="w-7 h-7 text-white" />
               </div>
-              <div className="text-3xl font-black text-primary mb-2">30+</div>
+              <div className="text-3xl font-black text-primary mb-2">52</div>
               <div className="text-sm text-muted-foreground font-medium">Экспертов в команде</div>
             </div>
             
@@ -59,7 +59,7 @@ const AboutHeroSection = () => {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
-              <div className="text-3xl font-black text-purple-600 mb-2">2000+</div>
+              <div className="text-3xl font-black text-purple-600 mb-2">5000+</div>
               <div className="text-sm text-muted-foreground font-medium">Проектов</div>
             </div>
           </div>
