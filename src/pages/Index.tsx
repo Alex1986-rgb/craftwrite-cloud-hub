@@ -13,9 +13,9 @@ import { homePageArticles } from "@/data/articles/homePageArticles";
 
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import CleanHeroSection from "@/components/landing/CleanHeroSection";
-import CleanOrderSection from "@/components/landing/CleanOrderSection";
-import CleanStatsSection from "@/components/landing/CleanStatsSection";
+import ModernHeroSection from "@/components/landing/ModernHeroSection";
+import SmartOrderSection from "@/components/landing/SmartOrderSection";
+import AnimatedStatsSection from "@/components/landing/AnimatedStatsSection";
 import CleanProcessSection from "@/components/landing/CleanProcessSection";
 import UnifiedHeader from "@/components/navigation/UnifiedHeader";
 import ModernFooter from "@/components/common/ModernFooter";
@@ -69,13 +69,13 @@ export default function Index() {
       <UnifiedHeader />
       
       {/* Hero Section */}
-      <CleanHeroSection />
+      <ModernHeroSection />
       
       {/* Order Section */}
-      <CleanOrderSection />
+      <SmartOrderSection />
       
       {/* Stats & Trust */}
-      <CleanStatsSection />
+      <AnimatedStatsSection />
       
       {/* Process Overview */}
       <CleanProcessSection />
