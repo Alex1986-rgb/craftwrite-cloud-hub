@@ -8,8 +8,6 @@ import ContactSection from "@/components/landing/ContactSection";
 import { SeoTextExpandable } from "@/components/landing/SeoTextExpandable";
 import SupportWidget from "@/components/common/SupportWidget";
 import HumanLikeAiAssistant from "@/components/ai/HumanLikeAiAssistant";
-import UnifiedHeader from "@/components/navigation/UnifiedHeader";
-import Footer from "@/components/common/Footer";
 
 const seoText = `
 CopyPro Cloud — ведущая платформа профессионального копирайтинга в России и СНГ с командой из 50+ сертифицированных экспертов.
@@ -81,40 +79,36 @@ E-commerce и маркетплейсы:
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <UnifiedHeader />
-      <main className="relative overflow-hidden">
-        {/* 1. Главный экран с призывом к действию */}
-        <ModernHeroSection />
-        
-        {/* 2. Каталог услуг */}
-        <ServicesCatalogSection />
-        
-        {/* 3. Статистика */}
-        <ProfessionalStatsSection />
-        
-        {/* 4. Отзывы клиентов */}
-        <TestimonialsSection />
-        
-        {/* 5. Команда */}
-        <TeamSection />
-        
-        {/* 6. Частые вопросы */}
-        <FaqSection />
-        
-        {/* 7. Контакты */}
-        <ContactSection />
-        
-        {/* 8. SEO-текст */}
-        <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
-          <SeoTextExpandable text={seoText} />
-        </div>
-        
-        {/* Виджеты поддержки */}
-        <SupportWidget />
-        <HumanLikeAiAssistant />
-      </main>
-      <Footer />
+    <div className="relative overflow-hidden">
+      {/* 1. Главный экран с призывом к действию */}
+      <ModernHeroSection />
+      
+      {/* 2. Каталог услуг */}
+      <ServicesCatalogSection />
+      
+      {/* 3. Статистика */}
+      <ProfessionalStatsSection />
+      
+      {/* 4. Отзывы клиентов */}
+      <TestimonialsSection />
+      
+      {/* 5. Команда */}
+      <TeamSection />
+      
+      {/* 6. Частые вопросы */}
+      <FaqSection />
+      
+      {/* 7. Контакты */}
+      <ContactSection />
+      
+      {/* 8. SEO-текст */}
+      <div className="container mx-auto px-4 py-16 bg-gradient-to-br from-slate-50/50 to-transparent">
+        <SeoTextExpandable text={seoText} />
+      </div>
+      
+      {/* Виджеты поддержки */}
+      <SupportWidget />
+      <HumanLikeAiAssistant />
     </div>
   );
 }

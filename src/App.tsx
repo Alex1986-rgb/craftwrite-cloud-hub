@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { performanceMonitor } from "@/utils/performanceUtils";
 import { useEffect } from "react";
 import AnalyticsTracker from "@/components/common/AnalyticsTracker";
+import GlobalLayout from "@/layouts/GlobalLayout";
 
 // Import all pages
 import Index from "./pages/Index";
@@ -84,7 +85,7 @@ function App() {
           <SystemSettingsProvider>
             <UnifiedAuthProvider>
               <Router>
-                <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20">
+                <GlobalLayout>
                   <AnalyticsTracker />
                   <Routes>
                     {/* Main pages */}
@@ -143,7 +144,7 @@ function App() {
                     {/* 404 page */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </div>
+                </GlobalLayout>
                 <Toaster />
               </Router>
             </UnifiedAuthProvider>
