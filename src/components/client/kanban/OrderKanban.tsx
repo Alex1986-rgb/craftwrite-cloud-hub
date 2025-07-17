@@ -97,6 +97,16 @@ export function OrderKanban() {
     }
   };
 
+  const getColumnIconColor = (color: string) => {
+    switch (color) {
+      case 'blue': return 'text-blue-600';
+      case 'yellow': return 'text-yellow-600';
+      case 'purple': return 'text-purple-600';
+      case 'green': return 'text-green-600';
+      default: return 'text-gray-600';
+    }
+  };
+
   const getOrdersByStatus = (status: string) => {
     return orders.filter(order => order.status === status);
   };
@@ -131,7 +141,7 @@ export function OrderKanban() {
               <Card className="glass-card border-0 animate-slide-in-up" style={{ animationDelay: `${columnIndex * 100}ms` }}>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <IconComponent className={`w-5 h-5 text-${column.color}-600`} />
+                    <IconComponent className={`w-5 h-5 ${getColumnIconColor(column.color)}`} />
                     {column.title}
                     <Badge variant="secondary" className="ml-auto">
                       {columnOrders.length}
