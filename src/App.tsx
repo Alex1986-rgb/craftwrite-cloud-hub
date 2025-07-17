@@ -1,4 +1,5 @@
 
+import * as React from 'react';
 import './index.css';
 
 import { UnifiedAuthProvider } from "./contexts/UnifiedAuthContext";
@@ -72,14 +73,15 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+function App(): JSX.Element {
   useEffect(() => {
     // Initialize performance monitoring
     performanceMonitor;
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="copypro-theme">
         <TooltipProvider>
           <SystemSettingsProvider>
@@ -152,6 +154,7 @@ function App() {
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
+    </React.StrictMode>
   );
 }
 
