@@ -80,8 +80,7 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="copypro-theme">
         <TooltipProvider>
           <SystemSettingsProvider>
@@ -154,7 +153,6 @@ function App(): JSX.Element {
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
-    </React.StrictMode>
   );
 }
 
