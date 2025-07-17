@@ -17,8 +17,6 @@ import ModernHeroSection from "@/components/landing/ModernHeroSection";
 import SmartOrderSection from "@/components/landing/SmartOrderSection";
 import AnimatedStatsSection from "@/components/landing/AnimatedStatsSection";
 import CleanProcessSection from "@/components/landing/CleanProcessSection";
-import UnifiedHeader from "@/components/navigation/UnifiedHeader";
-import ModernFooter from "@/components/common/ModernFooter";
 import FloatingChatButton from "@/components/enhanced/FloatingChatButton";
 import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
 import { useEnhancedAnalytics } from "@/hooks/useEnhancedAnalytics";
@@ -66,8 +64,6 @@ export default function Index() {
 
   return (
     <main className="relative overflow-hidden bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30">
-      <UnifiedHeader />
-      
       {/* Hero Section */}
       <ModernHeroSection />
       
@@ -104,8 +100,6 @@ export default function Index() {
       
       {/* SEO Content */}
       <ModernSeoSection />
-      
-      <ModernFooter />
     </main>
   );
 }

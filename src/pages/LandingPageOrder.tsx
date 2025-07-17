@@ -1,8 +1,6 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import ComprehensiveSeo from '@/components/seo/ComprehensiveSeo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -63,8 +61,6 @@ export default function LandingPageOrder() {
         description="Создание высококонверсионных лендингов с гарантией результата. A/B тестирование, адаптивный дизайн, интеграции. Конверсия до 15%. От 5000₽"
         keywords="создание лендинга, посадочная страница, продающий лендинг, конверсионный дизайн, заказать лендинг"
       />
-      
-      <Header />
       
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
         {/* Hero Section */}
@@ -238,8 +234,6 @@ export default function LandingPageOrder() {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </>
   );
 }

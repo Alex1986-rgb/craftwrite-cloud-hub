@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import UnifiedHeader from '@/components/navigation/UnifiedHeader';
-import ModernFooter from '@/components/common/ModernFooter';
 import { fullExpertArticles } from '@/data/articles/fullExpertArticles';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
@@ -75,7 +73,6 @@ export default function BlogArticlePage() {
   if (!article) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30">
-        <UnifiedHeader />
         <main className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl font-bold text-slate-800 mb-4">Статья не найдена</h1>
           <p className="text-slate-600 mb-8">Возможно, статья была перемещена или удалена</p>
@@ -83,15 +80,12 @@ export default function BlogArticlePage() {
             <Button>Вернуться к блогу</Button>
           </Link>
         </main>
-        <ModernFooter />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30">
-      <UnifiedHeader />
-      
       <main className="container mx-auto px-4 py-8">
         {/* Navigation */}
         <div className="mb-8">
@@ -316,8 +310,6 @@ export default function BlogArticlePage() {
           </div>
         </div>
       </main>
-
-      <ModernFooter />
     </div>
   );
 }

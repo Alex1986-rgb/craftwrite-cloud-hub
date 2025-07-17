@@ -1,8 +1,6 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import ComprehensiveSeo from '@/components/seo/ComprehensiveSeo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -63,8 +61,6 @@ export default function EmailCampaignsOrder() {
         description="Создание эффективных email-кампаний и автоматизированных воронок. Персонализация, сегментация, A/B тестирование. Открываемость до 45%. От 1500₽"
         keywords="email маркетинг, email рассылка, автоматизация рассылок, email воронки, триггерные письма"
       />
-      
-      <Header />
       
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
         {/* Hero Section */}
@@ -238,8 +234,6 @@ export default function EmailCampaignsOrder() {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </>
   );
 }

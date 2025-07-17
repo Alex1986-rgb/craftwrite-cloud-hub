@@ -16,8 +16,6 @@ import {
   ExternalLink,
   TrendingUp
 } from 'lucide-react';
-import UnifiedHeader from '@/components/navigation/UnifiedHeader';
-import EnhancedFooter from '@/components/common/EnhancedFooter';
 import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 const popularPages = [
@@ -70,8 +68,6 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
-      <UnifiedHeader />
-      
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -240,8 +236,6 @@ export default function NotFound() {
           </div>
         </div>
       </main>
-
-      <EnhancedFooter />
     </div>
   );
 }
