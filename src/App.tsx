@@ -7,7 +7,7 @@ import { SystemSettingsProvider } from "./components/enhanced/SystemSettingsProv
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { performanceMonitor } from "@/utils/performanceUtils";
 import { useEffect } from "react";
@@ -82,10 +82,9 @@ function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="copypro-theme">
-        <TooltipProvider>
-          <SystemSettingsProvider>
-            <UnifiedAuthProvider>
-              <Router>
+        <SystemSettingsProvider>
+          <UnifiedAuthProvider>
+            <Router>
                 <GlobalLayout>
                   <AnalyticsTracker />
                   <Routes>
@@ -145,12 +144,11 @@ function App(): JSX.Element {
                     {/* 404 page */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </GlobalLayout>
-                <Toaster />
-              </Router>
-            </UnifiedAuthProvider>
-          </SystemSettingsProvider>
-        </TooltipProvider>
+              </GlobalLayout>
+              <Toaster />
+            </Router>
+          </UnifiedAuthProvider>
+        </SystemSettingsProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
