@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import * as React from 'react';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 
 interface SystemSettingsContextType {
@@ -11,10 +11,10 @@ interface SystemSettingsContextType {
   refreshSettings: () => Promise<void>;
 }
 
-const SystemSettingsContext = createContext<SystemSettingsContextType | undefined>(undefined);
+const SystemSettingsContext = React.createContext<SystemSettingsContextType | undefined>(undefined);
 
 interface SystemSettingsProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export function SystemSettingsProvider({ children }: SystemSettingsProviderProps) {
@@ -28,7 +28,7 @@ export function SystemSettingsProvider({ children }: SystemSettingsProviderProps
 }
 
 export function useSystemSettingsContext() {
-  const context = useContext(SystemSettingsContext);
+  const context = React.useContext(SystemSettingsContext);
   if (context === undefined) {
     throw new Error('useSystemSettingsContext must be used within a SystemSettingsProvider');
   }
